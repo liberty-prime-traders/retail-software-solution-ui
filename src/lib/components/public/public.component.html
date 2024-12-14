@@ -1,0 +1,21 @@
+<p>Public Information</p>
+
+@if (screenSizeService.isMobileLandScape$ | async) {
+  📱 Mobile Landscape View
+}
+@if (screenSizeService.isMobilePortrait$ | async) {
+  📱 Mobile Portrait View
+}
+@if (screenSizeService.isTabletLandscape$ | async) {
+  📲 Tablet Landscape View
+}
+@if (screenSizeService.isTabletPortrait$ | async) {
+  📲 Tablet Portrait View
+}
+@if (screenSizeService.isWebLandscape$ | async) {
+  💻 Web Landscape View
+}
+@if (screenSizeService.isWebPortrait$ | async) {
+  💻 Web Portrait View
+}
+
