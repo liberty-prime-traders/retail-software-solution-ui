@@ -1,14 +1,20 @@
-import {Component} from '@angular/core'
-import {RouterLink, RouterOutlet} from '@angular/router'
+import {Component, inject} from '@angular/core'
+import {Router, RouterLink, RouterOutlet} from '@angular/router'
 import {Button} from 'primeng/button'
-import {Card} from 'primeng/card'
 import {Divider} from 'primeng/divider'
+import {RtsOktaService} from '../../utils/services/rts-okta.service'
 
 @Component({
     standalone: true,
     selector: 'rts-welcome',
     templateUrl: 'welcome.component.html',
-    imports: [RouterOutlet, Divider, Card, Button, RouterLink]
+    imports: [RouterOutlet, Divider, Button, RouterLink]
 })
 export class WelcomeComponent {
+    private readonly rtsOktaService = inject(RtsOktaService)
+    private readonly router = inject(Router)
+
+    logout() {
+        this.rtsOktaService.signOut().then(() => this.router.navigateByUrl('/'))
+    }
 }
