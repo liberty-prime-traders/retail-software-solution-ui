@@ -31,9 +31,13 @@ export class NavigationComponent {
         {label: 'Expenses', icon: 'pi pi-wallet'}
     ]
 
-    readonly menuItems: MenuItem[] = [
+    private readonly commonTasksMenuItems: MenuItem[] = [
         {label: 'Home', icon: 'pi pi-home', routerLink: './'},
-        {label: 'Organization Tree', icon: 'pi pi-sitemap'},
+        {label: 'Organization Tree', icon: 'pi pi-sitemap', routerLink: './organization-tree'},
+    ]
+    
+    readonly menuItems: MenuItem[] = [
+        {label: 'Common Tasks', items: this.commonTasksMenuItems},
         {label: 'People Management', items: this.peopleSettingsMenuItems},
         {label: 'Business Settngs', items: this.businessSettingsMenuItems},
         {label: 'Transactions', items: this.transactionScreensMenuItems}

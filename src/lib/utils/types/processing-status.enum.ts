@@ -1,6 +1,6 @@
 export enum ProcessingStatus {
 	IDLE = 'IDLE',
-	UNDERWAY = 'UNDERWAY',
+	IN_PROGRESS = 'IN_PROGRESS',
 	SUCCESS = 'SUCCESS',
 	FAILURE = 'FAILURE'
 }

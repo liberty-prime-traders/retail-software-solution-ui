@@ -1,0 +1,9 @@
+<i [pTooltip]="messagesContent" autoHide="false" tooltipPosition="left" class="pi pi-info-circle"></i>
+
+<ng-template #messagesContent>
+  <ul>
+    @for (message of messages(); track message) {
+      <li>{{message}}</li>
+    }
+  </ul>
+</ng-template>
