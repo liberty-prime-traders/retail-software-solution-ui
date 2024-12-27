@@ -106,7 +106,7 @@ export abstract class FetchService<ENTITY extends BaseModel, STATE extends BaseS
         this.store.set(this.createFn(this.prepareResponse(body, idParam)))
         this.store.setHasCache(true)
         this.store.setLoading(false)
-        this.setFetchStatus(ProcessingStatus.SUCCESS)
+        this.setProcessingStatus(ProcessingStatus.SUCCESS)
     }
 
     protected prepareResponse(body: ENTITY | ENTITY[], idParam?: string): any {
@@ -128,7 +128,7 @@ export abstract class FetchService<ENTITY extends BaseModel, STATE extends BaseS
         const pathParams = this.getPathParams(params)
         const url = `${this.getBasePath(idParam)}${pathParams}${matrixParams}`
         this.store.setLoading(!this.query.getHasCache())
-        this.setFetchStatus(ProcessingStatus.UNDERWAY)
+        this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
         const request$ = this.fetcher.get<ENTITY>(url, httpParams).pipe(
             tap((_) => this.logResults(_)),
             tap((body) => this.fetchSetStore(body, idParam)),
@@ -140,13 +140,13 @@ export abstract class FetchService<ENTITY extends BaseModel, STATE extends BaseS
         return cacheable(this.store, request$).subscribe()
     }
 
-    protected setFetchStatus(processingStatus: ProcessingStatus): void {}
+    protected setProcessingStatus(processingStatus: ProcessingStatus): void {}
 
     protected setStoreError(error: HttpErrorResponse) {
         this.store.setError(error)
         this.store.setLoading(false)
         this.store.setHasCache(true)
-        this.setFetchStatus(ProcessingStatus.FAILURE)
+        this.setProcessingStatus(ProcessingStatus.FAILURE)
         return throwError(() => error)
     }
 
