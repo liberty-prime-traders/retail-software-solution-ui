@@ -1,4 +1,4 @@
 export enum FormAction {
-	SAVE = "SAVE",
-	DELETE = "DELETE"
+	SAVE = 'SAVE',
+	DELETE = 'DELETE'
 }

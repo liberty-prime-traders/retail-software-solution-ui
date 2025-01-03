@@ -8,9 +8,7 @@ import {OrganizationState} from './organization.state'
 @Injectable({providedIn: 'root'})
 @StoreConfig({name: 'organizations'})
 export class OrganizationStore extends BaseStore<Organization, OrganizationState> {
-	
-	constructor() {
-		super(createInitialState())
-	}
-	
+    constructor() {
+        super(createInitialState())
+    }
 }

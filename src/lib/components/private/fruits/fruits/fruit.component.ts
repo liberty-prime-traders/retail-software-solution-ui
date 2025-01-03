@@ -11,11 +11,7 @@ import {KshCurrencyPipe} from '../../../../utils/pipes/currency.pipe'
 import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
 import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
 import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
-<<<<<<< Updated upstream
-=======
-import {FruitFormComponent } from './fruit-form/fruit-form.component'
 import { DatePipe } from '@angular/common'
->>>>>>> Stashed changes
 
 @Component({
     standalone: true,

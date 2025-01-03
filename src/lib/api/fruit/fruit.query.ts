@@ -6,8 +6,7 @@ import {FruitStore} from './fruit.store'
 
 @Injectable({providedIn: 'root'})
 export class FruitQuery extends BaseQuery<Fruit, FruitState> {
-    
-    constructor(protected override readonly  store: FruitStore) {
+    constructor(protected override readonly store: FruitStore) {
         super(store)
-    }    
+    }
 }

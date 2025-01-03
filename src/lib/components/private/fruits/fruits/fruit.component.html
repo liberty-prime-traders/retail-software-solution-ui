@@ -1,14 +1,24 @@
 <h3 class="font-semibold">Fruits</h3>
 
-<rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || (loading$ | async)">
-  @if (addingIsActive()) {
-  <!-- <rts-fruit-form></rts-fruit-form> -->
-  }
+<rts-add-row
+  [(addingIsActive)]="addingIsActive"
+  [disabled]="rowIsExpanded() || (loading$ | async)"
+>
+  @if (addingIsActive()) { }
 </rts-add-row>
 
-<p-table [loading]="(loading$ | async) && !addingIsActive()" selectionMode="single" rowExpandMode="single" size="small"
-  #table dataKey="id" sortField="name" (onRowExpand)="rowIsExpanded.set(true)"
-  (onRowCollapse)="rowIsExpanded.set(false)" [(selection)]="selectedFruit" [value]="(fruits$ | async) ?? []">
+<p-table
+  [loading]="(loading$ | async) && !addingIsActive()"
+  selectionMode="single"
+  rowExpandMode="single"
+  size="small"
+  dataKey="id"
+  sortField="name"
+  (onRowExpand)="rowIsExpanded.set(true)"
+  (onRowCollapse)="rowIsExpanded.set(false)"
+  [(selection)]="selectedFruit"
+  [value]="(fruits$ | async) ?? []"
+>
   <ng-template #header>
     <tr>
       <th>Name</th>
@@ -30,8 +40,13 @@
       <td>{{ fruit?.createdBy | nullSafe }}</td>
       <td>{{ fruit?.createdOn | date : "yyyy-mm-dd hh:mm:ss a" }}</td>
       <td>
-        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'" rounded severity="secondary"
-          [disabled]="(processingIsUnderWay$ | async) || addingIsActive()" [pRowToggler]="fruit">
+        <p-button
+          [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+          rounded
+          severity="secondary"
+          [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
+          [pRowToggler]="fruit"
+        >
         </p-button>
       </td>
     </tr>

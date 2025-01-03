@@ -8,9 +8,7 @@ import {FruitState} from './fruit.state'
 @Injectable({providedIn: 'root'})
 @StoreConfig({name: 'fruits'})
 export class FruitStore extends BaseStore<Fruit, FruitState> {
-    
     constructor() {
         super(createInitialState())
     }
-    
 }

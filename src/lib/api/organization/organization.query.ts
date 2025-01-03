@@ -6,9 +6,7 @@ import {OrganizationStore} from './organization.store'
 
 @Injectable({providedIn: 'root'})
 export class OrganizationQuery extends BaseQuery<Organization, OrganizationState> {
-	
-	constructor(protected override readonly  store: OrganizationStore) {
-		super(store)
-	}
-	
+    constructor(protected override readonly store: OrganizationStore) {
+        super(store)
+    }
 }
