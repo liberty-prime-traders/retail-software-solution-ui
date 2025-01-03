@@ -7,10 +7,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class KshCurrencyPipe implements PipeTransform {
 
   transform(value: number | string): string | null {
-    if (value == null) return null;
+    if (value == null) return '--';
 
     const numberValue = parseFloat(value.toString());
-    if (isNaN(numberValue)) return null;
+    if (isNaN(numberValue)) return '--';
 
     return `${numberValue.toLocaleString('en-KE', {
       style: 'currency',
