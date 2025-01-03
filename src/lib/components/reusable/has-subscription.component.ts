@@ -2,13 +2,13 @@ import {Component, OnDestroy} from '@angular/core'
 import {Subscription} from 'rxjs'
 
 @Component({
-	standalone: true,
-	template: ''
+  standalone: true,
+  template: ''
 })
 export abstract class HasSubscriptionComponent implements OnDestroy {
-	protected readonly subscriptions = new Subscription()
-	
-	ngOnDestroy() {
-		this.subscriptions.unsubscribe()
-	}
+  protected readonly subscriptions = new Subscription()
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe()
+  }
 }

@@ -15,77 +15,80 @@ export abstract class BaseService<
   STATE extends BaseState<RESPONSE>,
   PAYLOAD = RESPONSE
 > extends FetchService<RESPONSE, STATE> {
-    private readonly httpClient = inject(HttpClient)
-    
-    readonly processingStatus$ = () => this.query.selectProcessingStatus()
-    readonly failureMessages$ = () => this.query.selectFailureMessages()
-    readonly processingIsUnderWay$ = () => this.processingStatus$().pipe(
-      map(status => status === ProcessingStatus.IN_PROGRESS)
-    )
-    
-    protected constructor(protected override readonly store: BaseStore<RESPONSE, STATE>,
+  private readonly httpClient = inject(HttpClient)
+
+  readonly processingStatus$ = () => this.query.selectProcessingStatus()
+  readonly failureMessages$ = () => this.query.selectFailureMessages()
+  readonly processingIsUnderWay$ = () => this.processingStatus$().pipe(
+    map(status => status === ProcessingStatus.IN_PROGRESS)
+  )
+
+  protected constructor(protected override readonly store: BaseStore<RESPONSE, STATE>,
                           protected override readonly query: BaseQuery<RESPONSE, STATE>) {
-        super(store, query, inject(HttpClient))
-    }
+    super(store, query, inject(HttpClient))
+  }
 
-    resetProcessingStatus() {
-        this.setProcessingStatus(ProcessingStatus.IDLE)
-    }
+  resetProcessingStatus() {
+    this.setProcessingStatus(ProcessingStatus.IDLE)
+  }
 
-    post(body?: PAYLOAD, id?: string): Subscription {
-        this.store.setLoading(true)
-        this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
-        return this.httpClient.post<RESPONSE>(this.getBasePath(id), body).pipe(
-            first(),
-            tap((postResult: RESPONSE) => this.finishSavingWithSuccess(postResult)),
-            catchError((error: HttpErrorResponse) => this.setStoreError(error))
-        ).subscribe()
-    }
+  post(body?: PAYLOAD, id?: string): Subscription {
+    this.store.setLoading(true)
+    this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
+    return this.httpClient.post<RESPONSE>(this.getBasePath(id), body).pipe(
+      first(),
+      tap((postResult: RESPONSE) => this.finishSavingWithSuccess(postResult)),
+      catchError((error: HttpErrorResponse) => this.setStoreError(error))
+    )
+      .subscribe()
+  }
 
-    put(body: PAYLOAD): Subscription {
-        this.startSaving()
-        return this.httpClient.put<RESPONSE>(this.getBasePath(), body).pipe(
-            first(),
-            tap((putResult: RESPONSE) => this.finishSavingWithSuccess(putResult)),
-            catchError((error: HttpErrorResponse) => this.setStoreError(error))
-        ).subscribe()
-    }
+  put(body: PAYLOAD): Subscription {
+    this.startSaving()
+    return this.httpClient.put<RESPONSE>(this.getBasePath(), body).pipe(
+      first(),
+      tap((putResult: RESPONSE) => this.finishSavingWithSuccess(putResult)),
+      catchError((error: HttpErrorResponse) => this.setStoreError(error))
+    )
+      .subscribe()
+  }
 
-    delete(id?: string): Subscription {
-        this.store.setLoading(true)
-        this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
-        return this.httpClient.delete(this.getBasePath(id)).pipe(
-            first(),
-            tap(() => {
-                this.store.remove(id)
-                this.store.setLoading(false)
-                this.setProcessingStatus(ProcessingStatus.SUCCESS)
-            }),
-            catchError((error: HttpErrorResponse) => this.setStoreError(error))
-        ).subscribe()
-    }
-
-    startSaving() {
-        this.store.setLoading(true)
-        this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
-    }
-
-    protected finishSavingWithSuccess(result: RESPONSE | RESPONSE[]) {
-        if (Array.isArray(result)) {
-            this.store.upsertMany(result)
-        } else if (!isNil(result)) {
-            this.store.upsert(result[this.store.idKey], result)
-        }
+  delete(id?: string): Subscription {
+    this.store.setLoading(true)
+    this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
+    return this.httpClient.delete(this.getBasePath(id)).pipe(
+      first(),
+      tap(() => {
+        this.store.remove(id)
         this.store.setLoading(false)
         this.setProcessingStatus(ProcessingStatus.SUCCESS)
-    }
+      }),
+      catchError((error: HttpErrorResponse) => this.setStoreError(error))
+    )
+      .subscribe()
+  }
 
-    protected override setProcessingStatus(processingStatus: ProcessingStatus): void {
-        this.store.setProcessingStatus(processingStatus)
-    }
+  startSaving() {
+    this.store.setLoading(true)
+    this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
+  }
 
-    protected override setStoreError(error: HttpErrorResponse): Observable<never> {
-        this.setProcessingStatus(ProcessingStatus.FAILURE)
-        return super.setStoreError(error)
+  protected finishSavingWithSuccess(result: RESPONSE | RESPONSE[]) {
+    if (Array.isArray(result)) {
+      this.store.upsertMany(result)
+    } else if (!isNil(result)) {
+      this.store.upsert(result[this.store.idKey], result)
     }
+    this.store.setLoading(false)
+    this.setProcessingStatus(ProcessingStatus.SUCCESS)
+  }
+
+  protected override setProcessingStatus(processingStatus: ProcessingStatus): void {
+    this.store.setProcessingStatus(processingStatus)
+  }
+
+  protected override setStoreError(error: HttpErrorResponse): Observable<never> {
+    this.setProcessingStatus(ProcessingStatus.FAILURE)
+    return super.setStoreError(error)
+  }
 }

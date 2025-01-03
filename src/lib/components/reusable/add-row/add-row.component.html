@@ -1,5 +1,10 @@
-<div class="flex justify-content-end mb-2 gap-2">
-  <p-button label="+ Add New" (click)="addingIsActive.set(true)" [disabled]="addingIsActive() || disabled()"/>
+<div class="flex mt-2 gap-2">
+  <p-button label="+ Add New"
+            size="small"
+            severity="secondary"
+            (click)="addingIsActive.set(true)"
+            [disabled]="addingIsActive() || disabled()">
+  </p-button>
 
   @if (addingIsActive()) {
     <p-button (click)="addingIsActive.set(false)" icon="pi pi-times" severity="info"/>
@@ -7,7 +12,7 @@
 </div>
 
 @if (addingIsActive()) {
-  <div class="filled-background mb-4">
+  <div class="filled-background mb-4 mt-2">
     <ng-content/>
   </div>
 }

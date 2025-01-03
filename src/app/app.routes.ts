@@ -6,20 +6,20 @@ import {PrivateComponent} from '../lib/components/private/private.component'
 import {PublicComponent} from '../lib/components/public/public.component'
 
 const secureRoutes: Routes = [
-    {path: '', component: HomepageComponent},
-    {path: 'organization-tree', component: OrganizationTreeComponent}
+  {path: '', component: HomepageComponent},
+  {path: 'organization-tree', component: OrganizationTreeComponent}
 ]
 
 const appChildRoutes: Routes = [
-    {path: 'login/callback', component: OktaCallbackComponent},
-    {path: 'secure', canActivate: [OktaAuthGuard], component: PrivateComponent, children: secureRoutes},
-    {path: '', component: PublicComponent, pathMatch: 'full'}
+  {path: 'login/callback', component: OktaCallbackComponent},
+  {path: 'secure', canActivate: [OktaAuthGuard], component: PrivateComponent, children: secureRoutes},
+  {path: '', component: PublicComponent, pathMatch: 'full'}
 ]
 
 export const appRoutes: Routes = [
-    {
-        path: '',
-        children: appChildRoutes
-    },
-    {path: '**', redirectTo: ''}
+  {
+    path: '',
+    children: appChildRoutes
+  },
+  {path: '**', redirectTo: ''}
 ]

@@ -1,4 +1,4 @@
 export enum FormStatus {
-	VALID = "VALID",
-	INVALID = "INVALID"
+	VALID = 'VALID',
+	INVALID = 'INVALID'
 }

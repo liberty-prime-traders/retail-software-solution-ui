@@ -1,1 +1,18 @@
-<rts-organization/>
+<div class="flex flex-column gap-5">
+  <div>
+    <h3 class="font-semibold">Organizations</h3>
+    <hr/>
+    <rts-organization (selectedOrganizationChange)="selectedOrganization.set($event)"/>
+  </div>
+
+
+  @if (selectedOrganization()) {
+    <div>
+      <div class="mt-2 font-semibold">Locations For '{{selectedOrganization()?.name | nullSafe}}'</div>
+      <hr/>
+      <rts-location [organizationId]="selectedOrganization()?.id"/>
+    </div>
+  }
+
+</div>
+

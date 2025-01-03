@@ -3,43 +3,43 @@ import {MenuItem} from 'primeng/api'
 import {Menu} from 'primeng/menu'
 
 @Component({
-    standalone: true,
-    selector: 'rts-navigation',
-    templateUrl: 'navigation.component.html',
-    imports: [
-        Menu
-    ]
+  standalone: true,
+  selector: 'rts-navigation',
+  templateUrl: 'navigation.component.html',
+  imports: [
+    Menu
+  ]
 })
 export class NavigationComponent {
-    private readonly peopleSettingsMenuItems: MenuItem[] = [
-        {label: 'Internal Users', icon: 'pi pi-users'},
-        {label: 'External Contacts', icon: 'pi pi-address-book'}
-    ]
+  private readonly peopleSettingsMenuItems: MenuItem[] = [
+    {label: 'Internal Users', icon: 'pi pi-users'},
+    {label: 'External Contacts', icon: 'pi pi-address-book'}
+  ]
 
-    private readonly businessSettingsMenuItems: MenuItem[] = [
-        {label: 'Job Titles', icon: 'pi pi-gauge'},
-        {label: 'Categories', icon: 'pi pi-palette'},
-        {label: 'Variations', icon: 'pi pi-wave-pulse'},
-        {label: 'Units', icon: 'pi pi-percentage'},
-        {label: 'Payment Options', icon: 'pi pi-money-bill'}
-    ]
+  private readonly businessSettingsMenuItems: MenuItem[] = [
+    {label: 'Job Titles', icon: 'pi pi-gauge'},
+    {label: 'Categories', icon: 'pi pi-palette'},
+    {label: 'Variations', icon: 'pi pi-wave-pulse'},
+    {label: 'Units', icon: 'pi pi-percentage'},
+    {label: 'Payment Options', icon: 'pi pi-money-bill'}
+  ]
 
-    private readonly transactionScreensMenuItems: MenuItem[] = [
-        {label: 'Products', icon: 'pi pi-objects-column'},
-        {label: 'Sales', icon: 'pi pi-receipt'},
-        {label: 'Purchase Orders', icon: 'pi pi-truck'},
-        {label: 'Expenses', icon: 'pi pi-wallet'}
-    ]
+  private readonly transactionScreensMenuItems: MenuItem[] = [
+    {label: 'Products', icon: 'pi pi-objects-column'},
+    {label: 'Sales', icon: 'pi pi-receipt'},
+    {label: 'Purchase Orders', icon: 'pi pi-truck'},
+    {label: 'Expenses', icon: 'pi pi-wallet'}
+  ]
 
-    private readonly commonTasksMenuItems: MenuItem[] = [
-        {label: 'Home', icon: 'pi pi-home', routerLink: './'},
-        {label: 'Organization Tree', icon: 'pi pi-sitemap', routerLink: './organization-tree'},
-    ]
-    
-    readonly menuItems: MenuItem[] = [
-        {label: 'Common Tasks', items: this.commonTasksMenuItems},
-        {label: 'People Management', items: this.peopleSettingsMenuItems},
-        {label: 'Business Settngs', items: this.businessSettingsMenuItems},
-        {label: 'Transactions', items: this.transactionScreensMenuItems}
-    ]
+  private readonly commonTasksMenuItems: MenuItem[] = [
+    {label: 'Home', icon: 'pi pi-home', routerLink: './'},
+    {label: 'Organization Tree', icon: 'pi pi-sitemap', routerLink: './organization-tree'}
+  ]
+
+  readonly menuItems: MenuItem[] = [
+    {label: 'Common Tasks', items: this.commonTasksMenuItems},
+    {label: 'People Management', items: this.peopleSettingsMenuItems},
+    {label: 'Business Settngs', items: this.businessSettingsMenuItems},
+    {label: 'Transactions', items: this.transactionScreensMenuItems}
+  ]
 }

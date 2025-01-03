@@ -7,8 +7,8 @@ import {SysUserStore} from './sys-user.store'
 
 @Injectable({providedIn: 'root'})
 export class SysUserService extends BaseService<SysUser, SysUserState> {
-    constructor(protected readonly userStore: SysUserStore,
+  constructor(protected readonly userStore: SysUserStore,
                 protected readonly userQuery: SysUserQuery) {
-        super(userStore, userQuery)
-    }
+    super(userStore, userQuery)
+  }
 }

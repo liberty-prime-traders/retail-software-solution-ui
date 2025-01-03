@@ -5,7 +5,7 @@
                 icon="pi pi-trash"
                 severity="danger"
                 (click)="deleteIsActive.set(true)"
-                [disabled]="disableDelete() || deleteIsActive || processingIsUnderway()">
+                [disabled]="disableDelete() || deleteIsActive() || processingIsUnderway()">
       </p-button>
 
       @if (deleteIsActive()) {
