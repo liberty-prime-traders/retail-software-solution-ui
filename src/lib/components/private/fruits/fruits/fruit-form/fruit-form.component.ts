@@ -45,7 +45,7 @@ export class FruitFormComponent implements OnInit {
         this.fruitForm().reset(this.fruit())
     }
     
-    upsertfruit() {
+    upsertFruit() {
         const updatedFruit: Fruit = this.fruitForm().getRawValue()
         if (isNil(updatedFruit.id)) {
             this.fruitService.post(updatedFruit)
@@ -54,7 +54,7 @@ export class FruitFormComponent implements OnInit {
         }
     }
     
-    deletefruit(id?: string) {
+    deleteFruit(id?: string) {
         this.fruitService.delete(id)
     }
 }
