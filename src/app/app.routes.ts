@@ -4,7 +4,7 @@ import {HomepageComponent} from '../lib/components/private/homepage/homepage.com
 import {OrganizationTreeComponent} from '../lib/components/private/organization-tree/organization-tree.component'
 import {PrivateComponent} from '../lib/components/private/private.component'
 import {PublicComponent} from '../lib/components/public/public.component'
-import { FruitsComponent } from 'lib/components/private/fruits/fruits.component'
+import {FruitsComponent} from 'lib/components/private/fruits/fruits.component'
 
 const secureRoutes: Routes = [
     {path: '', component: HomepageComponent},

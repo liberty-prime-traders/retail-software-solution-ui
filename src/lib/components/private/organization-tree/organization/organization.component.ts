@@ -14,40 +14,40 @@ import {HasSubscriptionComponent} from '../../../reusable/has-subscription.compo
 import {OrganizationFormComponent} from './organization-form/organization-form.component'
 
 @Component({
-	standalone: true,
-	selector: 'rts-organization',
-	templateUrl: 'organization.component.html',
-	imports: [
-		TableModule,
-		AsyncPipe,
-		NullishToZeroPipe,
-		NullSafePipe,
-		Button,
-		OrganizationFormComponent,
-		AddRowComponent
-	]
+    standalone: true,
+    selector: 'rts-organization',
+    templateUrl: 'organization.component.html',
+    imports: [
+        TableModule,
+        AsyncPipe,
+        NullishToZeroPipe,
+        NullSafePipe,
+        Button,
+        OrganizationFormComponent,
+        AddRowComponent
+    ]
 })
 export class OrganizationComponent extends HasSubscriptionComponent implements OnInit {
-	
-	private readonly organizationService = inject(OrganizationService)
-	readonly loading$ = this.organizationService.selectLoading$()
-	readonly processingIsUnderWay$ = this.organizationService.processingIsUnderWay$()
-	readonly organizations$ = this.organizationService.selectAll$()
-	selectedOrganization = model<Organization|undefined>(undefined)
-	
-	readonly addingIsActive = signal(false)
-	readonly rowIsExpanded = signal<boolean>(false)
-	
-	ngOnInit() {
-		this.organizationService.fetch()
-		this.subscriptions.add(this.listenToOrganizationSaveStatus())
-	}
-	
-	private listenToOrganizationSaveStatus(): Subscription {
-		return this.organizationService.processingStatus$().pipe(
-			filter(status => status === ProcessingStatus.SUCCESS),
-			delay(500),
-			tap(() => this.addingIsActive.set(false))
-		).subscribe()
-	}
+    private readonly organizationService = inject(OrganizationService)
+    readonly loading$ = this.organizationService.selectLoading$()
+    readonly processingIsUnderWay$ = this.organizationService.processingIsUnderWay$()
+    readonly organizations$ = this.organizationService.selectAll$()
+    selectedOrganization = model<Organization|undefined>(undefined)
+
+    readonly addingIsActive = signal(false)
+    readonly rowIsExpanded = signal<boolean>(false)
+
+    ngOnInit() {
+        this.organizationService.fetch()
+        this.subscriptions.add(this.listenToOrganizationSaveStatus())
+    }
+
+    private listenToOrganizationSaveStatus(): Subscription {
+        return this.organizationService.processingStatus$().pipe(
+            filter(status => status === ProcessingStatus.SUCCESS),
+            delay(500),
+            tap(() => this.addingIsActive.set(false))
+        )
+            .subscribe()
+    }
 }
