@@ -46,11 +46,11 @@ export class FruitFormComponent implements OnInit {
     }
     
     upsertfruit() {
-        const updatedfruit: Fruit = this.fruitForm().getRawValue()
-        if (isNil(updatedfruit.id)) {
-            this.fruitService.post(updatedfruit)
+        const updatedFruit: Fruit = this.fruitForm().getRawValue()
+        if (isNil(updatedFruit.id)) {
+            this.fruitService.post(updatedFruit)
         } else {
-            this.fruitService.put(updatedfruit)
+            this.fruitService.put(updatedFruit)
         }
     }
     
