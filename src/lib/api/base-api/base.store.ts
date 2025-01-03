@@ -4,22 +4,22 @@ import {BaseModel} from './base.model'
 import {BaseState} from './base.state'
 
 export abstract class BaseStore<E extends BaseModel, S extends BaseState<E>> extends EntityStore<S, E, string> {
-    protected constructor(protected initialState: S) {
-        super({...initialState})
-    }
+  protected constructor(protected initialState: S) {
+    super({...initialState})
+  }
 
   @action('set processing status')
   setProcessingStatus(processingStatus: ProcessingStatus) {
     const partial: Partial<S> = {}
     this.update({...partial, processingStatus})
   }
-  
+
   @action('set error')
   override setError<T>(error: T) {
     const partial: Partial<S> = {}
     this.update({...partial, failureMessages: this.parseError(error)})
   }
-  
+
   parseError(error: any): string[] {
     if (error === null || error.status !== 400) {
       return ['Unknown Error, Contact Admin']

@@ -1,0 +1,67 @@
+import {AsyncPipe} from '@angular/common'
+import {Component, computed, inject, input, OnInit} from '@angular/core'
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
+import {isNil} from 'lodash-es'
+import {DropdownModule} from 'primeng/dropdown'
+import {InputText} from 'primeng/inputtext'
+import {Select} from 'primeng/select'
+import {LocationType} from '../../../../../api/location/location-type.enum'
+import {Location} from '../../../../../api/location/location.model'
+import {LocationService} from '../../../../../api/location/location.service'
+import {EnumToDropdownPipe} from '../../../../../utils/pipes/enum-to-dropdown.pipe'
+import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-buttons.component'
+
+@Component({
+  standalone: true,
+  selector: 'rts-location-form',
+  templateUrl: 'location-form.component.html',
+  imports: [
+    AsyncPipe,
+    FormButtonsComponent,
+    FormsModule,
+    InputText,
+    ReactiveFormsModule,
+    DropdownModule,
+    EnumToDropdownPipe,
+    Select
+  ]
+})
+export class LocationFormComponent implements OnInit {
+  readonly location = input<Location>()
+  readonly organizationId = input<string>()
+
+  private readonly locationService = inject(LocationService)
+  private readonly formBuilder = inject(FormBuilder)
+
+  readonly locationForm = computed(() => this.formBuilder.nonNullable.group({
+    id: this.location()?.id,
+    name: [this.location()?.name, Validators.required],
+    description: this.location()?.description,
+    locationType: [this.location()?.locationType, Validators.required]
+  }))
+
+  readonly locationType = LocationType
+  readonly processingStatus$ = this.locationService.processingStatus$()
+  readonly failureMessages$ = this.locationService.failureMessages$()
+
+  ngOnInit() {
+    this.locationService.resetProcessingStatus()
+  }
+
+  resetForm() {
+    this.locationForm().reset(this.location())
+  }
+
+  upsertLocation() {
+    const updatedLocation: Location = {...this.locationForm().getRawValue(), organizationId: this.organizationId()}
+    if (isNil(updatedLocation.id)) {
+      this.locationService.post(updatedLocation)
+    } else {
+      this.locationService.put(updatedLocation)
+    }
+  }
+
+  deleteLocation() {
+    this.locationService.delete(this.location()?.id)
+  }
+}

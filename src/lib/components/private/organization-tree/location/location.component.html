@@ -7,53 +7,55 @@
          sortField="name"
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
-         [(selection)]="selectedOrganization"
-         [value]="(organizations$ | async) ?? []">
+         [(selection)]="selectedLocation"
+         [value]="(locations$ | async) ?? []">
 
   <ng-template #header>
     <tr>
       <th>Name</th>
       <th>Description</th>
+      <th>Type</th>
       <th>Created By</th>
       <th>Usage Count</th>
       <th style="width: 5rem"></th>
     </tr>
   </ng-template>
 
-  <ng-template #body let-organization let-expanded="expanded">
-    <tr [pSelectableRow]="organization">
-      <td>{{organization?.name | nullSafe}}</td>
-      <td>{{organization?.description | nullSafe}}</td>
-      <td>{{organization?.createdBy | nullSafe}}</td>
-      <td>{{organization?.usageCount | nullishToZero}}</td>
+  <ng-template #body let-location let-expanded="expanded">
+    <tr [pSelectableRow]="location">
+      <td>{{location?.name | nullSafe}}</td>
+      <td>{{location?.description | nullSafe}}</td>
+      <td>{{location?.locationType | prettifyEnum}}</td>
+      <td>{{location?.createdBy | nullSafe}}</td>
+      <td>{{location?.usageCount | nullishToZero}}</td>
       <td>
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   severity="secondary"
                   [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
-                  [pRowToggler]="organization">
+                  [pRowToggler]="location">
         </p-button>
       </td>
     </tr>
   </ng-template>
 
-  <ng-template #expandedrow let-organization>
+  <ng-template #expandedrow let-location>
     <tr>
-      <td colspan="5" class="filled-background">
-        <rts-organization-form [organization]="organization"/>
+      <td colspan="6" class="filled-background">
+        <rts-location-form [organizationId]="organizationId()" [location]="location"/>
       </td>
     </tr>
   </ng-template>
 
   <ng-template #emptymessage>
     <tr>
-      <td colspan="5" class="filled-background h-4rem">No Organizations Were Found</td>
+      <td colspan="6" class="filled-background h-4rem">No Locations are assigned to the selected organization</td>
     </tr>
   </ng-template>
 </p-table>
 
 <rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || (loading$ | async)">
   @if (addingIsActive()) {
-    <rts-organization-form></rts-organization-form>
+    <rts-location-form [organizationId]="organizationId()"/>
   }
 </rts-add-row>

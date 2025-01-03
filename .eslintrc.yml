@@ -112,7 +112,7 @@ overrides:
         - error
         - consistent
       generator-star-spacing: error
-      indent: error
+      indent: [error, 2]
       key-spacing: error
       keyword-spacing: error
       line-comment-position: error

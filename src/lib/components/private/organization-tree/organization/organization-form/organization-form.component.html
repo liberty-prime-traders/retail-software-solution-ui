@@ -17,8 +17,8 @@
                      cancelLabel="Reset"
                      [processingStatus]="processingStatus$ | async"
                      [failureMessages]="failureMessages$ | async"
-                     (delete)="deleteOrganization(organization()?.id)"
+                     (delete)="deleteOrganization()"
                      (save)="upsertOrganization()"
-                     (cancel)="resetForm()">
+                     (cancelAction)="resetForm()">
   </rts-forms-buttons>
 </form>
