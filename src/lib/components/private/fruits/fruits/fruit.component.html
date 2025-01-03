@@ -1,0 +1,65 @@
+<h3 class="font-semibold">Fruits</h3>
+
+<rts-add-row
+  [(addingIsActive)]="addingIsActive"
+  [disabled]="rowIsExpanded() || (loading$ | async)"
+>
+  @if (addingIsActive()) {
+  <!-- <rts-fruit-form></rts-fruit-form> -->
+  }
+</rts-add-row>
+
+<p-table
+  [loading]="(loading$ | async) && !addingIsActive()"
+  selectionMode="single"
+  rowExpandMode="single"
+  size="small"
+  #table
+  dataKey="id"
+  sortField="name"
+  (onRowExpand)="rowIsExpanded.set(true)"
+  (onRowCollapse)="rowIsExpanded.set(false)"
+  [(selection)]="selectedFruit"
+  [value]="(fruits$ | async) ?? []"
+>
+  <ng-template #header>
+    <tr>
+      <th>Name</th>
+      <th>Alternate Name</th>
+      <th>Color</th>
+      <th>Cost</th>
+      <th>Created By</th>
+      <th>Created On</th>
+      <th style="width: 5rem"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-fruit let-expanded="expanded">
+    <tr [pSelectableRow]="fruit">
+      <td>{{ fruit?.name | nullSafe }}</td>
+      <td>{{ fruit?.alternateName | nullSafe }}</td>
+      <td>{{ fruit?.color | nullSafe }}</td>
+      <td>{{ fruit?.cost | kshCurrency }}</td>
+      <td>{{ fruit?.createdBy | nullSafe }}</td>
+      <td>{{ fruit?.createdOn | customDateFormat }}</td>
+      <td>
+        <p-button
+          [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+          rounded
+          severity="secondary"
+          [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
+          [pRowToggler]="fruit"
+        >
+        </p-button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template #expandedrow let-fruit>
+    <tr>
+      <td colspan="5" class="filled-background">
+        <!-- <rts-fruit-form [fruit]="fruit"/> -->
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
