@@ -7,11 +7,15 @@ import {tap} from 'rxjs/operators'
 import {Fruit} from '../../../../api/fruit/fruit.model'
 import {FruitService} from '../../../../api/fruit/fruit.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
-import {DateFormatPipe} from '../../../../utils/pipes/date.pipe'
 import {KshCurrencyPipe} from '../../../../utils/pipes/currency.pipe'
 import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
 import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
 import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
+<<<<<<< Updated upstream
+=======
+import {FruitFormComponent } from './fruit-form/fruit-form.component'
+import { DatePipe } from '@angular/common'
+>>>>>>> Stashed changes
 
 @Component({
     standalone: true,
@@ -21,7 +25,7 @@ import {HasSubscriptionComponent} from '../../../reusable/has-subscription.compo
         TableModule,
         AsyncPipe,
         NullSafePipe,
-        DateFormatPipe,
+        DatePipe,
         KshCurrencyPipe,
         Button,
         AddRowComponent
