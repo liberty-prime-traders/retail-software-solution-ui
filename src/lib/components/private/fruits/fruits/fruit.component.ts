@@ -12,6 +12,7 @@ import {KshCurrencyPipe} from '../../../../utils/pipes/currency.pipe'
 import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
 import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
 import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
+import { FruitFormComponent } from './fruit-form/fruit-form.component'
 
 @Component({
     standalone: true,
@@ -24,6 +25,7 @@ import {HasSubscriptionComponent} from '../../../reusable/has-subscription.compo
         DateFormatPipe,
         KshCurrencyPipe,
         Button,
+        FruitFormComponent,
         AddRowComponent
     ]
 })

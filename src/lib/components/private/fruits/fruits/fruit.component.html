@@ -5,7 +5,7 @@
   [disabled]="rowIsExpanded() || (loading$ | async)"
 >
   @if (addingIsActive()) {
-  <!-- <rts-fruit-form></rts-fruit-form> -->
+  <rts-fruit-form></rts-fruit-form>
   }
 </rts-add-row>
 
@@ -58,7 +58,7 @@
   <ng-template #expandedrow let-fruit>
     <tr>
       <td colspan="5" class="filled-background">
-        <!-- <rts-fruit-form [fruit]="fruit"/> -->
+        <rts-fruit-form [fruit]="fruit" />
       </td>
     </tr>
   </ng-template>
