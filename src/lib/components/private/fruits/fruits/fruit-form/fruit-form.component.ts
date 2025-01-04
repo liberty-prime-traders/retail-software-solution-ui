@@ -1,0 +1,59 @@
+import {AsyncPipe} from '@angular/common'
+import {Component, computed, inject, input, OnInit} from '@angular/core'
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
+import {isNil} from 'lodash-es'
+import {InputText} from 'primeng/inputtext'
+import {Fruit} from '../../../../../api/fruit/fruit.model'
+import {FruitService} from '../../../../../api/fruit/fruit.service'
+import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-buttons.component'
+
+@Component({
+    standalone: true,
+    selector: 'rts-fruit-form',
+    templateUrl: 'fruit-form.component.html',
+    imports: [
+        ReactiveFormsModule,
+        InputText,
+        FormButtonsComponent,
+        AsyncPipe
+    ]
+})
+export class FruitFormComponent implements OnInit {
+    readonly fruit = input<Fruit>()
+
+    private readonly fruitService = inject(FruitService)
+    private readonly formBuilder = inject(FormBuilder)
+
+    readonly fruitForm = computed(() => this.formBuilder.nonNullable.group({
+        id: [this.fruit()?.id],
+        name: [this.fruit()?.name, Validators.required],
+        alternateName: [this.fruit()?.alternativeName],
+        color: [this.fruit()?.color],
+        cost: [this.fruit()?.cost, Validators.required]
+    }))
+
+
+    readonly processingStatus$ = this.fruitService.processingStatus$()
+    readonly failureMessages$ = this.fruitService.failureMessages$()
+
+    ngOnInit() {
+        this.fruitService.resetProcessingStatus()
+    }
+
+    resetForm() {
+        this.fruitForm().reset(this.fruit())
+    }
+
+    upsertFruit() {
+        const updatedFruit: Fruit = this.fruitForm().getRawValue()
+        if (isNil(updatedFruit.id)) {
+            this.fruitService.post(updatedFruit)
+        } else {
+            this.fruitService.put(updatedFruit)
+        }
+    }
+
+    deleteFruit(id?: string) {
+        this.fruitService.delete(id)
+    }
+}
