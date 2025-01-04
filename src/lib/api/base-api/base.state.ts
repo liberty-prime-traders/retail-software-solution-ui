@@ -9,7 +9,7 @@ export interface BaseState<E extends BaseModel> extends EntityState<E, string> {
 }
 
 export const createInitialState = <MODEL extends BaseModel>(): BaseState<MODEL> => ({
-  processingStatus: ProcessingStatus.IDLE,
-  loading: false,
-  failureMessages: []
+    processingStatus: ProcessingStatus.IDLE,
+    loading: false,
+    failureMessages: []
 })

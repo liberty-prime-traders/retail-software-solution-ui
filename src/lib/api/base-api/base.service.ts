@@ -16,13 +16,13 @@ export abstract class BaseService<
   PAYLOAD = RESPONSE
 > extends FetchService<RESPONSE, STATE> {
     private readonly httpClient = inject(HttpClient)
-    
+
     readonly processingStatus$ = () => this.query.selectProcessingStatus()
     readonly failureMessages$ = () => this.query.selectFailureMessages()
     readonly processingIsUnderWay$ = () => this.processingStatus$().pipe(
-      map(status => status === ProcessingStatus.IN_PROGRESS)
+        map(status => status === ProcessingStatus.IN_PROGRESS)
     )
-    
+
     protected constructor(protected override readonly store: BaseStore<RESPONSE, STATE>,
                           protected override readonly query: BaseQuery<RESPONSE, STATE>) {
         super(store, query, inject(HttpClient))
@@ -39,7 +39,8 @@ export abstract class BaseService<
             first(),
             tap((postResult: RESPONSE) => this.finishSavingWithSuccess(postResult)),
             catchError((error: HttpErrorResponse) => this.setStoreError(error))
-        ).subscribe()
+        )
+            .subscribe()
     }
 
     put(body: PAYLOAD): Subscription {
@@ -48,7 +49,8 @@ export abstract class BaseService<
             first(),
             tap((putResult: RESPONSE) => this.finishSavingWithSuccess(putResult)),
             catchError((error: HttpErrorResponse) => this.setStoreError(error))
-        ).subscribe()
+        )
+            .subscribe()
     }
 
     delete(id?: string): Subscription {
@@ -62,7 +64,8 @@ export abstract class BaseService<
                 this.setProcessingStatus(ProcessingStatus.SUCCESS)
             }),
             catchError((error: HttpErrorResponse) => this.setStoreError(error))
-        ).subscribe()
+        )
+            .subscribe()
     }
 
     startSaving() {
