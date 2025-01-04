@@ -2,8 +2,8 @@
 
 <rts-add-row
   [(addingIsActive)]="addingIsActive"
-  [disabled]="rowIsExpanded() || (loading$ | async)">
-
+  [disabled]="rowIsExpanded() || (loading$ | async)"
+>
   @if (addingIsActive()) {
     <rts-fruit-form></rts-fruit-form>
   }
