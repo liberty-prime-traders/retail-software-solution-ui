@@ -1,10 +1,9 @@
 import {AsyncPipe} from '@angular/common'
 import {Component, inject, model, OnInit, signal} from '@angular/core'
-import {isNil, sortBy} from 'lodash-es'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {delay, filter, Subscription} from 'rxjs'
-import {first, tap} from 'rxjs/operators'
+import {tap} from 'rxjs/operators'
 import {NullishToZeroPipe} from '../../../../utils/pipes/nullish-to-zero.pipe'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
@@ -43,7 +42,6 @@ export class CategoryComponent extends HasSubscriptionComponent implements OnIni
   ngOnInit() {
     this.categoryService.fetch()
     this.subscriptions.add(this.listenToCategorySaveStatus())
-    this.subscriptions.add(this.selectCategoryOnInitialLoad())
   }
 
   private listenToCategorySaveStatus(): Subscription {
@@ -51,15 +49,6 @@ export class CategoryComponent extends HasSubscriptionComponent implements OnIni
       filter(status => status === ProcessingStatus.SUCCESS),
       delay(500),
       tap(() => this.addingIsActive.set(false))
-    )
-      .subscribe()
-  }
-
-  private selectCategoryOnInitialLoad(): Subscription {
-    return this.categoryService.selectAll$().pipe(
-      filter(categories => !isNil(categories) && categories.length > 0),
-      first(),
-      tap(categories => this.selectedCategory.set(sortBy(categories, ['category_name']).at(0)))
     )
       .subscribe()
   }

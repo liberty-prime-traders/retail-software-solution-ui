@@ -2,7 +2,6 @@
          selectionMode="single"
          rowExpandMode="single"
          size="small"
-         #table
          dataKey="id"
          sortField="name"
          (onRowExpand)="rowIsExpanded.set(true)"
@@ -55,6 +54,6 @@
 
 <rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || (loading$ | async)">
   @if (addingIsActive()) {
-        <rts-category-form></rts-category-form>
+    <rts-category-form></rts-category-form>
   }
 </rts-add-row>

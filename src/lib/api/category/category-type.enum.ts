@@ -1,5 +1,5 @@
 export enum CategoryType {
-	PRODUCT = 'PRD',
-  EXPENSE = 'EXP',
-  PURCHASE = 'PCH'
+	PRODUCT = 'PRODUCT',
+  EXPENSE = 'EXPENSE',
+  PURCHASE = 'PURCHASE'
 }
