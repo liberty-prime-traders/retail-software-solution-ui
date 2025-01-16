@@ -17,7 +17,7 @@ export class NavigationComponent {
   ]
 
   private readonly businessSettingsMenuItems: MenuItem[] = [
-    {label: 'Job Titles', icon: 'pi pi-gauge'},
+    {label: 'Job Titles', icon: 'pi pi-gauge', routerLink: './jobtitle'},
     {label: 'Categories', icon: 'pi pi-palette'},
     {label: 'Variations', icon: 'pi pi-wave-pulse'},
     {label: 'Units', icon: 'pi pi-percentage'},

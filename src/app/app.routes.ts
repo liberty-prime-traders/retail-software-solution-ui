@@ -4,10 +4,12 @@ import {HomepageComponent} from '../lib/components/private/homepage/homepage.com
 import {OrganizationTreeComponent} from '../lib/components/private/organization-tree/organization-tree.component'
 import {PrivateComponent} from '../lib/components/private/private.component'
 import {PublicComponent} from '../lib/components/public/public.component'
+import {JobTitleComponent} from '../lib/components/private/jobtitle/jobtitle.component'
 
 const secureRoutes: Routes = [
   {path: '', component: HomepageComponent},
-  {path: 'organization-tree', component: OrganizationTreeComponent}
+  {path: 'organization-tree', component: OrganizationTreeComponent},
+  {path: 'jobtitle', component: JobTitleComponent}
 ]
 
 const appChildRoutes: Routes = [

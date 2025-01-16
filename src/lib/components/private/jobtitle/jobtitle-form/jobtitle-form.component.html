@@ -1,0 +1,19 @@
+<form [formGroup]="jobTitleForm()" class="flex flex-column gap-2">
+  <div class="flex flex-column p-3 gap-2">
+    <div class="flex gap-1 align-items-center col-5">
+      <label for="value" class="font-semibold col-4">Value:</label>
+      <input id="value" class="flex-grow-1" pInputText formControlName="value">
+    </div>
+  </div>
+
+  <rts-forms-buttons [disableCancel]="!jobTitleForm().dirty"
+                     [disableSave]="!jobTitleForm().valid || !jobTitleForm().dirty"
+                     [hideDelete]="!jobtitle()?.id"
+                     cancelLabel="Reset"
+                     [processingStatus]="processingStatus$ | async"
+                     [failureMessages]="failureMessages$ | async"
+                     (delete)="deleteJobTitle()"
+                     (save)="upsertJobTitle()"
+                     (cancelAction)="resetForm()">
+  </rts-forms-buttons>
+</form>

@@ -1,0 +1,55 @@
+<h3 class="font-semibold">Job Titles</h3>
+
+<p-table
+  [loading]="(loading$ | async) && !addingIsActive()"
+  selectionMode="single"
+  rowExpandMode="single"
+  size="small"
+  dataKey="id"
+  sortField="name"
+  (onRowExpand)="rowIsExpanded.set(true)"
+  (onRowCollapse)="rowIsExpanded.set(false)"
+  [(selection)]="selectedJobTitle"
+  [value]="(jobtitles$ | async) ?? []"
+>
+  <ng-template #header>
+    <tr>
+      <th>Value</th>
+      <th>Created By</th>
+      <th>Created On</th>
+      <th style="width: 5rem"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-jobtitle let-expanded="expanded">
+    <tr [pSelectableRow]="jobtitle">
+      <td>{{ jobtitle?.value | nullSafe }}</td>
+      <td>{{ jobtitle?.createdBy | nullSafe }}</td>
+      <td>{{ jobtitle?.createdOn | date : "yyyy-mm-dd hh:mm:ss a" }}</td>
+      <td>
+        <p-button
+          [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+          rounded
+          severity="secondary"
+          [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
+          [pRowToggler]="jobtitle"
+        >
+        </p-button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template #expandedrow let-jobtitle>
+    <tr>
+      <td colspan="5" class="filled-background">
+        <rts-jobtitle-form [jobtitle]="jobtitle" />
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<rts-add-row   [(addingIsActive)]="addingIsActive"  [disabled]="rowIsExpanded() || (loading$ | async)">
+  @if (addingIsActive()) {
+    <rts-jobtitle-form></rts-jobtitle-form>
+  }
+</rts-add-row>
