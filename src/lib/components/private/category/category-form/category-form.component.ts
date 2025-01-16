@@ -12,7 +12,6 @@ import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.
 import {CategoryType} from '../../../../api/category/category-type.enum'
 
 
-
 @Component({
   standalone: true,
   selector: 'rts-category-form',
