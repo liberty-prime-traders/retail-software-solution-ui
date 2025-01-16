@@ -1,18 +1,16 @@
-import {AsyncPipe} from '@angular/common'
+import {AsyncPipe, DatePipe} from '@angular/common'
 import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {delay, filter, Subscription} from 'rxjs'
 import {tap} from 'rxjs/operators'
-import {NullishToZeroPipe} from '../../../../utils/pipes/nullish-to-zero.pipe'
-import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
-import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
-import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
-import {CategoryService} from '../../../../api/category/category.service'
-import {Category} from '../../../../api/category/category.model'
-import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
-import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
+import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {CategoryFormComponent} from './category-form/category-form.component'
+import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
+import {HasSubscriptionComponent} from '../../reusable/has-subscription.component'
+import {CategoryService} from '../../../api/category/category.service'
+import {Category} from '../../../api/category/category.model'
+import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 
 @Component({
   standalone: true,
@@ -21,12 +19,11 @@ import {CategoryFormComponent} from './category-form/category-form.component'
   imports: [
     TableModule,
     AsyncPipe,
-    NullishToZeroPipe,
     NullSafePipe,
+    DatePipe,
     Button,
-    AddRowComponent,
-    PrettifyEnumPipe,
-    CategoryFormComponent
+    CategoryFormComponent,
+    AddRowComponent
   ]
 })
 export class CategoryComponent extends HasSubscriptionComponent implements OnInit {

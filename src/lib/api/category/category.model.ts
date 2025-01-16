@@ -6,6 +6,6 @@ export interface Category extends BaseModel{
   createdOn?: number
   usageCount?: number
   categoryType?:CategoryType
-  categoryName?:string
+  categoryName?: string
   description?: string
 }
