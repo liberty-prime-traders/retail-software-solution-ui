@@ -1,4 +1,4 @@
-import {AsyncPipe, DatePipe} from '@angular/common'
+import {AsyncPipe} from '@angular/common'
 import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
@@ -11,6 +11,7 @@ import {HasSubscriptionComponent} from '../../reusable/has-subscription.componen
 import {CategoryService} from '../../../api/category/category.service'
 import {Category} from '../../../api/category/category.model'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
+import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 
 @Component({
   standalone: true,
@@ -20,10 +21,10 @@ import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
     TableModule,
     AsyncPipe,
     NullSafePipe,
-    DatePipe,
     Button,
     CategoryFormComponent,
-    AddRowComponent
+    AddRowComponent,
+    PrettifyEnumPipe
   ]
 })
 export class CategoryComponent extends HasSubscriptionComponent implements OnInit {

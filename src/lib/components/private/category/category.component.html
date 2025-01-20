@@ -16,8 +16,8 @@
     <tr>
       <th>Category Name</th>
       <th>Category Type</th>
+      <th>Description</th>
       <th>Created By</th>
-      <th>Created On</th>
       <th style="width: 5rem"></th>
     </tr>
   </ng-template>
@@ -25,9 +25,9 @@
   <ng-template #body let-category let-expanded="expanded">
     <tr [pSelectableRow]="category">
       <td>{{ category?.categoryName | nullSafe }}</td>
-      <td>{{ category?.categoryType | nullSafe }}</td>
+      <td>{{ category?.categoryType | prettifyEnum }}</td>
+      <td>{{ category?.description | nullSafe }}</td>
       <td>{{ category?.createdBy | nullSafe }}</td>
-      <td>{{ category?.createdOn | date : "yyyy-mm-dd hh:mm:ss a" }}</td>
       <td>
         <p-button
           [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"

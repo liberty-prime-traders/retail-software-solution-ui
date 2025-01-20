@@ -35,7 +35,7 @@ export class CategoryFormComponent implements OnInit {
 
   readonly categoryForm = computed(() => this.formBuilder.nonNullable.group({
     id: this.category()?.id,
-    name: [this.category()?.categoryName, Validators.required],
+    categoryName: [this.category()?.categoryName, Validators.required],
     description: this.category()?.description,
     categoryType: [this.category()?.categoryType, Validators.required]
   }))
