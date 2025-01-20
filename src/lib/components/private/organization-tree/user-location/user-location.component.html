@@ -1,0 +1,38 @@
+<p-table [loading]="(loading$ | async) && !assignmentAdjustmentIsActive()"
+         size="small"
+         dataKey="userId"
+         [value]="(usersAtLocation() | async) ?? []">
+
+  <ng-template #header>
+    <tr>
+      <th>Name</th>
+      <th>From</th>
+      <th>To</th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-user let-expanded="expanded">
+    <tr>
+      <td>{{user?.fullName | nullSafe}}</td>
+      <td>{{user?.startOn | date : 'yyyy-mm-dd' | nullSafe}}</td>
+      <td>{{user?.endOn | date : 'yyyy-mm-dd' | nullSafe}}</td>
+    </tr>
+  </ng-template>
+
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="5" class="filled-background h-4rem">No Users are Assigned To This Location</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<rts-add-row [(addingIsActive)]="assignmentAdjustmentIsActive"
+             buttonLabel="Adjust Membership"
+             [disabled]="loading$ | async">
+  @if (assignmentAdjustmentIsActive()) {
+    <rts-user-location-form [selectedLocation]="selectedLocation()"
+                            (closeForm)="assignmentAdjustmentIsActive.set(false)"
+                            [currentMembers]="(activeUsersAtLocation() | async) ?? [] | propExtractor : 'userId'">
+    </rts-user-location-form>
+  }
+</rts-add-row>

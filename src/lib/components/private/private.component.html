@@ -6,7 +6,7 @@
   <div class="flex flex-grow-1 mr-2 flex-column gap-2">
     <p-button icon="pi pi-bars" severity="secondary" (onClick)="showNavigation = !showNavigation"></p-button>
 
-    <div [style]="{'max-height': '800px'}" class="overflow-y-scroll">
+    <div [style]="{'max-height': '800px'}" class="overflow-y-scroll pr-2">
       <router-outlet/>
     </div>
   </div>

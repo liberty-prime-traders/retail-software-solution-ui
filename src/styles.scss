@@ -4,6 +4,10 @@
 @import "primeicons/primeicons.css";
 @import "colors.scss";
 
+:root {
+  --p-datatable-row-selected-background: #f0f0f0
+}
+
 .required-label::before {
   color: $red;
   content: "* ";

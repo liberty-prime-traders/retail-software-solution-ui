@@ -1,0 +1,5 @@
+@import "colors.scss";
+
+:host::ng-deep .p-datatable-thead > tr > th {
+  background: $globalBackground;
+}

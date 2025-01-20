@@ -5,6 +5,7 @@ import {BaseModel} from './base.model'
 import {BaseState} from './base.state'
 
 export abstract class BaseQuery<E extends BaseModel, STATE extends BaseState<E>> extends QueryEntity<STATE, E, string> {
+  
   protected constructor(protected override readonly store: EntityStore<STATE>) {
     super(store)
   }

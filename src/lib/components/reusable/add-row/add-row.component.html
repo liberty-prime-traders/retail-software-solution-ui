@@ -1,5 +1,5 @@
 <div class="flex mt-2 gap-2">
-  <p-button label="+ Add New"
+  <p-button [label]="buttonLabel()"
             size="small"
             severity="secondary"
             (click)="addingIsActive.set(true)"
@@ -7,7 +7,7 @@
   </p-button>
 
   @if (addingIsActive()) {
-    <p-button (click)="addingIsActive.set(false)" icon="pi pi-times" severity="info"/>
+    <p-button (click)="addingIsActive.set(false)" icon="pi pi-times" size="small" severity="info"/>
   }
 </div>
 

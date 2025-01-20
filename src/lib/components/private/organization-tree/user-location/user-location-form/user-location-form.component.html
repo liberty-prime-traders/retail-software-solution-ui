@@ -1,0 +1,44 @@
+<p-table [loading]="(loading$ | async)"
+         size="small"
+         dataKey="id"
+         sortField="firstName"
+         [value]="(allUsers$ | async) ?? []">
+
+  <ng-template #header>
+    <tr>
+      <th class="filled-background">Name</th>
+      <th class="filled-background">Action</th>
+      <th class="filled-background">Comment</th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-user>
+    <tr>
+      <ng-container *ngIf="(userAssignmentContexts$ | async)?.get(user.id) as rowContext">
+        <td class="filled-background">{{user | fullName}}</td>
+        <td class="filled-background">
+          <p-button [icon]="rowContext.icon"
+                    rounded
+                    [severity]="rowContext.severity"
+                    (click)="modifyUserAssignment(user.id, rowContext.action)">
+          </p-button>
+        </td>
+        <td class="filled-background">{{rowContext.comment}}</td>
+      </ng-container>
+    </tr>
+  </ng-template>
+
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="3" class="filled-background h-4rem">No Users Are Eligible For Assignment</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<rts-forms-buttons [hideDelete]="true"
+                   cancelLabel="Reset"
+                   [processingStatus]="processingStatus$ | async"
+                   [failureMessages]="failureMessages$ | async"
+                   (save)="updateAssignment()"
+                   (cancelAction)="resetMembership()">
+</rts-forms-buttons>

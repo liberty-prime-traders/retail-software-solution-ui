@@ -49,8 +49,7 @@ export class OrganizationComponent extends HasSubscriptionComponent implements O
       filter(status => status === ProcessingStatus.SUCCESS),
       delay(500),
       tap(() => this.addingIsActive.set(false))
-    )
-      .subscribe()
+    ).subscribe()
   }
 
   private selectOrganizationOnInitialLoad(): Subscription {

@@ -1,4 +1,4 @@
-import {Component, model} from '@angular/core'
+import {Component, input, model} from '@angular/core'
 import {Button} from 'primeng/button'
 
 @Component({
@@ -12,4 +12,5 @@ import {Button} from 'primeng/button'
 export class AddRowComponent {
   readonly addingIsActive = model(false)
   readonly disabled = model<boolean|null>(false)
+  readonly buttonLabel = input('+ Add New')
 }

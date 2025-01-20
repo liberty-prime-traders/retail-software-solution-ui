@@ -2,9 +2,9 @@
          selectionMode="single"
          rowExpandMode="single"
          size="small"
-         #table
          dataKey="id"
          sortField="name"
+         stripedRows="false"
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
          [(selection)]="selectedLocation"
