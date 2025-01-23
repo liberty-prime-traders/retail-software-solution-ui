@@ -1,23 +1,35 @@
 <h3 class="font-semibold">Categories</h3>
 
-<p-table
-  [loading]="(loading$ | async) && !addingIsActive()"
+<p-table [loading]="(loading$ | async) && !addingIsActive()"
   selectionMode="single"
   rowExpandMode="single"
   size="small"
+  #table
   dataKey="id"
-  sortField="name"
+  sortField="categoryName"
   (onRowExpand)="rowIsExpanded.set(true)"
   (onRowCollapse)="rowIsExpanded.set(false)"
   [(selection)]="selectedCategory"
-  [value]="(categories$ | async) ?? []"
->
+  [value]="(categories$ | async) ?? []">
+
   <ng-template #header>
     <tr>
-      <th>Category Name</th>
-      <th>Category Type</th>
-      <th>Description</th>
-      <th>Created By</th>
+      <th pSortableColumn="categoryName">Category Name
+        <p-sortIcon field="categoryName"></p-sortIcon>
+        <p-columnFilter field="categoryName" type="text" display="menu"></p-columnFilter>
+      </th>
+      <th pSortableColumn="categoryType">Category Type
+        <p-sortIcon field="categoryType"></p-sortIcon>
+        <p-columnFilter field="categoryType" type="text" display="menu"></p-columnFilter>
+      </th>
+      <th pSortableColumn="description">Description
+        <p-sortIcon field="description"></p-sortIcon>
+        <p-columnFilter field="description" type="text" display="menu"></p-columnFilter>
+      </th>
+      <th pSortableColumn="createdBy">Created By
+        <p-sortIcon field="createdBy"></p-sortIcon>
+        <p-columnFilter field="createdBy" type="text" display="menu"></p-columnFilter>
+      </th>
       <th style="width: 5rem"></th>
     </tr>
   </ng-template>
@@ -34,8 +46,7 @@
           rounded
           severity="secondary"
           [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
-          [pRowToggler]="category"
-        >
+          [pRowToggler]="category">
         </p-button>
       </td>
     </tr>
@@ -44,13 +55,15 @@
   <ng-template #expandedrow let-category>
     <tr>
       <td colspan="5" class="filled-background">
-        <rts-category-form [category]="category" />
+        <rts-category-form [category]="category"></rts-category-form>
       </td>
     </tr>
   </ng-template>
 </p-table>
 
-<rts-add-row   [(addingIsActive)]="addingIsActive"  [disabled]="rowIsExpanded() || (loading$ | async)">
+<rts-add-row
+  [(addingIsActive)]="addingIsActive"
+  [disabled]="rowIsExpanded() || (loading$ | async)">
   @if (addingIsActive()) {
     <rts-category-form></rts-category-form>
   }
