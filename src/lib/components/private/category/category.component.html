@@ -12,7 +12,7 @@
   [(selection)]="selectedCategory"
   [value]="(categories$ | async) ?? []">
 
-  <ng-template #header>
+  <ng-template>
     <tr>
       <th pSortableColumn="categoryName">Category Name
         <p-sortIcon field="categoryName"></p-sortIcon>
@@ -34,7 +34,7 @@
     </tr>
   </ng-template>
 
-  <ng-template #body let-category let-expanded="expanded">
+  <ng-template let-category let-expanded="expanded">
     <tr [pSelectableRow]="category">
       <td>{{ category?.categoryName | nullSafe }}</td>
       <td>{{ category?.categoryType | prettifyEnum }}</td>
@@ -52,7 +52,7 @@
     </tr>
   </ng-template>
 
-  <ng-template #expandedrow let-category>
+  <ng-template let-category>
     <tr>
       <td colspan="5" class="filled-background">
         <rts-category-form [category]="category"></rts-category-form>
