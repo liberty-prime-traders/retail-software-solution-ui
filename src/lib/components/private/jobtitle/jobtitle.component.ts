@@ -1,5 +1,5 @@
 import {Component, inject, model, OnInit, signal} from '@angular/core'
-import {AsyncPipe, DatePipe} from '@angular/common'
+import {AsyncPipe} from '@angular/common'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {Button} from 'primeng/button'
@@ -20,7 +20,6 @@ import {JobTitleFormComponent} from './jobtitle-form/jobtitle-form.component'
     TableModule,
     AsyncPipe,
     NullSafePipe,
-    DatePipe,
     Button,
     JobTitleFormComponent,
     AddRowComponent
