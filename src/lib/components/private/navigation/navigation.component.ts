@@ -18,7 +18,7 @@ export class NavigationComponent {
 
   private readonly businessSettingsMenuItems: MenuItem[] = [
     {label: 'Job Titles', icon: 'pi pi-gauge'},
-    {label: 'Categories', icon: 'pi pi-palette'},
+    {label: 'Categories', icon: 'pi pi-palette', routerLink: './category'},
     {label: 'Variations', icon: 'pi pi-wave-pulse'},
     {label: 'Units', icon: 'pi pi-percentage'},
     {label: 'Payment Options', icon: 'pi pi-money-bill'}
