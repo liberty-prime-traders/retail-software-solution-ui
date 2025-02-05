@@ -1,15 +1,15 @@
 <h3 class="font-semibold">Job Titles</h3>
 
 <p-table  [loading]="(loading$ | async) && !addingIsActive()"
-  selectionMode="single"
-  rowExpandMode="single"
-  size="small"
-  dataKey="id"
-  [value]="(jobtitles$ | async) ?? []"
-  [(selection)]="selectedJobTitle"
-  [globalFilterFields]="['value', 'createdBy', 'usageCount']"
-  (onRowExpand)="rowIsExpanded.set(true)"
-  (onRowCollapse)="rowIsExpanded.set(false)">
+          selectionMode="single"
+          rowExpandMode="single"
+          size="small"
+          dataKey="id"
+          [value]="(jobtitles$ | async) ?? []"
+          [(selection)]="selectedJobTitle"
+          [globalFilterFields]="['value', 'createdBy', 'usageCount']"
+          (onRowExpand)="rowIsExpanded.set(true)"
+          (onRowCollapse)="rowIsExpanded.set(false)">
 
   <ng-template #header>
     <tr>
@@ -38,12 +38,11 @@
       <td>{{ jobtitle?.createdBy | nullSafe }}</td>
       <td>{{ jobtitle?.usageCount | nullSafe }}</td>
       <td>
-        <p-button
-          [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-          rounded
-          severity="secondary"
-          [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
-          [pRowToggler]="jobtitle" >
+        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                  rounded
+                  severity="secondary"
+                  [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
+                  [pRowToggler]="jobtitle" >
         </p-button>
       </td>
     </tr>
