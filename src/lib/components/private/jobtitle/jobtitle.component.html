@@ -1,0 +1,64 @@
+<h3 class="font-semibold">Job Titles</h3>
+
+<p-table  [loading]="(loading$ | async) && !addingIsActive()"
+          selectionMode="single"
+          rowExpandMode="single"
+          size="small"
+          dataKey="id"
+          [value]="(jobtitles$ | async) ?? []"
+          [(selection)]="selectedJobTitle"
+          [globalFilterFields]="['value', 'createdBy', 'usageCount']"
+          (onRowExpand)="rowIsExpanded.set(true)"
+          (onRowCollapse)="rowIsExpanded.set(false)">
+
+  <ng-template #header>
+    <tr>
+      <th pSortableColumn="value">
+        Value
+        <p-sortIcon field="value"></p-sortIcon>
+        <p-columnFilter field="value" matchMode="contains" display="menu" [showMatchModes]="false" placeholder="Filter"></p-columnFilter>
+      </th>
+      <th pSortableColumn="createdBy">
+        Created By
+        <p-sortIcon field="createdBy"></p-sortIcon>
+        <p-columnFilter field="createdBy" matchMode="contains" display="menu" [showMatchModes]="false" placeholder="Filter"></p-columnFilter>
+      </th>
+      <th pSortableColumn="usageCount">
+        Usage Count
+        <p-sortIcon field="usageCount"></p-sortIcon>
+        <p-columnFilter field="usageCount" matchMode="equals" display="menu" [showMatchModes]="false" placeholder="Filter" type="number"></p-columnFilter>
+      </th>
+      <th style="width: 5rem"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-jobtitle let-expanded="expanded">
+    <tr [pSelectableRow]="jobtitle">
+      <td>{{ jobtitle?.value | nullSafe }}</td>
+      <td>{{ jobtitle?.createdBy | nullSafe }}</td>
+      <td>{{ jobtitle?.usageCount | nullSafe }}</td>
+      <td>
+        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                  rounded
+                  severity="secondary"
+                  [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
+                  [pRowToggler]="jobtitle" >
+        </p-button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template #expandedrow let-jobtitle>
+    <tr>
+      <td colspan="5" class="filled-background">
+        <rts-jobtitle-form [jobtitle]="jobtitle" />
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<rts-add-row   [(addingIsActive)]="addingIsActive"  [disabled]="rowIsExpanded() || (loading$ | async)">
+  @if (addingIsActive()) {
+    <rts-jobtitle-form></rts-jobtitle-form>
+  }
+</rts-add-row>
