@@ -10,6 +10,7 @@ import {CategoryService} from '../../../../api/category/category.service'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {CategoryType} from '../../../../api/category/category-type.enum'
+import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 
 
 @Component({
@@ -24,7 +25,8 @@ import {CategoryType} from '../../../../api/category/category-type.enum'
     ReactiveFormsModule,
     DropdownModule,
     EnumToDropdownPipe,
-    Select
+    Select,
+    FormFieldComponent
   ]
 })
 export class CategoryFormComponent implements OnInit {

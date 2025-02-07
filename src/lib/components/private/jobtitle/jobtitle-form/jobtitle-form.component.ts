@@ -7,6 +7,7 @@ import {DropdownModule} from 'primeng/dropdown'
 import {JobTitle} from '../../../../api/jobtitle/jobtitle.model'
 import {JobTitleService} from '../../../../api/jobtitle/jobtitle.service'
 import {isNil} from 'lodash-es'
+import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 
 
 @Component({
@@ -20,6 +21,7 @@ import {isNil} from 'lodash-es'
     InputText,
     ReactiveFormsModule,
     DropdownModule,
+    FormFieldComponent
   ]
 })
 export class JobTitleFormComponent implements OnInit {

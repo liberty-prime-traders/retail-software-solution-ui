@@ -1,0 +1,13 @@
+<div class="form-field"
+   [ngClass]="{
+     'flex gap-2 align-items-center': layout === 'horizontal',
+     'flex-column': layout === 'vertical',
+     'col-6 lg:col-5': true
+   }">
+  <label [for]="for" class="font-semibold" [class.required-label]="required">
+    {{ label }}:
+  </label>
+  <div class="input-container">
+    <ng-content></ng-content>
+  </div>
+</div>

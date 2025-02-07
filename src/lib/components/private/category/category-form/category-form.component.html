@@ -1,24 +1,19 @@
 <form [formGroup]="categoryForm()" class="flex flex-column gap-2">
-  <div class="flex flex-column p-3 gap-2">
-    <div class="flex gap-1 align-items-center col-12">
-      <label for="categoryName" class="font-semibold required-label col-4"> Category Name:</label>
-      <input id="categoryName" class="flex-grow-1" pInputText formControlName="categoryName">
-    </div>
+  <rts-form-field label="Category Name" for="categoryName" layout="horizontal">
+    <input id="categoryName" class="flex-grow-1" pInputText formControlName="categoryName">
+  </rts-form-field>
 
-    <div class="flex gap-1 align-items-center col-12">
-      <label for="categoryType" class="font-semibold required-label col-4">Category Type:</label>
-      <p-select id="categoryType"
-                class="flex-grow-1"
-                formControlName="categoryType"
-                [options]="categoryType | enumToDropdown">
-      </p-select>
-    </div>
+  <rts-form-field label="Category Type" for="categoryType" layout="horizontal" [required]="true">
+    <p-select id="categoryType"
+              class="flex-grow-1"
+              formControlName="categoryType"
+              [options]="categoryType | enumToDropdown">
+    </p-select>
+  </rts-form-field>
 
-    <div class="flex gap-1 align-items-center col-12">
-      <label for="description" class="font-semibold col-4">Description:</label>
-      <input id="description" class="flex-grow-1" pInputText formControlName="description">
-    </div>
-  </div>
+  <rts-form-field label="Description" for="description" layout="horizontal">
+    <input id="description" class="flex-grow-1" pInputText formControlName="description">
+  </rts-form-field>
 
   <rts-forms-buttons [disableCancel]="!categoryForm().dirty"
                      [disableSave]="!categoryForm().valid || !categoryForm().dirty"
