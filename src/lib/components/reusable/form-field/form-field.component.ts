@@ -1,5 +1,6 @@
-import {Component, Input} from '@angular/core'
 import {NgClass} from '@angular/common'
+import {Component, input} from '@angular/core'
+import {FormFieldDirection} from './form-field-direction'
 
 @Component({
   selector: 'rts-form-field',
@@ -8,13 +9,15 @@ import {NgClass} from '@angular/common'
   imports: [
     NgClass
   ],
-  styleUrls: ['./form-field.component.css']
+  styleUrls: ['./form-field.component.scss']
 })
 
 export class FormFieldComponent {
-  @Input() label: string = ''
-  @Input() for: string = ''
-  @Input() layout: 'horizontal' | 'vertical' = 'horizontal'
-  @Input() required: boolean = false
-  @Input() labelWidth: string = '120px'
+  readonly label = input('')
+  readonly for = input('')
+  readonly layout = input(FormFieldDirection.HORIZONTAL)
+  readonly required = input(false)
+  readonly labelWidth = input('120px')
+
+  readonly formFieldDirection = FormFieldDirection
 }

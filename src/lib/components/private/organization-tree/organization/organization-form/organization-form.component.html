@@ -1,10 +1,10 @@
 <form [formGroup]="organizationForm()" class="flex flex-column gap-2">
-  <rts-form-field label="Name" for="name" layout="horizontal">
-    <input id="name" class="flex-grow-1" pInputText formControlName="name">
+  <rts-form-field label="Name" for="name">
+    <input id="name" pInputText formControlName="name">
   </rts-form-field>
 
-  <rts-form-field label="Description" for="description" layout="horizontal">
-    <input id="description" class="flex-grow-1" pInputText formControlName="description">
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText formControlName="description">
   </rts-form-field>
 
   <rts-forms-buttons [disableCancel]="!organizationForm().dirty"

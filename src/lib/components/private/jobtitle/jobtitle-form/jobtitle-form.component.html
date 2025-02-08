@@ -1,6 +1,6 @@
 <form [formGroup]="jobTitleForm()" class="flex flex-column gap-2">
-  <rts-form-field label="Value" for="value" layout="horizontal">
-    <input id="value" class="flex-grow-1" pInputText formControlName="value">
+  <rts-form-field label="Value" for="value">
+    <input id="value" pInputText formControlName="value">
   </rts-form-field>
 
   <rts-forms-buttons [disableCancel]="!jobTitleForm().dirty"

@@ -1,13 +1,13 @@
-<div class="form-field"
-   [ngClass]="{
-     'flex gap-2 align-items-center': layout === 'horizontal',
-     'flex-column': layout === 'vertical',
-     'col-6 lg:col-5': true
-   }">
-  <label [for]="for" class="font-semibold" [class.required-label]="required">
-    {{ label }}:
+<div class="flex form-field "
+     [ngClass]="{
+        'gap-2 align-items-center': layout() === formFieldDirection.HORIZONTAL,
+        'flex-column': layout() === formFieldDirection.VERTICAL
+     }">
+  <label [for]="for()" class="font-semibold col-5 md:col-4 lg:col-2" [ngClass]="required() ? 'required-label' : 'pl-4'">
+    {{ label() }}:
   </label>
-  <div class="input-container">
-    <ng-content></ng-content>
+
+  <div class="col-6 lg:col-4 sm:col-8 input-container">
+    <ng-content/>
   </div>
 </div>
