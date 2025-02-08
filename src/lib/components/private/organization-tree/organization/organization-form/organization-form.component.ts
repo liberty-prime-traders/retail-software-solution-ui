@@ -6,6 +6,7 @@ import {InputText} from 'primeng/inputtext'
 import {Organization} from '../../../../../api/organization/organization.model'
 import {OrganizationService} from '../../../../../api/organization/organization.service'
 import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-buttons.component'
+import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
 
 @Component({
   standalone: true,
@@ -15,7 +16,8 @@ import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-butto
     ReactiveFormsModule,
     InputText,
     FormButtonsComponent,
-    AsyncPipe
+    AsyncPipe,
+    FormFieldComponent
   ]
 })
 export class OrganizationFormComponent implements OnInit {

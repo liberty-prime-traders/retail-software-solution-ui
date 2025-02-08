@@ -10,6 +10,8 @@ import {Location} from '../../../../../api/location/location.model'
 import {LocationService} from '../../../../../api/location/location.service'
 import {EnumToDropdownPipe} from '../../../../../utils/pipes/enum-to-dropdown.pipe'
 import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-buttons.component'
+import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
+import {CategoryType} from '../../../../../api/category/category-type.enum'
 
 @Component({
   standalone: true,
@@ -23,7 +25,8 @@ import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-butto
     ReactiveFormsModule,
     DropdownModule,
     EnumToDropdownPipe,
-    Select
+    Select,
+    FormFieldComponent
   ]
 })
 export class LocationFormComponent implements OnInit {
@@ -64,4 +67,6 @@ export class LocationFormComponent implements OnInit {
   deleteLocation() {
     this.locationService.delete(this.location()?.id)
   }
+
+  protected readonly categoryType = CategoryType
 }

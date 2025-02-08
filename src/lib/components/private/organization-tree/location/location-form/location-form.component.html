@@ -1,24 +1,15 @@
 <form [formGroup]="locationForm()" class="flex flex-column gap-2">
-  <div class="flex flex-column p-3 gap-2">
-    <div class="flex gap-1 align-items-center col-5">
-      <label for="name" class="font-semibold required-label col-4">Name:</label>
-      <input id="name" class="flex-grow-1" pInputText formControlName="name">
-    </div>
+  <rts-form-field label="Name" for="name">
+    <input id="name" pInputText formControlName="name">
+  </rts-form-field>
 
-    <div class="flex gap-1 align-items-center col-5">
-      <label for="locationType" class="font-semibold required-label col-4">Location Type:</label>
-      <p-select id="locationType"
-                class="flex-grow-1"
-                formControlName="locationType"
-                [options]="locationType | enumToDropdown">
-      </p-select>
-    </div>
+  <rts-form-field label="Location Type" for="locationType">
+    <p-select id="locationType" formControlName="locationType" [options]="locationType | enumToDropdown"/>
+  </rts-form-field>
 
-    <div class="flex gap-1 align-items-center col-5">
-      <label for="description" class="font-semibold col-4">Description:</label>
-      <input id="description" class="flex-grow-1" pInputText formControlName="description">
-    </div>
-  </div>
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText formControlName="description">
+  </rts-form-field>
 
   <rts-forms-buttons [disableCancel]="!locationForm().dirty"
                      [disableSave]="!locationForm().valid || !locationForm().dirty"
