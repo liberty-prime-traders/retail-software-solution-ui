@@ -7,7 +7,7 @@
          sortField="name"
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
-         [(selection)]="selectedUnitGroup()"
+         [(selection)]="selectedUnitGroup"
          [value]="(unitGroups$ | async) ?? []">
 
   <ng-template #header>
@@ -47,7 +47,7 @@
 
   <ng-template #emptymessage>
     <tr>
-      <td colspan="5" class="filled-background h-4rem">No Organizations Were Found</td>
+      <td colspan="5" class="filled-background h-4rem">No Units Groups Were Found</td>
     </tr>
   </ng-template>
 </p-table>

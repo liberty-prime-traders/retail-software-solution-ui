@@ -20,7 +20,7 @@ export class NavigationComponent {
     {label: 'Job Titles', icon: 'pi pi-gauge', routerLink: './jobtitle'},
     {label: 'Categories', icon: 'pi pi-palette', routerLink: './category'},
     {label: 'Variations', icon: 'pi pi-wave-pulse'},
-    {label: 'Units', icon: 'pi pi-percentage'},
+    {label: 'Units', icon: 'pi pi-percentage', routerLink: './unitgroups'},
     {label: 'Payment Options', icon: 'pi pi-money-bill'}
   ]
 
