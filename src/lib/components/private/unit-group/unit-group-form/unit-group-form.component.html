@@ -1,0 +1,20 @@
+<form [formGroup]="unitGroupForm()" class="flex flex-column gap-2">
+  <rts-form-field label="Name" for="name">
+    <input id="name" pInputText formControlName="name">
+  </rts-form-field>
+
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText formControlName="description">
+  </rts-form-field>
+
+  <rts-forms-buttons [disableCancel]="!unitGroupForm().dirty"
+                     [disableSave]="!unitGroupForm().valid || !unitGroupForm().dirty"
+                     [hideDelete]="!unitGroup()?.id"
+                     cancelLabel="Reset"
+                     [processingStatus]="processingStatus$ | async"
+                     [failureMessages]="failureMessages$ | async"
+                     (delete)="deleteUnitGroup()"
+                     (save)="upsertUnitGroup()"
+                     (cancelAction)="resetForm()">
+  </rts-forms-buttons>
+</form>

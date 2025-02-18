@@ -1,0 +1,59 @@
+<p-table [loading]="(loading$ | async) && !addingIsActive()"
+         selectionMode="single"
+         rowExpandMode="single"
+         size="small"
+         #table
+         dataKey="id"
+         sortField="name"
+         (onRowExpand)="rowIsExpanded.set(true)"
+         (onRowCollapse)="rowIsExpanded.set(false)"
+         [(selection)]="selectedUnitGroup()"
+         [value]="(unitGroups$ | async) ?? []">
+
+  <ng-template #header>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Created By</th>
+      <th>Usage Count</th>
+      <th style="width: 5rem"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-unitgroup let-expanded="expanded">
+    <tr [pSelectableRow]="unitgroup">
+      <td>{{unitgroup?.name | nullSafe}}</td>
+      <td>{{unitgroup?.description | nullSafe}}</td>
+      <td>{{unitgroup?.createdBy | nullSafe}}</td>
+      <td>{{unitgroup?.usageCount | nullishToZero}}</td>
+      <td>
+        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                  rounded
+                  severity="secondary"
+                  [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
+                  [pRowToggler]="unitgroup">
+        </p-button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template #expandedrow let-unitgroup>
+    <tr>
+      <td colspan="5" class="filled-background">
+        <rts-unit-group-form [unitGroup]="unitgroup"/>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="5" class="filled-background h-4rem">No Organizations Were Found</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || (loading$ | async)">
+  @if (addingIsActive()) {
+    <rts-unit-group-form></rts-unit-group-form>
+  }
+</rts-add-row>
