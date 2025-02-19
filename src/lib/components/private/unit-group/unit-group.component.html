@@ -2,7 +2,6 @@
          selectionMode="single"
          rowExpandMode="single"
          size="small"
-         #table
          dataKey="id"
          sortField="name"
          (onRowExpand)="rowIsExpanded.set(true)"
@@ -12,12 +11,27 @@
 
   <ng-template #header>
     <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Created By</th>
-      <th>Usage Count</th>
+      <th pSortableColumn="name">
+        Name
+        <p-sortIcon field="name"></p-sortIcon>
+        <p-columnFilter field="name" matchMode="contains" display="menu" [showMatchModes]="false" placeholder="Filter"></p-columnFilter>
+      </th>
+      <th pSortableColumn="description">
+        Description
+        <p-sortIcon field="description"></p-sortIcon>
+        <p-columnFilter field="description" matchMode="contains" display="menu" [showMatchModes]="false" placeholder="Filter"></p-columnFilter>
+      </th>
+      <th pSortableColumn="createdBy">
+        Created By
+        <p-sortIcon field="createdBy"></p-sortIcon>
+        <p-columnFilter field="createdBy" matchMode="contains" display="menu" [showMatchModes]="false" placeholder="Filter"></p-columnFilter>
+      </th>
+      <th pSortableColumn="usageCount">
+        Usage Count
+        <p-sortIcon field="usageCount"></p-sortIcon>
+        <p-columnFilter field="usageCount" matchMode="equals" display="menu" [showMatchModes]="false" placeholder="Filter" type="number"></p-columnFilter>
+      </th>
       <th style="width: 5rem"></th>
-    </tr>
   </ng-template>
 
   <ng-template #body let-unitgroup let-expanded="expanded">

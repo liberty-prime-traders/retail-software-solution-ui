@@ -13,7 +13,7 @@ const secureRoutes: Routes = [
   {path: 'organization-tree', component: OrganizationTreeComponent},
   {path: 'category', component: CategoryComponent},
   {path: 'jobtitle', component: JobTitleComponent},
-  {path: 'unitgroups', component: UnitGroupComponent}
+  {path: 'units', component: UnitGroupComponent}
 ]
 
 const appChildRoutes: Routes = [
