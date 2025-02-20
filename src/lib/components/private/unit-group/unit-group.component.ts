@@ -51,9 +51,14 @@ export class UnitGroupComponent extends HasSubscriptionComponent implements OnIn
     return this.unitGroupService.processingStatus$().pipe(
       filter(status => status === ProcessingStatus.SUCCESS),
       delay(500),
-      tap(() => this.addingIsActive.set(false))
+      tap(() => this.closeAddRow())
     )
       .subscribe()
+  }
+
+  closeAddRow() {
+    this.addingIsActive.set(false)
+    this.rowIsExpanded.set(false)
   }
 
   private selectUnitGroupOnInitialLoad(): Subscription {

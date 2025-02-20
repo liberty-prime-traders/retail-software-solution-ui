@@ -48,9 +48,14 @@ export class OrganizationComponent extends HasSubscriptionComponent implements O
     return this.organizationService.processingStatus$().pipe(
       filter(status => status === ProcessingStatus.SUCCESS),
       delay(500),
-      tap(() => this.addingIsActive.set(false))
+      tap(() => this.closeAddRow())
     )
       .subscribe()
+  }
+
+  closeAddRow() {
+    this.addingIsActive.set(false)
+    this.rowIsExpanded.set(false)
   }
 
   private selectOrganizationOnInitialLoad(): Subscription {

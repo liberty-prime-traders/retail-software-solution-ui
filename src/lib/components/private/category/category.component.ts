@@ -46,8 +46,13 @@ export class CategoryComponent extends HasSubscriptionComponent implements OnIni
     return this.categoryService.processingStatus$().pipe(
       filter(status => status === ProcessingStatus.SUCCESS),
       delay(500),
-      tap(() => this.addingIsActive.set(false))
+      tap(() => this.closeAddRow())
     )
       .subscribe()
+  }
+
+  closeAddRow() {
+    this.addingIsActive.set(false)
+    this.rowIsExpanded.set(false)
   }
 }

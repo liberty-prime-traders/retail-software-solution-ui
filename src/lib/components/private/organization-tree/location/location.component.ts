@@ -58,8 +58,13 @@ export class LocationComponent extends HasSubscriptionComponent implements OnIni
     return this.locationService.processingStatus$().pipe(
       filter(status => status === ProcessingStatus.SUCCESS),
       delay(500),
-      tap(() => this.addingIsActive.set(false))
+      tap(() => this.closeAddRow())
     )
       .subscribe()
+  }
+
+  closeAddRow() {
+    this.addingIsActive.set(false)
+    this.rowIsExpanded.set(false)
   }
 }
