@@ -1,15 +1,12 @@
 <h3 class="font-semibold">Categories</h3>
 
 <p-table  [loading]="(loading$ | async) && !addingIsActive()"
-          selectionMode="single"
           rowExpandMode="single"
           size="small"
-          #table
           dataKey="id"
           sortField="categoryName"
           (onRowExpand)="rowIsExpanded.set(true)"
           (onRowCollapse)="rowIsExpanded.set(false)"
-          [(selection)]="selectedCategory"
           [value]="(categories$ | async) ?? []">
 
   <ng-template #header>

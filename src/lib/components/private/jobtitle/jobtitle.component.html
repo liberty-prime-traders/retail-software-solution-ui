@@ -5,7 +5,7 @@
           rowExpandMode="single"
           size="small"
           dataKey="id"
-          [value]="(jobtitles$ | async) ?? []"
+          [value]="(jobTitles$ | async) ?? []"
           [(selection)]="selectedJobTitle"
           [globalFilterFields]="['value', 'createdBy', 'usageCount']"
           (onRowExpand)="rowIsExpanded.set(true)"
