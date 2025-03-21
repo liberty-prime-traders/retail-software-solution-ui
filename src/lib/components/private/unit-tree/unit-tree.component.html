@@ -1,0 +1,17 @@
+<div class="flex flex-column gap-5">
+  <div>
+    <h3 class="font-semibold">Unit Groups</h3>
+    <hr/>
+    <rts-unit-group (selectedUnitGroupChange)="selectedUnitGroup.set($event)"/>
+  </div>
+
+
+  @if (selectedUnitGroup()) {
+    <div>
+      <div class="mt-2 font-semibold">Unit Value For '{{selectedUnitGroup()?.name | nullSafe}}'</div>
+      <hr/>
+      <rts-unit-value [unitGroupId]="selectedUnitGroup()?.id"/>
+    </div>
+  }
+
+</div>

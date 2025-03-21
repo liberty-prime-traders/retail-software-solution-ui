@@ -1,0 +1,32 @@
+<form [formGroup]="unitValueForm()" class="flex flex-column gap-2">
+  <rts-form-field label="Name" for="name">
+    <input id="name" pInputText formControlName="name">
+  </rts-form-field>
+
+  <rts-form-field label="Code" for="code">
+    <input id="code" pInputText formControlName="code">
+  </rts-form-field>
+
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText formControlName="description">
+  </rts-form-field>
+
+  <rts-form-field label="Base Unit" for="baseUnit">
+    <input id="baseUnit" pInputText formControlName="baseUnit">
+  </rts-form-field>
+
+  <rts-form-field label="Conversion Factor" for="conversionFactor">
+    <input id="conversionFactor" pInputText formControlName="conversionFactor">
+  </rts-form-field>
+
+  <rts-forms-buttons [disableCancel]="!unitValueForm().dirty"
+                     [disableSave]="!unitValueForm().valid || !unitValueForm().dirty"
+                     [hideDelete]="!unitValue()?.id"
+                     cancelLabel="Reset"
+                     [processingStatus]="processingStatus$ | async"
+                     [failureMessages]="failureMessages$ | async"
+                     (delete)="deleteUnitValue()"
+                     (save)="upsertUnitValue()"
+                     (cancelAction)="resetForm()">
+  </rts-forms-buttons>
+</form>

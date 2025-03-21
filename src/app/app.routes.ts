@@ -6,14 +6,14 @@ import {PrivateComponent} from '../lib/components/private/private.component'
 import {PublicComponent} from '../lib/components/public/public.component'
 import {JobTitleComponent} from '../lib/components/private/jobtitle/jobtitle.component'
 import {CategoryComponent} from '../lib/components/private/category/category.component'
-import {UnitGroupComponent} from '../lib/components/private/unit-group/unit-group.component'
+import {UnitTreeComponent} from '../lib/components/private/unit-tree/unit-tree.component'
 
 const secureRoutes: Routes = [
   {path: '', component: HomepageComponent},
   {path: 'organization-tree', component: OrganizationTreeComponent},
   {path: 'category', component: CategoryComponent},
   {path: 'jobtitle', component: JobTitleComponent},
-  {path: 'units', component: UnitGroupComponent}
+  {path: 'units', component: UnitTreeComponent}
 ]
 
 const appChildRoutes: Routes = [
