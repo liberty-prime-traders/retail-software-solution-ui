@@ -51,7 +51,7 @@ export class UnitGroupComponent extends HasGridComponent<UnitGroupService> imple
       filter(unitGroups => !isNil(unitGroups) && unitGroups.length > 0),
       first(),
       tap(unitGroups => this.selectedUnitGroup.set(sortBy(unitGroups, ['name']).at(0)))
-    ).subscribe()
-
+    )
+      .subscribe()
   }
 }
