@@ -1,14 +1,10 @@
 import {AsyncPipe} from '@angular/common'
 import {Component, effect, inject, input, model, OnInit, signal} from '@angular/core'
-import {isNil, sortBy} from 'lodash-es'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
-import {filter, Subscription} from 'rxjs'
-import {first, tap} from 'rxjs/operators'
 import {UnitValue} from '../../../../api/unit-value/unitvalue.model'
 import {UnitValueService} from '../../../../api/unit-value/unitvalue.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
-import {NullishToZeroPipe} from '../../../../utils/pipes/nullish-to-zero.pipe'
 import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
 import {HasGridComponent} from '../../../reusable/has-grid.component'
 import {UnitValueFormComponent} from './unit-value-form/unit-value-form.component'
@@ -20,14 +16,12 @@ import {UnitValueFormComponent} from './unit-value-form/unit-value-form.componen
   imports: [
     TableModule,
     AsyncPipe,
-    NullishToZeroPipe,
     NullSafePipe,
     Button,
     UnitValueFormComponent,
     AddRowComponent,
     AddRowComponent,
-    NullSafePipe,
-    NullishToZeroPipe
+    NullSafePipe
   ]
 })
 export class UnitValueComponent extends HasGridComponent<UnitValueService> implements OnInit {

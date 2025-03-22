@@ -22,6 +22,7 @@ import {UnitValueService} from '../../../../../api/unit-value/unitvalue.service'
 })
 export class UnitValueFormComponent implements OnInit {
   readonly unitValue = input<UnitValue>()
+  readonly unitGroupId = input<string>()
 
   private readonly unitValueService = inject(UnitValueService)
   private readonly formBuilder = inject(FormBuilder)
@@ -47,7 +48,7 @@ export class UnitValueFormComponent implements OnInit {
   }
 
   upsertUnitValue() {
-    const updatedUnitValue: UnitValue = this.unitValueForm().getRawValue()
+    const updatedUnitValue: UnitValue = {...this.unitValueForm().getRawValue(), unitGroupId: this.unitGroupId()}
     if (isNil(updatedUnitValue.id)) {
       this.unitValueService.post(updatedUnitValue)
     } else {
