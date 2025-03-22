@@ -6,7 +6,4 @@ export interface UnitValue extends BaseModel{
   description?: string
   baseUnit?: string
   conversionFactor?: number
-  createdBy?: string
-  createdOn?: number
-  usageCount?: number
 }
