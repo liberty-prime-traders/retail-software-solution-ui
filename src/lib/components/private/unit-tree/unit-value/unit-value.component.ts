@@ -8,6 +8,8 @@ import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
 import {HasGridComponent} from '../../../reusable/has-grid.component'
 import {UnitValueFormComponent} from './unit-value-form/unit-value-form.component'
+import {map} from 'rxjs/operators'
+import {Observable} from 'rxjs'
 
 @Component({
   standalone: true,
@@ -35,12 +37,23 @@ export class UnitValueComponent extends HasGridComponent<UnitValueService> imple
   readonly apiService = this.unitValueService
   readonly addingIsActive = signal(false)
   readonly rowIsExpanded = signal<boolean>(false)
+  baseUnitOptions = new Observable<{ label: string; value: string }[]>()
 
   constructor() {
     super()
     effect(() => {
       if (this.unitGroupId()) {
         this.unitValueService.refetch(this.unitGroupId())
+        this.baseUnitOptions = this.unitValues$.pipe(
+          map(units =>
+            units
+              .filter(unit => unit['unitGroupId'] === this.unitGroupId())
+              .map(unit => ({
+                label: unit.name ?? 'Unknown',
+                value: unit.id ?? ''
+              }))
+          )
+        )
       }
     })
   }

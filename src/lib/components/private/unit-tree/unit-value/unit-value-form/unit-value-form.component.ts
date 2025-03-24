@@ -7,6 +7,7 @@ import {FormFieldComponent} from '../../../../reusable/form-field/form-field.com
 import {isNil} from 'lodash-es'
 import {UnitValue} from '../../../../../api/unit-value/unitvalue.model'
 import {UnitValueService} from '../../../../../api/unit-value/unitvalue.service'
+import {Select} from 'primeng/select'
 
 @Component({
   standalone: true,
@@ -17,12 +18,14 @@ import {UnitValueService} from '../../../../../api/unit-value/unitvalue.service'
     InputText,
     FormButtonsComponent,
     AsyncPipe,
-    FormFieldComponent
+    FormFieldComponent,
+    Select
   ]
 })
 export class UnitValueFormComponent implements OnInit {
   readonly unitValue = input<UnitValue>()
   readonly unitGroupId = input<string>()
+  readonly baseUnitOptions = input<{ label: string; value: string }[] | null>([])
 
   private readonly unitValueService = inject(UnitValueService)
   private readonly formBuilder = inject(FormBuilder)

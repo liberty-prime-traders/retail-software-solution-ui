@@ -12,7 +12,7 @@
   </rts-form-field>
 
   <rts-form-field label="Base Unit" for="baseUnit">
-    <input id="baseUnit" pInputText formControlName="baseUnit">
+    <p-select id="baseUnit" formControlName="baseUnit" [options]="baseUnitOptions() ?? []"/>
   </rts-form-field>
 
   <rts-form-field label="Conversion Factor" for="conversionFactor">

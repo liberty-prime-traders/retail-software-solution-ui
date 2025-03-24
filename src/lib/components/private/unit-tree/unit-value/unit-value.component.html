@@ -73,6 +73,6 @@
 
 <rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || (loading$ | async)">
   @if (addingIsActive()) {
-    <rts-unit-value-form [unitGroupId]="unitGroupId()"/>
+    <rts-unit-value-form [unitGroupId]="unitGroupId()" [baseUnitOptions]="baseUnitOptions | async"/>
   }
 </rts-add-row>
