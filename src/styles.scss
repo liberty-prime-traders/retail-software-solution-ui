@@ -4,6 +4,11 @@
 @import "primeicons/primeicons.css";
 @import "colors.scss";
 
+html, body {
+  font-family: system-ui;
+  background-image: url("assets/bg.svg");
+}
+
 .required-label::before {
   color: $red;
   content: "* ";
