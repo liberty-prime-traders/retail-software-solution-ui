@@ -1,0 +1,57 @@
+<div class="flex flex-column gap-5">
+  <div>
+    <h3 class="font-semibold">Payment Options</h3>
+    <hr />
+
+    <p-table [loading]="(loading$ | async) && !addingIsActive()" selectionMode="single" rowExpandMode="single"
+      size="small" dataKey="id" sortField="name" (onRowExpand)="rowIsExpanded.set(true)"
+      (onRowCollapse)="rowIsExpanded.set(false)" [(selection)]="selectedPaymentOption"
+      [value]="(paymentOptions$ | async) ?? []">
+
+      <ng-template #header>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Created By</th>
+          <th>Usage Count</th>
+          <th style="width: 5rem"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-paymentOption let-expanded="expanded">
+        <tr [pSelectableRow]="paymentOption">
+          <td>{{paymentOption?.name | nullSafe}}</td>
+          <td>{{paymentOption?.description | nullSafe}}</td>
+          <td>{{paymentOption?.createdBy | nullSafe}}</td>
+          <td>{{paymentOption?.usageCount | nullishToZero}}</td>
+          <td>
+            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'" rounded severity="secondary"
+              [disabled]="(processingIsUnderWay$ | async) || addingIsActive()" [pRowToggler]="paymentOption">
+            </p-button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #expandedrow let-paymentOption>
+        <tr>
+          <td colspan="5" class="filled-background">
+            <rts-payment-option-form [paymentOption]="paymentOption" />
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="5" class="filled-background h-4rem">No Payment Options Were Found</td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || (loading$ | async)">
+      @if (addingIsActive()) {
+        <rts-payment-option-form></rts-payment-option-form>
+      }
+    </rts-add-row>
+
+  </div>
+</div>
