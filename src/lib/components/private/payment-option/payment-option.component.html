@@ -3,10 +3,14 @@
     <h3 class="font-semibold">Payment Options</h3>
     <hr />
 
-    <p-table [loading]="(loading$ | async) && !addingIsActive()" selectionMode="single" rowExpandMode="single"
-      size="small" dataKey="id" sortField="name" (onRowExpand)="rowIsExpanded.set(true)"
-      (onRowCollapse)="rowIsExpanded.set(false)" [(selection)]="selectedPaymentOption"
-      [value]="(paymentOptions$ | async) ?? []">
+    <p-table [loading]="(loading$ | async) && !addingIsActive()" 
+             rowExpandMode="single"
+             size="small"
+             dataKey="id"
+             sortField="name"
+             (onRowExpand)="rowIsExpanded.set(true)"
+             (onRowCollapse)="rowIsExpanded.set(false)"
+             [value]="(paymentOptions$ | async) ?? []">
 
       <ng-template #header>
         <tr>
@@ -19,14 +23,17 @@
       </ng-template>
 
       <ng-template #body let-paymentOption let-expanded="expanded">
-        <tr [pSelectableRow]="paymentOption">
+        <tr>
           <td>{{paymentOption?.name | nullSafe}}</td>
           <td>{{paymentOption?.description | nullSafe}}</td>
           <td>{{paymentOption?.createdBy | nullSafe}}</td>
           <td>{{paymentOption?.usageCount | nullishToZero}}</td>
           <td>
-            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'" rounded severity="secondary"
-              [disabled]="(processingIsUnderWay$ | async) || addingIsActive()" [pRowToggler]="paymentOption">
+            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                      rounded
+                      severity="secondary"
+                      [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
+                      [pRowToggler]="paymentOption">
             </p-button>
           </td>
         </tr>
@@ -52,6 +59,5 @@
         <rts-payment-option-form></rts-payment-option-form>
       }
     </rts-add-row>
-
   </div>
 </div>

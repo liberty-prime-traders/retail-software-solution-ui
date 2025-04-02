@@ -27,8 +27,6 @@ import { PaymentOptionFormComponent } from './payment-option-form/payment-option
   ],
 })
 export class PaymentOptionComponent extends HasGridComponent<PaymentOptionService> implements OnInit {
-  readonly selectedPaymentOption = signal<PaymentOption | undefined>(undefined)
-
   private readonly paymentOptionService = inject(PaymentOptionService)
   readonly loading$ = this.paymentOptionService.selectLoading$()
   readonly processingIsUnderWay$ = this.paymentOptionService.processingIsUnderWay$()
@@ -40,15 +38,5 @@ export class PaymentOptionComponent extends HasGridComponent<PaymentOptionServic
 
   override ngOnInit() {
     super.ngOnInit()
-    this.subscriptions.add(this.selectPaymentOptionOnInitialLoad())
-  }
-
-  private selectPaymentOptionOnInitialLoad(): Subscription {
-    return this.paymentOptionService.selectAll$().pipe(
-      filter((paymentOptions) => !isNil(paymentOptions) && paymentOptions.length > 0),
-      first(),
-      tap(paymentOptions => this.selectedPaymentOption.set(sortBy(paymentOptions, ['name']).at(0)))
-    )
-      .subscribe()
   }
 }
