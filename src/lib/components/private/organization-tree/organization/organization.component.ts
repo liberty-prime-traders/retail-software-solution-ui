@@ -37,12 +37,12 @@ export class OrganizationComponent extends HasGridComponent<OrganizationService>
   readonly apiService = this.organizationService
   readonly addingIsActive = signal(false)
   readonly rowIsExpanded = signal<boolean>(false)
-  
+
   override ngOnInit() {
     super.ngOnInit()
     this.subscriptions.add(this.selectOrganizationOnInitialLoad())
   }
-  
+
   private selectOrganizationOnInitialLoad(): Subscription {
     return this.organizationService.selectAll$().pipe(
       filter(organizations => !isNil(organizations) && organizations.length > 0),

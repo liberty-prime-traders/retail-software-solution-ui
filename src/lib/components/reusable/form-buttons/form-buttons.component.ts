@@ -24,16 +24,17 @@ import {TooltipComponent} from '../tooltip/tooltip.component'
 export class FormButtonsComponent {
   readonly save = output()
   readonly delete = output()
-  readonly cancelAction = output()
+  readonly resetAction = output()
 
   readonly hideDelete = input(false)
-  readonly hideCancel = input(false)
+  readonly hideReset = input(false)
   readonly hideSave = input(false)
 
   readonly disableDelete = input(false)
-  readonly disableCancel = input(false)
+  readonly disableReset = input(false)
   readonly disableSave = input(false)
-  readonly cancelLabel = input('Cancel')
+
+  readonly resetLabel = input('Reset')
 
   readonly processingStatus = model<ProcessingStatus|undefined|null>(ProcessingStatus.IDLE)
   readonly deleteInProgressMessage = input('Deleting...')
@@ -54,9 +55,9 @@ export class FormButtonsComponent {
     this.latestFormAction() === FormAction.DELETE ? this.deleteInProgressMessage() : this.saveInProgressMessage()
   )
 
-  confirmCancel() {
+  confirmReset() {
     this.processingStatus.set(ProcessingStatus.IDLE)
-    this.cancelAction.emit()
+    this.resetAction.emit()
   }
 
   confirmSave() {
