@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
+import {FormsModule} from '@angular/forms'
 import { NullSafePipe } from 'lib/utils/pipes/null-safe.pipe';
 import { NullishToZeroPipe } from 'lib/utils/pipes/nullish-to-zero.pipe';
 import { Button } from 'primeng/button';
@@ -13,15 +14,16 @@ import { PaymentOptionFormComponent } from './payment-option-form/payment-option
   standalone: true,
   selector: 'rts-payment-option',
   templateUrl: 'payment-option.component.html',
-  imports: [
-    TableModule,
-    AsyncPipe,
-    NullishToZeroPipe,
-    NullSafePipe,
-    Button,
-    PaymentOptionFormComponent,
-    AddRowComponent
-  ],
+	imports: [
+		TableModule,
+		AsyncPipe,
+		NullishToZeroPipe,
+		NullSafePipe,
+		Button,
+		PaymentOptionFormComponent,
+		AddRowComponent,
+		FormsModule
+	]
 })
 export class PaymentOptionComponent extends HasGridComponent<PaymentOptionService> {
   private readonly paymentOptionService = inject(PaymentOptionService)

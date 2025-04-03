@@ -1,7 +1,7 @@
 <div class="flex flex-column gap-5">
   <div>
     <h3 class="font-semibold">Payment Options</h3>
-    <hr />
+    <hr/>
 
     <p-table [loading]="(loading$ | async) && !addingIsActive()" 
              rowExpandMode="single"
@@ -13,13 +13,40 @@
              [value]="(paymentOptions$ | async) ?? []">
 
       <ng-template #header>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Created By</th>
-          <th>Usage Count</th>
+        <tr class="line-height-4">
+          <th pSortableColumn="name">
+            Name
+            <p-sortIcon field="name"/>
+          </th>
+          <th pSortableColumn="description">
+            Description
+            <p-sortIcon field="description"/>
+          </th>
+          <th pSortableColumn="createdBy">
+            Created By
+            <p-sortIcon field="createdBy"/>
+          </th>
+          <th pSortableColumn="usageCount">
+            Usage Count
+            <p-sortIcon field="usageCount"/>
+          </th>
           <th style="width: 5rem"></th>
         </tr>
+
+        <tr>
+          <th>
+            <p-columnFilter field="name" type="text" matchMode="contains" placeholder="Search by name"/>
+          </th>
+          <th>
+            <p-columnFilter field="description" type="text" matchMode="contains" placeholder="Search by description"/>
+          </th>
+          <th>
+            <p-columnFilter field="createdBy" type="text" matchMode="contains" placeholder="Search by created by"/>
+          </th>
+          <th></th>
+          <th></th>
+        </tr>
+
       </ng-template>
 
       <ng-template #body let-paymentOption let-expanded="expanded">

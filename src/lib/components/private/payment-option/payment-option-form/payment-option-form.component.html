@@ -7,14 +7,13 @@
     <input id="description" pInputText formControlName="description">
   </rts-form-field>
 
-  <rts-forms-buttons [disableCancel]="!paymentOptionForm().dirty"
+  <rts-forms-buttons [disableReset]="!paymentOptionForm().dirty"
                      [disableSave]="!paymentOptionForm().valid || !paymentOptionForm().dirty"
                      [hideDelete]="!paymentOption()?.id"
-                     cancelLabel="Reset"
                      [processingStatus]="processingStatus$ | async"
                      [failureMessages]="failureMessages$ | async"
                      (delete)="deletePaymentOption()"
                      (save)="upsertPaymentOption()"
-                     (cancelAction)="resetForm()">
+                     (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>
