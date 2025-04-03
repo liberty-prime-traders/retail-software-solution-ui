@@ -1,15 +1,16 @@
 import {AsyncPipe} from '@angular/common'
 import {Component, effect, inject, input, model, OnInit, signal} from '@angular/core'
+import {SelectItem} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
+import {Observable} from 'rxjs'
+import {map} from 'rxjs/operators'
 import {UnitValue} from '../../../../api/unit-value/unitvalue.model'
 import {UnitValueService} from '../../../../api/unit-value/unitvalue.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
 import {HasGridComponent} from '../../../reusable/has-grid.component'
 import {UnitValueFormComponent} from './unit-value-form/unit-value-form.component'
-import {map} from 'rxjs/operators'
-import {Observable} from 'rxjs'
 
 @Component({
   standalone: true,
@@ -28,32 +29,29 @@ import {Observable} from 'rxjs'
 })
 export class UnitValueComponent extends HasGridComponent<UnitValueService> implements OnInit {
   readonly unitGroupId = input<string>()
+  
   private readonly unitValueService = inject(UnitValueService)
+  
+  protected override readonly fetchByDefault = false
   readonly loading$ = this.unitValueService.selectLoading$()
   readonly processingIsUnderWay$ = this.unitValueService.processingIsUnderWay$()
   readonly unitValues$ = this.unitValueService.selectAll$()
-  selectedUnitValue = model<UnitValue|undefined>(undefined)
+  readonly selectedUnitValue = model<UnitValue|undefined>(undefined)
 
   readonly apiService = this.unitValueService
   readonly addingIsActive = signal(false)
   readonly rowIsExpanded = signal<boolean>(false)
-  baseUnitOptions = new Observable<{ label: string; value: string }[]>()
+  readonly baseUnitOptions$: Observable<Array<SelectItem<string>>> = this.unitValues$.pipe(
+    map(unitValues => unitValues.map(unit => (
+      {label: unit.name ?? 'Unknown', value: unit.id ?? ''}
+    )))
+  )
 
   constructor() {
     super()
     effect(() => {
       if (this.unitGroupId()) {
         this.unitValueService.refetch(this.unitGroupId())
-        this.baseUnitOptions = this.unitValues$.pipe(
-          map(units =>
-            units
-              .filter(unit => unit['unitGroupId'] === this.unitGroupId())
-              .map(unit => ({
-                label: unit.name ?? 'Unknown',
-                value: unit.id ?? ''
-              }))
-          )
-        )
       }
     })
   }

@@ -26,10 +26,10 @@
         <p-sortIcon field="description"></p-sortIcon>
         <p-columnFilter field="description" matchMode="contains" display="menu" [showMatchModes]="false" placeholder="Filter"></p-columnFilter>
       </th>
-      <th pSortableColumn="baseUnit">
+      <th pSortableColumn="baseUnitName">
         Base Unit
-        <p-sortIcon field="baseUnit"></p-sortIcon>
-        <p-columnFilter field="baseUnit" matchMode="contains" display="menu" [showMatchModes]="false" placeholder="Filter"></p-columnFilter>
+        <p-sortIcon field="baseUnitName"></p-sortIcon>
+        <p-columnFilter field="baseUnitName" matchMode="contains" display="menu" [showMatchModes]="false" placeholder="Filter"></p-columnFilter>
       </th>
       <th pSortableColumn="conversionFactor">
         Conversion Factor
@@ -43,7 +43,7 @@
       <td>{{unitvalue?.name | nullSafe}}</td>
       <td>{{unitvalue?.code | nullSafe}}</td>
       <td>{{unitvalue?.description | nullSafe}}</td>
-      <td>{{unitvalue?.baseUnit | nullSafe}}</td>
+      <td>{{unitvalue?.baseUnitName | nullSafe}}</td>
       <td>{{unitvalue?.conversionFactor | nullSafe}}</td>
       <td>
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
@@ -59,7 +59,10 @@
   <ng-template #expandedrow let-unitvalue>
     <tr>
       <td colspan="5" class="filled-background">
-        <rts-unit-value-form [unitValue]="unitvalue"/>
+        <rts-unit-value-form [unitValue]="unitvalue"
+                             [unitGroupId]="unitGroupId()"
+                             [baseUnitOptions]="(baseUnitOptions$ | async) ?? []">
+        </rts-unit-value-form>
       </td>
     </tr>
   </ng-template>
@@ -73,6 +76,6 @@
 
 <rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || (loading$ | async)">
   @if (addingIsActive()) {
-    <rts-unit-value-form [unitGroupId]="unitGroupId()" [baseUnitOptions]="baseUnitOptions | async"/>
+    <rts-unit-value-form [unitGroupId]="unitGroupId()" [baseUnitOptions]="(baseUnitOptions$ | async) ?? []"/>
   }
 </rts-add-row>

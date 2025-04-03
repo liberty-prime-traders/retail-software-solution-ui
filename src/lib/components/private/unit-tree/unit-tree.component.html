@@ -8,7 +8,7 @@
 
   @if (selectedUnitGroup()) {
     <div>
-      <div class="mt-2 font-semibold">Unit Value For '{{selectedUnitGroup()?.name | nullSafe}}'</div>
+      <div class="mt-2 font-semibold">Unit Values For '{{selectedUnitGroup()?.name | nullSafe}}'</div>
       <hr/>
       <rts-unit-value [unitGroupId]="selectedUnitGroup()?.id"/>
     </div>
