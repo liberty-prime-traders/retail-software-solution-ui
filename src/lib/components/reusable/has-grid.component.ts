@@ -11,7 +11,7 @@ export abstract class HasGridComponent<SERVICE extends BaseService<any, any>>
 	abstract readonly apiService: SERVICE
 	abstract readonly addingIsActive: WritableSignal<boolean>
 	abstract readonly rowIsExpanded: WritableSignal<boolean>
-	
+
 	protected readonly fetchByDefault: boolean = true
 
 	ngOnInit() {

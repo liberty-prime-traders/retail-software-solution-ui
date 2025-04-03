@@ -1,29 +1,29 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import {AsyncPipe} from '@angular/common'
+import {Component, inject, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import { NullSafePipe } from 'lib/utils/pipes/null-safe.pipe';
-import { NullishToZeroPipe } from 'lib/utils/pipes/nullish-to-zero.pipe';
-import { Button } from 'primeng/button';
-import { TableModule } from 'primeng/table';
-import { AddRowComponent } from 'lib/components/reusable/add-row/add-row.component';
-import { PaymentOptionService } from 'lib/api/payment-option/payment-option.service';
-import { HasGridComponent } from 'lib/components/reusable/has-grid.component';
-import { PaymentOptionFormComponent } from './payment-option-form/payment-option-form.component';
+import {NullSafePipe} from 'lib/utils/pipes/null-safe.pipe'
+import {NullishToZeroPipe} from 'lib/utils/pipes/nullish-to-zero.pipe'
+import {Button} from 'primeng/button'
+import {TableModule} from 'primeng/table'
+import {AddRowComponent} from 'lib/components/reusable/add-row/add-row.component'
+import {PaymentOptionService} from 'lib/api/payment-option/payment-option.service'
+import {HasGridComponent} from 'lib/components/reusable/has-grid.component'
+import {PaymentOptionFormComponent} from './payment-option-form/payment-option-form.component'
 
 @Component({
   standalone: true,
   selector: 'rts-payment-option',
   templateUrl: 'payment-option.component.html',
-	imports: [
-		TableModule,
-		AsyncPipe,
-		NullishToZeroPipe,
-		NullSafePipe,
-		Button,
-		PaymentOptionFormComponent,
-		AddRowComponent,
-		FormsModule
-	]
+  imports: [
+    TableModule,
+    AsyncPipe,
+    NullishToZeroPipe,
+    NullSafePipe,
+    Button,
+    PaymentOptionFormComponent,
+    AddRowComponent,
+    FormsModule
+  ]
 })
 export class PaymentOptionComponent extends HasGridComponent<PaymentOptionService> {
   private readonly paymentOptionService = inject(PaymentOptionService)

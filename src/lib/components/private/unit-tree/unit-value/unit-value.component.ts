@@ -28,9 +28,9 @@ import {UnitValueFormComponent} from './unit-value-form/unit-value-form.componen
 })
 export class UnitValueComponent extends HasGridComponent<UnitValueService> implements OnInit {
   readonly unitGroupId = input<string>()
-  
+
   private readonly unitValueService = inject(UnitValueService)
-  
+
   protected override readonly fetchByDefault = false
   readonly loading$ = this.unitValueService.selectLoading$()
   readonly processingIsUnderWay$ = this.unitValueService.processingIsUnderWay$()

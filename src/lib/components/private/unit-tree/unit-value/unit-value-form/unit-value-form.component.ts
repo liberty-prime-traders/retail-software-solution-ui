@@ -65,7 +65,7 @@ export class UnitValueFormComponent implements OnInit {
   deleteUnitValue() {
     this.unitValueService.delete(this.unitValue()?.id)
   }
-  
+
   private getDependentFieldsValidator(): ValidatorFn {
     return (formGroup) => {
       const baseUnit = formGroup.get('baseUnit')?.value

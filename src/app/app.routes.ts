@@ -15,7 +15,7 @@ const secureRoutes: Routes = [
   {path: 'category', component: CategoryComponent},
   {path: 'jobtitle', component: JobTitleComponent},
   {path: 'units', component: UnitTreeComponent},
-  {path: 'payment-options', component: PaymentOptionComponent},
+  {path: 'payment-options', component: PaymentOptionComponent}
 ]
 
 const appChildRoutes: Routes = [
