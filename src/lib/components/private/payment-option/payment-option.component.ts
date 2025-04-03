@@ -1,6 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, model, OnInit, signal } from '@angular/core';
-import { PaymentOption } from 'lib/api/payment-option/payment-option.model.';
+import { Component, inject, signal } from '@angular/core';
 import { NullSafePipe } from 'lib/utils/pipes/null-safe.pipe';
 import { NullishToZeroPipe } from 'lib/utils/pipes/nullish-to-zero.pipe';
 import { Button } from 'primeng/button';
@@ -8,8 +7,6 @@ import { TableModule } from 'primeng/table';
 import { AddRowComponent } from 'lib/components/reusable/add-row/add-row.component';
 import { PaymentOptionService } from 'lib/api/payment-option/payment-option.service';
 import { HasGridComponent } from 'lib/components/reusable/has-grid.component';
-import { first, Subscription, tap, filter } from 'rxjs';
-import { isNil, sortBy } from 'lodash-es';
 import { PaymentOptionFormComponent } from './payment-option-form/payment-option-form.component';
 
 @Component({
@@ -26,7 +23,7 @@ import { PaymentOptionFormComponent } from './payment-option-form/payment-option
     AddRowComponent
   ],
 })
-export class PaymentOptionComponent extends HasGridComponent<PaymentOptionService> implements OnInit {
+export class PaymentOptionComponent extends HasGridComponent<PaymentOptionService> {
   private readonly paymentOptionService = inject(PaymentOptionService)
   readonly loading$ = this.paymentOptionService.selectLoading$()
   readonly processingIsUnderWay$ = this.paymentOptionService.processingIsUnderWay$()
@@ -35,8 +32,4 @@ export class PaymentOptionComponent extends HasGridComponent<PaymentOptionServic
   readonly apiService = this.paymentOptionService
   readonly addingIsActive = signal(false)
   readonly rowIsExpanded = signal<boolean>(false)
-
-  override ngOnInit() {
-    super.ngOnInit()
-  }
 }
