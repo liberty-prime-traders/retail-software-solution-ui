@@ -11,14 +11,13 @@
     <input id="description" pInputText formControlName="description">
   </rts-form-field>
 
-  <rts-forms-buttons [disableCancel]="!locationForm().dirty"
+  <rts-forms-buttons [disableReset]="!locationForm().dirty"
                      [disableSave]="!locationForm().valid || !locationForm().dirty"
                      [hideDelete]="!location()?.id"
-                     cancelLabel="Reset"
                      [processingStatus]="processingStatus$ | async"
                      [failureMessages]="failureMessages$ | async"
                      (delete)="deleteLocation()"
                      (save)="upsertLocation()"
-                     (cancelAction)="resetForm()">
+                     (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>

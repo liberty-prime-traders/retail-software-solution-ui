@@ -1,16 +1,15 @@
 <form [formGroup]="jobTitleForm()" class="flex flex-column gap-2">
-  <rts-form-field label="Value" for="value">
+  <rts-form-field [required]="true" label="Value" for="value">
     <input id="value" pInputText formControlName="value">
   </rts-form-field>
 
-  <rts-forms-buttons [disableCancel]="!jobTitleForm().dirty"
+  <rts-forms-buttons [disableReset]="!jobTitleForm().dirty"
                      [disableSave]="!jobTitleForm().valid || !jobTitleForm().dirty"
                      [hideDelete]="!jobtitle()?.id"
-                     cancelLabel="Reset"
                      [processingStatus]="processingStatus$ | async"
                      [failureMessages]="failureMessages$ | async"
                      (delete)="deleteJobTitle()"
                      (save)="upsertJobTitle()"
-                     (cancelAction)="resetForm()">
+                     (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>

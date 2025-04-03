@@ -1,9 +1,9 @@
 <form [formGroup]="unitValueForm()" class="flex flex-column gap-2">
-  <rts-form-field label="Name" for="name">
+  <rts-form-field [required]="true" label="Name" for="name">
     <input id="name" pInputText formControlName="name">
   </rts-form-field>
 
-  <rts-form-field label="Code" for="code">
+  <rts-form-field [required]="true" label="Code" for="code">
     <input id="code" pInputText formControlName="code">
   </rts-form-field>
 
@@ -11,22 +11,21 @@
     <input id="description" pInputText formControlName="description">
   </rts-form-field>
 
-  <rts-form-field label="Base Unit" for="baseUnit">
-    <p-select id="baseUnit" formControlName="baseUnit" [options]="baseUnitOptions() ?? []"/>
+  <rts-form-field label="Base Unit" [required]="conversionFactor.value != null" for="baseUnit">
+    <p-select id="baseUnit" formControlName="baseUnit" #baseUnit showClear="true" [options]="baseUnitOptions() ?? []"/>
   </rts-form-field>
 
-  <rts-form-field label="Conversion Factor" for="conversionFactor">
-    <input id="conversionFactor" pInputText formControlName="conversionFactor">
+  <rts-form-field label="Conversion Factor" [required]="baseUnit.selectedOption" for="conversionFactor">
+    <p-inputNumber id="conversionFactor" #conversionFactor formControlName="conversionFactor"/>
   </rts-form-field>
 
-  <rts-forms-buttons [disableCancel]="!unitValueForm().dirty"
+  <rts-forms-buttons [disableReset]="!unitValueForm().dirty"
                      [disableSave]="!unitValueForm().valid || !unitValueForm().dirty"
                      [hideDelete]="!unitValue()?.id"
-                     cancelLabel="Reset"
                      [processingStatus]="processingStatus$ | async"
                      [failureMessages]="failureMessages$ | async"
                      (delete)="deleteUnitValue()"
                      (save)="upsertUnitValue()"
-                     (cancelAction)="resetForm()">
+                     (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>

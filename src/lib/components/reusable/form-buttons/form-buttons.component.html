@@ -32,12 +32,12 @@
         <p-tag severity="danger" value="Failed" icon="pi pi-exclamation-triangle"/>
       }
 
-      @if (!hideCancel()) {
-        <p-button [label]="cancelLabel()"
+      @if (!hideReset()) {
+        <p-button [label]="resetLabel()"
                   icon="pi pi-times"
                   severity="secondary"
-                  (click)="confirmCancel()"
-                  [disabled]="disableCancel() || processingIsUnderway()">
+                  (click)="confirmReset()"
+                  [disabled]="disableReset() || processingIsUnderway()">
         </p-button>
       }
 
@@ -52,4 +52,3 @@
     </div>
   }
 </div>
-

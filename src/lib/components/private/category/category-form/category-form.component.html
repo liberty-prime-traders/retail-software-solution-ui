@@ -1,5 +1,5 @@
 <form [formGroup]="categoryForm()" class="flex flex-column gap-2">
-  <rts-form-field label="Category Name" for="categoryName">
+  <rts-form-field [required]="true" label="Category Name" for="categoryName">
     <input id="categoryName" class="flex-grow-1" pInputText formControlName="categoryName">
   </rts-form-field>
 
@@ -15,14 +15,13 @@
     <input id="description" pInputText formControlName="description">
   </rts-form-field>
 
-  <rts-forms-buttons [disableCancel]="!categoryForm().dirty"
+  <rts-forms-buttons [disableReset]="!categoryForm().dirty"
                      [disableSave]="!categoryForm().valid || !categoryForm().dirty"
                      [hideDelete]="!category()?.id"
-                     cancelLabel="Reset"
                      [processingStatus]="processingStatus$ | async"
                      [failureMessages]="failureMessages$ | async"
                      (delete)="deleteCategory()"
                      (save)="upsertCategory()"
-                     (cancelAction)="resetForm()">
+                     (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>

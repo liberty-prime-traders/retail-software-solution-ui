@@ -7,14 +7,13 @@
     <input id="description" pInputText formControlName="description">
   </rts-form-field>
 
-  <rts-forms-buttons [disableCancel]="!organizationForm().dirty"
+  <rts-forms-buttons [disableReset]="!organizationForm().dirty"
                      [disableSave]="!organizationForm().valid || !organizationForm().dirty"
                      [hideDelete]="!organization()?.id"
-                     cancelLabel="Reset"
                      [processingStatus]="processingStatus$ | async"
                      [failureMessages]="failureMessages$ | async"
                      (delete)="deleteOrganization()"
                      (save)="upsertOrganization()"
-                     (cancelAction)="resetForm()">
+                     (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>
