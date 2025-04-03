@@ -1,12 +1,10 @@
 <p-table [loading]="(loading$ | async) && !addingIsActive()"
-         selectionMode="single"
          rowExpandMode="single"
          size="small"
          dataKey="id"
          sortField="name"
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
-         [(selection)]="selectedUnitValue"
          [value]="(unitValues$ | async) ?? []">
 
   <ng-template #header>
@@ -58,7 +56,7 @@
 
   <ng-template #expandedrow let-unitvalue>
     <tr>
-      <td colspan="5" class="filled-background">
+      <td colspan="6" class="filled-background">
         <rts-unit-value-form [unitValue]="unitvalue"
                              [unitGroupId]="unitGroupId()"
                              [baseUnitOptions]="(baseUnitOptions$ | async) ?? []">
@@ -69,7 +67,7 @@
 
   <ng-template #emptymessage>
     <tr>
-      <td colspan="5" class="filled-background h-4rem">No Units Values Were Found</td>
+      <td colspan="6" class="filled-background h-4rem">No Units Values Were Found</td>
     </tr>
   </ng-template>
 </p-table>

@@ -1,0 +1,19 @@
+<form [formGroup]="paymentOptionForm()" class="flex flex-column gap-2">
+  <rts-form-field label="Name" for="name">
+    <input id="name" pInputText formControlName="name">
+  </rts-form-field>
+
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText formControlName="description">
+  </rts-form-field>
+
+  <rts-forms-buttons [disableReset]="!paymentOptionForm().dirty"
+                     [disableSave]="!paymentOptionForm().valid || !paymentOptionForm().dirty"
+                     [hideDelete]="!paymentOption()?.id"
+                     [processingStatus]="processingStatus$ | async"
+                     [failureMessages]="failureMessages$ | async"
+                     (delete)="deletePaymentOption()"
+                     (save)="upsertPaymentOption()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</form>

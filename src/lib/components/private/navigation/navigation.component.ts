@@ -21,7 +21,7 @@ export class NavigationComponent {
     {label: 'Categories', icon: 'pi pi-palette', routerLink: './category'},
     {label: 'Variations', icon: 'pi pi-wave-pulse'},
     {label: 'Units', icon: 'pi pi-percentage', routerLink: './units'},
-    {label: 'Payment Options', icon: 'pi pi-money-bill'}
+    {label: 'Payment Options', icon: 'pi pi-money-bill', routerLink: './payment-options'}
   ]
 
   private readonly transactionScreensMenuItems: MenuItem[] = [
