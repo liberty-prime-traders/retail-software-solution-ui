@@ -1,0 +1,62 @@
+<div class="flex flex-column gap-2 h-full justify-content-center align-items-center">
+  <div class="flex flex-column w-full md:w-27rem lg:w-30rem">
+    <p-card class="w-full">
+      <h1 class="text-xl text-center m-0 mt-3">Create New Organization</h1>
+
+      <form [formGroup]="organizationForm" class="py-4">
+        <div class="field px-4">
+          <label for="name">Name</label>
+          <input id="name" pInputText formControlName="name" class="w-full" />
+        </div>
+
+        <div class="field px-4">
+          <label for="description">Description</label>
+          <textarea id="description" pInputText formControlName="description" class="w-full"></textarea>
+        </div>
+
+        <div class="px-4 mb-4">
+          <label for="domain">Domain</label>
+          <div class="flex align-items-center gap-2">
+            <input id="domain" pInputText formControlName="domain" class="w-full" />
+            <p-button label="Verify" 
+                     (click)="verifyDomain()"
+                     [loading]="verificationInProgress"
+                     [disabled]="domainControl.invalid">
+            </p-button>
+          </div>
+          
+          <div *ngIf="isDomainVerified" class="text-green-500 mt-2">
+            <i class="pi pi-check-circle"></i> Verified
+          </div>
+          
+          <div *ngIf="isDomainVerified && originalDomain && originalDomain !== domainControl.value" class="text-sm mt-1">
+            Domain updated from '{{originalDomain}}'' to '{{domainControl.value}}'
+          </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="text-red-500 text-center px-4 mb-4">
+          {{ errorMessage }}
+        </div>
+
+        <div class="flex justify-content-between">
+          <p-button label="Cancel"
+                    class="mt-4 px-4"
+                    severity="secondary"
+                    (click)="cancel()">
+          </p-button>
+          
+          <rts-forms-buttons [disableReset]="!organizationForm.dirty"
+                             [disableSave]="!isDomainVerified || !organizationForm.valid || !organizationForm.dirty"
+                             [hideReset]="true"
+                             [hideDelete]="true"
+                             [processingStatus]="null"
+                             [failureMessages]="[]"
+                             [saveLabel]="'Create'"
+                             (save)="createOrganization()"
+                             (resetAction)="resetForm()">
+          </rts-forms-buttons>
+        </div>
+      </form>
+    </p-card>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="flex flex-column gap-2 h-full justify-content-center align-items-center">
+  <div class="flex flex-column w-full md:w-27rem lg:w-30rem">
+    <div class="text-center mb-7">
+      <h1 class="text-5xl m-0">DEEP'S ORGANIZATION</h1>
+    </div>
+  </div>
+
+  <p-tabs [value]="activeTab" class="w-full md:w-27rem lg:w-30rem rounded">
+    <p-tablist>
+        <p-tab value="locations" [routerLink]="['/landing', 'new-org', 'locations']">Select Location</p-tab>
+        <p-tab value="manage" [routerLink]="['/landing', 'new-org', 'manage']">Manage Org</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <router-outlet />
+    </p-tabpanels>
+  </p-tabs>
+</div>

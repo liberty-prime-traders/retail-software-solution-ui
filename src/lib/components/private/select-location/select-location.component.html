@@ -1,0 +1,11 @@
+<div class="mt-2 mb-4 mx-3">
+  <div class="w-full">
+    <label for="location" class="font-semibold">Select a Location to View</label>
+    <p-select id="location" 
+              formControlName="location"
+              showClear="true"
+              [options]="locations ?? []"
+              optionLabel="name"
+              class="w-full mt-2"/>
+  </div>
+</div>

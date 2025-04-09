@@ -36,11 +36,14 @@
         </div>
     
         <div class="px-4 flex flex-column justify-content-center align-items-center gap-2 my-4">
-          <span *ngIf="hasCreateRole" [routerLink]="[ '/' ]" class="font-italic text-cyan-600 cursor-pointer">
+          <span *ngIf="hasCreateRole"
+                [routerLink]="[ 'create-organization' ]"
+                class="font-italic text-cyan-600 cursor-pointer">
             Create a New Organisation
           </span>
   
-          <span [routerLink]="[ '/' ]" class="font-italic text-cyan-600 cursor-pointer">
+          <span [routerLink]="[ '/' ]"
+                class="font-italic text-cyan-600 cursor-pointer">
             View Requested Organizations
           </span>
         </div>
