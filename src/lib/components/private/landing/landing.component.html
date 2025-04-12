@@ -36,7 +36,7 @@
         </div>
     
         <div class="px-4 flex flex-column justify-content-center align-items-center gap-2 my-4">
-          <span *ngIf="hasCreateRole"
+          <span *ngIf="hasCreateRole$ | async"
                 [routerLink]="[ 'create-organization' ]"
                 class="font-italic text-cyan-600 cursor-pointer">
             Create a New Organisation
