@@ -1,46 +1,49 @@
-<form [formGroup]="organizationDomainForm" class="relative flex flex-column gap-2 h-full justify-content-center align-items-center">
+<form [formGroup]="organizationDomainForm" class="relative flex flex-column gap-2 h-full align-items-center">
   <p-button icon="pi pi-arrow-left"
             label="Home"
-            [outlined]="true"
-            [routerLink]="'/'"
+            outlined="true"
+            routerLink="/"
             class="absolute top-0 left-0 ml-3">
   </p-button>
 
-  <div class="flex flex-column w-full md:w-27rem lg:w-30rem">
+  <div class="flex flex-column w-full md:w-27rem lg:w-30rem mt-8">
     <div class="text-center mb-7">
-      <h1 class="text-6xl m-0">Welcome!</h1>
-      <p class="m-0 text-xs">To Retail Software Solutions By Liberty</p>
+      <h1 class="text-6xl m-0 text-teal-500">Welcome!</h1>
+      <p class="text-base text-gray-500">To Retail Software Solutions By Liberty</p>
     </div>
   
     <p-card class="w-full">
       <ng-template #content>
         <div class="px-4 mx-6 mt-4">
           <label for="domain">Enter your Organization's Domain:</label>
-          <div *ngIf="errorMessage" class="text-red-500 text-center font-italic mt-1 mb-3">
-            {{errorMessage}}
-          </div>
+          @if (errorMessage) {
+            <div class="text-red-500 font-italic mt-1 mb-3 w-full">
+              {{errorMessage}}
+            </div>
+          }
           <input id="domain" pInputText formControlName="domain" class="w-full" />
         </div>
     
         <div class="flex justify-content-end mr-6">
           <rts-forms-buttons [disableReset]="!organizationDomainForm.dirty"
-                         [disableSave]="!organizationDomainForm.valid || !organizationDomainForm.dirty"
-                         [hideReset]="true"
-                         [hideDelete]="true"
-                         [processingStatus]="null"
-                         [failureMessages]="[]"
-                         [saveLabel]="'Submit'"
-                         (save)="submitOrganization()"
-                         (resetAction)="resetForm()">
+                             [disableSave]="!organizationDomainForm.valid || !organizationDomainForm.dirty"
+                             [hideReset]="true"
+                             [hideDelete]="true"
+                             [processingStatus]="null"
+                             [failureMessages]="[]"
+                             [saveLabel]="'Submit'"
+                             (save)="submitOrganization()">
           </rts-forms-buttons>
         </div>
     
-        <div class="px-4 flex flex-column justify-content-center align-items-center gap-2 my-4">
-          <span *ngIf="hasCreateRole$ | async" [routerLink]="[ '/' ]" class="font-italic text-cyan-600 cursor-pointer">
-            Create a New Organisation
-          </span>
-  
-          <span [routerLink]="[ '/' ]" class="font-italic text-cyan-600 cursor-pointer">
+        <div class="px-4 flex flex-column justify-content-center align-items-center gap-3 my-4">
+          @if (hasCreateRole$ | async) {
+            <span routerLink="/" class="font-italic text-cyan-600 cursor-pointer">
+              Create a New Organization
+            </span>
+          }
+
+          <span routerLink="/" class="font-italic text-cyan-600 cursor-pointer">
             View Requested Organizations
           </span>
         </div>
