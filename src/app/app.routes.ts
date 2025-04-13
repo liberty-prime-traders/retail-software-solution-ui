@@ -21,12 +21,11 @@ const secureRoutes: Routes = [
   {path: 'jobtitle', component: JobTitleComponent},
   {path: 'units', component: UnitTreeComponent},
   {path: 'payment-options', component: PaymentOptionComponent},
-  {path: 'create-organization', component: CreateOrganizationComponent}
 ]
 
 const landingChildRoutes: Routes = [
   {path: 'create-organization', component: CreateOrganizationComponent},
-  {path: ':domain', component: OrganizationDashboardComponent,
+  {path: ':subdomain', component: OrganizationDashboardComponent,
     children: [
       {path: 'locations', component: SelectLocationComponent},
       {path: 'manage', component: ManageOrganizationComponent},
@@ -34,7 +33,7 @@ const landingChildRoutes: Routes = [
     ]
   },
   {path: '', component: LandingComponent}
-];
+]
 
 const appChildRoutes: Routes = [
   {path: 'login/callback', component: OktaCallbackComponent},

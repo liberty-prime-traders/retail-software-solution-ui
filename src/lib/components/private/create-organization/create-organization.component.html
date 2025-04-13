@@ -15,28 +15,36 @@
         </div>
 
         <div class="px-4 mb-4">
-          <label for="domain">Domain</label>
+          <label for="subdomain">Domain</label>
           <div class="flex align-items-center gap-2">
-            <input id="domain" pInputText formControlName="domain" class="w-full" />
+            <input id="subdomain" pInputText formControlName="subdomain" class="w-full" />
             <p-button label="Verify" 
                      (click)="verifyDomain()"
-                     [loading]="verificationInProgress"
-                     [disabled]="domainControl.invalid">
+                     [loading]="(reservedSubdomainProcessingStatus$ | async) === ProcessingStatus.IN_PROGRESS"
+                     [disabled]="(processingIsUnderWay$ | async) || domainControl.invalid">
             </p-button>
           </div>
+
+          @if ((reservedSubdomainProcessingStatus$ | async) === ProcessingStatus.SUCCESS) {
+            <div class="text-green-500 mt-2">
+              <i class="pi pi-check-circle"></i> Verified
+            </div>
+          }
           
-          <div *ngIf="isDomainVerified" class="text-green-500 mt-2">
-            <i class="pi pi-check-circle"></i> Verified
-          </div>
-          
-          <div *ngIf="isDomainVerified && originalDomain && originalDomain !== domainControl.value" class="text-sm mt-1">
-            Domain updated from '{{originalDomain}}'' to '{{domainControl.value}}'
-          </div>
+          @if (((reservedSubdomainProcessingStatus$ | async) === ProcessingStatus.SUCCESS) && originalDomain !== domainControl.value) {
+            <div class="text-sm mt-1">
+              Domain updated from <b>{{originalDomain}}</b> to <b>{{domainControl.value}}</b>
+            </div>
+          }
         </div>
 
-        <div *ngIf="errorMessage" class="text-red-500 text-center px-4 mb-4">
-          {{ errorMessage }}
-        </div>
+        @if ((reservedSubdomainProcessingStatus$ | async) === ProcessingStatus.FAILURE) {
+          <div class="text-red-500 text-center px-4 mb-4">
+            @for (message of (reservedSubdomainFailureMessages$ | async) ?? []; track message) {
+              <span>{{message}}</span>
+            }
+          </div>
+        }
 
         <div class="flex justify-content-between">
           <p-button label="Cancel"
@@ -46,11 +54,11 @@
           </p-button>
           
           <rts-forms-buttons [disableReset]="!organizationForm.dirty"
-                             [disableSave]="!isDomainVerified || !organizationForm.valid || !organizationForm.dirty"
+                             [disableSave]="!((reservedSubdomainProcessingStatus$ | async) === ProcessingStatus.SUCCESS) || !organizationForm.valid || !organizationForm.dirty"
                              [hideReset]="true"
                              [hideDelete]="true"
-                             [processingStatus]="null"
-                             [failureMessages]="[]"
+                             [processingStatus]="processingStatus$ | async"
+                             [failureMessages]="failureMessages$ | async"
                              [saveLabel]="'Create'"
                              (save)="createOrganization()"
                              (resetAction)="resetForm()">

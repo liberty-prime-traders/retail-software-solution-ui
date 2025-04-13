@@ -1,11 +1,13 @@
-<div class="mt-2 mb-4 mx-3">
+<form [formGroup]="locationForm" class="mt-2 mb-4 mx-3">
   <div class="w-full">
     <label for="location" class="font-semibold">Select a Location to View</label>
     <p-select id="location" 
               formControlName="location"
-              showClear="true"
-              [options]="locations ?? []"
+              [loading]="loading$ | async"
+              [options]="(locations$ | async) ?? []"
               optionLabel="name"
+              emptyMessage="No location found"
+              placeholder="Select a location"
               class="w-full mt-2"/>
   </div>
-</div>
+</form>

@@ -16,9 +16,11 @@
       <ng-template #content>
         <div class="px-4 mx-6 mt-4">
           <label for="domain">Enter your Organization's Domain:</label>
-          <div *ngIf="errorMessage" class="text-red-500 text-center font-italic mt-1 mb-3">
-            {{errorMessage}}
-          </div>
+          @if (errorMessage) {
+            <div class="text-red-500 text-center font-italic mt-1 mb-3">
+              {{errorMessage}}
+            </div>
+          }
           <input id="domain" pInputText formControlName="domain" class="w-full" />
         </div>
     
@@ -36,11 +38,11 @@
         </div>
     
         <div class="px-4 flex flex-column justify-content-center align-items-center gap-2 my-4">
-          <span *ngIf="hasCreateRole$ | async"
-                [routerLink]="[ 'create-organization' ]"
-                class="font-italic text-cyan-600 cursor-pointer">
-            Create a New Organisation
-          </span>
+          @if (hasCreateRole$ | async) {
+            <span [routerLink]="[ 'create-organization' ]" class="font-italic text-cyan-600 cursor-pointer">
+              Create a New Organisation
+            </span>
+          }
   
           <span [routerLink]="[ '/' ]"
                 class="font-italic text-cyan-600 cursor-pointer">

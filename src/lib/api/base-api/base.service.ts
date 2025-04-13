@@ -9,6 +9,7 @@ import {BaseModel} from './base.model'
 import {BaseQuery} from './base.query'
 import {BaseState} from './base.state'
 import {BaseStore} from './base.store'
+import {OrArray} from '@datorama/akita'
 
 export abstract class BaseService<
   RESPONSE extends BaseModel,
@@ -90,5 +91,9 @@ export abstract class BaseService<
   protected override setStoreError(error: HttpErrorResponse): Observable<never> {
     this.setProcessingStatus(ProcessingStatus.FAILURE)
     return super.setStoreError(error)
+  }
+
+  removeEntities(id?: OrArray<string>) {
+    this.store.remove(id)
   }
 }

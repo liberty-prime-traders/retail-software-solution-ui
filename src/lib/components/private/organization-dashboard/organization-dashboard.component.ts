@@ -1,8 +1,11 @@
 import {CommonModule} from '@angular/common'
 import {Component, inject, OnDestroy, OnInit} from '@angular/core'
 import {ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router'
+import {Organization} from 'lib/api/organization/organization.model'
+import {LocalStorageService} from 'lib/utils/services/local-storage.service'
+import {LocalStorageKey} from 'lib/utils/types/local-storage-key.enum'
 import {CardModule} from 'primeng/card'
-import {Tab, TabList, TabPanels, Tabs} from 'primeng/tabs'
+import {Tab, TabList, TabPanels, Tabs, TabsModule} from 'primeng/tabs'
 import {distinctUntilChanged, filter, map, Subject, takeUntil} from 'rxjs'
 
 @Component({
@@ -12,10 +15,7 @@ import {distinctUntilChanged, filter, map, Subject, takeUntil} from 'rxjs'
   imports: [
     CommonModule,
     CardModule,
-    Tabs,
-    TabList,
-    Tab,
-    TabPanels,
+    TabsModule,
     RouterLink,
     RouterOutlet
   ]
@@ -24,8 +24,12 @@ export class OrganizationDashboardComponent implements OnInit, OnDestroy {
   activeTab: 'locations' | 'manage' = 'locations'
   private destroy$ = new Subject<void>()
 
+  private localStorageService = inject(LocalStorageService)
   private activatedRoute = inject(ActivatedRoute)
   private router = inject(Router)
+
+  subdomain: string | null = null;
+  currentOrganization: Organization | null = null;
 
   ngOnInit() {
     this.router.events.pipe(
@@ -49,6 +53,14 @@ export class OrganizationDashboardComponent implements OnInit, OnDestroy {
     ).subscribe(path => {
       this.activeTab = path === 'manage' ? 'manage' : 'locations';
     })
+
+    this.activatedRoute.paramMap.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(params => {
+      this.subdomain = params.get('subdomain');
+    })
+
+    this.currentOrganization = this.localStorageService.getItem<Organization>(LocalStorageKey.ORGANIZATION)
   }
 
   ngOnDestroy() {

@@ -3,12 +3,18 @@ import {inject, Injectable} from '@angular/core'
 import {environment} from '@environments/environment'
 import {mergeMap, Observable, throwError} from 'rxjs'
 import {RtsOktaService} from '../../utils/services/rts-okta.service'
+import {LocalStorageService} from 'lib/utils/services/local-storage.service'
+import {Organization} from '../organization/organization.model'
+import {LocalStorageKey} from 'lib/utils/types/local-storage-key.enum'
 
 @Injectable()
 export class RtsHttpInterceptor implements HttpInterceptor {
   private readonly rtsOktaService = inject(RtsOktaService)
+  private readonly localStorageService = inject(LocalStorageService)
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const organization = this.localStorageService.getItem<Organization>(LocalStorageKey.ORGANIZATION)
+
     return this.rtsOktaService.accessToken$.pipe(
       mergeMap(accessToken => {
         if (!accessToken?.accessToken) {
@@ -17,7 +23,10 @@ export class RtsHttpInterceptor implements HttpInterceptor {
         }
         req = req.clone({
           url: `${environment.BASE_URL}${req.url}`,
-          setHeaders: {'Authorization': `Bearer ${accessToken.accessToken}`}
+          setHeaders: {
+            'Authorization': `Bearer ${accessToken.accessToken}`,
+            ...(organization?.id ? { 'X-ORGANIZATION-ID': organization.id } : {})
+          }
         })
         return next.handle(req)
       })
