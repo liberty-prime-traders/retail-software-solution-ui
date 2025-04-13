@@ -34,6 +34,7 @@ export class FormButtonsComponent {
   readonly disableReset = input(false)
   readonly disableSave = input(false)
 
+  readonly saveLabel = input('Save')
   readonly resetLabel = input('Reset')
 
   readonly processingStatus = model<ProcessingStatus|undefined|null>(ProcessingStatus.IDLE)
@@ -45,7 +46,6 @@ export class FormButtonsComponent {
   readonly ProcessingStatus = ProcessingStatus
   readonly deleteWarning = 'Are you sure you want to delete this record?'
   readonly deleteLabel = 'Delete'
-  readonly saveLabel = 'Save'
 
   readonly processingIsUnderway = computed(() => this.processingStatus() === ProcessingStatus.IN_PROGRESS)
   readonly latestFormAction = signal<FormAction|undefined>(undefined)

@@ -8,6 +8,7 @@ import {JobTitleComponent} from '../lib/components/private/jobtitle/jobtitle.com
 import {CategoryComponent} from '../lib/components/private/category/category.component'
 import {UnitTreeComponent} from '../lib/components/private/unit-tree/unit-tree.component'
 import {PaymentOptionComponent} from 'lib/components/private/payment-option/payment-option.component'
+import {LandingComponent} from 'lib/components/private/landing/landing.component'
 
 const secureRoutes: Routes = [
   {path: '', component: HomepageComponent},
@@ -20,6 +21,7 @@ const secureRoutes: Routes = [
 
 const appChildRoutes: Routes = [
   {path: 'login/callback', component: OktaCallbackComponent},
+  {path: 'landing', canActivate: [OktaAuthGuard], component: LandingComponent},
   {path: 'secure', canActivate: [OktaAuthGuard], component: PrivateComponent, children: secureRoutes},
   {path: '', component: PublicComponent, pathMatch: 'full'}
 ]
