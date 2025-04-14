@@ -65,18 +65,6 @@ export class SelectLocationComponent implements OnInit {
       })
   }
 
-  resetForm() {
-    this.locationForm.reset()
-  }
-
-  submitForm() {
-    console.log(this.locationForm.getRawValue())
-  }
-
-  compareLocations(option1: any, option2: any): boolean {
-    return option1 && option2 ? option1?.name === option2?.name : option1 === option2;
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next()
     this.destroy$.complete()
