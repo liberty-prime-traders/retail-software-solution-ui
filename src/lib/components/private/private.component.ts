@@ -1,7 +1,6 @@
-import {AfterViewInit, Component, HostListener, inject, OnInit} from '@angular/core'
+import {AfterViewInit, Component, HostListener} from '@angular/core'
 import {RouterOutlet} from '@angular/router'
 import {Button} from 'primeng/button'
-import {SysUserService} from '../../api/sys-user/sys-user.service'
 import {NavigationComponent} from './navigation/navigation.component'
 
 @Component({
@@ -14,14 +13,9 @@ import {NavigationComponent} from './navigation/navigation.component'
   ],
   templateUrl: 'private.component.html'
 })
-export class PrivateComponent implements OnInit, AfterViewInit {
-  private readonly userService = inject(SysUserService)
+export class PrivateComponent implements AfterViewInit {
 
   showNavigation = true
-
-  ngOnInit() {
-    this.userService.post()
-  }
 
   ngAfterViewInit() {
     this.adjustCardHeight()

@@ -42,12 +42,7 @@ export class LandingComponent implements OnInit {
     domain: [null, Validators.required]
   })
 
-  resetForm() {
-    this.organizationDomainForm.reset()
-  }
-
   submitOrganization() {
-    const formvalue = this.organizationDomainForm.getRawValue()
-    console.log(formvalue)
+    // TODO: Implement the logic to submit the organization domain
   }
 }
