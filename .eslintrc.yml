@@ -134,6 +134,7 @@ overrides:
         - error
         - code: 120
           tabWidth: 4
+          ignorePattern: "^import\\s.+\\sfrom\\s.+"
       new-parens: error
       newline-per-chained-call: error
       no-extra-parens: error
