@@ -1,11 +1,11 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http'
 import {inject, Injectable} from '@angular/core'
 import {environment} from '@environments/environment'
+import {LocalStorageService} from 'lib/utils/services/local-storage.service'
+import {LocalStorageKey} from 'lib/utils/types/local-storage-key.enum'
 import {mergeMap, Observable, throwError} from 'rxjs'
 import {RtsOktaService} from '../../utils/services/rts-okta.service'
-import {LocalStorageService} from 'lib/utils/services/local-storage.service'
 import {Organization} from '../organization/organization.model'
-import {LocalStorageKey} from 'lib/utils/types/local-storage-key.enum'
 
 @Injectable()
 export class RtsHttpInterceptor implements HttpInterceptor {

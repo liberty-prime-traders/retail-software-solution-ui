@@ -1,5 +1,6 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http'
 import {inject} from '@angular/core'
+import {OrArray} from '@datorama/akita'
 import {isNil} from 'lodash-es'
 import {map, Observable, Subscription} from 'rxjs'
 import {catchError, first, tap} from 'rxjs/operators'
@@ -9,7 +10,6 @@ import {BaseModel} from './base.model'
 import {BaseQuery} from './base.query'
 import {BaseState} from './base.state'
 import {BaseStore} from './base.store'
-import {OrArray} from '@datorama/akita'
 
 export abstract class BaseService<
   RESPONSE extends BaseModel,
