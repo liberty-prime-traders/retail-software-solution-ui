@@ -1,0 +1,18 @@
+<div class="mt-2 mb-6 flex flex-column gap-3 col-11">
+  <rts-form-field label="Select a Location to View" [layout]="FormFieldDirection.VERTICAL" containerClass="">
+    <p-select [loading]="loading$ | async"
+              [options]="(locations$ | async) ?? []"
+              optionLabel="name"
+              #locationDropDown
+              emptyMessage="No location found"
+              placeholder="Select a location">
+    </p-select>
+  </rts-form-field>
+
+  <p-button label="Continue"
+            class="align-self-end"
+            severity="info"
+            [disabled]="!locationDropDown.selectedOption"
+            (onClick)="proceedToLocation(locationDropDown.selectedOption)">
+  </p-button>
+</div>

@@ -14,9 +14,9 @@ export abstract class HasGridComponent<SERVICE extends BaseService<any, any>>
 
 	protected readonly fetchByDefault: boolean = true
 
-	ngOnInit() {
+	ngOnInit(){
 	  if (this.fetchByDefault) {
-		  this.apiService.fetch()
+	    this.apiService.fetch()
 	  }
 	  this.subscriptions.add(this.listenToSaveStatus())
 	}

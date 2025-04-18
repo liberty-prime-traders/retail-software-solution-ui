@@ -6,4 +6,5 @@ export interface Organization extends BaseModel{
 	usageCount?: number
 	name?: string
 	description?: string
+	subdomain?: string
 }

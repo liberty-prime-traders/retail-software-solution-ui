@@ -14,7 +14,7 @@ import {RtsOktaService} from '../../utils/services/rts-okta.service'
 export class WelcomeComponent {
   private readonly rtsOktaService = inject(RtsOktaService)
   private readonly router = inject(Router)
-  
+
   readonly isLoggedIn$ = this.rtsOktaService.loggedIn$
 
   logout() {
