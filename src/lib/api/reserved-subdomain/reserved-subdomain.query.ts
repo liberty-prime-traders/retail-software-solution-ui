@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {BaseQuery} from '../base-api/base.query'
-import {ReservedSubdomain } from './reserved-subdomain.model'
+import {ReservedSubdomain} from './reserved-subdomain.model'
 import {ReservedSubdomainStore} from './reserved-subdomain.store'
 import {ReservedSubdomainState} from './reserved-subdomain.state'
 

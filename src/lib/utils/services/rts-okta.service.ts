@@ -37,6 +37,6 @@ export class RtsOktaService {
 
   private hasRole(accessToken: AccessToken|undefined, role: UserRole): boolean {
     const claims = (accessToken?.claims as OktaAccessTokenClaims)?.groups
-    return !!claims?.includes(role)
+    return Boolean(claims?.includes(role))
   }
 }

@@ -14,7 +14,6 @@ import {NavigationComponent} from './navigation/navigation.component'
   templateUrl: 'private.component.html'
 })
 export class PrivateComponent implements AfterViewInit {
-
   showNavigation = true
 
   ngAfterViewInit() {

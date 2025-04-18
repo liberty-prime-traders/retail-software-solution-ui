@@ -9,29 +9,29 @@ import {CategoryComponent} from '../lib/components/private/category/category.com
 import {UnitTreeComponent} from '../lib/components/private/unit-tree/unit-tree.component'
 import {PaymentOptionComponent} from 'lib/components/private/payment-option/payment-option.component'
 import {LandingComponent} from 'lib/components/private/landing/landing.component'
-import {OrganizationDashboardComponent} from 'lib/components/private/organization-dashboard/organization-dashboard.component'
-import {CreateOrganizationComponent} from 'lib/components/private/create-organization/create-organization.component'
-import {SelectLocationComponent} from 'lib/components/private/select-location/select-location.component'
-import {ManageOrganizationComponent} from 'lib/components/private/manage-organization/manage-organization.component'
+import {OrganizationDashboardComponent} from '../lib/components/private/landing/organization-dashboard/organization-dashboard.component'
+import {CreateOrganizationComponent} from '../lib/components/private/landing/create-organization/create-organization.component'
+import {SelectLocationComponent} from '../lib/components/private/landing/select-location/select-location.component'
+import {ManageOrganizationComponent} from '../lib/components/private/landing/manage-organization/manage-organization.component'
 
 const secureRoutes: Routes = [
   {path: '', component: HomepageComponent},
   {path: 'organization-tree', component: OrganizationTreeComponent},
   {path: 'category', component: CategoryComponent},
-  {path: 'jobtitle', component: JobTitleComponent},
+  {path: 'job-title', component: JobTitleComponent},
   {path: 'units', component: UnitTreeComponent},
-  {path: 'payment-options', component: PaymentOptionComponent},
+  {path: 'payment-options', component: PaymentOptionComponent}
 ]
 
 const landingChildRoutes: Routes = [
   {path: 'create-organization', component: CreateOrganizationComponent},
-  {path: ':subdomain', component: OrganizationDashboardComponent,
+  {path: ':subdomain',
+    component: OrganizationDashboardComponent,
     children: [
-      {path: 'locations', component: SelectLocationComponent},
+      {path: 'select-location', component: SelectLocationComponent},
       {path: 'manage', component: ManageOrganizationComponent},
-      { path: '', redirectTo: 'locations', pathMatch: 'full' }
-    ]
-  },
+      {path: '', redirectTo: 'select-location', pathMatch: 'full'}
+    ]},
   {path: '', component: LandingComponent}
 ]
 

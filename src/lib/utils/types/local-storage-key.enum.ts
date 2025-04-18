@@ -1,4 +1,4 @@
 export enum LocalStorageKey {
-    ORGANIZATION = 'organization'    ,
-    LOCATION = 'location'    
+    ORGANIZATION = 'organization',
+    LOCATION = 'location'
 }

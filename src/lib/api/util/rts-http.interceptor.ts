@@ -25,7 +25,7 @@ export class RtsHttpInterceptor implements HttpInterceptor {
           url: `${environment.BASE_URL}${req.url}`,
           setHeaders: {
             'Authorization': `Bearer ${accessToken.accessToken}`,
-            ...(organization?.id ? { 'X-ORGANIZATION-ID': organization.id } : {})
+            'X-ORGANIZATION-ID': organization?.id ?? ''
           }
         })
         return next.handle(req)
