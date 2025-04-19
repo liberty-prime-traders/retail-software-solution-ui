@@ -12,7 +12,6 @@ import {HasGridComponent} from '../../../reusable/has-grid.component'
 import {UnitValueFormComponent} from './unit-value-form/unit-value-form.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-unit-value',
   templateUrl: 'unit-value.component.html',
   imports: [

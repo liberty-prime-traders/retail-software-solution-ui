@@ -10,7 +10,6 @@ import {HasGridComponent} from '../../reusable/has-grid.component'
 import {JobTitleFormComponent} from './jobtitle-form/jobtitle-form.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-jobtitle',
   templateUrl: 'jobtitle.component.html',
   imports: [

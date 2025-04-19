@@ -14,7 +14,6 @@ import {LocalStorageService} from '../../../utils/services/local-storage.service
 import {LocalStorageKey} from '../../../utils/types/local-storage-key.enum'
 
 @Component({
-  standalone: true,
   selector: 'rts-landing',
   templateUrl: 'landing.component.html',
   imports: [

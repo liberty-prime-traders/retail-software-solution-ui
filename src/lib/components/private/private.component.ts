@@ -4,7 +4,6 @@ import {Button} from 'primeng/button'
 import {NavigationComponent} from './navigation/navigation.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-private',
   imports: [
     RouterOutlet,

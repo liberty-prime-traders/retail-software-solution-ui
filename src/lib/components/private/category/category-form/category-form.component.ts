@@ -14,7 +14,6 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
 
 
 @Component({
-  standalone: true,
   selector: 'rts-category-form',
   templateUrl: 'category-form.component.html',
   imports: [

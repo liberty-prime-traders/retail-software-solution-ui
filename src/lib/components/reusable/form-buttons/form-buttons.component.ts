@@ -12,7 +12,6 @@ import {TooltipComponent} from '../tooltip/tooltip.component'
   selector: 'rts-forms-buttons',
   templateUrl: 'form-buttons.component.html',
   providers: [ConfirmationService],
-  standalone: true,
   imports: [
     ButtonModule,
     ConfirmDialogModule,

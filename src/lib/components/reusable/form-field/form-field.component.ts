@@ -5,7 +5,6 @@ import {FormFieldDirection} from './form-field-direction'
 @Component({
   selector: 'rts-form-field',
   templateUrl: './form-field.component.html',
-  standalone: true,
   imports: [
     NgClass
   ],

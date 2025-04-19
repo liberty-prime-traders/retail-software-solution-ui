@@ -19,7 +19,6 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
 import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-create-organization',
   templateUrl: 'create-organization.component.html',
   imports: [

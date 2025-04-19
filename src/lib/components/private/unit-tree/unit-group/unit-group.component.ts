@@ -14,7 +14,6 @@ import {HasGridComponent} from '../../../reusable/has-grid.component'
 import {UnitGroupFormComponent} from './unit-group-form/unit-group-form.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-unit-group',
   templateUrl: 'unit-group.component.html',
   imports: [

@@ -5,7 +5,6 @@ import {LocationComponent} from './location/location.component'
 import {OrganizationComponent} from './organization/organization.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-organization-tree',
   templateUrl: 'organization-tree.component.html',
   imports: [

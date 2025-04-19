@@ -4,7 +4,6 @@ import {map} from 'rxjs'
 import {SysUserService} from '../../../api/sys-user/sys-user.service'
 
 @Component({
-  standalone: true,
   selector: 'rts-homepage',
   templateUrl: 'homepage.component.html',
   imports: [

@@ -12,7 +12,6 @@ import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-butto
 import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-unit-value-form',
   templateUrl: 'unit-value-form.component.html',
   imports: [

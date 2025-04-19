@@ -14,7 +14,6 @@ import {FormFieldComponent} from '../../../../reusable/form-field/form-field.com
 import {CategoryType} from '../../../../../api/category/category-type.enum'
 
 @Component({
-  standalone: true,
   selector: 'rts-location-form',
   templateUrl: 'location-form.component.html',
   imports: [

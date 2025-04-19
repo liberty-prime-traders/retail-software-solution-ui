@@ -12,7 +12,6 @@ import {HasGridComponent} from '../../../reusable/has-grid.component'
 import {LocationFormComponent} from './location-form/location-form.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-location',
   templateUrl: 'location.component.html',
   imports: [

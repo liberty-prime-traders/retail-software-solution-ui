@@ -6,7 +6,6 @@ import {Divider} from 'primeng/divider'
 import {RtsOktaService} from '../../utils/services/rts-okta.service'
 
 @Component({
-  standalone: true,
   selector: 'rts-welcome',
   templateUrl: 'welcome.component.html',
   imports: [RouterOutlet, Divider, Button, RouterLink, AsyncPipe]

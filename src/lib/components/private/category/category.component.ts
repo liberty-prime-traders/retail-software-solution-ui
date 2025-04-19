@@ -10,7 +10,6 @@ import {HasGridComponent} from '../../reusable/has-grid.component'
 import {CategoryFormComponent} from './category-form/category-form.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-category',
   templateUrl: 'category.component.html',
   imports: [

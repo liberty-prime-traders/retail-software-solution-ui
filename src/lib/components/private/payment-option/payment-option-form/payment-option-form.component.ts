@@ -9,7 +9,6 @@ import {isNil} from 'lodash-es'
 import {InputText} from 'primeng/inputtext'
 
 @Component({
-  standalone: true,
   selector: 'rts-payment-option-form',
   templateUrl: 'payment-option-form.component.html',
   imports: [

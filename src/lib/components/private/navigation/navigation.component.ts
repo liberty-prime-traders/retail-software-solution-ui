@@ -3,7 +3,6 @@ import {MenuItem} from 'primeng/api'
 import {Menu} from 'primeng/menu'
 
 @Component({
-  standalone: true,
   selector: 'rts-navigation',
   templateUrl: 'navigation.component.html',
   imports: [

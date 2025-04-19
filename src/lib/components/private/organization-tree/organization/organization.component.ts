@@ -14,7 +14,6 @@ import {HasGridComponent} from '../../../reusable/has-grid.component'
 import {OrganizationFormComponent} from './organization-form/organization-form.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-organization',
   templateUrl: 'organization.component.html',
   imports: [

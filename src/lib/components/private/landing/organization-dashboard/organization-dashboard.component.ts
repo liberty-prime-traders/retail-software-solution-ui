@@ -12,7 +12,6 @@ import {LocalStorageKey} from '../../../../utils/types/local-storage-key.enum'
 import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-organization-dashboard',
   templateUrl: 'organization-dashboard.component.html',
   imports: [

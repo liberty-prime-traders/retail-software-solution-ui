@@ -11,7 +11,6 @@ import {HasGridComponent} from 'lib/components/reusable/has-grid.component'
 import {PaymentOptionFormComponent} from './payment-option-form/payment-option-form.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-payment-option',
   templateUrl: 'payment-option.component.html',
   imports: [

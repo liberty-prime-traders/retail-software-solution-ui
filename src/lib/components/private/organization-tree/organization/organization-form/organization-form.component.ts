@@ -9,7 +9,6 @@ import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-butto
 import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-organization-form',
   templateUrl: 'organization-form.component.html',
   imports: [

@@ -9,7 +9,6 @@ import {UnitGroup} from '../../../../../api/unit-group/unitgroup.model'
 import {UnitGroupService} from '../../../../../api/unit-group/unitgroup.service'
 
 @Component({
-  standalone: true,
   selector: 'rts-unit-group-form',
   templateUrl: 'unit-group-form.component.html',
   imports: [

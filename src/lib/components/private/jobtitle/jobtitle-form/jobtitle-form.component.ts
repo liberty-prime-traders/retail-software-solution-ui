@@ -11,7 +11,6 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
 
 
 @Component({
-  standalone: true,
   selector: 'rts-jobtitle-form',
   templateUrl: 'jobtitle-form.component.html',
   imports: [

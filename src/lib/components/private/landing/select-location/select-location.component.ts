@@ -13,7 +13,6 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
 import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-select-location',
   templateUrl: 'select-location.component.html',
   imports: [
