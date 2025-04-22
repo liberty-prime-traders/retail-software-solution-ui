@@ -17,7 +17,7 @@ export class FormFieldComponent {
   readonly layout = input(FormFieldDirection.HORIZONTAL)
   readonly required = input(false)
   readonly labelWidth = input('120px')
-  readonly contentClass = input('')
+  readonly contentClass = input('col-5')
   readonly containerClass = input('pl-4')
 
   readonly formFieldDirection = FormFieldDirection

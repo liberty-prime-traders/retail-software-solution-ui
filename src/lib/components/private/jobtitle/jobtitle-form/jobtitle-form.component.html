@@ -6,8 +6,8 @@
   <rts-forms-buttons [disableReset]="!jobTitleForm().dirty"
                      [disableSave]="!jobTitleForm().valid || !jobTitleForm().dirty"
                      [hideDelete]="!jobtitle()?.id"
-                     [processingStatus]="processingStatus$ | async"
-                     [failureMessages]="failureMessages$ | async"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
                      (delete)="deleteJobTitle()"
                      (save)="upsertJobTitle()"
                      (resetAction)="resetForm()">

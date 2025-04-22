@@ -18,8 +18,8 @@
   <rts-forms-buttons [disableReset]="!categoryForm().dirty"
                      [disableSave]="!categoryForm().valid || !categoryForm().dirty"
                      [hideDelete]="!category()?.id"
-                     [processingStatus]="processingStatus$ | async"
-                     [failureMessages]="failureMessages$ | async"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
                      (delete)="deleteCategory()"
                      (save)="upsertCategory()"
                      (resetAction)="resetForm()">

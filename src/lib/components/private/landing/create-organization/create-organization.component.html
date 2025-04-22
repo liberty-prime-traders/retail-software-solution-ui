@@ -26,12 +26,12 @@
                   outlined="true"
                   severity="info"
                   (click)="verifyDomain()"
-                  [loading]="(reservedSubdomainProcessingStatus$ | async) === ProcessingStatus.IN_PROGRESS"
-                  [disabled]="(reservedSubdomainProcessingIsUnderWay$ | async) || domainControl.invalid">
+                  [loading]="reservedSubdomainProcessingIsUnderWay()"
+                  [disabled]="reservedSubdomainProcessingIsUnderWay() || domainControl.invalid">
         </p-button>
       </div>
 
-      @if ((reservedSubdomainProcessingStatus$ | async) === ProcessingStatus.SUCCESS) {
+      @if (reservedSubdomainProcessingStatus() === ProcessingStatus.SUCCESS) {
         <div class="px-4 mb-4">
           @if (requestedSubdomain() !== domainControl.value) {
             <div class="text-sm text-yellow-500 mt-1">
@@ -46,9 +46,9 @@
         </div>
       }
 
-      @if ((reservedSubdomainProcessingStatus$ | async) === ProcessingStatus.FAILURE) {
+      @if (reservedSubdomainProcessingStatus() === ProcessingStatus.FAILURE) {
         <div class="text-red-500 text-center px-4 mb-4">
-          @for (message of (reservedSubdomainFailureMessages$ | async) ?? []; track message) {
+          @for (message of reservedSubdomainFailureMessages(); track message) {
             <span>{{message}}</span>
           }
         </div>
@@ -62,13 +62,11 @@
         </p-button>
 
         <rts-forms-buttons [disableReset]="!organizationForm.dirty"
-                           [disableSave]="!((reservedSubdomainProcessingStatus$ | async) === ProcessingStatus.SUCCESS)
-                            || !organizationForm.valid
-                            || !organizationForm.dirty"
+                           [disableSave]="!organizationForm.valid || !organizationForm.dirty"
                            [hideReset]="true"
                            [hideDelete]="true"
-                           [processingStatus]="organizationProcessingStatus$ | async"
-                           [failureMessages]="organizationServiceFailureMessages$ | async"
+                           [processingStatus]="organizationProcessingStatus()"
+                           [failureMessages]="organizationServiceFailureMessages()"
                            [saveLabel]="'Create'"
                            (save)="createOrganization()"
                            (resetAction)="resetForm()">

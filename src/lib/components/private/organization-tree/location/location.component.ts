@@ -1,5 +1,5 @@
-import {AsyncPipe} from '@angular/common'
 import {Component, effect, inject, input, model, signal} from '@angular/core'
+import {EntityId} from '@ngrx/signals/entities'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Location} from '../../../../api/location/location.model'
@@ -16,7 +16,6 @@ import {LocationFormComponent} from './location-form/location-form.component'
   templateUrl: 'location.component.html',
   imports: [
     AddRowComponent,
-    AsyncPipe,
     Button,
     NullSafePipe,
     NullishToZeroPipe,
@@ -28,10 +27,10 @@ import {LocationFormComponent} from './location-form/location-form.component'
 export class LocationComponent extends HasGridComponent<LocationService> {
   private readonly locationService = inject(LocationService)
 
-  readonly organizationId = input<string>()
-  readonly loading$ = this.locationService.selectLoading$()
-  readonly locations$ = this.locationService.selectAll$()
-  readonly processingIsUnderWay$ = this.locationService.processingIsUnderWay$()
+  readonly organizationId = input<EntityId>()
+  readonly loading = this.locationService.selectLoading
+  readonly locations = this.locationService.selectAll
+  readonly processingIsUnderWay = this.locationService.processingIsUnderWay
 
   readonly apiService = this.locationService
   readonly addingIsActive = signal(false)

@@ -1,12 +1,11 @@
 import {Component, computed, inject, input, OnInit} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
-import {InputText} from 'primeng/inputtext'
-import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-buttons.component'
-import {AsyncPipe} from '@angular/common'
-import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
 import {isNil} from 'lodash-es'
+import {InputText} from 'primeng/inputtext'
 import {UnitGroup} from '../../../../../api/unit-group/unitgroup.model'
 import {UnitGroupService} from '../../../../../api/unit-group/unitgroup.service'
+import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-buttons.component'
+import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
 
 @Component({
   selector: 'rts-unit-group-form',
@@ -15,7 +14,6 @@ import {UnitGroupService} from '../../../../../api/unit-group/unitgroup.service'
     ReactiveFormsModule,
     InputText,
     FormButtonsComponent,
-    AsyncPipe,
     FormFieldComponent
   ]
 })
@@ -31,8 +29,8 @@ export class UnitGroupFormComponent implements OnInit {
     description: this.unitGroup()?.description
   }))
 
-  readonly processingStatus$ = this.unitGroupService.processingStatus$()
-  readonly failureMessages$ = this.unitGroupService.failureMessages$()
+  readonly processingStatus = this.unitGroupService.selectProcessingStatus
+  readonly failureMessages = this.unitGroupService.selectFailureMessages
 
   ngOnInit() {
     this.unitGroupService.resetProcessingStatus()
@@ -43,7 +41,7 @@ export class UnitGroupFormComponent implements OnInit {
   }
 
   upsertUnitGroup() {
-    const updatedUnitGroup: UnitGroup = this.unitGroupForm().getRawValue()
+    const updatedUnitGroup: Partial<UnitGroup> = this.unitGroupForm().getRawValue()
     if (isNil(updatedUnitGroup.id)) {
       this.unitGroupService.post(updatedUnitGroup)
     } else {

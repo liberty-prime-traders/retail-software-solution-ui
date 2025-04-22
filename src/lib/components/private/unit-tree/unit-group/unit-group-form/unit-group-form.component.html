@@ -10,8 +10,8 @@
   <rts-forms-buttons [disableReset]="!unitGroupForm().dirty"
                      [disableSave]="!unitGroupForm().valid || !unitGroupForm().dirty"
                      [hideDelete]="!unitGroup()?.id"
-                     [processingStatus]="processingStatus$ | async"
-                     [failureMessages]="failureMessages$ | async"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
                      (delete)="deleteUnitGroup()"
                      (save)="upsertUnitGroup()"
                      (resetAction)="resetForm()">

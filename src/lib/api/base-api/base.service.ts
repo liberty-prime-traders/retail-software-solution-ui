@@ -1,36 +1,20 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http'
 import {inject} from '@angular/core'
-import {OrArray} from '@datorama/akita'
-import {isNil} from 'lodash-es'
-import {map, Observable, Subscription} from 'rxjs'
+import {EntityId} from '@ngrx/signals/entities'
+import {Subscription} from 'rxjs'
 import {catchError, first, tap} from 'rxjs/operators'
 import {ProcessingStatus} from '../../utils/types/processing-status.enum'
-import {FetchService} from '../util/fetch-service'
 import {BaseModel} from './base.model'
-import {BaseQuery} from './base.query'
-import {BaseState} from './base.state'
 import {BaseStore} from './base.store'
+import {FetchService} from './fetch-service'
 
-export abstract class BaseService<
-  RESPONSE extends BaseModel,
-  STATE extends BaseState<RESPONSE>,
-  PAYLOAD = RESPONSE
-> extends FetchService<RESPONSE, STATE> {
+export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<RESPONSE>>
+  extends FetchService<RESPONSE> {
+  
   private readonly httpClient = inject(HttpClient)
 
-  readonly processingStatus$ = () => this.query.selectProcessingStatus()
-  readonly failureMessages$ = () => this.query.selectFailureMessages()
-  readonly processingIsUnderWay$ = () => this.processingStatus$().pipe(
-    map(status => status === ProcessingStatus.IN_PROGRESS)
-  )
-
-  protected constructor(protected override readonly store: BaseStore<RESPONSE, STATE>,
-                          protected override readonly query: BaseQuery<RESPONSE, STATE>) {
-    super(store, query, inject(HttpClient))
-  }
-
-  resetProcessingStatus() {
-    this.setProcessingStatus(ProcessingStatus.IDLE)
+  protected constructor(protected override readonly store: BaseStore<RESPONSE>) {
+    super(store, inject(HttpClient))
   }
 
   post(body?: PAYLOAD, id?: string): Subscription {
@@ -54,7 +38,10 @@ export abstract class BaseService<
       .subscribe()
   }
 
-  delete(id?: string): Subscription {
+  delete(id?: EntityId): Subscription|undefined {
+    if (!id) {
+      return
+    }
     this.store.setLoading(true)
     this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
     return this.httpClient.delete(this.getBasePath(id)).pipe(
@@ -72,28 +59,5 @@ export abstract class BaseService<
   startSaving() {
     this.store.setLoading(true)
     this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
-  }
-
-  protected finishSavingWithSuccess(result: RESPONSE | RESPONSE[]) {
-    if (Array.isArray(result)) {
-      this.store.upsertMany(result)
-    } else if (!isNil(result)) {
-      this.store.upsert(result[this.store.idKey], result)
-    }
-    this.store.setLoading(false)
-    this.setProcessingStatus(ProcessingStatus.SUCCESS)
-  }
-
-  protected override setProcessingStatus(processingStatus: ProcessingStatus): void {
-    this.store.setProcessingStatus(processingStatus)
-  }
-
-  protected override setStoreError(error: HttpErrorResponse): Observable<never> {
-    this.setProcessingStatus(ProcessingStatus.FAILURE)
-    return super.setStoreError(error)
-  }
-
-  removeEntities(id?: OrArray<string>) {
-    this.store.remove(id)
   }
 }

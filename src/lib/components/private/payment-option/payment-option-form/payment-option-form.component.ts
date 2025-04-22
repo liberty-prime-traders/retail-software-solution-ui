@@ -1,4 +1,3 @@
-import {AsyncPipe} from '@angular/common'
 import {Component, computed, inject, input, OnInit} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {PaymentOption} from 'lib/api/payment-option/payment-option.model.'
@@ -15,7 +14,6 @@ import {InputText} from 'primeng/inputtext'
     ReactiveFormsModule,
     InputText,
     FormButtonsComponent,
-    AsyncPipe,
     FormFieldComponent
   ]
 })
@@ -31,8 +29,8 @@ export class PaymentOptionFormComponent implements OnInit {
     description: this.paymentOption()?.description
   }))
 
-  readonly processingStatus$ = this.paymentOptionService.processingStatus$()
-  readonly failureMessages$ = this.paymentOptionService.failureMessages$()
+  readonly processingStatus = this.paymentOptionService.selectProcessingStatus
+  readonly failureMessages = this.paymentOptionService.selectFailureMessages
 
   ngOnInit() {
     this.paymentOptionService.resetProcessingStatus()
@@ -43,7 +41,7 @@ export class PaymentOptionFormComponent implements OnInit {
   }
 
   upsertPaymentOption() {
-    const updatedPaymentOption: PaymentOption = this.paymentOptionForm().getRawValue()
+    const updatedPaymentOption: Partial<PaymentOption> = this.paymentOptionForm().getRawValue()
     if (isNil(updatedPaymentOption.id)) {
       this.paymentOptionService.post(updatedPaymentOption)
     } else {

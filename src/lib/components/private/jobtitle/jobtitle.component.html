@@ -1,11 +1,11 @@
 <h3 class="font-semibold">Job Titles</h3>
 
-<p-table  [loading]="(loading$ | async) && !addingIsActive()"
+<p-table  [loading]="loading() && !addingIsActive()"
           selectionMode="single"
           rowExpandMode="single"
           size="small"
           dataKey="id"
-          [value]="(jobTitles$ | async) ?? []"
+          [value]="jobTitles()"
           [(selection)]="selectedJobTitle"
           [globalFilterFields]="['value', 'createdBy', 'usageCount']"
           (onRowExpand)="rowIsExpanded.set(true)"
@@ -41,7 +41,7 @@
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   severity="secondary"
-                  [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
+                  [disabled]="processingIsUnderWay() || addingIsActive()"
                   [pRowToggler]="jobtitle" >
         </p-button>
       </td>
@@ -57,7 +57,7 @@
   </ng-template>
 </p-table>
 
-<rts-add-row   [(addingIsActive)]="addingIsActive"  [disabled]="rowIsExpanded() || (loading$ | async)">
+<rts-add-row   [(addingIsActive)]="addingIsActive"  [disabled]="rowIsExpanded() || loading()">
   @if (addingIsActive()) {
     <rts-jobtitle-form></rts-jobtitle-form>
   }

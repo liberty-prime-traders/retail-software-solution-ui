@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common'
-import {Component, inject, OnInit} from '@angular/core'
+import {Component, inject, OnInit, Signal} from '@angular/core'
 import {ReactiveFormsModule} from '@angular/forms'
 import {Router} from '@angular/router'
 import {Button} from 'primeng/button'
@@ -29,8 +29,8 @@ export class SelectLocationComponent extends HasSubscriptionComponent implements
   private readonly locationService = inject(LocationService)
 
   protected readonly FormFieldDirection = FormFieldDirection
-  protected readonly locations$ = this.locationService.selectAll$()
-  protected readonly loading$ = this.locationService.selectLoading$()
+  protected readonly locations: Signal<Location[]> = this.locationService.selectAll
+  protected readonly loading = this.locationService.selectLoading
 
   ngOnInit() {
     const storedLocation = this.localStorageService.getItem<Location>(LocalStorageKey.LOCATION)

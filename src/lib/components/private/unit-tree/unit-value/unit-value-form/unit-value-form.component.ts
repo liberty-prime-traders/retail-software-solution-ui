@@ -1,8 +1,7 @@
-import {AsyncPipe} from '@angular/common'
 import {Component, computed, inject, input, OnInit} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, ValidatorFn, Validators} from '@angular/forms'
+import {EntityId} from '@ngrx/signals/entities'
 import {isNil} from 'lodash-es'
-import {SelectItem} from 'primeng/api'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
@@ -18,7 +17,6 @@ import {FormFieldComponent} from '../../../../reusable/form-field/form-field.com
     ReactiveFormsModule,
     InputText,
     FormButtonsComponent,
-    AsyncPipe,
     FormFieldComponent,
     Select,
     InputNumber
@@ -26,8 +24,8 @@ import {FormFieldComponent} from '../../../../reusable/form-field/form-field.com
 })
 export class UnitValueFormComponent implements OnInit {
   readonly unitValue = input<UnitValue>()
-  readonly unitGroupId = input<string>()
-  readonly baseUnitOptions = input<Array<SelectItem<string>>>([])
+  readonly unitGroupId = input<EntityId>()
+  readonly baseUnitOptions = input<Array<UnitValue>>([])
 
   private readonly unitValueService = inject(UnitValueService)
   private readonly formBuilder = inject(FormBuilder)
@@ -41,8 +39,8 @@ export class UnitValueFormComponent implements OnInit {
     conversionFactor: this.unitValue()?.conversionFactor
   }, {validators: this.getDependentFieldsValidator()}))
 
-  readonly processingStatus$ = this.unitValueService.processingStatus$()
-  readonly failureMessages$ = this.unitValueService.failureMessages$()
+  readonly processingStatus = this.unitValueService.selectProcessingStatus
+  readonly failureMessages = this.unitValueService.selectFailureMessages
 
   ngOnInit() {
     this.unitValueService.resetProcessingStatus()
@@ -53,7 +51,10 @@ export class UnitValueFormComponent implements OnInit {
   }
 
   upsertUnitValue() {
-    const updatedUnitValue: UnitValue = {...this.unitValueForm().getRawValue(), unitGroupId: this.unitGroupId()}
+    const updatedUnitValue: Partial<UnitValue> = {
+      ...this.unitValueForm().getRawValue(),
+      unitGroupId: this.unitGroupId()
+    }
     if (isNil(updatedUnitValue.id)) {
       this.unitValueService.post(updatedUnitValue)
     } else {

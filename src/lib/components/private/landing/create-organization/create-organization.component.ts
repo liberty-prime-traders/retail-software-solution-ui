@@ -1,11 +1,11 @@
 import {CommonModule} from '@angular/common'
-import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core'
+import {Component, effect, inject, OnInit, Signal, signal} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {Router} from '@angular/router'
 import {ButtonModule} from 'primeng/button'
 import {CardModule} from 'primeng/card'
 import {InputTextModule} from 'primeng/inputtext'
-import {Subscription} from 'rxjs'
+import {distinctUntilChanged, filter, Subscription} from 'rxjs'
 import {tap} from 'rxjs/operators'
 import {Organization} from '../../../../api/organization/organization.model'
 import {OrganizationService} from '../../../../api/organization/organization.service'
@@ -31,7 +31,7 @@ import {HasSubscriptionComponent} from '../../../reusable/has-subscription.compo
     FormFieldComponent
   ]
 })
-export class CreateOrganizationComponent extends HasSubscriptionComponent implements OnInit, OnDestroy {
+export class CreateOrganizationComponent extends HasSubscriptionComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder)
   private readonly router = inject(Router)
   private readonly reservedSubdomainService = inject(ReservedSubdomainService)
@@ -41,7 +41,7 @@ export class CreateOrganizationComponent extends HasSubscriptionComponent implem
   readonly ProcessingStatus = ProcessingStatus
   readonly FormFieldDirection = FormFieldDirection
 
-  requestedSubdomain = signal<string|null>(null)
+  readonly requestedSubdomain = signal<string|null>(null)
 
   readonly organizationForm = this.formBuilder.nonNullable.group({
     name: ['', Validators.required],
@@ -53,21 +53,33 @@ export class CreateOrganizationComponent extends HasSubscriptionComponent implem
     return this.organizationForm.controls.subdomain
   }
 
-  readonly organizationProcessingStatus$ = this.organizationService.processingStatus$()
-  readonly organizationServiceFailureMessages$ = this.organizationService.failureMessages$()
-  readonly selectFirstOrganization$ = this.organizationService.selectFirst$()
+  readonly organizationProcessingStatus = this.organizationService.selectProcessingStatus
+  readonly organizationServiceFailureMessages = this.organizationService.selectFailureMessages
 
-  readonly reservedSubdomainProcessingStatus$ = this.reservedSubdomainService.processingStatus$()
-  readonly reservedSubdomainProcessingIsUnderWay$ = this.reservedSubdomainService.processingIsUnderWay$()
-  readonly reservedSubdomainFailureMessages$ = this.reservedSubdomainService.failureMessages$()
-  readonly selectFirstReservedSubdomain$ = this.reservedSubdomainService.selectFirst$()
+  readonly reservedSubdomainProcessingStatus = this.reservedSubdomainService.selectProcessingStatus
+  readonly reservedSubdomainProcessingIsUnderWay: Signal<boolean> = this.reservedSubdomainService.processingIsUnderWay
+  readonly reservedSubdomainFailureMessages: Signal<string[]> = this.reservedSubdomainService.selectFailureMessages
+
+  constructor() {
+    super()
+    effect(() => {
+      if (this.reservedSubdomainProcessingStatus() === ProcessingStatus.SUCCESS) {
+        const reservedDomain = this.reservedSubdomainService.selectFirst()
+        this.organizationForm.patchValue({subdomain: reservedDomain?.subdomain}, {emitEvent: false})
+      }
+
+      if (this.organizationProcessingStatus() === ProcessingStatus.SUCCESS) {
+        const createdOrganization = this.organizationService.selectFirst()
+        this.localStorageService.setItem<Organization>(LocalStorageKey.ORGANIZATION, createdOrganization!)
+        this.router.navigate(['/landing', this.domainControl.value, 'select-location']).then()
+      }
+    })
+  }
 
   ngOnInit() {
     this.reservedSubdomainService.resetProcessingStatus()
     this.organizationService.resetProcessingStatus()
     this.subscriptions.add(this.listenToDomainChanges())
-    this.subscriptions.add(this.listenToDomainReservationCompletion())
-    this.subscriptions.add(this.receiveCreatedOrganization())
   }
 
   resetForm() {
@@ -76,8 +88,7 @@ export class CreateOrganizationComponent extends HasSubscriptionComponent implem
 
   verifyDomain() {
     this.requestedSubdomain.set(this.domainControl.value)
-    this.reservedSubdomainService.removeEntities()
-    this.reservedSubdomainService.post(undefined, this.domainControl.value)
+    this.reservedSubdomainService.refetch(this.domainControl.value, 'verify')
   }
 
   createOrganization() {
@@ -90,24 +101,9 @@ export class CreateOrganizationComponent extends HasSubscriptionComponent implem
 
   private listenToDomainChanges(): Subscription {
     return this.domainControl.valueChanges.pipe(
+      filter(Boolean),
+      distinctUntilChanged(),
       tap(() => this.reservedSubdomainService.resetProcessingStatus())
-    ).subscribe()
-  }
-
-  private listenToDomainReservationCompletion(): Subscription {
-    return this.selectFirstReservedSubdomain$.pipe(
-      tap((verifiedDomain) =>
-        this.organizationForm.patchValue({subdomain: verifiedDomain.subdomain})
-      )
-    ).subscribe()
-  }
-
-  private receiveCreatedOrganization(): Subscription {
-    return this.selectFirstOrganization$.pipe(
-      tap((organization) => {
-        this.localStorageService.setItem<Organization>(LocalStorageKey.ORGANIZATION, organization)
-        this.router.navigate(['/landing', this.domainControl.value, 'select-location']).then()
-      })
     ).subscribe()
   }
 }

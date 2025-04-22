@@ -1,39 +1,28 @@
-import {action, EntityStore} from '@datorama/akita'
+import {Signal} from '@angular/core'
+import {signalStore} from '@ngrx/signals'
+import {EntityId} from '@ngrx/signals/entities'
 import {ProcessingStatus} from '../../utils/types/processing-status.enum'
+import {withBaseStore} from './base-store.feature'
 import {BaseModel} from './base.model'
-import {BaseState} from './base.state'
 
-export abstract class BaseStore<E extends BaseModel, S extends BaseState<E>> extends EntityStore<S, E, string> {
-  protected constructor(protected initialState: S) {
-    super({...initialState})
-  }
+export interface BaseStore<ENTITY extends BaseModel> {
+	entities: Signal<ENTITY[]>
+	loading: Signal<boolean>
+	hasCache: Signal<boolean>
+	selectFirst: Signal<ENTITY | undefined>
+	processingStatus: Signal<ProcessingStatus>
+	failureMessages: Signal<string[]>
+	basePath: string
+	setAll: (entities: ENTITY[]) => void
+	upsert: (entity: ENTITY) => void
+	setProcessingStatus: (processingStatus: ProcessingStatus) => void
+	setHasCache: (hasCache: boolean) => void
+	setError<T>(error: T): void
+	resetStore(): void
+	setLoading(loading: boolean): void
+	remove(id: EntityId): void
+}
 
-  @action('set processing status')
-  setProcessingStatus(processingStatus: ProcessingStatus) {
-    const partial: Partial<S> = {}
-    this.update({...partial, processingStatus})
-  }
-
-  @action('set error')
-  override setError<T>(error: T) {
-    const partial: Partial<S> = {}
-    this.update({...partial, failureMessages: this.parseError(error)})
-  }
-
-  parseError(error: any): string[] {
-    if (error === null || error.status !== 400) {
-      return ['Unknown Error, Contact Admin']
-    }
-    let err = []
-    if (error.status === 400) {
-      if (typeof error.error === 'string') {
-        err = [error.error]
-      } else if (error.error instanceof Array) {
-        err = error
-      } else if ('message' in error.error) {
-        err = [error.error['message']]
-      }
-    }
-    return err
-  }
+export function createBaseStore<ENTITY extends BaseModel>() {
+  return signalStore(withBaseStore<ENTITY>(entity => entity.id))
 }

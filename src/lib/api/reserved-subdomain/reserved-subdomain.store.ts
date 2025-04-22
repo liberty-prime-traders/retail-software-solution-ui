@@ -1,14 +1,10 @@
 import {Injectable} from '@angular/core'
-import {StoreConfig} from '@datorama/akita'
-import {BaseStore} from '../base-api/base.store'
-import {createInitialState} from '../base-api/base.state'
+import {BaseStore, createBaseStore} from '../base-api/base.store'
 import {ReservedSubdomain} from './reserved-subdomain.model'
-import {ReservedSubdomainState} from './reserved-subdomain.state'
 
 @Injectable({providedIn: 'root'})
-@StoreConfig({name: 'reserved-subdomains'})
-export class ReservedSubdomainStore extends BaseStore<ReservedSubdomain, ReservedSubdomainState> {
-  constructor() {
-    super(createInitialState())
-  }
+export class ReservedSubdomainStore extends createBaseStore<ReservedSubdomain>()
+  implements BaseStore<ReservedSubdomain> {
+  
+  readonly basePath = 'reserved-subdomains'
 }

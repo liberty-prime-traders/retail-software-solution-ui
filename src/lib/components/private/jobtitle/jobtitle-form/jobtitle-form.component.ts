@@ -1,12 +1,11 @@
 import {Component, computed, inject, input, OnInit} from '@angular/core'
-import {AsyncPipe} from '@angular/common'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
-import {InputText} from 'primeng/inputtext'
-import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
+import {isNil} from 'lodash-es'
 import {DropdownModule} from 'primeng/dropdown'
+import {InputText} from 'primeng/inputtext'
 import {JobTitle} from '../../../../api/jobtitle/jobtitle.model'
 import {JobTitleService} from '../../../../api/jobtitle/jobtitle.service'
-import {isNil} from 'lodash-es'
+import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 
 
@@ -14,7 +13,6 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
   selector: 'rts-jobtitle-form',
   templateUrl: 'jobtitle-form.component.html',
   imports: [
-    AsyncPipe,
     FormButtonsComponent,
     FormsModule,
     InputText,
@@ -34,8 +32,8 @@ export class JobTitleFormComponent implements OnInit {
     value: [this.jobtitle()?.value, Validators.required]
   }))
 
-  readonly processingStatus$ = this.jobTitleService.processingStatus$()
-  readonly failureMessages$ = this.jobTitleService.failureMessages$()
+  readonly processingStatus = this.jobTitleService.selectProcessingStatus
+  readonly failureMessages = this.jobTitleService.selectFailureMessages
 
   ngOnInit() {
     this.jobTitleService.resetProcessingStatus()
@@ -46,7 +44,7 @@ export class JobTitleFormComponent implements OnInit {
   }
 
   upsertJobTitle() {
-    const updatedJobTitle: JobTitle = {...this.jobTitleForm().getRawValue()}
+    const updatedJobTitle: Partial<JobTitle> = {...this.jobTitleForm().getRawValue()}
     if (isNil(updatedJobTitle.id)) {
       this.jobTitleService.post(updatedJobTitle)
     } else {

@@ -3,14 +3,14 @@
     <h3 class="font-semibold">Payment Options</h3>
     <hr/>
 
-    <p-table [loading]="(loading$ | async) && !addingIsActive()" 
+    <p-table [loading]="loading() && !addingIsActive()"
              rowExpandMode="single"
              size="small"
              dataKey="id"
              sortField="name"
              (onRowExpand)="rowIsExpanded.set(true)"
              (onRowCollapse)="rowIsExpanded.set(false)"
-             [value]="(paymentOptions$ | async) ?? []">
+             [value]="paymentOptions()">
 
       <ng-template #header>
         <tr class="line-height-4">
@@ -59,7 +59,7 @@
             <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                       rounded
                       severity="secondary"
-                      [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
+                      [disabled]="processingIsUnderWay() || addingIsActive()"
                       [pRowToggler]="paymentOption">
             </p-button>
           </td>
@@ -81,7 +81,7 @@
       </ng-template>
     </p-table>
 
-    <rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || (loading$ | async)">
+    <rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
       @if (addingIsActive()) {
         <rts-payment-option-form></rts-payment-option-form>
       }

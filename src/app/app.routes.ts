@@ -1,7 +1,6 @@
 import {Routes} from '@angular/router'
 import {OktaAuthGuard, OktaCallbackComponent} from '@okta/okta-angular'
 import {HomepageComponent} from '../lib/components/private/homepage/homepage.component'
-import {OrganizationTreeComponent} from '../lib/components/private/organization-tree/organization-tree.component'
 import {PrivateComponent} from '../lib/components/private/private.component'
 import {PublicComponent} from '../lib/components/public/public.component'
 import {JobTitleComponent} from '../lib/components/private/jobtitle/jobtitle.component'
@@ -16,7 +15,6 @@ import {ManageOrganizationComponent} from '../lib/components/private/landing/man
 
 const secureRoutes: Routes = [
   {path: '', component: HomepageComponent},
-  {path: 'organization-tree', component: OrganizationTreeComponent},
   {path: 'category', component: CategoryComponent},
   {path: 'job-title', component: JobTitleComponent},
   {path: 'units', component: UnitTreeComponent},

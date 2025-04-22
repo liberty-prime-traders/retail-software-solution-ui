@@ -1,15 +1,15 @@
 import {ProcessingStatus} from '../../utils/types/processing-status.enum'
-import {BaseModel} from './base.model'
-import {EntityState} from '@datorama/akita'
 
-export interface BaseState<E extends BaseModel> extends EntityState<E, string> {
-  processingStatus?: ProcessingStatus
+export interface BaseState {
+  processingStatus: ProcessingStatus
   failureMessages: string[]
   loading: boolean
+  hasCache: boolean
 }
 
-export const createInitialState = <MODEL extends BaseModel>(): BaseState<MODEL> => ({
+export const createInitialState = (): BaseState => ({
   processingStatus: ProcessingStatus.IDLE,
   loading: false,
-  failureMessages: []
+  failureMessages: [],
+  hasCache: false
 })

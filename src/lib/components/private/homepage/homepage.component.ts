@@ -1,20 +1,17 @@
-import {AsyncPipe} from '@angular/common'
-import {Component, inject} from '@angular/core'
-import {map} from 'rxjs'
+import {Component, computed, inject} from '@angular/core'
 import {SysUserService} from '../../../api/sys-user/sys-user.service'
 
 @Component({
   selector: 'rts-homepage',
   templateUrl: 'homepage.component.html',
-  imports: [
-    AsyncPipe
-  ]
+  imports: []
 })
 export class HomepageComponent {
   private readonly userService = inject(SysUserService)
-  private readonly loggedInUser$ = this.userService.selectFirst$()
+  private readonly loggedInUser = this.userService.selectFirst
 
-  readonly userFullName$ = this.loggedInUser$.pipe(
-    map(user => `${user.firstName} ${user.lastName}`)
-  )
+  readonly userFullName = computed(() => {
+    const user = this.loggedInUser()
+    return `${user?.firstName} ${user?.lastName}`
+  })
 }

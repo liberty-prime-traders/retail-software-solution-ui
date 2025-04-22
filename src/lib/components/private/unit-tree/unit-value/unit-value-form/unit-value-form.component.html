@@ -12,7 +12,13 @@
   </rts-form-field>
 
   <rts-form-field label="Base Unit" [required]="conversionFactor.value != null" for="baseUnit">
-    <p-select id="baseUnit" formControlName="baseUnit" #baseUnit showClear="true" [options]="baseUnitOptions()"/>
+    <p-select id="baseUnit"
+              formControlName="baseUnit"
+              #baseUnit
+              showClear="true"
+              optionValue="id"
+              optionLabel="name"
+              [options]="baseUnitOptions()"/>
   </rts-form-field>
 
   <rts-form-field label="Conversion Factor" [required]="baseUnit.selectedOption" for="conversionFactor">
@@ -22,8 +28,8 @@
   <rts-forms-buttons [disableReset]="!unitValueForm().dirty"
                      [disableSave]="!unitValueForm().valid || !unitValueForm().dirty"
                      [hideDelete]="!unitValue()?.id"
-                     [processingStatus]="processingStatus$ | async"
-                     [failureMessages]="failureMessages$ | async"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
                      (delete)="deleteUnitValue()"
                      (save)="upsertUnitValue()"
                      (resetAction)="resetForm()">
