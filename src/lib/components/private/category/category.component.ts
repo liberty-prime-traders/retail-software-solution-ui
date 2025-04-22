@@ -1,4 +1,3 @@
-import {AsyncPipe} from '@angular/common'
 import {Component, inject, signal} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
@@ -10,12 +9,10 @@ import {HasGridComponent} from '../../reusable/has-grid.component'
 import {CategoryFormComponent} from './category-form/category-form.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-category',
   templateUrl: 'category.component.html',
   imports: [
     TableModule,
-    AsyncPipe,
     NullSafePipe,
     Button,
     CategoryFormComponent,
@@ -25,9 +22,9 @@ import {CategoryFormComponent} from './category-form/category-form.component'
 })
 export class CategoryComponent extends HasGridComponent<CategoryService> {
   private readonly categoryService = inject(CategoryService)
-  readonly loading$ = this.categoryService.selectLoading$()
-  readonly processingIsUnderWay$ = this.categoryService.processingIsUnderWay$()
-  readonly categories$ = this.categoryService.selectAll$()
+  readonly loading = this.categoryService.selectLoading
+  readonly processingIsUnderWay = this.categoryService.processingIsUnderWay
+  readonly categories = this.categoryService.selectAll
 
   readonly apiService = this.categoryService
   readonly addingIsActive = signal(false)

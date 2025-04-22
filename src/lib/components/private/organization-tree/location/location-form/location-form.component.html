@@ -14,8 +14,8 @@
   <rts-forms-buttons [disableReset]="!locationForm().dirty"
                      [disableSave]="!locationForm().valid || !locationForm().dirty"
                      [hideDelete]="!location()?.id"
-                     [processingStatus]="processingStatus$ | async"
-                     [failureMessages]="failureMessages$ | async"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
                      (delete)="deleteLocation()"
                      (save)="upsertLocation()"
                      (resetAction)="resetForm()">

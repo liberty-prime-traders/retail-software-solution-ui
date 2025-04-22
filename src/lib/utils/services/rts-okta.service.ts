@@ -4,6 +4,8 @@ import {OKTA_AUTH, OktaAuthStateService} from '@okta/okta-angular'
 import {AccessToken, AuthState} from '@okta/okta-auth-js'
 import {filter, map, Observable} from 'rxjs'
 import {first} from 'rxjs/operators'
+import {OktaAccessTokenClaims} from '../models/okta-access-token-claims.model'
+import {UserRole} from '../types/user-role.enum'
 
 @Injectable({providedIn: 'root'})
 export class RtsOktaService {
@@ -26,4 +28,15 @@ export class RtsOktaService {
     map(authState => authState.accessToken),
     first()
   )
+
+  hasRole$(role: UserRole): Observable<boolean> {
+    return this.accessToken$.pipe(
+      map(accessToken => this.hasRole(accessToken, role))
+    )
+  }
+
+  private hasRole(accessToken: AccessToken|undefined, role: UserRole): boolean {
+    const claims = (accessToken?.claims as OktaAccessTokenClaims)?.groups
+    return Boolean(claims?.includes(role))
+  }
 }

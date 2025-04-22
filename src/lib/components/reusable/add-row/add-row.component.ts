@@ -2,7 +2,6 @@ import {Component, model} from '@angular/core'
 import {Button} from 'primeng/button'
 
 @Component({
-  standalone: true,
   selector: 'rts-add-row',
   templateUrl: 'add-row.component.html',
   imports: [

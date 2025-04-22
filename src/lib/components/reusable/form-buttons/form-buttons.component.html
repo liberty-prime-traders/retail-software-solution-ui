@@ -42,7 +42,7 @@
       }
 
       @if (!hideSave()) {
-        <p-button [label]="saveLabel"
+        <p-button [label]="saveLabel()"
                   icon="pi pi-check"
                   severity="primary"
                   (click)="confirmSave()"

@@ -1,13 +1,11 @@
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http'
 import {
   ApplicationConfig,
-  ENVIRONMENT_INITIALIZER,
-  importProvidersFrom, inject, NgZone,
+  importProvidersFrom,
   provideZoneChangeDetection
 } from '@angular/core'
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async'
 import {provideRouter} from '@angular/router'
-import {akitaDevtools} from '@datorama/akita'
 import {OktaAuthModule} from '@okta/okta-angular'
 import Aura from '@primeng/themes/aura'
 import {RtsHttpInterceptor} from '../lib/api/util/rts-http.interceptor'
@@ -31,11 +29,6 @@ export const appConfig: ApplicationConfig = {
         }
       }
     }),
-    {provide: HTTP_INTERCEPTORS, useClass: RtsHttpInterceptor, multi: true},
-    {
-      provide: ENVIRONMENT_INITIALIZER,
-      useFactory(){ return () => akitaDevtools(inject(NgZone), {maxAge: 3600}) },
-      multi: true
-    }
+    {provide: HTTP_INTERCEPTORS, useClass: RtsHttpInterceptor, multi: true}
   ]
 }

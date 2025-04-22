@@ -6,7 +6,6 @@ import {ProcessingStatus} from '../../utils/types/processing-status.enum'
 import {FormButtonsComponent} from '../reusable/form-buttons/form-buttons.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-public',
   imports: [
     AsyncPipe,

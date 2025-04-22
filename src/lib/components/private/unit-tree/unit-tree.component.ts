@@ -5,7 +5,6 @@ import {UnitGroupComponent} from './unit-group/unit-group.component'
 import {UnitValueComponent} from './unit-value/unit-value.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-unit-tree',
   templateUrl: 'unit-tree.component.html',
   imports: [

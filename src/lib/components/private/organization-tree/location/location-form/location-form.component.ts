@@ -1,6 +1,6 @@
-import {AsyncPipe} from '@angular/common'
 import {Component, computed, inject, input, OnInit} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
+import {EntityId} from '@ngrx/signals/entities'
 import {isNil} from 'lodash-es'
 import {DropdownModule} from 'primeng/dropdown'
 import {InputText} from 'primeng/inputtext'
@@ -11,14 +11,11 @@ import {LocationService} from '../../../../../api/location/location.service'
 import {EnumToDropdownPipe} from '../../../../../utils/pipes/enum-to-dropdown.pipe'
 import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
-import {CategoryType} from '../../../../../api/category/category-type.enum'
 
 @Component({
-  standalone: true,
   selector: 'rts-location-form',
   templateUrl: 'location-form.component.html',
   imports: [
-    AsyncPipe,
     FormButtonsComponent,
     FormsModule,
     InputText,
@@ -31,7 +28,7 @@ import {CategoryType} from '../../../../../api/category/category-type.enum'
 })
 export class LocationFormComponent implements OnInit {
   readonly location = input<Location>()
-  readonly organizationId = input<string>()
+  readonly organizationId = input<EntityId>()
 
   private readonly locationService = inject(LocationService)
   private readonly formBuilder = inject(FormBuilder)
@@ -44,8 +41,8 @@ export class LocationFormComponent implements OnInit {
   }))
 
   readonly locationType = LocationType
-  readonly processingStatus$ = this.locationService.processingStatus$()
-  readonly failureMessages$ = this.locationService.failureMessages$()
+  readonly processingStatus = this.locationService.selectProcessingStatus
+  readonly failureMessages = this.locationService.selectFailureMessages
 
   ngOnInit() {
     this.locationService.resetProcessingStatus()
@@ -56,7 +53,10 @@ export class LocationFormComponent implements OnInit {
   }
 
   upsertLocation() {
-    const updatedLocation: Location = {...this.locationForm().getRawValue(), organizationId: this.organizationId()}
+    const updatedLocation: Partial<Location> = {
+      ...this.locationForm().getRawValue(),
+      organizationId: this.organizationId()
+    }
     if (isNil(updatedLocation.id)) {
       this.locationService.post(updatedLocation)
     } else {
@@ -67,6 +67,4 @@ export class LocationFormComponent implements OnInit {
   deleteLocation() {
     this.locationService.delete(this.location()?.id)
   }
-
-  protected readonly categoryType = CategoryType
 }

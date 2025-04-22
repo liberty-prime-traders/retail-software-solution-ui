@@ -1,4 +1,3 @@
-import {AsyncPipe} from '@angular/common'
 import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
@@ -10,12 +9,10 @@ import {HasGridComponent} from '../../reusable/has-grid.component'
 import {JobTitleFormComponent} from './jobtitle-form/jobtitle-form.component'
 
 @Component({
-  standalone: true,
   selector: 'rts-jobtitle',
   templateUrl: 'jobtitle.component.html',
   imports: [
     TableModule,
-    AsyncPipe,
     NullSafePipe,
     Button,
     JobTitleFormComponent,
@@ -24,9 +21,9 @@ import {JobTitleFormComponent} from './jobtitle-form/jobtitle-form.component'
 })
 export class JobTitleComponent extends HasGridComponent<JobTitleService> implements OnInit {
   private readonly jobTitleService = inject(JobTitleService)
-  readonly loading$ = this.jobTitleService.selectLoading$()
-  readonly processingIsUnderWay$ = this.jobTitleService.processingIsUnderWay$()
-  readonly jobTitles$ = this.jobTitleService.selectAll$()
+  readonly loading = this.jobTitleService.selectLoading
+  readonly processingIsUnderWay = this.jobTitleService.processingIsUnderWay
+  readonly jobTitles = this.jobTitleService.selectAll
   selectedJobTitle = model<JobTitle|undefined>(undefined)
 
   readonly apiService = this.jobTitleService

@@ -1,4 +1,4 @@
-<p-table [loading]="(loading$ | async) && !addingIsActive()"
+<p-table [loading]="loading() && !addingIsActive()"
          selectionMode="single"
          rowExpandMode="single"
          size="small"
@@ -7,7 +7,7 @@
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
          [(selection)]="selectedUnitGroup"
-         [value]="(unitGroups$ | async) ?? []">
+         [value]="unitGroups()">
 
   <ng-template #header>
     <tr>
@@ -44,7 +44,7 @@
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   severity="secondary"
-                  [disabled]="(processingIsUnderWay$ | async) || addingIsActive()"
+                  [disabled]="processingIsUnderWay() || addingIsActive()"
                   [pRowToggler]="unitgroup">
         </p-button>
       </td>
@@ -66,7 +66,7 @@
   </ng-template>
 </p-table>
 
-<rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || (loading$ | async)">
+<rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
   @if (addingIsActive()) {
     <rts-unit-group-form></rts-unit-group-form>
   }

@@ -1,24 +1,21 @@
 import {Component, computed, inject, input, OnInit} from '@angular/core'
-import {AsyncPipe} from '@angular/common'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
-import {InputText} from 'primeng/inputtext'
-import {DropdownModule} from 'primeng/dropdown'
-import {Select} from 'primeng/select'
 import {isNil} from 'lodash-es'
+import {DropdownModule} from 'primeng/dropdown'
+import {InputText} from 'primeng/inputtext'
+import {Select} from 'primeng/select'
+import {CategoryType} from '../../../../api/category/category-type.enum'
 import {Category} from '../../../../api/category/category.model'
 import {CategoryService} from '../../../../api/category/category.service'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
-import {CategoryType} from '../../../../api/category/category-type.enum'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 
 
 @Component({
-  standalone: true,
   selector: 'rts-category-form',
   templateUrl: 'category-form.component.html',
   imports: [
-    AsyncPipe,
     FormButtonsComponent,
     FormsModule,
     InputText,
@@ -43,8 +40,8 @@ export class CategoryFormComponent implements OnInit {
   }))
 
   readonly categoryType = CategoryType
-  readonly processingStatus$ = this.categoryService.processingStatus$()
-  readonly failureMessages$ = this.categoryService.failureMessages$()
+  readonly processingStatus = this.categoryService.selectProcessingStatus
+  readonly failureMessages = this.categoryService.selectFailureMessages
 
   ngOnInit() {
     this.categoryService.resetProcessingStatus()
@@ -55,7 +52,7 @@ export class CategoryFormComponent implements OnInit {
   }
 
   upsertCategory() {
-    const updatedCategory: Category = {...this.categoryForm().getRawValue()}
+    const updatedCategory: Partial<Category> = {...this.categoryForm().getRawValue()}
     if (isNil(updatedCategory.id)) {
       this.categoryService.post(updatedCategory)
     } else {

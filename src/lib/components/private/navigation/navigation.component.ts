@@ -3,7 +3,6 @@ import {MenuItem} from 'primeng/api'
 import {Menu} from 'primeng/menu'
 
 @Component({
-  standalone: true,
   selector: 'rts-navigation',
   templateUrl: 'navigation.component.html',
   imports: [
@@ -17,7 +16,7 @@ export class NavigationComponent {
   ]
 
   private readonly businessSettingsMenuItems: MenuItem[] = [
-    {label: 'Job Titles', icon: 'pi pi-gauge', routerLink: './jobtitle'},
+    {label: 'Job Titles', icon: 'pi pi-gauge', routerLink: './job-title'},
     {label: 'Categories', icon: 'pi pi-palette', routerLink: './category'},
     {label: 'Variations', icon: 'pi pi-wave-pulse'},
     {label: 'Units', icon: 'pi pi-percentage', routerLink: './units'},
