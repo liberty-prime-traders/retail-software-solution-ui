@@ -16,7 +16,7 @@ import {ProcessingStatus} from '../../../../../utils/types/processing-status.enu
     TableModule,
     NullSafePipe,
     FormButtonsComponent
-  ],
+  ]
 })
 export class AdminComponent extends HasGridComponent<OrganizationAdminService> {
   private readonly organizationAdminService = inject(OrganizationAdminService)
@@ -41,7 +41,7 @@ export class AdminComponent extends HasGridComponent<OrganizationAdminService> {
     effect(() => {
       if (this.processingStatus() === ProcessingStatus.SUCCESS) {
         this.selectedOrganizationAdmin.set(null)
-        
+
         if (this.isTerminatingAdmin()) {
           this.organizationAdminService.refetch()
           this.isTerminatingAdmin.set(false)
@@ -54,7 +54,7 @@ export class AdminComponent extends HasGridComponent<OrganizationAdminService> {
     this.isTerminatingAdmin.set(true)
     this.organizationAdminService.post({}, `terminate/${this.selectedOrganizationAdmin()?.adminId}`)
   }
-  
+
   addSelectedAdmin() {
     this.organizationAdminService.post({}, this.selectedOrganizationAdmin()?.adminId)
   }

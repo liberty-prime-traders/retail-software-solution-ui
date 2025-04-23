@@ -10,14 +10,14 @@
 
     <div class="flex justify-content-end pr-4">
       <rts-forms-buttons [disableReset]="!organizationForm.dirty"
-                          [disableSave]="!organizationForm.valid || !organizationForm.dirty"
-                          [hideReset]="true"
-                          [hideDelete]="true"
-                          [processingStatus]="organizationProcessingStatus()"
-                          [failureMessages]="organizationServiceFailureMessages()"
-                          [saveLabel]="'Update'"
-                          (save)="updateOrganization()"
-                          (resetAction)="organizationForm.reset()">
+                         [disableSave]="!organizationForm.valid || !organizationForm.dirty"
+                         [hideReset]="true"
+                         [hideDelete]="true"
+                         [processingStatus]="organizationProcessingStatus()"
+                         [failureMessages]="organizationServiceFailureMessages()"
+                         [saveLabel]="'Update'"
+                         (save)="updateOrganization()"
+                         (resetAction)="organizationForm.reset()">
       </rts-forms-buttons>
     </div>
   </form>

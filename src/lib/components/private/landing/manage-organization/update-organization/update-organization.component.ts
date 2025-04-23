@@ -72,7 +72,7 @@ export class UpdateOrganizationComponent implements OnInit {
     if (organizationId) {
       this.organizationService.put({
         ...this.organizationForm.getRawValue(),
-        organizationId 
+        organizationId
       })
     }
   }

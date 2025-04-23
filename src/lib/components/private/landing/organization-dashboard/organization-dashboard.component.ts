@@ -40,7 +40,7 @@ export class OrganizationDashboardComponent extends HasSubscriptionComponent imp
   readonly showNavigation = computed(() => this.activeTab() === 'manage' && this.isNavigationExpanded())
 
   readonly organizationProcessingStatus = this.organizationService.selectProcessingStatus
-  
+
   readonly ProcessingStatus = ProcessingStatus
 
   constructor() {
