@@ -12,6 +12,9 @@ import {OrganizationDashboardComponent} from '../lib/components/private/landing/
 import {CreateOrganizationComponent} from '../lib/components/private/landing/create-organization/create-organization.component'
 import {SelectLocationComponent} from '../lib/components/private/landing/select-location/select-location.component'
 import {ManageOrganizationComponent} from '../lib/components/private/landing/manage-organization/manage-organization.component'
+import {LocationComponent} from '../lib/components/private/landing/manage-organization/location/location.component'
+import {AdminComponent} from '../lib/components/private/landing/manage-organization/admin/admin.component'
+import {UpdateOrganizationComponent} from '../lib/components/private/landing/manage-organization/update-organization/update-organization.component'
 
 const secureRoutes: Routes = [
   {path: '', component: HomepageComponent},
@@ -21,13 +24,20 @@ const secureRoutes: Routes = [
   {path: 'payment-options', component: PaymentOptionComponent}
 ]
 
+const orgManagementChildRoutes: Routes = [
+  {path: 'locations', component: LocationComponent},
+  {path: 'settings', component: UpdateOrganizationComponent},
+  {path: 'admins', component: AdminComponent},
+  {path: '', redirectTo: 'locations', pathMatch: 'full'}
+]
+
 const landingChildRoutes: Routes = [
   {path: 'create-organization', component: CreateOrganizationComponent},
   {path: ':subdomain',
     component: OrganizationDashboardComponent,
     children: [
       {path: 'select-location', component: SelectLocationComponent},
-      {path: 'manage', component: ManageOrganizationComponent},
+      {path: 'manage', component: ManageOrganizationComponent, children: orgManagementChildRoutes},
       {path: '', redirectTo: 'select-location', pathMatch: 'full'}
     ]},
   {path: '', component: LandingComponent}

@@ -17,3 +17,8 @@ html, body {
 .filled-background {
   background-color: $globalBackground;
 }
+
+.p-menu-item-link-active {
+  background-color: var(--p-primary-100);
+  border-radius: 4px;
+}

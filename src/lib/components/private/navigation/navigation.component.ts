@@ -31,7 +31,7 @@ export class NavigationComponent {
   ]
 
   private readonly commonTasksMenuItems: MenuItem[] = [
-    {label: 'Home', icon: 'pi pi-home', routerLink: './'},
+    {label: 'Home', icon: 'pi pi-home', routerLink: './', routerLinkActiveOptions: {exact: true}},
     {label: 'Organization Tree', icon: 'pi pi-sitemap', routerLink: './organization-tree'}
   ]
 

@@ -1,0 +1,24 @@
+<div class="mt-2 mb-6 flex flex-column gap-3">
+  <form [formGroup]="organizationForm">
+    <rts-form-field for="name" label="Name" [required]="true" contentClass="col-11" [layout]="FormFieldDirection.VERTICAL">
+      <input id="name" pInputText formControlName="name"/>
+    </rts-form-field>
+
+    <rts-form-field for="description" label="Description" contentClass="col-11" [layout]="FormFieldDirection.VERTICAL">
+      <textarea id="description" pInputText formControlName="description" class="w-full"></textarea>
+    </rts-form-field>
+
+    <div class="flex justify-content-end pr-4">
+      <rts-forms-buttons [disableReset]="!organizationForm.dirty"
+                          [disableSave]="!organizationForm.valid || !organizationForm.dirty"
+                          [hideReset]="true"
+                          [hideDelete]="true"
+                          [processingStatus]="organizationProcessingStatus()"
+                          [failureMessages]="organizationServiceFailureMessages()"
+                          [saveLabel]="'Update'"
+                          (save)="updateOrganization()"
+                          (resetAction)="organizationForm.reset()">
+      </rts-forms-buttons>
+    </div>
+  </form>
+</div>
