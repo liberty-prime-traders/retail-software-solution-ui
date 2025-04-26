@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'primeflex/primeflex.css';
-@import 'primeflex/themes/primeone-dark.css';
-@import "primeicons/primeicons.css";
-@import "colors.scss";
+@use 'primeflex/primeflex.css';
+@use 'primeflex/themes/primeone-dark.css';
+@use "primeicons/primeicons.css";
+@use "colors" as theme;
 
 html, body {
   font-family: system-ui;
@@ -10,10 +10,15 @@ html, body {
 }
 
 .required-label::before {
-  color: $red;
+  color: theme.$red;
   content: "* ";
 }
 
 .filled-background {
-  background-color: $globalBackground;
+  background-color: theme.$globalBackground;
+}
+
+.p-menu-item-link-active {
+  background-color: var(--p-primary-100);
+  border-radius: 4px;
 }

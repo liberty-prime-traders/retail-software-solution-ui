@@ -7,11 +7,9 @@ import {CardModule} from 'primeng/card'
 import {InputTextModule} from 'primeng/inputtext'
 import {distinctUntilChanged, filter, Subscription} from 'rxjs'
 import {tap} from 'rxjs/operators'
-import {Organization} from '../../../../api/organization/organization.model'
 import {OrganizationService} from '../../../../api/organization/organization.service'
 import {ReservedSubdomainService} from '../../../../api/reserved-subdomain/reserved-subdomain.service'
-import {LocalStorageService} from '../../../../utils/services/local-storage.service'
-import {LocalStorageKey} from '../../../../utils/types/local-storage-key.enum'
+import {SessionContextService} from '../../../../utils/services/session-context.service'
 import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldDirection} from '../../../reusable/form-field/form-field-direction'
@@ -36,7 +34,7 @@ export class CreateOrganizationComponent extends HasSubscriptionComponent implem
   private readonly router = inject(Router)
   private readonly reservedSubdomainService = inject(ReservedSubdomainService)
   private readonly organizationService = inject(OrganizationService)
-  private readonly localStorageService = inject(LocalStorageService)
+  private readonly sessionContextService = inject(SessionContextService)
 
   readonly ProcessingStatus = ProcessingStatus
   readonly FormFieldDirection = FormFieldDirection
@@ -70,7 +68,8 @@ export class CreateOrganizationComponent extends HasSubscriptionComponent implem
 
       if (this.organizationProcessingStatus() === ProcessingStatus.SUCCESS) {
         const createdOrganization = this.organizationService.selectFirst()
-        this.localStorageService.setItem<Organization>(LocalStorageKey.ORGANIZATION, createdOrganization!)
+        this.sessionContextService.updateSelectedOrganization(createdOrganization!)
+        this.sessionContextService.clearSelectedLocation()
         this.router.navigate(['/landing', this.domainControl.value, 'select-location']).then()
       }
     })

@@ -1,5 +1,5 @@
-<div class="mt-2 mb-6 flex flex-column gap-3 col-11">
-  <rts-form-field label="Select a Location to View" [layout]="FormFieldDirection.VERTICAL" containerClass="" contentClass="">
+<div class="mt-2 mb-6 flex flex-column gap-3 col-9 md:col-6">
+  <rts-form-field label="Select a Location to View" [layout]="FormFieldDirection.VERTICAL" containerClass="" contentClass="col-12">
     <p-select [loading]="loading()"
               [options]="locations()"
               optionLabel="name"

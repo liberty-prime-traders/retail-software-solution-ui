@@ -12,6 +12,6 @@ export class HomepageComponent {
 
   readonly userFullName = computed(() => {
     const user = this.loggedInUser()
-    return `${user?.firstName} ${user?.lastName}`
+    return user ? `${user?.firstName} ${user?.lastName}` : ''
   })
 }

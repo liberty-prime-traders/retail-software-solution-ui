@@ -48,7 +48,6 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     } else if (!isNil(result)) {
       this.store.upsert(result)
     }
-    this.store.setLoading(false)
     this.store.setHasCache(true)
     this.setProcessingStatus(ProcessingStatus.SUCCESS)
   }

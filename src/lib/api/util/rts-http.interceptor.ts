@@ -1,19 +1,18 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http'
 import {inject, Injectable} from '@angular/core'
 import {environment} from '@environments/environment'
-import {LocalStorageService} from 'lib/utils/services/local-storage.service'
-import {LocalStorageKey} from 'lib/utils/types/local-storage-key.enum'
 import {mergeMap, Observable, throwError} from 'rxjs'
 import {RtsOktaService} from '../../utils/services/rts-okta.service'
-import {Organization} from '../organization/organization.model'
+import {SessionContextService} from '../../utils/services/session-context.service'
 
 @Injectable()
 export class RtsHttpInterceptor implements HttpInterceptor {
   private readonly rtsOktaService = inject(RtsOktaService)
-  private readonly localStorageService = inject(LocalStorageService)
+  private readonly sessionContextService = inject(SessionContextService)
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const organization = this.localStorageService.getItem<Organization>(LocalStorageKey.ORGANIZATION)
+    const organization = this.sessionContextService.selectedOrganization()
+    const location = this.sessionContextService.selectedLocation()
 
     return this.rtsOktaService.accessToken$.pipe(
       mergeMap(accessToken => {
@@ -25,7 +24,8 @@ export class RtsHttpInterceptor implements HttpInterceptor {
           url: `${environment.BASE_URL}${req.url}`,
           setHeaders: {
             'Authorization': `Bearer ${accessToken.accessToken}`,
-            'X-ORGANIZATION-ID': organization?.id?.toString() ?? ''
+            'X-ORGANIZATION-ID': organization?.id?.toString() ?? '',
+            'X-LOCATION-ID': location?.id?.toString() ?? ''
           }
         })
         return next.handle(req)

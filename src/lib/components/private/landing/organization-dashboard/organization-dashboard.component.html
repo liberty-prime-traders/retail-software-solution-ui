@@ -1,22 +1,19 @@
-<div class="flex flex-column gap-2 h-full pt-8 align-items-center relative">
-  <p-button icon="pi pi-arrow-left"
-            label="Change Organization"
-            outlined="true"
-            (onClick)="returnToLandingPage()"
-            class="absolute top-0 left-0 ml-3">
-  </p-button>
-
+<div class="h-full pt-8 ml-3 flex flex-column align-items-center">
   <h1 class="text-5xl m-0 text-center mb-6">{{currentOrganization()?.name | uppercase}}</h1>
 
   @if (subdomain()) {
-    <p-tabs [value]="activeTab()" class="col-11 md:col-6 lg:col-4 rounded">
+    <p-button icon="pi pi-arrow-left" label="Change Organization" severity="info" outlined="true" (onClick)="returnToLandingPage()"/>
+
+    <p-tabs [value]="activeTab()" class="rounded col-11 md:col-7">
       <p-tablist>
-          <p-tab value="select-location" routerLink="./select-location">Select Location</p-tab>
-          <p-tab value="manage" routerLink="./manage">Manage Org</p-tab>
+        <p-tab value="select-location" routerLink="select-location">Select Location</p-tab>
+        <p-tab value="manage" routerLink="manage">Manage Org</p-tab>
       </p-tablist>
 
       <p-tabpanels>
-        <router-outlet/>
+        <div class="h-full">
+          <router-outlet/>
+        </div>
       </p-tabpanels>
     </p-tabs>
   }

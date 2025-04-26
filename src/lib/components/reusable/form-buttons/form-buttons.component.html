@@ -1,7 +1,7 @@
 <div class="flex justify-content-between p-4 pb-1">
   @if (!hideDelete()) {
     <div class="flex justify-content-between flex-grow-1">
-      <p-button [label]="deleteLabel"
+      <p-button [label]="deleteLabel()"
                 icon="pi pi-trash"
                 severity="danger"
                 (click)="deleteIsActive.set(true)"
@@ -10,7 +10,7 @@
 
       @if (deleteIsActive()) {
         <div class="flex gap-1 align-items-center">
-          <div>{{deleteWarning}}</div>
+          <div>{{deleteWarning()}}</div>
           <p-button label="Yes" size="small" severity="secondary" (click)="confirmDelete()"/>
           <p-button label="No" size="small" severity="primary" (click)="deleteIsActive.set(false)"/>
         </div>
