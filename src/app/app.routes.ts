@@ -10,11 +10,11 @@ import {PaymentOptionComponent} from 'lib/components/private/payment-option/paym
 import {LandingComponent} from 'lib/components/private/landing/landing.component'
 import {OrganizationDashboardComponent} from '../lib/components/private/landing/organization-dashboard/organization-dashboard.component'
 import {CreateOrganizationComponent} from '../lib/components/private/landing/create-organization/create-organization.component'
-import {SelectLocationComponent} from '../lib/components/private/landing/select-location/select-location.component'
-import {ManageOrganizationComponent} from '../lib/components/private/landing/manage-organization/manage-organization.component'
-import {LocationComponent} from '../lib/components/private/landing/manage-organization/location/location.component'
-import {AdminComponent} from '../lib/components/private/landing/manage-organization/admin/admin.component'
-import {UpdateOrganizationComponent} from '../lib/components/private/landing/manage-organization/update-organization/update-organization.component'
+import {SelectLocationComponent} from '../lib/components/private/landing/organization-dashboard/select-location/select-location.component'
+import {ManageOrganizationComponent} from '../lib/components/private/landing/organization-dashboard/manage-organization/manage-organization.component'
+import {LocationComponent} from '../lib/components/private/landing/organization-dashboard/manage-organization/location/location.component'
+import {OrganizationAdminComponent} from '../lib/components/private/landing/organization-dashboard/manage-organization/organization-admin/organization-admin.component'
+import {UpdateOrganizationComponent} from '../lib/components/private/landing/organization-dashboard/manage-organization/update-organization/update-organization.component'
 
 const secureRoutes: Routes = [
   {path: '', component: HomepageComponent},
@@ -27,7 +27,7 @@ const secureRoutes: Routes = [
 const orgManagementChildRoutes: Routes = [
   {path: 'locations', component: LocationComponent},
   {path: 'settings', component: UpdateOrganizationComponent},
-  {path: 'admins', component: AdminComponent},
+  {path: 'admins', component: OrganizationAdminComponent},
   {path: '', redirectTo: 'locations', pathMatch: 'full'}
 ]
 

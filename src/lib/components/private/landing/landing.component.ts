@@ -11,6 +11,7 @@ import {Card} from 'primeng/card'
 import {InputText} from 'primeng/inputtext'
 import {Organization} from '../../../api/organization/organization.model'
 import {LocalStorageService} from '../../../utils/services/local-storage.service'
+import {SessionContextService} from '../../../utils/services/session-context.service'
 import {LocalStorageKey} from '../../../utils/types/local-storage-key.enum'
 
 @Component({
@@ -29,6 +30,7 @@ import {LocalStorageKey} from '../../../utils/types/local-storage-key.enum'
 export class LandingComponent implements OnInit {
   private readonly userService = inject(SysUserService)
   private readonly router = inject(Router)
+  private readonly sessionContextService = inject(SessionContextService)
   private readonly localStorageService = inject(LocalStorageService)
 
   private readonly rtsOktaService = inject(RtsOktaService)
@@ -54,6 +56,7 @@ export class LandingComponent implements OnInit {
   private proceedToOrganizationIfStored() {
     const storedOrganization = this.localStorageService.getItem<Organization>(LocalStorageKey.ORGANIZATION)
     if (storedOrganization?.subdomain){
+      this.sessionContextService.updateSelectedOrganization(storedOrganization)
       this.router.navigate(['/landing', storedOrganization?.subdomain, 'select-location']).then()
     }
   }

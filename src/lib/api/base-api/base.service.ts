@@ -18,32 +18,28 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
   }
 
   post(body?: PAYLOAD, id?: string): Subscription {
-    this.store.setLoading(true)
-    this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
+    this.startApiRequest()
     return this.httpClient.post<RESPONSE>(this.getBasePath(id), body).pipe(
       first(),
       tap((postResult: RESPONSE) => this.finishSavingWithSuccess(postResult)),
       catchError((error: HttpErrorResponse) => this.setStoreError(error))
-    )
-      .subscribe()
+    ).subscribe()
   }
 
   put(body: PAYLOAD): Subscription {
-    this.startSaving()
+    this.startApiRequest()
     return this.httpClient.put<RESPONSE>(this.getBasePath(), body).pipe(
       first(),
       tap((putResult: RESPONSE) => this.finishSavingWithSuccess(putResult)),
       catchError((error: HttpErrorResponse) => this.setStoreError(error))
-    )
-      .subscribe()
+    ).subscribe()
   }
 
   delete(id?: EntityId): Subscription|undefined {
     if (!id) {
       return
     }
-    this.store.setLoading(true)
-    this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
+    this.startApiRequest()
     return this.httpClient.delete(this.getBasePath(id)).pipe(
       first(),
       tap(() => {
@@ -52,11 +48,10 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
         this.setProcessingStatus(ProcessingStatus.SUCCESS)
       }),
       catchError((error: HttpErrorResponse) => this.setStoreError(error))
-    )
-      .subscribe()
+    ).subscribe()
   }
 
-  startSaving() {
+  startApiRequest() {
     this.store.setLoading(true)
     this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
   }

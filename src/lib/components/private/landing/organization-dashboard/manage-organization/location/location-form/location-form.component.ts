@@ -5,12 +5,12 @@ import {isNil} from 'lodash-es'
 import {DropdownModule} from 'primeng/dropdown'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
-import {LocationType} from '../../../../../../api/location/location-type.enum'
-import {Location} from '../../../../../../api/location/location.model'
-import {LocationService} from '../../../../../../api/location/location.service'
-import {EnumToDropdownPipe} from '../../../../../../utils/pipes/enum-to-dropdown.pipe'
-import {FormButtonsComponent} from '../../../../../reusable/form-buttons/form-buttons.component'
-import {FormFieldComponent} from '../../../../../reusable/form-field/form-field.component'
+import {LocationType} from '../../../../../../../api/location/location-type.enum'
+import {Location} from '../../../../../../../api/location/location.model'
+import {LocationService} from '../../../../../../../api/location/location.service'
+import {EnumToDropdownPipe} from '../../../../../../../utils/pipes/enum-to-dropdown.pipe'
+import {FormButtonsComponent} from '../../../../../../reusable/form-buttons/form-buttons.component'
+import {FormFieldComponent} from '../../../../../../reusable/form-field/form-field.component'
 
 @Component({
   selector: 'rts-location-form',

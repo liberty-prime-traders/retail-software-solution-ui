@@ -4,13 +4,14 @@ import {ReactiveFormsModule} from '@angular/forms'
 import {Router} from '@angular/router'
 import {Button} from 'primeng/button'
 import {Select} from 'primeng/select'
-import {Location} from '../../../../api/location/location.model'
-import {LocationService} from '../../../../api/location/location.service'
-import {LocalStorageService} from '../../../../utils/services/local-storage.service'
-import {LocalStorageKey} from '../../../../utils/types/local-storage-key.enum'
-import {FormFieldDirection} from '../../../reusable/form-field/form-field-direction'
-import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
-import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
+import {Location} from '../../../../../api/location/location.model'
+import {LocationService} from '../../../../../api/location/location.service'
+import {LocalStorageService} from '../../../../../utils/services/local-storage.service'
+import {SessionContextService} from '../../../../../utils/services/session-context.service'
+import {LocalStorageKey} from '../../../../../utils/types/local-storage-key.enum'
+import {FormFieldDirection} from '../../../../reusable/form-field/form-field-direction'
+import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
+import {HasSubscriptionComponent} from '../../../../reusable/has-subscription.component'
 
 @Component({
   selector: 'rts-select-location',
@@ -26,6 +27,7 @@ import {HasSubscriptionComponent} from '../../../reusable/has-subscription.compo
 export class SelectLocationComponent extends HasSubscriptionComponent implements OnInit {
   private readonly router = inject(Router)
   private readonly localStorageService = inject(LocalStorageService)
+  private readonly sessionContextService = inject(SessionContextService)
   private readonly locationService = inject(LocationService)
 
   protected readonly FormFieldDirection = FormFieldDirection
@@ -35,6 +37,7 @@ export class SelectLocationComponent extends HasSubscriptionComponent implements
   ngOnInit() {
     const storedLocation = this.localStorageService.getItem<Location>(LocalStorageKey.LOCATION)
     if (storedLocation?.id) {
+      this.sessionContextService.updateSelectedLocation(storedLocation)
       this.router.navigate(['/secure']).then()
     } else {
       this.locationService.refetch()
@@ -42,7 +45,7 @@ export class SelectLocationComponent extends HasSubscriptionComponent implements
   }
 
   proceedToLocation(selectedLocation: Location) {
-    this.localStorageService.setItem(LocalStorageKey.LOCATION, selectedLocation)
+    this.sessionContextService.updateSelectedLocation(selectedLocation)
     this.router.navigate(['/secure']).then()
   }
 }

@@ -1,18 +1,17 @@
 import {UpperCasePipe} from '@angular/common'
-import {Component, computed, effect, inject, OnInit, signal} from '@angular/core'
+import {Component, effect, inject, OnInit, signal} from '@angular/core'
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router'
 import {Button} from 'primeng/button'
 import {CardModule} from 'primeng/card'
+import {MenubarModule} from 'primeng/menubar'
 import {TabsModule} from 'primeng/tabs'
 import {distinctUntilChanged, map} from 'rxjs'
 import {tap} from 'rxjs/operators'
 import {Organization} from '../../../../api/organization/organization.model'
-import {LocalStorageService} from '../../../../utils/services/local-storage.service'
-import {LocalStorageKey} from '../../../../utils/types/local-storage-key.enum'
-import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
-import {OrgManagementNavigationComponent} from '../../org-management-navigation/org-management-navigation.component'
 import {OrganizationService} from '../../../../api/organization/organization.service'
+import {SessionContextService} from '../../../../utils/services/session-context.service'
 import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
+import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
 
 @Component({
   selector: 'rts-organization-dashboard',
@@ -20,24 +19,23 @@ import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
   imports: [
     CardModule,
     TabsModule,
-    RouterLink,
     RouterOutlet,
     Button,
     UpperCasePipe,
-    OrgManagementNavigationComponent
+    MenubarModule,
+    RouterLink
   ]
 })
 export class OrganizationDashboardComponent extends HasSubscriptionComponent implements OnInit {
   private readonly organizationService = inject(OrganizationService)
-  private readonly localStorageService = inject(LocalStorageService)
+  private readonly sessionContextService = inject(SessionContextService)
   private readonly activatedRoute = inject(ActivatedRoute)
   private readonly router = inject(Router)
 
   readonly subdomain = signal<string|null>(null)
   readonly activeTab = signal<'select-location' | 'manage'>('select-location')
   readonly currentOrganization = signal<Organization|null>(null)
-  readonly isNavigationExpanded = signal(true)
-  readonly showNavigation = computed(() => this.activeTab() === 'manage' && this.isNavigationExpanded())
+  
 
   readonly organizationProcessingStatus = this.organizationService.selectProcessingStatus
 
@@ -56,7 +54,7 @@ export class OrganizationDashboardComponent extends HasSubscriptionComponent imp
     this.setInitialActiveTab()
     this.subscriptions.add(this.listenToActiveTab())
     this.subscriptions.add(this.listenToSubdomain())
-    this.currentOrganization.set(this.localStorageService.getItem<Organization>(LocalStorageKey.ORGANIZATION))
+    this.currentOrganization.set(this.sessionContextService.selectedOrganization())
   }
 
   private setInitialActiveTab() {
@@ -73,11 +71,7 @@ export class OrganizationDashboardComponent extends HasSubscriptionComponent imp
       tap(path => this.activeTab.set(path === 'manage' ? 'manage' : 'select-location'))
     ).subscribe()
   }
-
-  toggleNavigationExpanded() {
-    this.isNavigationExpanded.update(value => !value)
-  }
-
+  
   private listenToSubdomain() {
     return this.activatedRoute.paramMap.pipe(
       map(params => params.get('subdomain')),
@@ -87,8 +81,7 @@ export class OrganizationDashboardComponent extends HasSubscriptionComponent imp
   }
 
   returnToLandingPage() {
-    this.localStorageService.removeItem(LocalStorageKey.ORGANIZATION)
-    this.localStorageService.removeItem(LocalStorageKey.LOCATION)
+    this.sessionContextService.clearSessionContext()
     this.router.navigate(['/landing']).then()
   }
 }

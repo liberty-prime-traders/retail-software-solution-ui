@@ -19,10 +19,5 @@
   @if (screenSizeService.isWebPortrait$ | async) {
     💻 Web Portrait View
   }
-
-  <rts-forms-buttons [processingStatus]="processingStatus.IDLE"/>
-  <rts-forms-buttons [processingStatus]="processingStatus.IN_PROGRESS"/>
-  <rts-forms-buttons [processingStatus]="processingStatus.SUCCESS"/>
-  <rts-forms-buttons [processingStatus]="processingStatus.FAILURE"/>
 </p-card>
 

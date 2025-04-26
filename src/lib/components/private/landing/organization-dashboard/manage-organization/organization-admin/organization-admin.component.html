@@ -23,16 +23,16 @@
   </rts-forms-buttons>
 </div>
 
-<p-table  [loading]="loading() && !addingIsActive()"
-          selectionMode="single"
-          rowExpandMode="single"
-          size="small"
-          dataKey="id"
-          sortField="name"
-          (onRowExpand)="rowIsExpanded.set(true)"
-          (onRowCollapse)="rowIsExpanded.set(false)"
-          [value]="organizationAdmins()"
-          [(selection)]="selectedOrganizationAdmin">
+<p-table [loading]="loading() && !addingIsActive()"
+         selectionMode="single"
+         rowExpandMode="single"
+         size="small"
+         dataKey="id"
+         sortField="name"
+         (onRowExpand)="rowIsExpanded.set(true)"
+         (onRowCollapse)="rowIsExpanded.set(false)"
+         [value]="organizationAdmins()"
+         [(selection)]="selectedOrganizationAdmin">
 
   <ng-template #header>
     <tr>

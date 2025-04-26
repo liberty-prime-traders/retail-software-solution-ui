@@ -1,42 +1,20 @@
-<div class="flex gap-3 block h-full">
-  @if (showNavigation()) {
-    <rts-org-management-navigation />
-  }
+<div class="h-full pt-8 ml-3 flex flex-column align-items-center">
+  <h1 class="text-5xl m-0 text-center mb-6">{{currentOrganization()?.name | uppercase}}</h1>
 
-  <div class="flex flex-grow-1 mr-2 flex-column gap-2">
-    <div class="flex flex-column gap-2 h-full pt-8 align-items-center relative">
-      @if (this.activeTab() === 'manage') {
-        <div [style]="{'position': 'absolute', 'top': '50px', 'left': '12px'}">
-          <p-button icon="pi pi-bars"
-                    severity="secondary"
-                    (onClick)="toggleNavigationExpanded()">
-          </p-button>
+  @if (subdomain()) {
+    <p-button icon="pi pi-arrow-left" label="Change Organization" severity="info" outlined="true" (onClick)="returnToLandingPage()"/>
+
+    <p-tabs [value]="activeTab()" class="rounded col-11 md:col-7">
+      <p-tablist>
+        <p-tab value="select-location" routerLink="select-location">Select Location</p-tab>
+        <p-tab value="manage" routerLink="manage">Manage Org</p-tab>
+      </p-tablist>
+
+      <p-tabpanels>
+        <div class="h-full">
+          <router-outlet/>
         </div>
-      }
-
-      <p-button icon="pi pi-arrow-left"
-                label="Change Organization"
-                outlined="true"
-                (onClick)="returnToLandingPage()"
-                class="absolute top-0 left-0 ml-3">
-      </p-button>
-    
-      <h1 class="text-5xl m-0 text-center mb-6">{{currentOrganization()?.name | uppercase}}</h1>
-
-      @if (subdomain()) {
-        <p-tabs [value]="activeTab()"
-                [class]="showNavigation() ? 'col-11 md:col-9 lg:col-7' : 'col-11 md:col-6 lg:col-5'"
-                class="rounded">
-          <p-tablist>
-              <p-tab value="select-location" routerLink="./select-location">Select Location</p-tab>
-              <p-tab value="manage" routerLink="./manage">Manage Org</p-tab>
-          </p-tablist>
-
-          <p-tabpanels>
-            <router-outlet/>
-          </p-tabpanels>
-        </p-tabs>
-      }
-    </div>
-  </div>
+      </p-tabpanels>
+    </p-tabs>
+  }
 </div>

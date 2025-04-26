@@ -1,6 +1,7 @@
-import {AfterViewInit, Component, HostListener} from '@angular/core'
-import {RouterOutlet} from '@angular/router'
+import {AfterViewInit, Component, HostListener, inject, OnInit, signal} from '@angular/core'
+import {Router, RouterOutlet} from '@angular/router'
 import {Button} from 'primeng/button'
+import {SessionContextService} from '../../utils/services/session-context.service'
 import {NavigationComponent} from './navigation/navigation.component'
 
 @Component({
@@ -12,9 +13,18 @@ import {NavigationComponent} from './navigation/navigation.component'
   ],
   templateUrl: 'private.component.html'
 })
-export class PrivateComponent implements AfterViewInit {
-  showNavigation = true
+export class PrivateComponent implements AfterViewInit, OnInit {
+  private readonly sessionContextService = inject(SessionContextService)
+  private readonly router = inject(Router)
+  
+  readonly showNavigation = signal(true)
 
+  ngOnInit() {
+    if (!this.sessionContextService.selectedOrganization()) {
+      this.router.navigate(['/landing']).then()
+    }
+  }
+  
   ngAfterViewInit() {
     this.adjustCardHeight()
   }
