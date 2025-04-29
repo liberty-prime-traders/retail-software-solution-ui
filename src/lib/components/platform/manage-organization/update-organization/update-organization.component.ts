@@ -4,11 +4,11 @@ import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {ButtonModule} from 'primeng/button'
 import {CardModule} from 'primeng/card'
 import {InputTextModule} from 'primeng/inputtext'
-import {OrganizationService} from '../../../../../../api/organization/organization.service'
-import {SessionContextService} from '../../../../../../utils/services/session-context.service'
-import {ProcessingStatus} from '../../../../../../utils/types/processing-status.enum'
-import {FormButtonsComponent} from '../../../../../reusable/form-buttons/form-buttons.component'
-import {FormFieldComponent} from '../../../../../reusable/form-field/form-field.component'
+import {OrganizationService} from '../../../../api/organization/organization.service'
+import {SessionContextService} from '../../../../utils/services/session-context.service'
+import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
+import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
+import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 
 @Component({
   selector: 'rts-update-organization',

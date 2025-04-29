@@ -1,20 +1,20 @@
 import {CommonModule} from '@angular/common'
 import {Component, effect, inject, OnInit, Signal, signal} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
-import {Router} from '@angular/router'
+import {ActivatedRoute, Router, RouterLink} from '@angular/router'
 import {ButtonModule} from 'primeng/button'
 import {CardModule} from 'primeng/card'
 import {InputTextModule} from 'primeng/inputtext'
 import {distinctUntilChanged, filter, Subscription} from 'rxjs'
 import {tap} from 'rxjs/operators'
-import {OrganizationService} from '../../../../api/organization/organization.service'
-import {ReservedSubdomainService} from '../../../../api/reserved-subdomain/reserved-subdomain.service'
-import {SessionContextService} from '../../../../utils/services/session-context.service'
-import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
-import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
-import {FormFieldDirection} from '../../../reusable/form-field/form-field-direction'
-import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
-import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
+import {OrganizationService} from '../../../api/organization/organization.service'
+import {ReservedSubdomainService} from '../../../api/reserved-subdomain/reserved-subdomain.service'
+import {SessionContextService} from '../../../utils/services/session-context.service'
+import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
+import {FormButtonsComponent} from '../../reusable/form-buttons/form-buttons.component'
+import {FormFieldDirection} from '../../reusable/form-field/form-field-direction'
+import {FormFieldComponent} from '../../reusable/form-field/form-field.component'
+import {HasSubscriptionComponent} from '../../reusable/has-subscription.component'
 
 @Component({
   selector: 'rts-create-organization',
@@ -26,12 +26,14 @@ import {HasSubscriptionComponent} from '../../../reusable/has-subscription.compo
     InputTextModule,
     CardModule,
     FormButtonsComponent,
-    FormFieldComponent
+    FormFieldComponent,
+    RouterLink
   ]
 })
 export class CreateOrganizationComponent extends HasSubscriptionComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder)
   private readonly router = inject(Router)
+  private readonly activatedRoute = inject(ActivatedRoute)
   private readonly reservedSubdomainService = inject(ReservedSubdomainService)
   private readonly organizationService = inject(OrganizationService)
   private readonly sessionContextService = inject(SessionContextService)
@@ -68,9 +70,8 @@ export class CreateOrganizationComponent extends HasSubscriptionComponent implem
 
       if (this.organizationProcessingStatus() === ProcessingStatus.SUCCESS) {
         const createdOrganization = this.organizationService.selectFirst()
-        this.sessionContextService.updateSelectedOrganization(createdOrganization!)
-        this.sessionContextService.clearSelectedLocation()
-        this.router.navigate(['/landing', this.domainControl.value, 'select-location']).then()
+        this.sessionContextService.receiveNewOrganization(createdOrganization!)
+        this.router.navigate(['../select-location'], {relativeTo: this.activatedRoute}).then()
       }
     })
   }

@@ -1,9 +1,11 @@
-import {AsyncPipe} from '@angular/common'
-import {Component, computed, inject} from '@angular/core'
+import {AsyncPipe, NgClass} from '@angular/common'
+import {Component, computed, inject, Signal} from '@angular/core'
 import {Router, RouterLink, RouterOutlet} from '@angular/router'
+import {MenuItem} from 'primeng/api'
 import {Avatar} from 'primeng/avatar'
 import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
+import {Menubar} from 'primeng/menubar'
 import {SysUserService} from '../../api/sys-user/sys-user.service'
 import {RtsOktaService} from '../../utils/services/rts-okta.service'
 import {SessionContextService} from '../../utils/services/session-context.service'
@@ -11,7 +13,8 @@ import {SessionContextService} from '../../utils/services/session-context.servic
 @Component({
   selector: 'rts-welcome',
   templateUrl: 'welcome.component.html',
-  imports: [RouterOutlet, Divider, Button, RouterLink, AsyncPipe, Avatar]
+  styleUrls: ['welcome.component.scss'],
+  imports: [RouterOutlet, Divider, Button, RouterLink, AsyncPipe, Avatar, Menubar, NgClass]
 })
 export class WelcomeComponent {
   private readonly rtsOktaService = inject(RtsOktaService)
@@ -26,14 +29,47 @@ export class WelcomeComponent {
     return user ? `${user?.firstName.charAt(0)}${user?.lastName.charAt(0)}` : ''
   })
 
+  readonly quickActionsMenu: Signal<MenuItem[]> = computed(() => [
+    {
+      label: 'Home',
+      icon: 'pi pi-home',
+      routerLink: '/secure/location-dashboard',
+      visible: true
+    },
+    {
+      label: 'Switch Organization',
+      icon: 'pi pi-sitemap',
+      visible: this.sessionContextService.organizationIsSelected(),
+      command: () => this.switchOrganization()
+    },
+    {
+      label: 'Manage Organization',
+      icon: 'pi pi-building',
+      visible: this.sessionContextService.loggedInUserIsOrganizationAdmin(),
+      routerLink: '/secure/manage-organization'
+    },
+    {
+      label: 'Switch Location',
+      icon: 'pi pi-map-marker',
+      visible: this.sessionContextService.locationIsSelected()
+    },
+    {
+      label: 'Manage Location',
+      icon: 'pi pi-cog',
+      visible: this.sessionContextService.loggedInUserIsLocationAdmin()
+    }
+  ])
+
+  readonly quickActionsMenuVisible = computed(() => this.quickActionsMenu().some(item => item.visible))
+  
   readonly isLoggedIn$ = this.rtsOktaService.loggedIn$
 
   logout() {
     this.router.navigateByUrl('/').then(() => this.rtsOktaService.signOut())
   }
   
-  changeLocation() {
-    this.sessionContextService.clearSelectedLocation()
-    this.router.navigate(['/landing']).then()
+  private switchOrganization() {
+    this.sessionContextService.clearSelectedOrganization()
+    this.router.navigate(['/secure']).then()
   }
 }

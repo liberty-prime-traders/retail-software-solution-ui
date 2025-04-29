@@ -6,27 +6,29 @@
           <p-avatar [label]="userInitials()" shape="circle"/>
           <div class="flex flex-column gap-1">
             <span class="font-semibold text-2xl">{{sessionContextService.selectedOrganization()?.name}}</span>
-
             @if (sessionContextService.selectedLocation()) {
               <span>{{sessionContextService.selectedLocation()?.name}}</span>
-              <a class="p-button-label p-button-sm p-button-link p-0 cursor-pointer" (click)="changeLocation()">Change Location</a>
             }
           </div>
         </div>
+
+        <p-menubar [model]="quickActionsMenu()" class="font-italic"/>
       }
-      <div class="flex gap-4">
+
+      <div class="flex" [ngClass]="quickActionsMenuVisible() ? '' : 'flex-grow-1 justify-content-end'">
         <p-button icon="pi pi-user" label="Logout" (onClick)="logout()" severity="info"/>
       </div>
 
+
     } @else {
       <div class="flex flex-grow-1 justify-content-end">
-        <p-button icon="pi pi-user" severity="secondary" label="Login" routerLink="/landing"/>
+        <p-button icon="pi pi-user" severity="secondary" label="Login" routerLink="/secure"/>
       </div>
-
     }
+
   </div>
 
-  <p-divider></p-divider>
+  <p-divider/>
 
   <div class="flex-grow-1">
     <router-outlet/>

@@ -1,0 +1,23 @@
+<div class="flex justify-content-center">
+  <p-card class="mt-8 col-9 md:col-6 lg:col-4">
+    <div class="flex flex-column mb-6 gap-3 ">
+      <rts-form-field label="Select a Location to View" [layout]="FormFieldDirection.VERTICAL" containerClass="" contentClass="col-12">
+        <p-select [loading]="loading()"
+                  [options]="locations()"
+                  optionLabel="name"
+                  #locationDropDown
+                  emptyMessage="No location found"
+                  placeholder="Select a location">
+        </p-select>
+      </rts-form-field>
+
+      <p-button label="Continue"
+                class="align-self-end"
+                severity="info"
+                [disabled]="!locationDropDown.selectedOption"
+                (onClick)="proceedToLocation(locationDropDown.selectedOption)">
+      </p-button>
+    </div>
+  </p-card>
+</div>
+
