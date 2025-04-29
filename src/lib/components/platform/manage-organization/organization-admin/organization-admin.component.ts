@@ -1,12 +1,12 @@
 import {DatePipe} from '@angular/common'
 import {Component, effect, inject, signal} from '@angular/core'
 import {TableModule} from 'primeng/table'
-import {OrganizationAdmin} from '../../../../../../api/organization-admin/organization-admin.model'
-import {OrganizationAdminService} from '../../../../../../api/organization-admin/organization-admin.service'
-import {NullSafePipe} from '../../../../../../utils/pipes/null-safe.pipe'
-import {ProcessingStatus} from '../../../../../../utils/types/processing-status.enum'
-import {FormButtonsComponent} from '../../../../../reusable/form-buttons/form-buttons.component'
-import {HasGridComponent} from '../../../../../reusable/has-grid.component'
+import {OrganizationAdmin} from '../../../../api/organization-admin/organization-admin.model'
+import {OrganizationAdminService} from '../../../../api/organization-admin/organization-admin.service'
+import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
+import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
+import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
+import {HasGridComponent} from '../../../reusable/has-grid.component'
 
 @Component({
   selector: 'rts-admin',

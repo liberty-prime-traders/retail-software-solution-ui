@@ -1,18 +1,17 @@
 import {CommonModule} from '@angular/common'
 import {Component, inject, OnInit} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
-import {Router, RouterLink} from '@angular/router'
-import {SysUserService} from 'lib/api/sys-user/sys-user.service'
-import {FormButtonsComponent} from 'lib/components/reusable/form-buttons/form-buttons.component'
-import {RtsOktaService} from 'lib/utils/services/rts-okta.service'
-import {UserRole} from 'lib/utils/types/user-role.enum'
-import {Button} from 'primeng/button'
+import {ActivatedRoute, Router, RouterLink} from '@angular/router'
 import {Card} from 'primeng/card'
 import {InputText} from 'primeng/inputtext'
 import {Organization} from '../../../api/organization/organization.model'
+import {SysUserService} from '../../../api/sys-user/sys-user.service'
 import {LocalStorageService} from '../../../utils/services/local-storage.service'
+import {RtsOktaService} from '../../../utils/services/rts-okta.service'
 import {SessionContextService} from '../../../utils/services/session-context.service'
 import {LocalStorageKey} from '../../../utils/types/local-storage-key.enum'
+import {UserRole} from '../../../utils/types/user-role.enum'
+import {FormButtonsComponent} from '../../reusable/form-buttons/form-buttons.component'
 
 @Component({
   selector: 'rts-landing',
@@ -20,7 +19,6 @@ import {LocalStorageKey} from '../../../utils/types/local-storage-key.enum'
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    Button,
     InputText,
     RouterLink,
     Card,
@@ -30,6 +28,7 @@ import {LocalStorageKey} from '../../../utils/types/local-storage-key.enum'
 export class LandingComponent implements OnInit {
   private readonly userService = inject(SysUserService)
   private readonly router = inject(Router)
+  private readonly activatedRoute = inject(ActivatedRoute)
   private readonly sessionContextService = inject(SessionContextService)
   private readonly localStorageService = inject(LocalStorageService)
 
@@ -40,7 +39,7 @@ export class LandingComponent implements OnInit {
 
   ngOnInit() {
     this.userService.post()
-    this.proceedToOrganizationIfStored()
+    this.proceedToSelectLocation()
   }
 
   private readonly formBuilder = inject(FormBuilder)
@@ -53,11 +52,11 @@ export class LandingComponent implements OnInit {
     // TODO: Implement the logic to submit the organization domain
   }
 
-  private proceedToOrganizationIfStored() {
+  private proceedToSelectLocation() {
     const storedOrganization = this.localStorageService.getItem<Organization>(LocalStorageKey.ORGANIZATION)
     if (storedOrganization?.subdomain){
       this.sessionContextService.updateSelectedOrganization(storedOrganization)
-      this.router.navigate(['/landing', storedOrganization?.subdomain, 'select-location']).then()
+      this.router.navigate(['select-location'], {relativeTo: this.activatedRoute}).then()
     }
   }
 }

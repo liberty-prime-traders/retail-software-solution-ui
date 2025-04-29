@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, HostListener, inject, OnInit, signal} from '@angular/core'
-import {Router, RouterOutlet} from '@angular/router'
+import {ActivatedRoute, Router, RouterOutlet} from '@angular/router'
 import {Button} from 'primeng/button'
 import {SessionContextService} from '../../utils/services/session-context.service'
 import {NavigationComponent} from './navigation/navigation.component'
@@ -11,17 +11,18 @@ import {NavigationComponent} from './navigation/navigation.component'
     NavigationComponent,
     Button
   ],
-  templateUrl: 'private.component.html'
+  templateUrl: 'location-dashboard.component.html'
 })
-export class PrivateComponent implements AfterViewInit, OnInit {
+export class LocationDashboardComponent implements AfterViewInit, OnInit {
   private readonly sessionContextService = inject(SessionContextService)
   private readonly router = inject(Router)
+  private readonly activatedRoute = inject(ActivatedRoute)
   
   readonly showNavigation = signal(true)
 
   ngOnInit() {
-    if (!this.sessionContextService.selectedOrganization()) {
-      this.router.navigate(['/landing']).then()
+    if (!this.sessionContextService.locationIsSelected()) {
+      this.router.navigate(['..'], {relativeTo: this.activatedRoute}).then()
     }
   }
   

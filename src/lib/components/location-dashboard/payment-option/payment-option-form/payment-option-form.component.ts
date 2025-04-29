@@ -1,9 +1,9 @@
 import {Component, computed, inject, input, OnInit} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
-import {PaymentOption} from 'lib/api/payment-option/payment-option.model.'
-import {PaymentOptionService} from 'lib/api/payment-option/payment-option.service'
-import {FormButtonsComponent} from 'lib/components/reusable/form-buttons/form-buttons.component'
-import {FormFieldComponent} from 'lib/components/reusable/form-field/form-field.component'
+import {PaymentOption} from '../../../../api/payment-option/payment-option.model.'
+import {PaymentOptionService} from '../../../../api/payment-option/payment-option.service'
+import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
+import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {isNil} from 'lodash-es'
 import {InputText} from 'primeng/inputtext'
 
