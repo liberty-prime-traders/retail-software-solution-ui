@@ -1,0 +1,80 @@
+<p-block-ui [blocked]="organizationIsLoading()" [target]="organizationFormContainer"/>
+
+<div class="flex h-full justify-content-center align-items-center">
+  <p-card class="col-11 md:col-6 lg:col-5 "#organizationFormContainer>
+    <h1 class="text-xl text-center m-0 mt-3">Create New Organization</h1>
+
+    <form [formGroup]="organizationForm" class="py-4">
+      <rts-form-field for="name" label="Name" [required]="true" contentClass="col-11" [layout]="FormFieldDirection.VERTICAL">
+        <input id="name" pInputText formControlName="name"/>
+      </rts-form-field>
+
+      <rts-form-field for="description" label="Description" contentClass="col-11" [layout]="FormFieldDirection.VERTICAL">
+        <textarea id="description" pInputText formControlName="description" class="w-full"></textarea>
+      </rts-form-field>
+
+      <div class="flex align-items-center gap-2">
+        <rts-form-field for="subdomain"
+                        [required]="true"
+                        label="Domain"
+                        class="col-9 p-0"
+                        contentClass="col-11"
+                        [layout]="FormFieldDirection.VERTICAL">
+          <input id="subdomain" pInputText formControlName="subdomain" />
+        </rts-form-field>
+
+        <p-button label="Verify"
+                  class="col-3 p-0 align-self-end field"
+                  outlined="true"
+                  severity="info"
+                  (click)="verifyDomain()"
+                  [loading]="reservedSubdomainProcessingIsUnderWay()"
+                  [disabled]="reservedSubdomainProcessingIsUnderWay() || domainControl.invalid">
+        </p-button>
+      </div>
+
+      @if (reservedSubdomainProcessingStatus() === ProcessingStatus.SUCCESS) {
+        <div class="px-4 mb-4">
+          @if (requestedSubdomain() !== domainControl.value) {
+            <div class="text-sm text-yellow-500 mt-1">
+              <i class="pi pi-exclamation-circle"></i>
+              Domain updated from <b>{{requestedSubdomain()}}</b> to <b>{{domainControl.value}}</b>
+            </div>
+          }
+
+          <div class="text-green-500 mt-2">
+            <i class="pi pi-check-circle"></i> Verified
+          </div>
+        </div>
+      }
+
+      @if (reservedSubdomainProcessingStatus() === ProcessingStatus.FAILURE) {
+        <div class="text-red-500 text-center px-4 mb-4">
+          @for (message of reservedSubdomainFailureMessages(); track message) {
+            <span>{{message}}</span>
+          }
+        </div>
+      }
+
+      <div class="flex justify-content-between">
+        <p-button label="Cancel"
+                  class="mt-4 px-4"
+                  severity="secondary"
+                  routerLink=".."
+                  (click)="cancel()">
+        </p-button>
+
+        <rts-forms-buttons [disableReset]="!organizationForm.dirty"
+                           [disableSave]="!organizationForm.valid || !organizationForm.dirty"
+                           [hideReset]="true"
+                           [hideDelete]="true"
+                           [processingStatus]="organizationProcessingStatus()"
+                           [failureMessages]="organizationServiceFailureMessages()"
+                           [saveLabel]="'Create'"
+                           (save)="createOrganization()"
+                           (resetAction)="resetForm()">
+        </rts-forms-buttons>
+      </div>
+    </form>
+  </p-card>
+</div>

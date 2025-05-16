@@ -19,7 +19,6 @@
         <p-button icon="pi pi-user" label="Logout" (onClick)="logout()" severity="info"/>
       </div>
 
-
     } @else {
       <div class="flex flex-grow-1 justify-content-end">
         <p-button icon="pi pi-user" severity="secondary" label="Login" routerLink="/secure"/>
@@ -28,7 +27,7 @@
 
   </div>
 
-  <p-divider/>
+  <p-divider></p-divider>
 
   <div class="flex-grow-1">
     <router-outlet/>

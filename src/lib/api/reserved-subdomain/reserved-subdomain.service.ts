@@ -10,7 +10,7 @@ export class ReservedSubdomainService extends BaseService<ReservedSubdomain> {
     super(store)
   }
 
-  override getHttpParams(suggestedSubdomain: string): HttpParams {
-    return new HttpParams().setNonNull('suggestedSubdomain', suggestedSubdomain)
+  override getHttpParams(params: {suggestedSubdomain: string, pathSuffix: string}): HttpParams {
+    return new HttpParams().setNonNull('suggestedSubdomain', params?.suggestedSubdomain)
   }
 }

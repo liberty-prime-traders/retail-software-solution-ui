@@ -16,40 +16,20 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
     super(store)
   }
 
-  fetch(params?: PARAMS, pathSuffix?: string) {
-    return this.doFetch(params, pathSuffix)
+  fetch(params?: PARAMS) {
+    return this.doFetch(params)
   }
 
-  refetch(params?: PARAMS, pathSuffix?: string) {
+  refetch(params?: PARAMS) {
     this.resetStoreAndClearCache()
-    return this.doFetch(params, pathSuffix)
+    return this.doFetch(params)
   }
 
-  fetchById(idParam: string, pathSuffix?: string, additionalParams?: PARAMS) {
-    return this.doFetch(additionalParams, pathSuffix, idParam)
+  fetchById(idParam: string, additionalParams?: PARAMS) {
+    return this.doFetch(additionalParams, idParam)
   }
 
-  private assembleMatrixParams(params: HttpParams): string {
-    if (!isNil(params) && params.keys().length <= 0) {
-      return ''
-    }
-    const paramsAsArray = params.keys().map(key => `${key}=${params.get(key)}`)
-    return `;${paramsAsArray.join(';')}`
-  }
-
-  protected getMatrixParams(params: PARAMS): HttpParams {
-    return new HttpParams()
-  }
-
-  protected getPathParams(params: PARAMS): string {
-    return params?.pathParams ?? ''
-  }
-
-  protected getHttpParams(params: PARAMS): HttpParams {
-    return new HttpParams()
-  }
-
-  private doFetch(params?: PARAMS, pathSuffix?: string, idParam?: EntityId): Subscription | undefined {
+  private doFetch(params?: PARAMS, idParam?: EntityId): Subscription | undefined {
     if (!this.shouldMakeCall()) {
       return undefined
     }
@@ -58,6 +38,7 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
     const httpParams = this.getHttpParams(params)
     const matrixParams = this.assembleMatrixParams(this.getMatrixParams(params))
     const pathParams = this.getPathParams(params)
+    const pathSuffix = this.getPathSuffix(params)
     const suffix = pathSuffix ? `/${pathSuffix}` : ''
     const url = `${this.getBasePath(idParam)}${suffix}${pathParams}${matrixParams}`
     return this.fetcher.get<RESPONSE>(url, {params: httpParams}).pipe(
@@ -82,5 +63,29 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
 
   private removeCache(): void {
     this.store.setHasCache(false)
+  }
+  
+  private assembleMatrixParams(params: HttpParams): string {
+    if (!isNil(params) && params.keys().length <= 0) {
+      return ''
+    }
+    const paramsAsArray = params.keys().map(key => `${key}=${params.get(key)}`)
+    return `;${paramsAsArray.join(';')}`
+  }
+  
+  protected getMatrixParams(params: PARAMS): HttpParams {
+    return new HttpParams()
+  }
+  
+  protected getPathParams(params: PARAMS): string {
+    return params?.pathParams ?? ''
+  }
+  
+  protected getHttpParams(params: PARAMS): HttpParams {
+    return new HttpParams()
+  }
+  
+  protected getPathSuffix(params: PARAMS): string {
+    return params?.pathSuffix ?? ''
   }
 }
