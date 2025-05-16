@@ -31,10 +31,10 @@ export class WelcomeComponent {
 
   readonly quickActionsMenu: Signal<MenuItem[]> = computed(() => [
     {
-      label: 'Home',
+      label: 'Location Summary',
       icon: 'pi pi-home',
       routerLink: '/secure/location-dashboard',
-      visible: true
+      visible: this.sessionContextService.locationIsSelected()
     },
     {
       label: 'Switch Organization',
@@ -49,18 +49,14 @@ export class WelcomeComponent {
       routerLink: '/secure/manage-organization'
     },
     {
-      label: 'Switch Location',
+      label: this.sessionContextService.locationIsSelected() ? 'Switch Location' : 'Select Location',
       icon: 'pi pi-map-marker',
-      visible: this.sessionContextService.locationIsSelected()
-    },
-    {
-      label: 'Manage Location',
-      icon: 'pi pi-cog',
-      visible: this.sessionContextService.loggedInUserIsLocationAdmin()
+      visible: this.sessionContextService.organizationIsSelected(),
+      command: () => this.switchLocation()
     }
   ])
 
-  readonly quickActionsMenuVisible = computed(() => this.quickActionsMenu().some(item => item.visible))
+  readonly quickActionsMenuVisible = computed(() => this.quickActionsMenu().some(item => item.visible === true))
   
   readonly isLoggedIn$ = this.rtsOktaService.loggedIn$
 
@@ -71,5 +67,10 @@ export class WelcomeComponent {
   private switchOrganization() {
     this.sessionContextService.clearSelectedOrganization()
     this.router.navigate(['/secure']).then()
+  }
+  
+  private switchLocation() {
+    this.sessionContextService.clearSelectedLocation()
+    this.router.navigate(['/secure/select-location']).then()
   }
 }

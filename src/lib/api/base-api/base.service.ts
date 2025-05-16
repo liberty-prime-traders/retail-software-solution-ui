@@ -1,7 +1,7 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http'
 import {inject} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
-import {Subscription} from 'rxjs'
+import {finalize, Subscription} from 'rxjs'
 import {catchError, first, tap} from 'rxjs/operators'
 import {ProcessingStatus} from '../../utils/types/processing-status.enum'
 import {BaseModel} from './base.model'
@@ -17,12 +17,13 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
     super(store, inject(HttpClient))
   }
 
-  post(body?: PAYLOAD, id?: string): Subscription {
+  post(body?: PAYLOAD, id?: EntityId): Subscription {
     this.startApiRequest()
     return this.httpClient.post<RESPONSE>(this.getBasePath(id), body).pipe(
       first(),
       tap((postResult: RESPONSE) => this.finishSavingWithSuccess(postResult)),
-      catchError((error: HttpErrorResponse) => this.setStoreError(error))
+      catchError((error: HttpErrorResponse) => this.setStoreError(error)),
+      finalize(() => this.store.setLoading(false))
     ).subscribe()
   }
 
@@ -31,7 +32,8 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
     return this.httpClient.put<RESPONSE>(this.getBasePath(), body).pipe(
       first(),
       tap((putResult: RESPONSE) => this.finishSavingWithSuccess(putResult)),
-      catchError((error: HttpErrorResponse) => this.setStoreError(error))
+      catchError((error: HttpErrorResponse) => this.setStoreError(error)),
+      finalize(() => this.store.setLoading(false))
     ).subscribe()
   }
 
@@ -44,10 +46,10 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
       first(),
       tap(() => {
         this.store.remove(id)
-        this.store.setLoading(false)
         this.setProcessingStatus(ProcessingStatus.SUCCESS)
       }),
-      catchError((error: HttpErrorResponse) => this.setStoreError(error))
+      catchError((error: HttpErrorResponse) => this.setStoreError(error)),
+      finalize(() => this.store.setLoading(false))
     ).subscribe()
   }
 

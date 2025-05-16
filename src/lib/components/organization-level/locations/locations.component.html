@@ -1,0 +1,69 @@
+<h3 class="font-semibold">Locations</h3>
+
+<p-divider/>
+
+<p-table [loading]="loading() && !addingIsActive()"
+         selectionMode="single"
+         rowExpandMode="single"
+         dataKey="id"
+         sortField="name"
+          #locationsTable
+          [globalFilterFields]="['name', 'description', 'locationType', 'createdBy']"
+         (onRowExpand)="rowIsExpanded.set(true)"
+         (onRowCollapse)="rowIsExpanded.set(false)"
+         [(selection)]="selectedLocation"
+         [value]="locations()">
+
+  <ng-template pTemplate="caption">
+    <rts-grid-filter [dataTable]="locationsTable"/>
+  </ng-template>
+
+  <ng-template #header>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Created By</th>
+      <th>Usage Count</th>
+      <th style="width: 5rem"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-location let-expanded="expanded">
+    <tr [pSelectableRow]="location">
+      <td>{{location?.name | nullSafe}}</td>
+      <td>{{location?.description | nullSafe}}</td>
+      <td>{{location?.locationType | prettifyEnum}}</td>
+      <td>{{location?.createdBy | nullSafe}}</td>
+      <td>{{location?.usageCount | nullishToZero}}</td>
+      <td>
+        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                  rounded
+                  severity="secondary"
+                  [disabled]="processingIsUnderWay() || addingIsActive()"
+                  [pRowToggler]="location">
+        </p-button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template #expandedrow let-location>
+    <tr>
+      <td colspan="6" class="filled-background">
+        <rts-location-form [organizationId]="organizationId()" [location]="location"/>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="6" class="filled-background h-4rem">No Locations are assigned to the selected organization</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
+  @if (addingIsActive()) {
+    <rts-location-form [organizationId]="organizationId()"/>
+  }
+</rts-add-row>

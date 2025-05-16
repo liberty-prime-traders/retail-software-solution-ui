@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, signal} from '@angular/core'
-import {Organization} from '../../api/organization/organization.model'
 import {Location} from '../../api/location/location.model'
+import {Organization} from '../../api/organization/organization.model'
 import {LocalStorageKey} from '../types/local-storage-key.enum'
 import {LocalStorageService} from './local-storage.service'
 
@@ -14,11 +14,9 @@ export class SessionContextService {
 	readonly selectedLocation = computed(() => this._selectedLocation())
 	readonly locationIsSelected = computed(() => this._selectedLocation() !== null)
 	readonly loggedInUserIsOrganizationAdmin = computed(() => this._loggedInUserIsOrganizationAdmin())
-	readonly loggedInUserIsLocationAdmin = computed(() => this._loggedInUserIsLocationAdmin())
 	
 	receiveNewOrganization(createdOrganization: Organization): void {
 		this.updateSelectedOrganization(createdOrganization)
-		this.demoteFromLocationAdmin()
 		this.clearSelectedLocation()
 		this.promoteToOrganizationAdmin()
 	}
@@ -41,11 +39,10 @@ export class SessionContextService {
 	
 	clearSelectedLocation(): void {
 		this._selectedLocation.set(null)
-		this.demoteFromLocationAdmin()
 		this.localStorageService.removeItem(LocalStorageKey.LOCATION)
 	}
 	
-	private promoteToOrganizationAdmin(): void {
+	promoteToOrganizationAdmin(): void {
 		this._loggedInUserIsOrganizationAdmin.set(true)
 	}
 	
@@ -53,17 +50,7 @@ export class SessionContextService {
 		this._loggedInUserIsOrganizationAdmin.set(false)
 	}
 	
-	private promoteToLocationAdmin(): void {
-		this._loggedInUserIsLocationAdmin.set(true)
-	}
-	
-	private demoteFromLocationAdmin(): void {
-		this._loggedInUserIsLocationAdmin.set(false)
-	}
-	
 	private readonly _selectedOrganization = signal<Organization|null>(null)
 	private readonly _selectedLocation = signal<Location|null>(null)
 	private readonly _loggedInUserIsOrganizationAdmin = signal<boolean>(false)
-	private readonly _loggedInUserIsLocationAdmin = signal<boolean>(false)
-	
 }
