@@ -3,10 +3,10 @@ import {SysUserService} from '../../../api/sys-user/sys-user.service'
 
 @Component({
   selector: 'rts-homepage',
-  templateUrl: 'homepage.component.html',
+  templateUrl: 'location-summary.component.html',
   imports: []
 })
-export class HomepageComponent {
+export class LocationSummaryComponent {
   private readonly userService = inject(SysUserService)
   private readonly loggedInUser = this.userService.selectFirst
 
