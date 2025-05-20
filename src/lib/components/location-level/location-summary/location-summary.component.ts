@@ -2,7 +2,7 @@ import {Component, computed, inject} from '@angular/core'
 import {SysUserService} from '../../../api/sys-user/sys-user.service'
 
 @Component({
-  selector: 'rts-homepage',
+  selector: 'rts-location-summary',
   templateUrl: 'location-summary.component.html',
   imports: []
 })
