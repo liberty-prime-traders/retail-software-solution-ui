@@ -2,11 +2,11 @@ import {Component, computed, inject} from '@angular/core'
 import {SysUserService} from '../../../api/sys-user/sys-user.service'
 
 @Component({
-  selector: 'rts-homepage',
-  templateUrl: 'homepage.component.html',
+  selector: 'rts-location-summary',
+  templateUrl: 'location-summary.component.html',
   imports: []
 })
-export class HomepageComponent {
+export class LocationSummaryComponent {
   private readonly userService = inject(SysUserService)
   private readonly loggedInUser = this.userService.selectFirst
 

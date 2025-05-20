@@ -30,7 +30,7 @@ const orgManagementChildRoutes: Routes = [
   {path: 'job-title', component: JobTitleComponent},
   {path: 'units', component: UnitTreeComponent},
   {path: 'payment-options', component: PaymentOptionComponent},
-  
+
   {path: 'locations', component: LocationsComponent},
   {path: 'profile', component: OrganizationProfileComponent},
   {path: 'admins', component: OrganizationAdminComponent},
@@ -38,7 +38,7 @@ const orgManagementChildRoutes: Routes = [
 ]
 
 const locationRoutes: Routes = [
-  {path: '', component: LocationSummaryComponent},
+  {path: '', component: LocationSummaryComponent}
 ]
 
 const secureRoutes: Routes = [
