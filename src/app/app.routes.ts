@@ -23,6 +23,10 @@ import {SelectLocationComponent} from '../lib/components/platform-level/select-l
 import {PublicComponent} from '../lib/components/public/public.component'
 import {CanViewLocation} from './route-guards/can-view-location'
 import {CanViewOrganization} from './route-guards/can-view-organization'
+import {
+  EndUserJoinRequestComponent
+} from '../lib/components/organization-level/end-user-join-request/end-user-join-request.component'
+import {MyJoinRequestsComponent} from '../lib/components/organization-level/my-join-request/my-join-request.component'
 
 const orgManagementChildRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
@@ -34,6 +38,7 @@ const orgManagementChildRoutes: Routes = [
   {path: 'locations', component: LocationsComponent},
   {path: 'profile', component: OrganizationProfileComponent},
   {path: 'admins', component: OrganizationAdminComponent},
+  {path: 'join-requests', component: EndUserJoinRequestComponent},
   {path: '', redirectTo: 'summary', pathMatch: 'full'}
 ]
 
@@ -44,6 +49,7 @@ const locationRoutes: Routes = [
 const secureRoutes: Routes = [
   {path: '', component: LandingComponent, pathMatch: 'full'},
   {path: 'create-organization', component: CreateOrganizationComponent},
+  {path: 'my-join-requests', component: MyJoinRequestsComponent},
   {path: 'select-location', component: SelectLocationComponent, canActivate: [CanViewOrganization]},
   {
     path: 'manage-organization',

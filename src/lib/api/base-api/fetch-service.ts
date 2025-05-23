@@ -45,7 +45,8 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
       tap((body) => this.finishSavingWithSuccess(body, idParam)),
       catchError((error) => this.setStoreError(error)),
       finalize(() => this.store.setLoading(false))
-    ).subscribe()
+    )
+      .subscribe()
   }
 
   private shouldMakeCall() {
@@ -64,7 +65,7 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
   private removeCache(): void {
     this.store.setHasCache(false)
   }
-  
+
   private assembleMatrixParams(params: HttpParams): string {
     if (!isNil(params) && params.keys().length <= 0) {
       return ''
@@ -72,19 +73,19 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
     const paramsAsArray = params.keys().map(key => `${key}=${params.get(key)}`)
     return `;${paramsAsArray.join(';')}`
   }
-  
+
   protected getMatrixParams(params: PARAMS): HttpParams {
     return new HttpParams()
   }
-  
+
   protected getPathParams(params: PARAMS): string {
     return params?.pathParams ?? ''
   }
-  
+
   protected getHttpParams(params: PARAMS): HttpParams {
     return new HttpParams()
   }
-  
+
   protected getPathSuffix(params: PARAMS): string {
     return params?.pathSuffix ?? ''
   }
