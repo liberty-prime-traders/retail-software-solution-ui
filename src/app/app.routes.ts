@@ -27,6 +27,11 @@ import {
   EndUserJoinRequestComponent
 } from '../lib/components/organization-level/end-user-join-request/end-user-join-request.component'
 import {MyJoinRequestsComponent} from '../lib/components/organization-level/my-join-request/my-join-request.component'
+import {ManagePlatformComponent} from '../lib/components/platform-level/manage-platform/manage-platform.component'
+import {
+  OrganizationComponent
+} from '../lib/components/platform-level/organization/organization.component'
+import {CanViewPlatformOrganization} from './route-guards/can-view-platform-organization.guard'
 
 const orgManagementChildRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
@@ -46,6 +51,11 @@ const locationRoutes: Routes = [
   {path: '', component: LocationSummaryComponent}
 ]
 
+const platformManagementRoutes: Routes = [
+  {path: 'organizations', component: OrganizationComponent},
+  {path: '', redirectTo: 'organizations', pathMatch: 'full'}
+]
+
 const secureRoutes: Routes = [
   {path: '', component: LandingComponent, pathMatch: 'full'},
   {path: 'create-organization', component: CreateOrganizationComponent},
@@ -56,6 +66,12 @@ const secureRoutes: Routes = [
     component: OrganizationDashboardComponent,
     canActivate: [CanViewOrganization],
     children: orgManagementChildRoutes
+  },
+  {
+    path: 'manage-platform',
+    component: ManagePlatformComponent,
+    canActivate: [CanViewPlatformOrganization],
+    children: platformManagementRoutes
   },
   {
     path: 'location-dashboard',

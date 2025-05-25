@@ -1,8 +1,9 @@
 import {inject, Injectable} from '@angular/core'
+import {toSignal} from '@angular/core/rxjs-interop'
 import {Router} from '@angular/router'
 import {OKTA_AUTH, OktaAuthStateService} from '@okta/okta-angular'
 import {AccessToken, AuthState} from '@okta/okta-auth-js'
-import {filter, map, Observable} from 'rxjs'
+import {filter, map, Observable, switchMap} from 'rxjs'
 import {first} from 'rxjs/operators'
 import {OktaAccessTokenClaims} from '../models/okta-access-token-claims.model'
 import {UserRole} from '../types/user-role.enum'
@@ -39,4 +40,12 @@ export class RtsOktaService {
     const claims = (accessToken?.claims as OktaAccessTokenClaims)?.groups
     return Boolean(claims?.includes(role))
   }
+
+  readonly isPlatformAdmin = toSignal(
+    this.loggedIn$.pipe(
+      filter((isLoggedIn) => Boolean(isLoggedIn)),
+      switchMap(() => this.hasRole$(UserRole.ROLE_PLATFORM_ADMIN))
+    ),
+    {initialValue: false}
+  )
 }

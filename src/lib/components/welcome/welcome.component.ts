@@ -53,6 +53,12 @@ export class WelcomeComponent {
       icon: 'pi pi-map-marker',
       visible: this.sessionContextService.organizationIsSelected(),
       command: () => this.switchLocation()
+    },
+    {
+      label: 'Manage Platform',
+      icon: 'pi pi-cog',
+      visible: this.rtsOktaService.isPlatformAdmin(),
+      routerLink: '/secure/manage-platform'
     }
   ])
 

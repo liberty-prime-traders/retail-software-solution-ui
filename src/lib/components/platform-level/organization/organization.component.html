@@ -1,0 +1,62 @@
+<h3 class="font-semibold">Organizations</h3>
+
+<p-divider/>
+
+<p-table [loading]="loading()"
+         dataKey="id"
+         sortField="name"
+         #organizationsTable
+         [value]="organizations()"
+         [globalFilterFields]="['name', 'subdomain', 'description']">
+
+  <ng-template pTemplate="caption">
+    <div class="flex justify-content-end gap-6 mb-3 align-items-center">
+      <rts-grid-filter [dataTable]="organizationsTable" margin="m-0"/>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="name">Name
+        <p-sortIcon field="name"></p-sortIcon>
+      </th>
+      <th pSortableColumn="subdomain">Subdomain
+        <p-sortIcon field="subdomain"></p-sortIcon>
+      </th>
+      <th pSortableColumn="description">Description
+        <p-sortIcon field="description"></p-sortIcon>
+      </th>
+      <th pSortableColumn="usageCount">Usage Count
+        <p-sortIcon field="usageCount"></p-sortIcon>
+      </th>
+      <th pSortableColumn="createdBy">Created By
+        <p-sortIcon field="createdBy"></p-sortIcon>
+      </th>
+      <th pSortableColumn="createdOn">Created On
+        <p-sortIcon field="createdOn"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-organization>
+    <tr>
+      <td>{{organization?.name | nullSafe}}</td>
+      <td>{{organization?.subdomain | nullSafe}}</td>
+      <td>{{organization?.description | nullSafe}}</td>
+      <td>{{organization?.usageCount | nullSafe}}</td>
+      <td>{{organization?.createdBy}}</td>
+      <td>{{(organization?.createdOn * 1000) | date: 'medium'}}</td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="5" class="text-center py-4">
+        <div class="flex flex-column align-items-center">
+          <i class="pi pi-inbox text-6xl text-400 mb-2"></i>
+          <span class="text-500">No organizations found</span>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
