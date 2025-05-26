@@ -28,13 +28,18 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
   fetchById(idParam: string, additionalParams?: PARAMS) {
     return this.doFetch(additionalParams, idParam)
   }
+  
+  protected startApiRequest() {
+    this.store.setLoading(true)
+    this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
+    this.store.clearError()
+  }
 
   private doFetch(params?: PARAMS, idParam?: EntityId): Subscription | undefined {
     if (!this.shouldMakeCall()) {
       return undefined
     }
-    this.store.setLoading(true)
-    this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
+    this.startApiRequest()
     const httpParams = this.getHttpParams(params)
     const matrixParams = this.assembleMatrixParams(this.getMatrixParams(params))
     const pathParams = this.getPathParams(params)

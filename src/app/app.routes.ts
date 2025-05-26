@@ -26,7 +26,7 @@ import {CanViewOrganization} from './route-guards/can-view-organization'
 import {
   EndUserJoinRequestComponent
 } from '../lib/components/organization-level/end-user-join-request/end-user-join-request.component'
-import {MyJoinRequestsComponent} from '../lib/components/organization-level/my-join-request/my-join-request.component'
+import {MyJoinRequestsComponent} from '../lib/components/platform-level/my-join-request/my-join-request.component'
 import {ManagePlatformComponent} from '../lib/components/platform-level/manage-platform/manage-platform.component'
 import {
   OrganizationComponent

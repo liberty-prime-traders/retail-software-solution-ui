@@ -57,7 +57,7 @@ export class WelcomeComponent {
     {
       label: 'Manage Platform',
       icon: 'pi pi-cog',
-      visible: this.rtsOktaService.isPlatformAdmin(),
+      visible: this.rtsOktaService.isPlatformAdmin() && this.sessionContextService.organizationIsSelected(),
       routerLink: '/secure/manage-platform'
     }
   ])

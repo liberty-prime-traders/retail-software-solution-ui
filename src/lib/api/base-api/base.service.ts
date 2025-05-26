@@ -54,9 +54,4 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
     )
       .subscribe()
   }
-
-  startApiRequest() {
-    this.store.setLoading(true)
-    this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
-  }
 }

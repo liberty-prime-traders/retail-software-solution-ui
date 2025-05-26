@@ -9,6 +9,7 @@ import {tap} from 'rxjs/operators'
 import {OrganizationAdminService} from '../../../api/organization-admin/organization-admin.service'
 import {Organization} from '../../../api/organization/organization.model'
 import {SysUserService} from '../../../api/sys-user/sys-user.service'
+import {parseError} from '../../../utils/error.util'
 import {LocalStorageService} from '../../../utils/services/local-storage.service'
 import {RtsOktaService} from '../../../utils/services/rts-okta.service'
 import {SessionContextService} from '../../../utils/services/session-context.service'
@@ -47,8 +48,8 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
 
   readonly ProcessingStatus = ProcessingStatus
 
-  loading = signal(false)
-  errorMessage = signal<string | null>(null)
+  readonly loading = signal(false)
+  readonly errorMessages = signal<string[] | null>(null)
 
   ngOnInit() {
     this.userService.post()
@@ -65,7 +66,7 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
     if (this.organizationDomainForm.invalid || this.loading()) return
 
     this.loading.set(true)
-    this.errorMessage.set(null)
+    this.errorMessages.set(null)
     const domain = this.organizationDomainForm.value.domain!
 
     this.subscriptions.add(
@@ -76,10 +77,10 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
       )
         .subscribe({
           next: (response) => {
-            if (response.organization) {
+            if (!response.accessRequested) {
               this.localStorageService.setItem(LocalStorageKey.ORGANIZATION, response.organization)
               this.proceedToSelectLocation()
-            } else if (response.accessRequested) {
+            } else {
               this.messageService.add({
                 severity: 'success',
                 summary: 'Request Submitted',
@@ -88,7 +89,7 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
             }
           },
           error: (error) => {
-            this.errorMessage.set(error?.error?.message || 'Failed to process organization launch')
+            this.errorMessages.set(parseError(error) ?? ['Failed to process organization launch'])
           }
         })
     )

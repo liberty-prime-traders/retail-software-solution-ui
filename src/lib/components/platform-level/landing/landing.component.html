@@ -7,41 +7,40 @@
     </div>
 
     <p-card class="w-full">
-      <ng-template #content>
-        <form [formGroup]="organizationDomainForm" class="px-4 mx-6 mt-4">
-          <label for="domain">Enter your Organization's Domain:</label>
-          @if (errorMessage()) {
-            <div class="text-red-500 font-italic mt-1 mb-3 w-full">
-              {{errorMessage()}}
-            </div>
-          }
-          <input id="domain" pInputText formControlName="domain" class="w-full" />
-        </form>
+      <form [formGroup]="organizationDomainForm" class="px-4 mx-6 mt-4 flex flex-column gap-2">
+        <label for="domain">Enter your Organization's Domain:</label>
+        @for (errorMessage of errorMessages(); track errorMessage) {
+          <div class="text-red-500 font-italic mt-1 mb-3 w-full">
+            {{errorMessage}}
+          </div>
+        }
+        <input id="domain" pInputText formControlName="domain" class="w-full" />
+      </form>
 
-        <div class="flex justify-content-end mr-6">
-          <rts-forms-buttons [disableReset]="!organizationDomainForm.dirty"
-                             [disableSave]="!organizationDomainForm.valid || !organizationDomainForm.dirty || loading()"
-                             [hideReset]="true"
-                             [hideDelete]="true"
-                             [processingStatus]="loading() ? ProcessingStatus.IN_PROGRESS : null"
-                             [failureMessages]="[]"
-                             saveLabel="Submit"
-                             (save)="submitOrganization()">
-          </rts-forms-buttons>
-        </div>
+      <div class="flex justify-content-end mr-6">
+        <rts-forms-buttons [disableReset]="!organizationDomainForm.dirty"
+                           [disableSave]="!organizationDomainForm.valid || !organizationDomainForm.dirty || loading()"
+                           [hideReset]="true"
+                           [hideDelete]="true"
+                           saveInProgressMessage="Launching Organization"
+                           [processingStatus]="loading() ? ProcessingStatus.IN_PROGRESS : null"
+                           [failureMessages]="[]"
+                           saveLabel="Launch"
+                           (save)="submitOrganization()">
+        </rts-forms-buttons>
+      </div>
 
-        <div class="px-4 flex flex-column justify-content-center align-items-center gap-3 my-4">
-          @if (hasCreateRole$ | async) {
-            <span routerLink="create-organization" class="font-italic text-cyan-600 cursor-pointer">
-              Create a New Organization
-            </span>
-          }
-
-          <span routerLink="my-join-requests" class="font-italic text-cyan-600 cursor-pointer">
-            View Requested Organizations
+      <div class="px-4 flex flex-column justify-content-center align-items-center gap-3 my-4">
+        @if (hasCreateRole$ | async) {
+          <span routerLink="create-organization" class="font-italic text-cyan-600 cursor-pointer">
+            Create a New Organization
           </span>
-        </div>
-      </ng-template>
+        }
+
+        <span routerLink="my-join-requests" class="font-italic text-cyan-600 cursor-pointer">
+          View Requested Organizations
+        </span>
+      </div>
     </p-card>
   </div>
 </div>

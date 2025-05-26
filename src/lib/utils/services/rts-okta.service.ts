@@ -5,7 +5,7 @@ import {OKTA_AUTH, OktaAuthStateService} from '@okta/okta-angular'
 import {AccessToken, AuthState} from '@okta/okta-auth-js'
 import {filter, map, Observable, switchMap} from 'rxjs'
 import {first} from 'rxjs/operators'
-import {OktaAccessTokenClaims} from '../models/okta-access-token-claims.model'
+import {OktaAccessTokenClaims} from '../types/okta-access-token-claims.model'
 import {UserRole} from '../types/user-role.enum'
 
 @Injectable({providedIn: 'root'})
