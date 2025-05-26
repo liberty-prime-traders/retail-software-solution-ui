@@ -45,7 +45,7 @@
       <td>{{organization?.description | nullSafe}}</td>
       <td>{{organization?.usageCount | nullSafe}}</td>
       <td>{{organization?.createdBy}}</td>
-      <td>{{(organization?.createdOn * 1000) | date: 'medium'}}</td>
+      <td>{{organization?.createdOn | date: 'medium'}}</td>
     </tr>
   </ng-template>
 
