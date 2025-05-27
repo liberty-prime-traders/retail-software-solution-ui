@@ -6,6 +6,7 @@ import {DatePipe} from '@angular/common'
 import {TableModule} from 'primeng/table'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
+import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 
 @Component({
   selector: 'rts-organization',
@@ -15,7 +16,8 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
     TableModule,
     NullSafePipe,
     GridFilterComponent,
-    Divider
+    Divider,
+    EmptyRowComponent
   ]
 })
 export class OrganizationComponent extends HasGridComponent<OrganizationService> {

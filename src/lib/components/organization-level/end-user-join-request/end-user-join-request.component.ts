@@ -9,17 +9,21 @@ import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {HasGridComponent} from '../../reusable/has-grid.component'
+import {JoinRequestStatusSeverityPipe} from '../../../utils/pipes/join-request-status-severity.pipe'
+import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 
 @Component({
   selector: 'rts-end-user-join-request',
   templateUrl: 'end-user-join-request.component.html',
   imports: [
     DatePipe,
+    JoinRequestStatusSeverityPipe,
     TableModule,
     NullSafePipe,
     GridFilterComponent,
     Divider,
-    TagModule
+    TagModule,
+    EmptyRowComponent
   ]
 })
 export class EndUserJoinRequestComponent extends HasGridComponent<EndUserJoinRequestService> {
@@ -52,18 +56,5 @@ export class EndUserJoinRequestComponent extends HasGridComponent<EndUserJoinReq
         }
       }
     })
-  }
-
-  getStatusSeverity(status?: string) {
-    switch (status) {
-    case 'PENDING':
-      return 'warn'
-    case 'APPROVED':
-      return 'success'
-    case 'REJECTED':
-      return 'danger'
-    default:
-      return 'info'
-    }
   }
 }

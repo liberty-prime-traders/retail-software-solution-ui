@@ -10,6 +10,7 @@ import {NullishToZeroPipe} from '../../../utils/pipes/nullish-to-zero.pipe'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {PaymentOptionFormComponent} from './payment-option-form/payment-option-form.component'
+import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 
 @Component({
   selector: 'rts-payment-option',
@@ -23,7 +24,8 @@ import {PaymentOptionFormComponent} from './payment-option-form/payment-option-f
     AddRowComponent,
     FormsModule,
     GridFilterComponent,
-    Divider
+    Divider,
+    EmptyRowComponent
   ]
 })
 export class PaymentOptionComponent extends HasGridComponent<PaymentOptionService> {

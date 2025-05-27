@@ -44,7 +44,7 @@
       <td>{{request?.requestedDate | date: 'medium'}}</td>
       <td>
         <p-tag [value]="request?.status"
-               [severity]="getStatusSeverity(request?.status)"
+               [severity]="request?.status | joinRequestStatusSeverity"
                [rounded]="true">
         </p-tag>
       </td>
@@ -52,13 +52,6 @@
   </ng-template>
 
   <ng-template pTemplate="emptymessage">
-    <tr>
-      <td colspan="5" class="text-center py-4">
-        <div class="flex flex-column align-items-center">
-          <i class="pi pi-inbox text-6xl text-400 mb-2"></i>
-          <span class="text-500">No join requests found</span>
-        </div>
-      </td>
-    </tr>
+    <tr rts-empty-row [colspan]="4" message="No join requests found"></tr>
   </ng-template>
 </p-table>

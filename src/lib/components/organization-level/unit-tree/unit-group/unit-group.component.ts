@@ -10,6 +10,7 @@ import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
 import {GridFilterComponent} from '../../../reusable/grid-filter/grid-filter.component'
 import {HasGridComponent} from '../../../reusable/has-grid.component'
 import {UnitGroupFormComponent} from './unit-group-form/unit-group-form.component'
+import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
 
 @Component({
   selector: 'rts-unit-group',
@@ -24,7 +25,8 @@ import {UnitGroupFormComponent} from './unit-group-form/unit-group-form.componen
     AddRowComponent,
     NullSafePipe,
     NullishToZeroPipe,
-    GridFilterComponent
+    GridFilterComponent,
+    EmptyRowComponent
   ]
 })
 export class UnitGroupComponent extends HasGridComponent<UnitGroupService> {

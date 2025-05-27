@@ -1,11 +1,11 @@
 import {CommonModule} from '@angular/common'
-import {Component, inject, OnInit, signal} from '@angular/core'
+import {Component, computed, inject, OnInit, signal} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {ActivatedRoute, Router, RouterLink} from '@angular/router'
 import {Card} from 'primeng/card'
 import {InputText} from 'primeng/inputtext'
-import {filter, finalize} from 'rxjs'
-import {tap} from 'rxjs/operators'
+import {filter, finalize, of} from 'rxjs'
+import {catchError, tap} from 'rxjs/operators'
 import {OrganizationAdminService} from '../../../api/organization-admin/organization-admin.service'
 import {Organization} from '../../../api/organization/organization.model'
 import {SysUserService} from '../../../api/sys-user/sys-user.service'
@@ -48,8 +48,12 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
 
   readonly ProcessingStatus = ProcessingStatus
 
-  readonly loading = signal(false)
+  readonly launchingInProgress = signal(false)
   readonly errorMessages = signal<string[] | null>(null)
+
+  readonly processingStatus = computed(() =>
+    this.launchingInProgress() ? ProcessingStatus.IN_PROGRESS : ProcessingStatus.IDLE
+  )
 
   ngOnInit() {
     this.userService.post()
@@ -63,20 +67,16 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
   })
 
   submitOrganization() {
-    if (this.organizationDomainForm.invalid || this.loading()) return
+    if (this.organizationDomainForm.invalid || this.launchingInProgress()) return
 
-    this.loading.set(true)
+    this.launchingInProgress.set(true)
     this.errorMessages.set(null)
     const domain = this.organizationDomainForm.value.domain!
 
     this.subscriptions.add(
       this.organizationService.attemptLaunch$(domain).pipe(
-        finalize(() => {
-          this.loading.set(false)
-        })
-      )
-        .subscribe({
-          next: (response) => {
+        tap(
+          (response) => {
             if (!response.accessRequested) {
               this.localStorageService.setItem(LocalStorageKey.ORGANIZATION, response.organization)
               this.proceedToSelectLocation()
@@ -87,11 +87,17 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
                 detail: 'Your request to join the organization has been successfully submitted'
               })
             }
-          },
-          error: (error) => {
-            this.errorMessages.set(parseError(error) ?? ['Failed to process organization launch'])
           }
+        ),
+        catchError((error) => {
+          this.errorMessages.set(parseError(error) ?? ['Failed to process organization launch'])
+          return of(null)
+        }),
+        finalize(() => {
+          this.launchingInProgress.set(false)
         })
+      )
+        .subscribe()
     )
   }
 

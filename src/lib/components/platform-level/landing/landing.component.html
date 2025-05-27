@@ -19,12 +19,11 @@
 
       <div class="flex justify-content-end mr-6">
         <rts-forms-buttons [disableReset]="!organizationDomainForm.dirty"
-                           [disableSave]="!organizationDomainForm.valid || !organizationDomainForm.dirty || loading()"
+                           [disableSave]="!organizationDomainForm.valid || !organizationDomainForm.dirty || launchingInProgress()"
                            [hideReset]="true"
                            [hideDelete]="true"
                            saveInProgressMessage="Launching Organization"
-                           [processingStatus]="loading() ? ProcessingStatus.IN_PROGRESS : null"
-                           [failureMessages]="[]"
+                           [processingStatus]="processingStatus()"
                            saveLabel="Launch"
                            (save)="submitOrganization()">
         </rts-forms-buttons>

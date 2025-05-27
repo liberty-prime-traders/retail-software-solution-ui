@@ -10,19 +10,23 @@ import {HasGridComponent} from '../../reusable/has-grid.component'
 import {Card} from 'primeng/card'
 import {Button} from 'primeng/button'
 import {Router, RouterLink} from '@angular/router'
+import {JoinRequestStatusSeverityPipe} from '../../../utils/pipes/join-request-status-severity.pipe'
+import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 
 @Component({
   selector: 'rts-my-join-request',
   templateUrl: 'my-join-request.component.html',
   imports: [
     DatePipe,
+    JoinRequestStatusSeverityPipe,
     TableModule,
     NullSafePipe,
     GridFilterComponent,
     TagModule,
     Card,
     Button,
-    RouterLink
+    RouterLink,
+    EmptyRowComponent
   ]
 })
 export class MyJoinRequestsComponent extends HasGridComponent<MyJoinRequestService> {
@@ -44,19 +48,6 @@ export class MyJoinRequestsComponent extends HasGridComponent<MyJoinRequestServi
   constructor() {
     super()
     this.joinRequestService.refetch()
-  }
-
-  getStatusSeverity(status?: string) {
-    switch (status) {
-    case 'PENDING':
-      return 'warn'
-    case 'APPROVED':
-      return 'success'
-    case 'REJECTED':
-      return 'danger'
-    default:
-      return 'info'
-    }
   }
 
   goBack() {

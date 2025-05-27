@@ -8,6 +8,7 @@ import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
 import {GridFilterComponent} from '../../../reusable/grid-filter/grid-filter.component'
 import {HasGridComponent} from '../../../reusable/has-grid.component'
 import {UnitValueFormComponent} from './unit-value-form/unit-value-form.component'
+import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
 
 @Component({
   selector: 'rts-unit-value',
@@ -20,7 +21,8 @@ import {UnitValueFormComponent} from './unit-value-form/unit-value-form.componen
     AddRowComponent,
     AddRowComponent,
     NullSafePipe,
-    GridFilterComponent
+    GridFilterComponent,
+    EmptyRowComponent
   ]
 })
 export class UnitValueComponent extends HasGridComponent<UnitValueService> implements OnInit {
@@ -42,7 +44,7 @@ export class UnitValueComponent extends HasGridComponent<UnitValueService> imple
     effect(() => {
       if (this.unitGroupId()) {
         // TODO: Uncomment when proper checks are in place to avoid infinite loops
-        //this.unitValueService.refetch(this.unitGroupId())
+        // this.unitValueService.refetch(this.unitGroupId())
       }
     })
   }
