@@ -9,11 +9,11 @@ import {OrganizationAdminStore} from './organization-admin.store'
 @Injectable({providedIn: 'root'})
 export class OrganizationAdminService extends BaseService<OrganizationAdmin> {
   private readonly localHttpClient = inject(HttpClient)
-  
+
   constructor(protected override readonly store: OrganizationAdminStore) {
     super(store)
   }
-  
+
   isOrganizationAdmin$(): Observable<boolean> {
     return this.localHttpClient.get<boolean>(`/secured/${this.store.basePath}/is-admin`).pipe(
       first(),

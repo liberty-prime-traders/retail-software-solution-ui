@@ -7,6 +7,7 @@ import {
   upsertEntity,
   withEntities
 } from '@ngrx/signals/entities'
+import {parseError} from '../../utils/error.util'
 import {ProcessingStatus} from '../../utils/types/processing-status.enum'
 import {BaseModel} from './base.model'
 import {BaseState, createInitialState} from './base.state'
@@ -39,7 +40,11 @@ export const withBaseStore = <ENTITY extends BaseModel>(selectId: SelectEntityId
       patchState(store, {failureMessages: parseError(error)})
       this.setProcessingStatus(ProcessingStatus.FAILURE)
     },
-
+    
+    clearError() {
+      patchState(store, {failureMessages: []})
+    },
+    
     resetStore() {
       patchState(store, {...createInitialState()})
       patchState(store, removeAllEntities())
@@ -55,20 +60,3 @@ export const withBaseStore = <ENTITY extends BaseModel>(selectId: SelectEntityId
 
   }))
 )
-
-const parseError = (error: any): string[] => {
-  if (error === null || error.status !== 400) {
-    return ['Unknown Error, Contact Admin']
-  }
-  let err = []
-  if (error.status === 400) {
-    if (typeof error.error === 'string') {
-      err = [error.error]
-    } else if (error.error instanceof Array) {
-      err = error.error
-    } else if ('message' in error.error) {
-      err = [error.error['message']]
-    }
-  }
-  return err
-}

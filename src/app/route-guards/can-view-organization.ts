@@ -5,17 +5,16 @@ import {SessionContextService} from '../../lib/utils/services/session-context.se
 
 @Injectable({providedIn: 'root'})
 export class CanViewOrganization implements CanActivate {
-	private readonly router = inject(Router)
-	private readonly sessionContextService = inject(SessionContextService)
-	private readonly routingContextService = inject(RoutingContextService)
-	
-	canActivate(): boolean {
-		if (!this.sessionContextService.selectedOrganization()) {
-			this.routingContextService.registerReturnTo()
-			this.router.navigate(['/secure']).then()
-			return false
-		}
-		return true
-	}
-	
+  private readonly router = inject(Router)
+  private readonly sessionContextService = inject(SessionContextService)
+  private readonly routingContextService = inject(RoutingContextService)
+
+  canActivate(): boolean {
+    if (!this.sessionContextService.selectedOrganization()) {
+      this.routingContextService.registerReturnTo()
+      this.router.navigate(['/secure']).then()
+      return false
+    }
+    return true
+  }
 }

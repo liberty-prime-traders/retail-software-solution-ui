@@ -20,13 +20,13 @@ export class PublicComponent extends HasSubscriptionComponent implements OnInit 
   readonly screenSizeService = inject(ScreenSizeService)
   private readonly router = inject(Router)
   private readonly rtsOktaService = inject(RtsOktaService)
-  
+
   private readonly loggedIn$ = this.rtsOktaService.loggedIn$.pipe(
     filter(Boolean),
     tap(() => this.router.navigate(['/secure']).then()),
     first()
   )
-  
+
   ngOnInit() {
     this.subscriptions.add(this.loggedIn$.subscribe())
   }

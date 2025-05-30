@@ -12,6 +12,7 @@ import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {HasGridComponent} from '../../reusable/has-grid.component'
 import {LocationFormComponent} from './location-form/location-form.component'
+import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 
 @Component({
   selector: 'rts-location',
@@ -25,7 +26,8 @@ import {LocationFormComponent} from './location-form/location-form.component'
     LocationFormComponent,
     PrettifyEnumPipe,
     Divider,
-    GridFilterComponent
+    GridFilterComponent,
+    EmptyRowComponent
   ]
 })
 export class LocationsComponent extends HasGridComponent<LocationService> {
@@ -39,7 +41,7 @@ export class LocationsComponent extends HasGridComponent<LocationService> {
   readonly apiService = this.locationService
   readonly addingIsActive = signal(false)
   readonly rowIsExpanded = signal<boolean>(false)
-  readonly selectedLocation = model<Location|undefined>()
+  readonly selectedLocation = model<Location | undefined>()
 
   constructor() {
     super()

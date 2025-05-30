@@ -62,9 +62,7 @@
   </ng-template>
 
   <ng-template #emptymessage>
-    <tr>
-      <td colspan="5" class="filled-background h-4rem">No Units Groups Were Found</td>
-    </tr>
+    <tr rts-empty-row [colspan]="5" message="No Units Groups Were Found"></tr>
   </ng-template>
 </p-table>
 

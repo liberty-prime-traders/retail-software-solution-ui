@@ -18,6 +18,7 @@ export interface BaseStore<ENTITY extends BaseModel> {
 	setProcessingStatus: (processingStatus: ProcessingStatus) => void
 	setHasCache: (hasCache: boolean) => void
 	setError<T>(error: T): void
+	clearError(): void
 	resetStore(): void
 	setLoading(loading: boolean): void
 	remove(id: EntityId): void

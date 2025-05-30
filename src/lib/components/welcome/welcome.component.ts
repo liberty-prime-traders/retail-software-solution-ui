@@ -21,9 +21,9 @@ export class WelcomeComponent {
   private readonly router = inject(Router)
   readonly sessionContextService = inject(SessionContextService)
   private readonly userService = inject(SysUserService)
-  
+
   private readonly loggedInUser = this.userService.selectFirst
-  
+
   readonly userInitials = computed(() => {
     const user = this.loggedInUser()
     return user ? `${user?.firstName.charAt(0)}${user?.lastName.charAt(0)}` : ''
@@ -53,22 +53,28 @@ export class WelcomeComponent {
       icon: 'pi pi-map-marker',
       visible: this.sessionContextService.organizationIsSelected(),
       command: () => this.switchLocation()
+    },
+    {
+      label: 'Manage Platform',
+      icon: 'pi pi-cog',
+      visible: this.rtsOktaService.isPlatformAdmin() && this.sessionContextService.organizationIsSelected(),
+      routerLink: '/secure/manage-platform'
     }
   ])
 
   readonly quickActionsMenuVisible = computed(() => this.quickActionsMenu().some(item => item.visible === true))
-  
+
   readonly isLoggedIn$ = this.rtsOktaService.loggedIn$
 
   logout() {
     this.router.navigateByUrl('/').then(() => this.rtsOktaService.signOut())
   }
-  
+
   private switchOrganization() {
     this.sessionContextService.clearSelectedOrganization()
     this.router.navigate(['/secure']).then()
   }
-  
+
   private switchLocation() {
     this.sessionContextService.clearSelectedLocation()
     this.router.navigate(['/secure/select-location']).then()

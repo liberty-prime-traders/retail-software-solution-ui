@@ -56,9 +56,7 @@
   </ng-template>
 
   <ng-template #emptymessage>
-    <tr>
-      <td colspan="6" class="filled-background h-4rem">No Locations are assigned to the selected organization</td>
-    </tr>
+    <tr rts-empty-row [colspan]="6" message="No Locations are assigned to the selected organization"></tr>
   </ng-template>
 </p-table>
 
