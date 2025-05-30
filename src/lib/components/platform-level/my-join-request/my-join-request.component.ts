@@ -4,6 +4,7 @@ import {TableModule} from 'primeng/table'
 import {TagModule} from 'primeng/tag'
 import {MyJoinRequestService} from '../../../api/my-join-request/my-join-request.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
+import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {HasGridComponent} from '../../reusable/has-grid.component'
@@ -26,7 +27,8 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
     Card,
     Button,
     RouterLink,
-    EmptyRowComponent
+    EmptyRowComponent,
+    PrettifyEnumPipe
   ]
 })
 export class MyJoinRequestsComponent extends HasGridComponent<MyJoinRequestService> {

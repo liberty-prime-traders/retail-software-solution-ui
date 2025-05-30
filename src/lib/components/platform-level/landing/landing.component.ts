@@ -6,6 +6,7 @@ import {Card} from 'primeng/card'
 import {InputText} from 'primeng/inputtext'
 import {filter, finalize, of} from 'rxjs'
 import {catchError, tap} from 'rxjs/operators'
+import {OrganizationLaunchResponse} from '../../../api/join-request/organization-launch-response.model'
 import {OrganizationAdminService} from '../../../api/organization-admin/organization-admin.service'
 import {Organization} from '../../../api/organization/organization.model'
 import {SysUserService} from '../../../api/sys-user/sys-user.service'
@@ -68,27 +69,11 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
 
   submitOrganization() {
     if (this.organizationDomainForm.invalid || this.launchingInProgress()) return
-
     this.launchingInProgress.set(true)
     this.errorMessages.set(null)
-    const domain = this.organizationDomainForm.value.domain!
-
     this.subscriptions.add(
-      this.organizationService.attemptLaunch$(domain).pipe(
-        tap(
-          (response) => {
-            if (!response.accessRequested) {
-              this.localStorageService.setItem(LocalStorageKey.ORGANIZATION, response.organization)
-              this.proceedToSelectLocation()
-            } else {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Request Submitted',
-                detail: 'Your request to join the organization has been successfully submitted'
-              })
-            }
-          }
-        ),
+      this.organizationService.attemptLaunch$(this.organizationDomainForm.value.domain!).pipe(
+        tap((response) => this.launchOrganization(response)),
         catchError((error) => {
           this.errorMessages.set(parseError(error) ?? ['Failed to process organization launch'])
           return of(null)
@@ -101,6 +86,19 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
     )
   }
 
+  private launchOrganization(launchResponse: OrganizationLaunchResponse) {
+    if (!launchResponse.accessRequested) {
+      this.localStorageService.setItem(LocalStorageKey.ORGANIZATION, launchResponse.organization)
+      this.proceedToSelectLocation()
+    } else {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Request Submitted',
+        detail: 'Your request to join the organization has been successfully submitted'
+      })
+    }
+  }
+  
   private proceedToSelectLocation() {
     const storedOrganization = this.localStorageService.getItem<Organization>(LocalStorageKey.ORGANIZATION)
     if (storedOrganization?.subdomain){
