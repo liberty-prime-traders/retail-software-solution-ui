@@ -7,10 +7,9 @@ import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {HasGridComponent} from '../../reusable/has-grid.component'
 import {ProductFormComponent} from './product-form/product-form.component'
-import {BlockUiComponent} from '../../reusable/block-ui/block-ui.component'
 import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {Product} from '../../../api/product/product.model'
-import {NgIf} from '@angular/common'
+import {BlockUIModule} from 'primeng/blockui'
 
 @Component({
   selector: 'rts-product',
@@ -23,9 +22,8 @@ import {NgIf} from '@angular/common'
     ProductFormComponent,
     Divider,
     GridFilterComponent,
-    BlockUiComponent,
     AddRowComponent,
-    NgIf
+    BlockUIModule
   ]
 })
 export class ProductComponent extends HasGridComponent<ProductService> {

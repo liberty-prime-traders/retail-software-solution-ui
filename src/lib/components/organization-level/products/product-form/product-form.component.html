@@ -3,8 +3,14 @@
     <input id="productName" class="flex-grow-1" pInputText formControlName="productName" />
   </rts-form-field>
 
-  <rts-form-field [required]="true" label="Category Name" for="categoryName">
-    <input id="categoryName" class="flex-grow-1" pInputText formControlName="categoryName" />
+  <rts-form-field [required]="true" label="Category" for="categoryId">
+    <p-dropdown id="categoryId"
+                class="flex-grow-1"
+                [options]="categories()"
+                optionLabel="categoryName"
+                optionValue="id"
+                formControlName="categoryId"
+                placeholder="Select a Category" ></p-dropdown>
   </rts-form-field>
 
   <rts-form-field label="Description" for="description">

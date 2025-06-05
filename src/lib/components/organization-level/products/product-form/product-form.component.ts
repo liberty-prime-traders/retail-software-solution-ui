@@ -1,4 +1,4 @@
-import {Component, OnInit, computed, inject, input} from '@angular/core'
+import {Component, OnInit, computed, inject, input, signal} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 import {isNil} from 'lodash-es'
 import {InputText} from 'primeng/inputtext'
@@ -6,6 +6,8 @@ import {Product} from '../../../../api/product/product.model'
 import {ProductService} from '../../../../api/product/product.service'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {DropdownModule} from 'primeng/dropdown'
+import {CategoryService} from '../../../../api/category/category.service';
 
 @Component({
   selector: 'rts-product-form',
@@ -16,21 +18,23 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
     ReactiveFormsModule,
     InputText,
     FormButtonsComponent,
-    FormFieldComponent
+    FormFieldComponent,
+    DropdownModule
   ]
 })
 export class ProductFormComponent implements OnInit {
   readonly product = input<Product>()
-
   private readonly productService = inject(ProductService)
   private readonly formBuilder = inject(FormBuilder)
+  private readonly categoryService = inject(CategoryService)
 
+  readonly categories = this.categoryService.selectAll
   readonly productForm = computed(() =>
     this.formBuilder.nonNullable.group({
       id: this.product()?.id,
       productName: [this.product()?.productName ?? '', Validators.required],
       description: [this.product()?.description ?? ''],
-      categoryName: [this.product()?.categoryName ?? '', Validators.required]
+      categoryId: [this.product()?.categoryId ?? '', Validators.required]
     })
   )
 
@@ -42,7 +46,10 @@ export class ProductFormComponent implements OnInit {
   }
 
   resetForm() {
-    this.productForm().reset(this.product())
+    this.productForm().reset({
+      ...this.product(),
+      categoryId: this.product()?.categoryId ?? ''
+    })
   }
 
   upsertProduct() {
