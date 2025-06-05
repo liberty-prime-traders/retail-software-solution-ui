@@ -10,7 +10,6 @@ import {Menu} from 'primeng/menu'
   ]
 })
 export class NavigationComponent {
-
   private readonly transactionScreensMenuItems: MenuItem[] = [
     {label: 'Sales', icon: 'pi pi-receipt'},
     {label: 'Purchase Orders', icon: 'pi pi-truck'},

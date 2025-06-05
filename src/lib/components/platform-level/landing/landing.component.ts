@@ -65,11 +65,12 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
       this.checkIfUserIsOrganizationAdmin()
     }
   }
-  
+
   private checkIfUserIsOrganizationAdmin() {
     return this.organizationAdminService.isOrganizationAdmin$().pipe(
       filter(isAdmin => Boolean(isAdmin)),
-      tap(() => this.sessionContextService.promoteToOrganizationAdmin()),
-    ).subscribe()
+      tap(() => this.sessionContextService.promoteToOrganizationAdmin())
+    )
+      .subscribe()
   }
 }

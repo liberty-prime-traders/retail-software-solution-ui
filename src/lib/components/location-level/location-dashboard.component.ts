@@ -17,7 +17,7 @@ export class LocationDashboardComponent implements AfterViewInit, OnInit {
   private readonly sessionContextService = inject(SessionContextService)
   private readonly router = inject(Router)
   private readonly activatedRoute = inject(ActivatedRoute)
-  
+
   readonly showNavigation = signal(true)
 
   ngOnInit() {
@@ -25,7 +25,7 @@ export class LocationDashboardComponent implements AfterViewInit, OnInit {
       this.router.navigate(['..'], {relativeTo: this.activatedRoute}).then()
     }
   }
-  
+
   ngAfterViewInit() {
     this.adjustCardHeight()
   }

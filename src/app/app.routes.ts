@@ -1,7 +1,8 @@
 import {Routes} from '@angular/router'
 import {OktaAuthGuard, OktaCallbackComponent} from '@okta/okta-angular'
 import {CategoryComponent} from '../lib/components/organization-level/category/category.component'
-import {LocationSummaryComponent} from '../lib/components/location-level/location-summary/location-summary.component'
+
+// import {LocationSummaryComponent} from '../lib/components/location-level/location-summary/location-summary.component'
 import {JobTitleComponent} from '../lib/components/organization-level/jobtitle/jobtitle.component'
 import {LocationDashboardComponent} from '../lib/components/location-level/location-dashboard.component'
 import {
@@ -23,14 +24,16 @@ import {SelectLocationComponent} from '../lib/components/platform-level/select-l
 import {PublicComponent} from '../lib/components/public/public.component'
 import {CanViewLocation} from './route-guards/can-view-location'
 import {CanViewOrganization} from './route-guards/can-view-organization'
+import {ProductComponent} from '../lib/components/organization-level/products/product.component'
 
 const orgManagementChildRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
   {path: 'category', component: CategoryComponent},
   {path: 'job-title', component: JobTitleComponent},
   {path: 'units', component: UnitTreeComponent},
+  {path: 'products', component: ProductComponent},
   {path: 'payment-options', component: PaymentOptionComponent},
-  
+
   {path: 'locations', component: LocationsComponent},
   {path: 'profile', component: OrganizationProfileComponent},
   {path: 'admins', component: OrganizationAdminComponent},
@@ -38,7 +41,7 @@ const orgManagementChildRoutes: Routes = [
 ]
 
 const locationRoutes: Routes = [
-  {path: '', component: LocationSummaryComponent},
+  // {path: '', component: LocationSummaryComponent}
 ]
 
 const secureRoutes: Routes = [
