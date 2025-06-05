@@ -1,4 +1,4 @@
-import {Component, OnInit, computed, inject, input, signal} from '@angular/core'
+import {Component, OnInit, computed, inject, input} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 import {isNil} from 'lodash-es'
 import {InputText} from 'primeng/inputtext'
@@ -7,7 +7,7 @@ import {ProductService} from '../../../../api/product/product.service'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {DropdownModule} from 'primeng/dropdown'
-import {CategoryService} from '../../../../api/category/category.service';
+import {CategoryService} from '../../../../api/category/category.service'
 
 @Component({
   selector: 'rts-product-form',
