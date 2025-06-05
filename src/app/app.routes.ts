@@ -32,12 +32,14 @@ import {
   OrganizationComponent
 } from '../lib/components/platform-level/organization/organization.component'
 import {CanViewPlatformOrganization} from './route-guards/can-view-platform-organization.guard'
+import {ProductComponent} from '../lib/components/organization-level/products/product.component';
 
 const orgManagementChildRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
   {path: 'category', component: CategoryComponent},
   {path: 'job-title', component: JobTitleComponent},
   {path: 'units', component: UnitTreeComponent},
+  {path: 'products', component: ProductComponent},
   {path: 'payment-options', component: PaymentOptionComponent},
 
   {path: 'locations', component: LocationsComponent},
