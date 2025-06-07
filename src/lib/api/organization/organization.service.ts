@@ -7,7 +7,7 @@ import {EntityId} from '@ngrx/signals/entities'
 import {Observable} from 'rxjs'
 import {OrganizationLaunchResponse} from '../join-request/organization-launch-response.model'
 import {catchError, first} from 'rxjs/operators'
-import {OrganizationUser} from '../organization_user/organization-user.model';
+import {OrganizationUser} from '../organization_user/organization-user.model'
 
 @Injectable({providedIn: 'root'})
 export class OrganizationService extends BaseService<Organization> {
