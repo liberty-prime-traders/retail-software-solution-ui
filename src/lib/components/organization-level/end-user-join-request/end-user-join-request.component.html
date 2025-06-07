@@ -12,9 +12,15 @@
 
   <ng-template pTemplate="caption">
     <div class="flex justify-content-end gap-6 mb-3 align-items-center">
-      <span class="font-italic text-cyan-600 cursor-pointer">
-        + Admit Selected
-      </span>
+      <p-button
+              icon="pi pi-user-plus"
+              label="Admit Selected"
+              severity="info"
+              variant="text"
+              [loading]="admissionInProgress()"
+              [disabled]="admissionInProgress()"
+              (click)="admitSelectedRequests()">
+      </p-button>
 
       <rts-grid-filter [dataTable]="requestsTable" margin="m-0"/>
     </div>
@@ -38,10 +44,12 @@
   <ng-template pTemplate="body" let-request>
     <tr [pSelectableRow]="request">
       <td>
-        <p-tableCheckbox [value]="request"/>
+        @if (request.status === JoinRequestStatus.PENDING) {
+          <p-tableCheckbox [value]="request"/>
+        }
       </td>
-      <td>{{request?.fullName | nullSafe}}</td>
-      <td>{{request?.requestedDate | date: 'medium'}}</td>
+      <td>{{ request?.fullName | nullSafe }}</td>
+      <td>{{ request?.requestedDate | date: 'medium' }}</td>
       <td>
         <p-tag [value]="request?.status"
                [severity]="request?.status | joinRequestStatusSeverity"

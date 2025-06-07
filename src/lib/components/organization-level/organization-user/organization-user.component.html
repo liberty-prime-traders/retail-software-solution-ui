@@ -1,0 +1,64 @@
+<h3 class="font-semibold">Organization Users</h3>
+
+<p-divider/>
+
+<p-table [loading]="loading() && !addingIsActive()"
+         dataKey="id"
+         sortField="user"
+         #userTable
+         [value]="organizationUsers()"
+         [globalFilterFields]="['user']"
+         [(selection)]="selectedOrganizationUsers">
+
+  <ng-template pTemplate="caption">
+    <div class="flex justify-content-end gap-6 mb-3 align-items-center">
+      <p-button
+              icon="pi pi-user-minus"
+              label="Terminate Selected Users"
+              variant="text"
+              severity="danger"
+              [loading]="terminationInProgress()"
+              [disabled]="terminationInProgress()"
+              (click)="terminateSelectedUsers()">
+      </p-button>
+
+      <rts-grid-filter [dataTable]="userTable" margin="m-0"/>
+    </div>
+  </ng-template>
+
+  <ng-template #header>
+    <tr>
+      <th style="width: 4rem"></th>
+      <th pSortableColumn="user">Name
+        <p-sortIcon field="user"></p-sortIcon>
+      </th>
+      <th pSortableColumn="startOn">Start On
+        <p-sortIcon field="startOn"></p-sortIcon>
+      </th>
+      <th pSortableColumn="endOn">End On
+        <p-sortIcon field="endOn"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-organizationUser>
+    <tr [pSelectableRow]="organizationUser" [ngClass]="{'bg-gray-100' : !!organizationUser.endOn}">
+      <td>
+        <p-tableCheckbox [value]="organizationUser" [disabled]="!!organizationUser.endOn" />
+      </td>
+      <td>{{ organizationUser?.user | nullSafe }}</td>
+      <td>{{ organizationUser?.startOn | date: 'medium'}}</td>
+      <td>
+        @if (organizationUser.endOn) {
+          {{ organizationUser.endOn | date:'medium' }}
+        } @else {
+          <p-tag value="Active" severity="success" [rounded]="true"></p-tag>
+        }
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr rts-empty-row [colspan]="4" message="No users found"></tr>
+  </ng-template>
+</p-table>

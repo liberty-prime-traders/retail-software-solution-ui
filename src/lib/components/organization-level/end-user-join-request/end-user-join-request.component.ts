@@ -1,5 +1,6 @@
 import {DatePipe} from '@angular/common'
 import {Component, effect, inject, model, signal} from '@angular/core'
+import {MessageService} from 'primeng/api'
 import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
 import {TagModule} from 'primeng/tag'
@@ -11,6 +12,12 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
 import {HasGridComponent} from '../../reusable/has-grid.component'
 import {JoinRequestStatusSeverityPipe} from '../../../utils/pipes/join-request-status-severity.pipe'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
+import {JoinRequestStatus} from '../../../api/join-request/join-request-status.enum'
+import {Button} from 'primeng/button'
+import {OrganizationService} from '../../../api/organization/organization.service'
+import {catchError, tap} from 'rxjs/operators'
+import {parseError} from '../../../utils/error.util'
+import {finalize, of} from 'rxjs'
 
 @Component({
   selector: 'rts-end-user-join-request',
@@ -23,11 +30,15 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
     GridFilterComponent,
     Divider,
     TagModule,
-    EmptyRowComponent
+    EmptyRowComponent,
+    Button
   ]
 })
 export class EndUserJoinRequestComponent extends HasGridComponent<EndUserJoinRequestService> {
   private readonly joinRequestService = inject(EndUserJoinRequestService)
+  private readonly organizationService = inject(OrganizationService)
+  private readonly messageService = inject(MessageService)
+
   readonly loading = this.joinRequestService.selectLoading
   readonly processingIsUnderWay = this.joinRequestService.processingIsUnderWay
   readonly joinRequests = this.joinRequestService.selectAll
@@ -38,11 +49,14 @@ export class EndUserJoinRequestComponent extends HasGridComponent<EndUserJoinReq
   readonly isAdmittingUsers = signal(false)
 
   readonly ProcessingStatus = ProcessingStatus
+  readonly JoinRequestStatus = JoinRequestStatus
 
   readonly processingStatus = this.joinRequestService.selectProcessingStatus
   readonly failureMessages = this.joinRequestService.selectFailureMessages
 
   readonly selectedJoinRequests = model<EndUserJoinRequest[]>([])
+
+  readonly admissionInProgress = signal(false)
 
   constructor() {
     super()
@@ -56,5 +70,45 @@ export class EndUserJoinRequestComponent extends HasGridComponent<EndUserJoinReq
         }
       }
     })
+  }
+
+  admitSelectedRequests() {
+    if (!this.selectedJoinRequests().length) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Error',
+        detail: 'Please select at least one user to admit'
+      })
+      return
+    }
+
+    const joinRequestIds = this.selectedJoinRequests()
+      .filter(joinRequest => joinRequest.status === JoinRequestStatus.PENDING)
+      .map(joinRequest => joinRequest.id)
+
+    this.admissionInProgress.set(true)
+
+    this.organizationService.admitJoinRequests$(joinRequestIds).pipe(
+      tap(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Successfully admitted ${joinRequestIds.length} user(s)`
+        })
+        this.joinRequestService.refetch()
+      }),
+      catchError((error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: parseError(error).join(', ') ?? 'User(s) admission failed'
+        })
+        return of(null)
+      }),
+      finalize(() => {
+        this.admissionInProgress.set(false)
+      })
+    )
+      .subscribe()
   }
 }

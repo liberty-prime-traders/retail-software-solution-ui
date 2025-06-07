@@ -3,9 +3,11 @@ import {BaseService} from '../base-api/base.service'
 import {Organization} from './organization.model'
 import {OrganizationStore} from './organization.store'
 import {HttpClient} from '@angular/common/http'
+import {EntityId} from '@ngrx/signals/entities'
 import {Observable} from 'rxjs'
 import {OrganizationLaunchResponse} from '../join-request/organization-launch-response.model'
 import {catchError, first} from 'rxjs/operators'
+import {OrganizationUser} from '../organization_user/organization-user.model';
 
 @Injectable({providedIn: 'root'})
 export class OrganizationService extends BaseService<Organization> {
@@ -27,10 +29,10 @@ export class OrganizationService extends BaseService<Organization> {
     )
   }
 
-  admitJoinRequest$(joinRequestId: string): Observable<void> {
-    return this.localHttpClient.post<void>(
-      `/secured/${this.store.basePath}/admit/${joinRequestId}`,
-      {}
+  admitJoinRequests$(joinRequestIds: Array<EntityId>): Observable<OrganizationUser[]> {
+    return this.localHttpClient.post<OrganizationUser[]>(
+      `/secured/${this.store.basePath}/join-requests/admit`,
+      joinRequestIds
     ).pipe(
       first(),
       catchError(error => {

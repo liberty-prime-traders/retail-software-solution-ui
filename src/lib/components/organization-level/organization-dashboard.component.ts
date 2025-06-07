@@ -18,7 +18,7 @@ export class OrganizationDashboardComponent {
 
   private readonly orgAdminSettings: MenuItem[] = [
     {label: 'Locations', icon: 'pi pi-map-marker', routerLink: 'locations'},
-    {label: 'Users', icon: 'pi pi-users'},
+    {label: 'Users', icon: 'pi pi-users', routerLink: 'users'},
     {label: 'Join Requests', icon: 'pi pi-users', routerLink: 'join-requests'},
     {label: 'Admins', icon: 'pi pi-lock', routerLink: 'admins'},
     {label: 'Org Profile', icon: 'pi pi-cog', routerLink: 'profile'}
