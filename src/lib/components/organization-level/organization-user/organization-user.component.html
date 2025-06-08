@@ -2,7 +2,7 @@
 
 <p-divider/>
 
-<p-table [loading]="loading() && !addingIsActive()"
+<p-table [loading]="loading()"
          dataKey="id"
          sortField="user"
          #userTable
@@ -17,8 +17,8 @@
               label="Terminate Selected Users"
               variant="text"
               severity="danger"
-              [loading]="terminationInProgress()"
-              [disabled]="terminationInProgress()"
+              [loading]="loading()"
+              [disabled]="loading() || selectedOrganizationUsers().length === 0"
               (click)="terminateSelectedUsers()">
       </p-button>
 
@@ -41,10 +41,12 @@
     </tr>
   </ng-template>
 
-  <ng-template #body let-organizationUser>
+  <ng-template pTemplate="body" let-organizationUser>
     <tr [pSelectableRow]="organizationUser" [ngClass]="{'bg-gray-100' : !!organizationUser.endOn}">
       <td>
-        <p-tableCheckbox [value]="organizationUser" [disabled]="!!organizationUser.endOn" />
+        @if (!organizationUser.endOn) {
+          <p-tableCheckbox [value]="organizationUser"/>
+        }
       </td>
       <td>{{ organizationUser?.user | nullSafe }}</td>
       <td>{{ organizationUser?.startOn | date: 'medium'}}</td>

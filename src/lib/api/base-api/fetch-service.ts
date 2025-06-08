@@ -3,7 +3,6 @@ import {EntityId} from '@ngrx/signals/entities'
 import {isNil} from 'lodash-es'
 import {finalize, Subscription} from 'rxjs'
 import {catchError, tap} from 'rxjs/operators'
-import {ProcessingStatus} from '../../utils/types/processing-status.enum'
 import {RtsHttpParams} from '../util/rts-http.params'
 import {BaseModel} from './base.model'
 import {BaseStore} from './base.store'
@@ -22,17 +21,11 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
 
   refetch(params?: PARAMS) {
     this.resetStoreAndClearCache()
-    return this.doFetch(params)
+    return this.fetch(params)
   }
 
   fetchById(idParam: string, additionalParams?: PARAMS) {
     return this.doFetch(additionalParams, idParam)
-  }
-  
-  protected startApiRequest() {
-    this.store.setLoading(true)
-    this.setProcessingStatus(ProcessingStatus.IN_PROGRESS)
-    this.store.clearError()
   }
 
   private doFetch(params?: PARAMS, idParam?: EntityId): Subscription | undefined {
@@ -49,7 +42,7 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
     return this.fetcher.get<RESPONSE>(url, {params: httpParams}).pipe(
       tap((body) => this.finishSavingWithSuccess(body, idParam)),
       catchError((error) => this.setStoreError(error)),
-      finalize(() => this.store.setLoading(false))
+      finalize(() => this.finalizeApiRequest())
     )
       .subscribe()
   }

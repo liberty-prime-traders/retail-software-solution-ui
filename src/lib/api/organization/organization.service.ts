@@ -1,13 +1,11 @@
+import {HttpClient} from '@angular/common/http'
 import {inject, Injectable} from '@angular/core'
+import {Observable} from 'rxjs'
+import {catchError, first} from 'rxjs/operators'
 import {BaseService} from '../base-api/base.service'
+import {OrganizationLaunchResponse} from './organization-launch-response.model'
 import {Organization} from './organization.model'
 import {OrganizationStore} from './organization.store'
-import {HttpClient} from '@angular/common/http'
-import {EntityId} from '@ngrx/signals/entities'
-import {Observable} from 'rxjs'
-import {OrganizationLaunchResponse} from '../join-request/organization-launch-response.model'
-import {catchError, first} from 'rxjs/operators'
-import {OrganizationUser} from '../organization_user/organization-user.model'
 
 @Injectable({providedIn: 'root'})
 export class OrganizationService extends BaseService<Organization> {
@@ -21,18 +19,6 @@ export class OrganizationService extends BaseService<Organization> {
     return this.localHttpClient.post<OrganizationLaunchResponse>(
       `/secured/${this.store.basePath}/launch/${domainId}`,
       {}
-    ).pipe(
-      first(),
-      catchError(error => {
-        throw error
-      })
-    )
-  }
-
-  admitJoinRequests$(joinRequestIds: Array<EntityId>): Observable<OrganizationUser[]> {
-    return this.localHttpClient.post<OrganizationUser[]>(
-      `/secured/${this.store.basePath}/join-requests/admit`,
-      joinRequestIds
     ).pipe(
       first(),
       catchError(error => {

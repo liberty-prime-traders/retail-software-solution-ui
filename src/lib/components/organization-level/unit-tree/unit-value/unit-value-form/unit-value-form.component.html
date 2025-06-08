@@ -22,7 +22,7 @@
   </rts-form-field>
 
   <rts-form-field label="Conversion Factor" [required]="baseUnit.selectedOption" for="conversionFactor">
-    <p-inputNumber id="conversionFactor" #conversionFactor formControlName="conversionFactor"/>
+    <p-inputNumber id="conversionFactor" #conversionFactor formControlName="conversionFactor" [maxFractionDigits]="3"/>
   </rts-form-field>
 
   <rts-forms-buttons [disableReset]="!unitValueForm().dirty"

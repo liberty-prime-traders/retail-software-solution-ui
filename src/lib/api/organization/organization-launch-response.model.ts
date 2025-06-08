@@ -1,4 +1,4 @@
-import {Organization} from '../organization/organization.model'
+import {Organization} from './organization.model'
 
 export interface OrganizationLaunchResponse {
   organization?: Organization

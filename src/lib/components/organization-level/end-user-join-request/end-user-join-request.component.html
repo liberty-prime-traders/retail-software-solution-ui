@@ -17,8 +17,8 @@
               label="Admit Selected"
               severity="info"
               variant="text"
-              [loading]="admissionInProgress()"
-              [disabled]="admissionInProgress()"
+              [loading]="loading()"
+              [disabled]="loading() || selectedJoinRequests().length === 0"
               (click)="admitSelectedRequests()">
       </p-button>
 
@@ -52,7 +52,7 @@
       <td>{{ request?.requestedDate | date: 'medium' }}</td>
       <td>
         <p-tag [value]="request?.status"
-               [severity]="request?.status | joinRequestStatusSeverity"
+               [severity]="request?.status | activityStatusSeverity"
                [rounded]="true">
         </p-tag>
       </td>

@@ -1,6 +1,5 @@
-import {OrganizationAdmin} from '../organization-admin/organization-admin.model'
+import {ExpirableAssignment} from '../util/expirable-assignment.model'
 
-export interface OrganizationUser extends Omit<OrganizationAdmin, 'organizationId' | 'admin' | 'name'> {
+export interface OrganizationUser extends ExpirableAssignment {
   joinRequestId?: string;
-  user?: string;
 }

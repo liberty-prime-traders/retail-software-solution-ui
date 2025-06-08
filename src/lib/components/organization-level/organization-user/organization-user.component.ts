@@ -1,20 +1,17 @@
 import {DatePipe, NgClass} from '@angular/common'
-import {Component, effect, inject, model, signal} from '@angular/core'
+import {Component, effect, inject, model, OnInit, signal} from '@angular/core'
 import {MessageService} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
-import {finalize, of} from 'rxjs'
-import {catchError, tap} from 'rxjs/operators'
+import {OrganizationUser} from '../../../api/organization_user/organization-user.model'
+import {OrganizationUserService} from '../../../api/organization_user/organization-user.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
-import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
-import {HasGridComponent} from '../../reusable/has-grid.component'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
-import {OrganizationUserService} from '../../../api/organization_user/organization-user.service'
-import {OrganizationUser} from '../../../api/organization_user/organization-user.model'
-import {parseError} from '../../../utils/error.util'
+import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
+import {HasSubscriptionComponent} from '../../reusable/has-subscription.component'
 
 @Component({
   selector: 'rts-organization-user',
@@ -31,76 +28,62 @@ import {parseError} from '../../../utils/error.util'
     NgClass
   ]
 })
-export class OrganizationUserComponent extends HasGridComponent<OrganizationUserService> {
+export class OrganizationUserComponent extends HasSubscriptionComponent implements OnInit {
   private readonly organizationUserService = inject(OrganizationUserService)
   private readonly messageService = inject(MessageService)
 
   readonly loading = this.organizationUserService.selectLoading
-  readonly processingIsUnderWay = this.organizationUserService.processingIsUnderWay
   readonly organizationUsers = this.organizationUserService.selectAll
-
-  readonly apiService = this.organizationUserService
-  readonly addingIsActive = signal(false)
-  readonly rowIsExpanded = signal(false)
-  readonly isTerminatingUsers = signal(false)
+  readonly processingStatus = this.organizationUserService.selectProcessingStatus
+  readonly userMadeAtLeastOneTerminationAttempt = signal(false)
+  readonly selectedOrganizationUsers = model<OrganizationUser[]>([])
+  private readonly latestTerminationCount = signal(0)
 
   readonly ProcessingStatus = ProcessingStatus
-
-  readonly processingStatus = this.organizationUserService.selectProcessingStatus
-  readonly failureMessages = this.organizationUserService.selectFailureMessages
-
-  readonly selectedOrganizationUsers = model<OrganizationUser[]>([])
-
-  readonly terminationInProgress = signal(false)
 
   constructor() {
     super()
     effect(() => {
       if (this.processingStatus() === ProcessingStatus.SUCCESS) {
         this.selectedOrganizationUsers.set([])
-
-        if (this.isTerminatingUsers()) {
-          this.organizationUserService.refetch()
-          this.isTerminatingUsers.set(false)
-        }
+        this.onSuccessfulTermination()
+      } else {
+        this.onFailedTermination()
       }
     })
   }
 
-  terminateSelectedUsers() {
-    if (!this.selectedOrganizationUsers().length) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Error',
-        detail: 'Please select at least one user to terminate'
-      })
-      return
-    }
+  ngOnInit() {
+    this.organizationUserService.fetch()
+  }
 
-    const userIds = this.selectedOrganizationUsers()
+  terminateSelectedUsers() {
+    const userIdsToTerminate = this.selectedOrganizationUsers()
       .filter(organizationUser => !organizationUser.endOn)
       .map(organizationUser => organizationUser.id)
 
-    this.isTerminatingUsers.set(true)
+    this.latestTerminationCount.set(userIdsToTerminate.length)
+    this.organizationUserService.terminateUsers$(userIdsToTerminate)
+    this.userMadeAtLeastOneTerminationAttempt.set(true)
+  }
 
-    this.organizationUserService.terminateUsers$(userIds).pipe(
-      tap(() => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: `Successfully terminated ${userIds.length} user(s)`
-        })
-      }),
-      catchError((error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: parseError(error).join(', ') ?? 'User(s) termination failed'
-        })
-        return of(null)
-      }),
-      finalize(() => this.isTerminatingUsers.set(false))
-    )
-      .subscribe()
+  private onSuccessfulTermination() {
+    const terminatedIdsCount = this.latestTerminationCount()
+    if (terminatedIdsCount > 0 && this.userMadeAtLeastOneTerminationAttempt()) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: `Successfully terminated ${terminatedIdsCount} user(s)`
+      })
+      this.latestTerminationCount.set(0)
+    }
+  }
+
+  private onFailedTermination() {
+    if (this.userMadeAtLeastOneTerminationAttempt()) {
+      this.organizationUserService.selectFailureMessages().forEach((parsedError) =>
+        this.messageService.add({severity: 'error', detail: parsedError})
+      )
+    }
   }
 }

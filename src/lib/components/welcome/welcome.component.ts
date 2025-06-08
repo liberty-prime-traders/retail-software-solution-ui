@@ -32,31 +32,26 @@ export class WelcomeComponent {
   readonly quickActionsMenu: Signal<MenuItem[]> = computed(() => [
     {
       label: 'Location Summary',
-      icon: 'pi pi-home',
       routerLink: '/secure/location-dashboard',
       visible: this.sessionContextService.locationIsSelected()
     },
     {
-      label: 'Switch Organization',
-      icon: 'pi pi-sitemap',
+      label: 'Switch Org',
       visible: this.sessionContextService.organizationIsSelected(),
       command: () => this.switchOrganization()
     },
     {
-      label: 'Manage Organization',
-      icon: 'pi pi-building',
+      label: 'Manage Org',
       visible: this.sessionContextService.loggedInUserIsOrganizationAdmin(),
       routerLink: '/secure/manage-organization'
     },
     {
       label: this.sessionContextService.locationIsSelected() ? 'Switch Location' : 'Select Location',
-      icon: 'pi pi-map-marker',
       visible: this.sessionContextService.organizationIsSelected(),
       command: () => this.switchLocation()
     },
     {
       label: 'Manage Platform',
-      icon: 'pi pi-cog',
       visible: this.rtsOktaService.isPlatformAdmin() && this.sessionContextService.organizationIsSelected(),
       routerLink: '/secure/manage-platform'
     }

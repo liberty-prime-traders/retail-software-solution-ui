@@ -1,9 +1,5 @@
-import {BaseModel} from '../base-api/base.model'
+import {ExpirableAssignment} from '../util/expirable-assignment.model'
 
-export interface OrganizationAdmin extends BaseModel {
+export interface OrganizationAdmin extends ExpirableAssignment {
   organizationId?: string
-  admin?: string
-  startOn?: number
-  endOn?: number
-  name?: string
 }
