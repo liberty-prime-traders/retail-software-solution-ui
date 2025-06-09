@@ -10,20 +10,21 @@
                 optionLabel="categoryName"
                 optionValue="id"
                 formControlName="categoryId"
-                placeholder="Select a Category" ></p-dropdown>
+                placeholder="Select a Category" >
+    </p-dropdown>
   </rts-form-field>
 
   <rts-form-field label="Description" for="description">
     <input id="description" pInputText formControlName="description" />
   </rts-form-field>
 
-  <rts-forms-buttons  [disableReset]="!productForm().dirty"
-                      [disableSave]="!productForm().valid || !productForm().dirty"
-                      [hideDelete]="!product()?.id"
-                      [processingStatus]="processingStatus()"
-                      [failureMessages]="failureMessages()"
-                      (delete)="deleteProduct()"
-                      (save)="upsertProduct()"
-                      (resetAction)="resetForm()">
+  <rts-forms-buttons [disableReset]="!productForm().dirty"
+                     [disableSave]="!productForm().valid || !productForm().dirty"
+                     [hideDelete]="!product()?.id"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (delete)="deleteProduct()"
+                     (save)="upsertProduct()"
+                     (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>
