@@ -5,6 +5,7 @@ import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
 import {TagModule} from 'primeng/tag'
+import {EntityId} from '@ngrx/signals/entities'
 import {EndUserJoinRequest} from '../../../api/end-user-join-request/end-user-join-request.model'
 import {EndUserJoinRequestService} from '../../../api/end-user-join-request/end-user-join-request.service'
 import {OrganizationUserService} from '../../../api/organization_user/organization-user.service'
@@ -39,7 +40,7 @@ export class EndUserJoinRequestComponent implements OnInit {
   readonly joinRequests = this.joinRequestService.selectAll
   readonly processingStatus = this.joinRequestService.selectProcessingStatus
   readonly selectedJoinRequests = model<EndUserJoinRequest[]>([])
-  private readonly userMadeAtLeastOneAdmitAttempt = signal(false)
+  private readonly userMadeAtLeastOneActionAttempt = signal(false)
 
   readonly ProcessingStatus = ProcessingStatus
   readonly JoinRequestStatus = JoinRequestStatus
@@ -48,7 +49,7 @@ export class EndUserJoinRequestComponent implements OnInit {
     effect(() => {
       if (this.processingStatus() === ProcessingStatus.SUCCESS) {
         this.selectedJoinRequests.set([])
-        if (this.userMadeAtLeastOneAdmitAttempt()) {
+        if (this.userMadeAtLeastOneActionAttempt()) {
           this.organizationUserService.resetStoreAndClearCache()
         }
       } else if (this.processingStatus() === ProcessingStatus.FAILURE) {
@@ -61,12 +62,20 @@ export class EndUserJoinRequestComponent implements OnInit {
     this.joinRequestService.fetch()
   }
 
-  admitSelectedRequests() {
-    const joinRequestIds = this.selectedJoinRequests()
+  private getPendingSelectedJoinRequestIds(): EntityId[] {
+    return this.selectedJoinRequests()
       .filter(joinRequest => joinRequest.status === JoinRequestStatus.PENDING)
       .map(joinRequest => joinRequest.id)
-    this.joinRequestService.admitJoinRequests$(joinRequestIds)
-    this.userMadeAtLeastOneAdmitAttempt.set(true)
+  }
+
+  admitSelectedRequests() {
+    this.joinRequestService.admitJoinRequests$(this.getPendingSelectedJoinRequestIds())
+    this.userMadeAtLeastOneActionAttempt.set(true)
+  }
+
+  rejectSelectedRequests() {
+    this.joinRequestService.rejectJoinRequests$(this.getPendingSelectedJoinRequestIds())
+    this.userMadeAtLeastOneActionAttempt.set(true)
   }
 
   private onFailure() {

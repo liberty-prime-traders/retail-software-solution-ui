@@ -14,4 +14,9 @@ export class EndUserJoinRequestService extends BaseService<EndUserJoinRequest, A
     this.patchApiRequestConfig({upsertOnSuccess: true, urlSuffix: 'admit'})
     this.post(joinRequestIds)
   }
+
+  rejectJoinRequests$(joinRequestIds: Array<EntityId>) {
+    this.patchApiRequestConfig({upsertOnSuccess: true, urlSuffix: 'deny'})
+    return this.post(joinRequestIds)
+  }
 }

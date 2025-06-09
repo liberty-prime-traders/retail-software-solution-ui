@@ -22,6 +22,16 @@
               (click)="admitSelectedRequests()">
       </p-button>
 
+      <p-button
+              icon="pi pi-user-minus"
+              label="Reject Selected"
+              severity="danger"
+              variant="text"
+              [loading]="loading()"
+              [disabled]="loading() || selectedJoinRequests().length === 0"
+              (click)="rejectSelectedRequests()">
+      </p-button>
+
       <rts-grid-filter [dataTable]="requestsTable" margin="m-0"/>
     </div>
   </ng-template>
