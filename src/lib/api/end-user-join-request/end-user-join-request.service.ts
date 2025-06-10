@@ -10,13 +10,8 @@ export class EndUserJoinRequestService extends BaseService<EndUserJoinRequest, A
     super(store)
   }
 
-  admitJoinRequests$(joinRequestIds: Array<EntityId>) {
-    this.patchApiRequestConfig({upsertOnSuccess: true, urlSuffix: 'admit'})
+  respondToJoinRequests$(joinRequestIds: Array<EntityId>, response: 'admit' | 'deny') {
+    this.patchApiRequestConfig({upsertOnSuccess: true, urlSuffix: response})
     this.post(joinRequestIds)
-  }
-
-  rejectJoinRequests$(joinRequestIds: Array<EntityId>) {
-    this.patchApiRequestConfig({upsertOnSuccess: true, urlSuffix: 'deny'})
-    return this.post(joinRequestIds)
   }
 }

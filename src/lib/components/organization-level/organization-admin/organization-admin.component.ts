@@ -1,6 +1,5 @@
 import {DatePipe} from '@angular/common'
 import {Component, effect, inject, model, OnInit} from '@angular/core'
-import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
 import {OrganizationAdmin} from '../../../api/organization-admin/organization-admin.model'
 import {OrganizationAdminService} from '../../../api/organization-admin/organization-admin.service'
@@ -15,14 +14,12 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
     DatePipe,
     TableModule,
     NullSafePipe,
-    GridFilterComponent,
-    Divider
+    GridFilterComponent
   ]
 })
 export class OrganizationAdminComponent implements OnInit {
   private readonly organizationAdminService = inject(OrganizationAdminService)
   readonly loading = this.organizationAdminService.selectLoading
-  readonly processingIsUnderWay = this.organizationAdminService.processingIsUnderWay
   readonly organizationAdmins = this.organizationAdminService.selectAll
   readonly processingStatus = this.organizationAdminService.selectProcessingStatus
   readonly failureMessages = this.organizationAdminService.selectFailureMessages

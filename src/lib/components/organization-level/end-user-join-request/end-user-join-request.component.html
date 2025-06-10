@@ -1,44 +1,50 @@
-<h3 class="font-semibold">User Join Requests</h3>
-
-<p-divider/>
-
 <p-table [loading]="loading()"
          dataKey="id"
          sortField="fullName"
+         scrollHeight="600px"
+         scrollable="true"
          #requestsTable
          [value]="joinRequests()"
          [globalFilterFields]="['fullName', 'status']"
          [(selection)]="selectedJoinRequests">
 
   <ng-template pTemplate="caption">
-    <div class="flex justify-content-end gap-6 mb-3 align-items-center">
-      <p-button
-              icon="pi pi-user-plus"
-              label="Admit Selected"
-              severity="info"
-              variant="text"
-              [loading]="loading()"
-              [disabled]="loading() || selectedJoinRequests().length === 0"
-              (click)="admitSelectedRequests()">
-      </p-button>
+    <div class="flex justify-content-between align-items-center">
+      <h3>Join Requests</h3>
 
-      <p-button
-              icon="pi pi-user-minus"
-              label="Reject Selected"
-              severity="danger"
-              variant="text"
-              [loading]="loading()"
-              [disabled]="loading() || selectedJoinRequests().length === 0"
-              (click)="rejectSelectedRequests()">
-      </p-button>
 
-      <rts-grid-filter [dataTable]="requestsTable" margin="m-0"/>
+      <div class="flex justify-content-end gap-6 mb-3 align-items-center">
+        @if (pendingRequestsExist()) {
+          <p-button
+            icon="pi pi-user-plus"
+            label="Admit Selected"
+            severity="info"
+            variant="text"
+            [loading]="loading()"
+            [disabled]="loading() || selectedJoinRequests().length === 0"
+            (click)="admitSelectedRequests()">
+          </p-button>
+
+          <p-button
+            icon="pi pi-user-minus"
+            label="Reject Selected"
+            severity="danger"
+            variant="text"
+            [loading]="loading()"
+            [disabled]="loading() || selectedJoinRequests().length === 0"
+            (click)="rejectSelectedRequests()">
+          </p-button>
+        }
+        <rts-grid-filter [dataTable]="requestsTable" margin="m-0"/>
+      </div>
     </div>
   </ng-template>
 
   <ng-template pTemplate="header">
     <tr>
-      <th style="width: 4rem"></th>
+      @if (pendingRequestsExist()) {
+        <th style="width: 4rem"></th>
+      }
       <th pSortableColumn="fullName">Name
         <p-sortIcon field="fullName"></p-sortIcon>
       </th>
@@ -53,16 +59,19 @@
 
   <ng-template pTemplate="body" let-request>
     <tr [pSelectableRow]="request">
-      <td>
-        @if (request.status === JoinRequestStatus.PENDING) {
-          <p-tableCheckbox [value]="request"/>
-        }
-      </td>
+      @if (pendingRequestsExist()) {
+        <td>
+          @if (request.status === JoinRequestStatus.PENDING) {
+            <p-tableCheckbox [value]="request"/>
+          }
+        </td>
+      }
       <td>{{ request?.fullName | nullSafe }}</td>
       <td>{{ request?.requestedDate | date: 'medium' }}</td>
       <td>
-        <p-tag [value]="request?.status"
+        <p-tag [value]="request?.status | prettifyEnum"
                [severity]="request?.status | activityStatusSeverity"
+               class="font-normal"
                [rounded]="true">
         </p-tag>
       </td>

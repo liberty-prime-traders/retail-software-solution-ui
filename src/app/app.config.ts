@@ -7,8 +7,8 @@ import {
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async'
 import {provideRouter} from '@angular/router'
 import {OktaAuthModule} from '@okta/okta-angular'
-import Aura from '@primeng/themes/aura'
 import {RtsHttpInterceptor} from '../lib/api/util/rts-http.interceptor'
+import {AppPreset, darkModeSelector} from './app.preset'
 import {appRoutes} from './app.routes'
 import {oktaModuleConfig} from './rts-okta.config'
 import {providePrimeNG} from 'primeng/config'
@@ -23,9 +23,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     providePrimeNG({
       theme: {
-        preset: Aura,
+        preset: AppPreset,
         options: {
-          darkModeSelector: 'system'
+          darkModeSelector: `.${darkModeSelector}`
         }
       }
     }),

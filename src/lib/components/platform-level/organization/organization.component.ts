@@ -1,5 +1,5 @@
 import {Component, inject, signal} from '@angular/core'
-import {HasGridComponent} from '../../reusable/has-grid.component'
+import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
 import {OrganizationService} from '../../../api/organization/organization.service'
 import {Divider} from 'primeng/divider'
 import {DatePipe} from '@angular/common'
@@ -20,7 +20,7 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
     EmptyRowComponent
   ]
 })
-export class OrganizationComponent extends HasGridComponent<OrganizationService> {
+export class OrganizationComponent extends HasEditableGridComponent<OrganizationService> {
   private readonly organizationService = inject(OrganizationService)
   readonly loading = this.organizationService.selectLoading
   readonly organizations = this.organizationService.selectAll

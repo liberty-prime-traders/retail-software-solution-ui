@@ -3,12 +3,10 @@ import {BaseService} from '../../api/base-api/base.service'
 import {ProcessingStatus} from '../../utils/types/processing-status.enum'
 
 @Component({template: ''})
-export abstract class HasGridComponent<SERVICE extends BaseService<any, any>> implements OnInit {
+export abstract class HasEditableGridComponent<SERVICE extends BaseService<any, any>> implements OnInit {
   abstract readonly apiService: SERVICE
   abstract readonly addingIsActive: WritableSignal<boolean>
   abstract readonly rowIsExpanded: WritableSignal<boolean>
-
-  protected readonly fetchByDefault: boolean = true
 
   constructor() {
     effect(() => {
@@ -20,9 +18,7 @@ export abstract class HasGridComponent<SERVICE extends BaseService<any, any>> im
   }
 
   ngOnInit() {
-    if (this.fetchByDefault) {
-      this.apiService.fetch()
-    }
+    this.apiService.fetch()
   }
 
   closeAddRow() {

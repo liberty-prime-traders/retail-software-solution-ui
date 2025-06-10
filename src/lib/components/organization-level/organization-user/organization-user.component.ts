@@ -2,7 +2,6 @@ import {DatePipe, NgClass} from '@angular/common'
 import {Component, effect, inject, model, OnInit, signal} from '@angular/core'
 import {MessageService} from 'primeng/api'
 import {Button} from 'primeng/button'
-import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
 import {OrganizationUser} from '../../../api/organization_user/organization-user.model'
@@ -22,7 +21,6 @@ import {HasSubscriptionComponent} from '../../reusable/has-subscription.componen
     NullSafePipe,
     GridFilterComponent,
     EmptyRowComponent,
-    Divider,
     Button,
     Tag,
     NgClass
@@ -37,7 +35,6 @@ export class OrganizationUserComponent extends HasSubscriptionComponent implemen
   readonly processingStatus = this.organizationUserService.selectProcessingStatus
   readonly userMadeAtLeastOneTerminationAttempt = signal(false)
   readonly selectedOrganizationUsers = model<OrganizationUser[]>([])
-  private readonly latestTerminationCount = signal(0)
 
   readonly ProcessingStatus = ProcessingStatus
 
@@ -62,20 +59,17 @@ export class OrganizationUserComponent extends HasSubscriptionComponent implemen
       .filter(organizationUser => !organizationUser.endOn)
       .map(organizationUser => organizationUser.id)
 
-    this.latestTerminationCount.set(userIdsToTerminate.length)
     this.organizationUserService.terminateUsers$(userIdsToTerminate)
     this.userMadeAtLeastOneTerminationAttempt.set(true)
   }
 
   private onSuccessfulTermination() {
-    const terminatedIdsCount = this.latestTerminationCount()
-    if (terminatedIdsCount > 0 && this.userMadeAtLeastOneTerminationAttempt()) {
+    if (this.userMadeAtLeastOneTerminationAttempt()) {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: `Successfully terminated ${terminatedIdsCount} user(s)`
+        detail: `Successfully terminated selected user(s)`
       })
-      this.latestTerminationCount.set(0)
     }
   }
 

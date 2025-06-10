@@ -13,6 +13,11 @@
         </div>
       }
 
+      <div class="flex gap-1 align-items-center">
+        <span class="font-semibold">Dark Mode</span>
+        <p-toggle-switch [(ngModel)]="darkMode"/>
+      </div>
+
       <div class="flex gap-2 justify-content-end align-items-center">
         <p-menubar [model]="quickActionsMenu()" class="text-sm font-semibold"/>
         <div class="flex" [ngClass]="quickActionsMenuVisible() ? '' : 'flex-grow-1 justify-content-end'">

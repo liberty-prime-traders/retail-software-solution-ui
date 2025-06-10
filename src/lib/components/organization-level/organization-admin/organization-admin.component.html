@@ -1,26 +1,27 @@
-<h3 class="font-semibold">Organization Admins</h3>
-
-<p-divider/>
-
 <p-table [loading]="loading()"
          dataKey="id"
          sortField="user"
          #adminTable
+         scrollHeight="600px"
+         scrollable="true"
          [value]="organizationAdmins()"
          [globalFilterFields]="['user']"
          [(selection)]="selectedOrganizationAdmins">
 
   <ng-template pTemplate="caption">
-    <div class="flex justify-content-end gap-6 mb-3 align-items-center">
+    <div class="flex justify-content-between align-items-center">
+      <h3>Organization Admins</h3>
+      <div class="flex justify-content-end gap-6 mb-3 align-items-center">
       <span class="font-italic text-cyan-600 cursor-pointer">
         Terminate Selected Admin
       </span>
 
-      <span class="font-italic text-bluegray-600 cursor-pointer">
+        <span class="font-italic text-bluegray-600 cursor-pointer">
         + Add Admin
       </span>
 
-      <rts-grid-filter [dataTable]="adminTable" margin="m-0"/>
+        <rts-grid-filter [dataTable]="adminTable" margin="m-0"/>
+      </div>
     </div>
   </ng-template>
 
