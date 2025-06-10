@@ -60,7 +60,7 @@ export class CreateOrganizationComponent extends HasSubscriptionComponent implem
   readonly organizationIsLoading: Signal<boolean> = this.organizationService.selectLoading
 
   readonly reservedSubdomainProcessingStatus = this.reservedSubdomainService.selectProcessingStatus
-  readonly reservedSubdomainProcessingIsUnderWay: Signal<boolean> = this.reservedSubdomainService.processingIsUnderWay
+  readonly reservedSubdomainIsLoading: Signal<boolean> = this.reservedSubdomainService.selectLoading
   readonly reservedSubdomainFailureMessages: Signal<string[]> = this.reservedSubdomainService.selectFailureMessages
 
   constructor() {

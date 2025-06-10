@@ -28,8 +28,8 @@
                   outlined="true"
                   severity="info"
                   (click)="verifyDomain()"
-                  [loading]="reservedSubdomainProcessingIsUnderWay()"
-                  [disabled]="reservedSubdomainProcessingIsUnderWay() || domainControl.invalid">
+                  [loading]="reservedSubdomainIsLoading()"
+                  [disabled]="reservedSubdomainIsLoading() || domainControl.invalid">
         </p-button>
       </div>
 

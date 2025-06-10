@@ -1,9 +1,11 @@
 import {computed} from '@angular/core'
 import {patchState, signalStoreFeature, withMethods, withProps, withState} from '@ngrx/signals'
 import {
-  EntityId, removeAllEntities,
-  removeEntity, SelectEntityId,
-  setAllEntities,
+  EntityId,
+  removeAllEntities,
+  removeEntity,
+  SelectEntityId,
+  upsertEntities,
   upsertEntity,
   withEntities
 } from '@ngrx/signals/entities'
@@ -21,7 +23,11 @@ export const withBaseStore = <ENTITY extends BaseModel>(selectId: SelectEntityId
   withMethods((store) => ({
 
     setAll(entities: ENTITY[]) {
-      patchState(store, setAllEntities(entities, {selectId}))
+      patchState(store, upsertEntities(entities, {selectId}))
+    },
+
+    upsertMany(entities: ENTITY[]) {
+      patchState(store, upsertEntities(entities, {selectId}))
     },
 
     upsert(entity: ENTITY) {
@@ -40,13 +46,13 @@ export const withBaseStore = <ENTITY extends BaseModel>(selectId: SelectEntityId
       patchState(store, {failureMessages: parseError(error)})
       this.setProcessingStatus(ProcessingStatus.FAILURE)
     },
-    
+
     clearError() {
       patchState(store, {failureMessages: []})
     },
-    
+
     resetStore() {
-      patchState(store, {...createInitialState()})
+      patchState(store, createInitialState())
       patchState(store, removeAllEntities())
     },
 

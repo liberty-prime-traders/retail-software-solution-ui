@@ -42,7 +42,7 @@
           <td>{{request?.requestedDate | date: 'medium'}}</td>
           <td>
             <p-tag [value]="request?.status | prettifyEnum"
-                   [severity]="request?.status | joinRequestStatusSeverity"
+                   [severity]="request?.status | activityStatusSeverity"
                    [rounded]="true">
             </p-tag>
           </td>

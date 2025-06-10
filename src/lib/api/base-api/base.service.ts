@@ -22,7 +22,7 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
       first(),
       tap((postResult: RESPONSE) => this.finishSavingWithSuccess(postResult)),
       catchError((error: HttpErrorResponse) => this.setStoreError(error)),
-      finalize(() => this.store.setLoading(false))
+      finalize(() => this.finalizeApiRequest())
     )
       .subscribe()
   }
@@ -33,7 +33,7 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
       first(),
       tap((putResult: RESPONSE) => this.finishSavingWithSuccess(putResult)),
       catchError((error: HttpErrorResponse) => this.setStoreError(error)),
-      finalize(() => this.store.setLoading(false))
+      finalize(() => this.finalizeApiRequest())
     )
       .subscribe()
   }
@@ -50,7 +50,7 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
         this.setProcessingStatus(ProcessingStatus.SUCCESS)
       }),
       catchError((error: HttpErrorResponse) => this.setStoreError(error)),
-      finalize(() => this.store.setLoading(false))
+      finalize(() => this.finalizeApiRequest())
     )
       .subscribe()
   }

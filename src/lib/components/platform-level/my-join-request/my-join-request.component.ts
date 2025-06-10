@@ -11,7 +11,7 @@ import {HasGridComponent} from '../../reusable/has-grid.component'
 import {Card} from 'primeng/card'
 import {Button} from 'primeng/button'
 import {Router, RouterLink} from '@angular/router'
-import {JoinRequestStatusSeverityPipe} from '../../../utils/pipes/join-request-status-severity.pipe'
+import {ActivityStatusSeverityPipe} from '../../../utils/pipes/activity-status-severity.pipe'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 
 @Component({
@@ -19,7 +19,7 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
   templateUrl: 'my-join-request.component.html',
   imports: [
     DatePipe,
-    JoinRequestStatusSeverityPipe,
+    ActivityStatusSeverityPipe,
     TableModule,
     NullSafePipe,
     GridFilterComponent,

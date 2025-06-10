@@ -11,20 +11,21 @@
             }
           </div>
         </div>
-
-        <p-menubar [model]="quickActionsMenu()" class="font-italic"/>
       }
 
-      <div class="flex" [ngClass]="quickActionsMenuVisible() ? '' : 'flex-grow-1 justify-content-end'">
-        <p-button icon="pi pi-user" label="Logout" (onClick)="logout()" severity="info"/>
+      <div class="flex gap-2 justify-content-end align-items-center">
+        <p-menubar [model]="quickActionsMenu()" class="text-sm font-semibold"/>
+        <div class="flex" [ngClass]="quickActionsMenuVisible() ? '' : 'flex-grow-1 justify-content-end'">
+          <p-button icon="pi pi-user" label="Logout" (onClick)="logout()" severity="info"/>
+        </div>
       </div>
+
 
     } @else {
       <div class="flex flex-grow-1 justify-content-end">
         <p-button icon="pi pi-user" severity="secondary" label="Login" routerLink="/secure"/>
       </div>
     }
-
   </div>
 
   <p-divider></p-divider>

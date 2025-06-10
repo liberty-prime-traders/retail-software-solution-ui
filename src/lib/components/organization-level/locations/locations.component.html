@@ -40,7 +40,7 @@
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   severity="secondary"
-                  [disabled]="processingIsUnderWay() || addingIsActive()"
+                  [disabled]="loading() || addingIsActive()"
                   [pRowToggler]="location">
         </p-button>
       </td>
