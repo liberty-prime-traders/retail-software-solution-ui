@@ -1,18 +1,22 @@
 <p-table [loading]="loading() && !addingIsActive()"
          selectionMode="single"
          rowExpandMode="single"
-         size="small"
          dataKey="id"
          sortField="name"
-          #unitGroupsTable
-          [globalFilterFields]="['name', 'description', 'createdBy']"
+         scrollHeight="600px"
+         scrollable="true"
+         #unitGroupsTable
+         [globalFilterFields]="['name', 'description', 'createdBy']"
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
          [(selection)]="selectedUnitGroup"
          [value]="unitGroups()">
 
   <ng-template pTemplate="caption">
-    <rts-grid-filter [dataTable]="unitGroupsTable"/>
+    <div class="flex justify-content-between align-items-center">
+      <h3>Unit Groups</h3>
+      <rts-grid-filter [dataTable]="unitGroupsTable"/>
+    </div>
   </ng-template>
 
   <ng-template #header>
@@ -46,7 +50,7 @@
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   severity="secondary"
-                  [disabled]="processingIsUnderWay() || addingIsActive()"
+                  [disabled]="loading() || addingIsActive()"
                   [pRowToggler]="unitgroup">
         </p-button>
       </td>

@@ -1,21 +1,22 @@
-<h3 class="font-semibold">Locations</h3>
-
-<p-divider/>
-
 <p-table [loading]="loading() && !addingIsActive()"
          selectionMode="single"
          rowExpandMode="single"
          dataKey="id"
          sortField="name"
-          #locationsTable
-          [globalFilterFields]="['name', 'description', 'locationType', 'createdBy']"
+         scrollHeight="600px"
+         scrollable="true"
+         #locationsTable
+         [globalFilterFields]="['name', 'description', 'locationType', 'createdBy']"
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
          [(selection)]="selectedLocation"
          [value]="locations()">
 
   <ng-template pTemplate="caption">
-    <rts-grid-filter [dataTable]="locationsTable"/>
+    <div class="flex justify-content-between align-items-center">
+      <h3>Locations</h3>
+      <rts-grid-filter [dataTable]="locationsTable"/>
+    </div>
   </ng-template>
 
   <ng-template #header>
@@ -40,7 +41,7 @@
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   severity="secondary"
-                  [disabled]="processingIsUnderWay() || addingIsActive()"
+                  [disabled]="loading() || addingIsActive()"
                   [pRowToggler]="location">
         </p-button>
       </td>

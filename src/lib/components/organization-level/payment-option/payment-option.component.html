@@ -1,6 +1,3 @@
-<h3 class="font-semibold">Payment Options</h3>
-
-<p-divider/>
 
 <p-table [loading]="loading() && !addingIsActive()"
          rowExpandMode="single"
@@ -8,13 +5,18 @@
          dataKey="id"
          sortField="name"
          #paymentOptionsTable
+         scrollHeight="600px"
+         scrollable="true"
          [globalFilterFields]="['name', 'description', 'createdBy']"
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
          [value]="paymentOptions()">
 
   <ng-template pTemplate="caption">
-    <rts-grid-filter [dataTable]="paymentOptionsTable"/>
+    <div class="flex justify-content-between align-items-center">
+      <h3>Payment Options</h3>
+      <rts-grid-filter [dataTable]="paymentOptionsTable"/>
+    </div>
   </ng-template>
 
   <ng-template #header>
@@ -49,7 +51,7 @@
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   severity="secondary"
-                  [disabled]="processingIsUnderWay() || addingIsActive()"
+                  [disabled]="loading() || addingIsActive()"
                   [pRowToggler]="paymentOption">
         </p-button>
       </td>

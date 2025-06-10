@@ -1,60 +1,95 @@
 import {DatePipe} from '@angular/common'
-import {Component, effect, inject, model, signal} from '@angular/core'
-import {Divider} from 'primeng/divider'
+import {Component, computed, effect, inject, model, OnInit, signal} from '@angular/core'
+import {EntityId} from '@ngrx/signals/entities'
+import {MessageService} from 'primeng/api'
+import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {TagModule} from 'primeng/tag'
 import {EndUserJoinRequest} from '../../../api/end-user-join-request/end-user-join-request.model'
 import {EndUserJoinRequestService} from '../../../api/end-user-join-request/end-user-join-request.service'
+import {OrganizationUserService} from '../../../api/organization_user/organization-user.service'
+import {JoinRequestStatus} from '../../../api/util/join-request/join-request-status.enum'
+import {ActivityStatusSeverityPipe} from '../../../utils/pipes/activity-status-severity.pipe'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
+import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
-import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
-import {HasGridComponent} from '../../reusable/has-grid.component'
-import {JoinRequestStatusSeverityPipe} from '../../../utils/pipes/join-request-status-severity.pipe'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
+import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 
 @Component({
   selector: 'rts-end-user-join-request',
   templateUrl: 'end-user-join-request.component.html',
   imports: [
     DatePipe,
-    JoinRequestStatusSeverityPipe,
+    ActivityStatusSeverityPipe,
     TableModule,
     NullSafePipe,
     GridFilterComponent,
-    Divider,
     TagModule,
-    EmptyRowComponent
+    EmptyRowComponent,
+    Button,
+    PrettifyEnumPipe
   ]
 })
-export class EndUserJoinRequestComponent extends HasGridComponent<EndUserJoinRequestService> {
+export class EndUserJoinRequestComponent implements OnInit {
   private readonly joinRequestService = inject(EndUserJoinRequestService)
-  readonly loading = this.joinRequestService.selectLoading
-  readonly processingIsUnderWay = this.joinRequestService.processingIsUnderWay
-  readonly joinRequests = this.joinRequestService.selectAll
+  private readonly messageService = inject(MessageService)
+  private readonly organizationUserService = inject(OrganizationUserService)
 
-  readonly apiService = this.joinRequestService
-  readonly addingIsActive = signal(false)
-  readonly rowIsExpanded = signal(false)
-  readonly isAdmittingUsers = signal(false)
+  readonly loading = this.joinRequestService.selectLoading
+  readonly joinRequests = this.joinRequestService.selectAll
+  readonly processingStatus = this.joinRequestService.selectProcessingStatus
+  readonly selectedJoinRequests = model<EndUserJoinRequest[]>([])
+  private readonly userMadeAtLeastOneApiRequest = signal(false)
+
+  readonly pendingRequestsExist = computed(() =>
+    this.joinRequests().some(joinRequest => joinRequest.status === JoinRequestStatus.PENDING)
+  )
 
   readonly ProcessingStatus = ProcessingStatus
-
-  readonly processingStatus = this.joinRequestService.selectProcessingStatus
-  readonly failureMessages = this.joinRequestService.selectFailureMessages
-
-  readonly selectedJoinRequests = model<EndUserJoinRequest[]>([])
+  readonly JoinRequestStatus = JoinRequestStatus
 
   constructor() {
-    super()
     effect(() => {
-      if (this.processingStatus() === ProcessingStatus.SUCCESS) {
-        this.selectedJoinRequests.set([])
-
-        if (this.isAdmittingUsers()) {
-          this.joinRequestService.refetch()
-          this.isAdmittingUsers.set(false)
+      if (this.userMadeAtLeastOneApiRequest()) {
+        if (this.processingStatus() === ProcessingStatus.SUCCESS) {
+          this.selectedJoinRequests.set([])
+          this.organizationUserService.resetStoreAndClearCache()
+        } else if (this.processingStatus() === ProcessingStatus.FAILURE) {
+          this.onFailure()
         }
       }
+    })
+  }
+
+  ngOnInit() {
+    this.joinRequestService.fetch()
+  }
+
+  private getPendingSelectedJoinRequestIds(): EntityId[] {
+    return this.selectedJoinRequests()
+      .filter(joinRequest => joinRequest.status === JoinRequestStatus.PENDING)
+      .map(joinRequest => joinRequest.id)
+  }
+
+  admitSelectedRequests() {
+    this.joinRequestService.respondToJoinRequests$(this.getPendingSelectedJoinRequestIds(), 'admit')
+    this.userMadeAtLeastOneApiRequest.set(true)
+  }
+
+  rejectSelectedRequests() {
+    this.joinRequestService.respondToJoinRequests$(this.getPendingSelectedJoinRequestIds(), 'deny')
+    this.userMadeAtLeastOneApiRequest.set(true)
+  }
+
+  private onFailure() {
+    this.joinRequestService.selectFailureMessages().forEach(error => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: error,
+        life: 5000
+      })
     })
   }
 }

@@ -1,13 +1,12 @@
 import {Component, inject, signal} from '@angular/core'
 import {Button} from 'primeng/button'
-import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
 import {CategoryService} from '../../../api/category/category.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
-import {HasGridComponent} from '../../reusable/has-grid.component'
+import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
 import {CategoryFormComponent} from './category-form/category-form.component'
 
 @Component({
@@ -20,14 +19,12 @@ import {CategoryFormComponent} from './category-form/category-form.component'
     CategoryFormComponent,
     AddRowComponent,
     PrettifyEnumPipe,
-    Divider,
     GridFilterComponent
   ]
 })
-export class CategoryComponent extends HasGridComponent<CategoryService> {
+export class CategoryComponent extends HasEditableGridComponent<CategoryService> {
   private readonly categoryService = inject(CategoryService)
   readonly loading = this.categoryService.selectLoading
-  readonly processingIsUnderWay = this.categoryService.processingIsUnderWay
   readonly categories = this.categoryService.selectAll
 
   readonly apiService = this.categoryService

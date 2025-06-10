@@ -1,11 +1,14 @@
 import {AsyncPipe, NgClass} from '@angular/common'
-import {Component, computed, inject, Signal} from '@angular/core'
+import {Component, computed, effect, inject, model, Signal} from '@angular/core'
+import {FormsModule} from '@angular/forms'
 import {Router, RouterLink, RouterOutlet} from '@angular/router'
 import {MenuItem} from 'primeng/api'
 import {Avatar} from 'primeng/avatar'
 import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {Menubar} from 'primeng/menubar'
+import {ToggleSwitch} from 'primeng/toggleswitch'
+import {darkModeSelector} from '../../../app/app.preset'
 import {SysUserService} from '../../api/sys-user/sys-user.service'
 import {RtsOktaService} from '../../utils/services/rts-okta.service'
 import {SessionContextService} from '../../utils/services/session-context.service'
@@ -14,7 +17,7 @@ import {SessionContextService} from '../../utils/services/session-context.servic
   selector: 'rts-welcome',
   templateUrl: 'welcome.component.html',
   styleUrls: ['welcome.component.scss'],
-  imports: [RouterOutlet, Divider, Button, RouterLink, AsyncPipe, Avatar, Menubar, NgClass]
+  imports: [RouterOutlet, Divider, Button, RouterLink, AsyncPipe, Avatar, Menubar, NgClass, ToggleSwitch, FormsModule]
 })
 export class WelcomeComponent {
   private readonly rtsOktaService = inject(RtsOktaService)
@@ -24,6 +27,8 @@ export class WelcomeComponent {
 
   private readonly loggedInUser = this.userService.selectFirst
 
+  readonly darkMode = model(false)
+
   readonly userInitials = computed(() => {
     const user = this.loggedInUser()
     return user ? `${user?.firstName.charAt(0)}${user?.lastName.charAt(0)}` : ''
@@ -31,32 +36,26 @@ export class WelcomeComponent {
 
   readonly quickActionsMenu: Signal<MenuItem[]> = computed(() => [
     {
-      label: 'Location Summary',
-      icon: 'pi pi-home',
+      label: 'My Location',
       routerLink: '/secure/location-dashboard',
       visible: this.sessionContextService.locationIsSelected()
     },
     {
-      label: 'Switch Organization',
-      icon: 'pi pi-sitemap',
+      label: this.sessionContextService.locationIsSelected() ? 'Switch Location' : 'Select Location',
+      visible: this.sessionContextService.organizationIsSelected(),
+      command: () => this.switchLocation()
+    },{
+      label: 'Switch Org',
       visible: this.sessionContextService.organizationIsSelected(),
       command: () => this.switchOrganization()
     },
     {
-      label: 'Manage Organization',
-      icon: 'pi pi-building',
+      label: 'Manage Org',
       visible: this.sessionContextService.loggedInUserIsOrganizationAdmin(),
       routerLink: '/secure/manage-organization'
     },
     {
-      label: this.sessionContextService.locationIsSelected() ? 'Switch Location' : 'Select Location',
-      icon: 'pi pi-map-marker',
-      visible: this.sessionContextService.organizationIsSelected(),
-      command: () => this.switchLocation()
-    },
-    {
       label: 'Manage Platform',
-      icon: 'pi pi-cog',
       visible: this.rtsOktaService.isPlatformAdmin() && this.sessionContextService.organizationIsSelected(),
       routerLink: '/secure/manage-platform'
     }
@@ -66,12 +65,23 @@ export class WelcomeComponent {
 
   readonly isLoggedIn$ = this.rtsOktaService.loggedIn$
 
+  constructor() {
+    effect(() => {
+      if (this.darkMode()) {
+        document.documentElement.classList.add(darkModeSelector)
+      } else {
+        document.documentElement.classList.remove(darkModeSelector)
+      }
+    })
+  }
+
   logout() {
     this.router.navigateByUrl('/').then(() => this.rtsOktaService.signOut())
   }
 
   private switchOrganization() {
     this.sessionContextService.clearSelectedOrganization()
+    this.sessionContextService.clearSelectedLocation()
     this.router.navigate(['/secure']).then()
   }
 

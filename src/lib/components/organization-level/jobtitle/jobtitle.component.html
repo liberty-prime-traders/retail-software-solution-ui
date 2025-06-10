@@ -1,11 +1,9 @@
-<h3 class="font-semibold">Job Titles</h3>
-
-<p-divider/>
-
 <p-table  [loading]="loading() && !addingIsActive()"
           selectionMode="single"
           rowExpandMode="single"
           dataKey="id"
+          scrollHeight="600px"
+          scrollable="true"
           #jobTitlesTable
           [value]="jobTitles()"
           [(selection)]="selectedJobTitle"
@@ -14,7 +12,10 @@
           (onRowCollapse)="rowIsExpanded.set(false)">
 
   <ng-template pTemplate="caption">
-    <rts-grid-filter [dataTable]="jobTitlesTable"/>
+    <div class="flex justify-content-between align-items-center">
+      <h3>Job Titles</h3>
+      <rts-grid-filter [dataTable]="jobTitlesTable"/>
+    </div>
   </ng-template>
 
   <ng-template #header>
@@ -44,7 +45,7 @@
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   severity="secondary"
-                  [disabled]="processingIsUnderWay() || addingIsActive()"
+                  [disabled]="loading() || addingIsActive()"
                   [pRowToggler]="jobtitle" >
         </p-button>
       </td>

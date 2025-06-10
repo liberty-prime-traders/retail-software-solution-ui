@@ -1,14 +1,15 @@
-<div class="flex gap-3 block h-full">
+<div class="flex gap-4 block mr-3 h-full">
   @if (showNavigation()) {
-    <rts-navigation></rts-navigation>
+    <p-menu [model]="menuItems" class="block h-full filled-background"/>
   }
 
-  <div class="flex flex-grow-1 mr-2 flex-column gap-2">
+  <div class="flex flex-grow-1 flex-column gap-2">
     <p-button icon="pi pi-bars" severity="secondary" (onClick)="showNavigation.set(!showNavigation())"></p-button>
 
-    <div [style]="{'max-height': '800px'}" class="overflow-y-scroll">
+    <p-card>
       <router-outlet/>
-    </div>
+    </p-card>
+
   </div>
 </div>
 

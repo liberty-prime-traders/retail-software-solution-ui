@@ -7,11 +7,11 @@ import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
-import {HasGridComponent} from '../../reusable/has-grid.component'
+import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
 import {Card} from 'primeng/card'
 import {Button} from 'primeng/button'
 import {Router, RouterLink} from '@angular/router'
-import {JoinRequestStatusSeverityPipe} from '../../../utils/pipes/join-request-status-severity.pipe'
+import {ActivityStatusSeverityPipe} from '../../../utils/pipes/activity-status-severity.pipe'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 
 @Component({
@@ -19,7 +19,7 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
   templateUrl: 'my-join-request.component.html',
   imports: [
     DatePipe,
-    JoinRequestStatusSeverityPipe,
+    ActivityStatusSeverityPipe,
     TableModule,
     NullSafePipe,
     GridFilterComponent,
@@ -31,11 +31,10 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
     PrettifyEnumPipe
   ]
 })
-export class MyJoinRequestsComponent extends HasGridComponent<MyJoinRequestService> {
+export class MyJoinRequestsComponent extends HasEditableGridComponent<MyJoinRequestService> {
   private readonly joinRequestService = inject(MyJoinRequestService)
   private readonly router = inject(Router)
   readonly loading = this.joinRequestService.selectLoading
-  readonly processingIsUnderWay = this.joinRequestService.processingIsUnderWay
   readonly myJoinRequests = this.joinRequestService.selectAll
 
   readonly apiService = this.joinRequestService
@@ -46,11 +45,6 @@ export class MyJoinRequestsComponent extends HasGridComponent<MyJoinRequestServi
 
   readonly processingStatus = this.joinRequestService.selectProcessingStatus
   readonly failureMessages = this.joinRequestService.selectFailureMessages
-
-  constructor() {
-    super()
-    this.joinRequestService.refetch()
-  }
 
   goBack() {
     this.router.navigate(['/landing']).then()

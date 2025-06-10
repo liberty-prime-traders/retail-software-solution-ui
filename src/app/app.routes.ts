@@ -9,7 +9,9 @@ import {
 } from '../lib/components/organization-level/organization-summary/organization-summary.component'
 import {PaymentOptionComponent} from '../lib/components/organization-level/payment-option/payment-option.component'
 import {UnitTreeComponent} from '../lib/components/organization-level/unit-tree/unit-tree.component'
-import {CreateOrganizationComponent} from '../lib/components/platform-level/create-organization/create-organization.component'
+import {
+  CreateOrganizationComponent
+} from '../lib/components/platform-level/create-organization/create-organization.component'
 import {LandingComponent} from '../lib/components/platform-level/landing/landing.component'
 import {LocationsComponent} from '../lib/components/organization-level/locations/locations.component'
 import {OrganizationDashboardComponent} from '../lib/components/organization-level/organization-dashboard.component'
@@ -32,6 +34,9 @@ import {
   OrganizationComponent
 } from '../lib/components/platform-level/organization/organization.component'
 import {CanViewPlatformOrganization} from './route-guards/can-view-platform-organization.guard'
+import {
+  OrganizationUserComponent
+} from '../lib/components/organization-level/organization-user/organization-user.component'
 import {ProductComponent} from '../lib/components/organization-level/products/product.component';
 
 const orgManagementChildRoutes: Routes = [
@@ -46,6 +51,7 @@ const orgManagementChildRoutes: Routes = [
   {path: 'profile', component: OrganizationProfileComponent},
   {path: 'admins', component: OrganizationAdminComponent},
   {path: 'join-requests', component: EndUserJoinRequestComponent},
+  {path: 'users', component: OrganizationUserComponent},
   {path: '', redirectTo: 'summary', pathMatch: 'full'}
 ]
 
