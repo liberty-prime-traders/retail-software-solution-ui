@@ -1,0 +1,32 @@
+@if (selectedProduct()) {
+  <div class="flex flex-column gap-4">
+    <div class="flex gap-6">
+      <p-button [icon]="showEditForm() ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                rounded
+                severity="secondary"
+                (onClick)="showEditForm.set(!showEditForm())">
+      </p-button>
+
+      @if (!showEditForm()) {
+        <div class="flex flex-column gap-2">
+          <div class="flex gap-4 align-items-center">
+            <span class="font-semibold">{{ selectedProduct()?.productName }}</span>
+            <p-chip [label]="selectedProduct()?.categoryName"/>
+          </div>
+
+          @if (selectedProduct()?.description) {
+            <p class="text-sm">{{ selectedProduct()?.description }}</p>
+          }
+        </div>
+      }
+    </div>
+
+    @if (showEditForm()) {
+      <rts-product-form [product]="selectedProduct()" />
+    }
+  </div>
+
+} @else {
+  <h1 class="text-2xl">No product is selected.</h1>
+
+}

@@ -1,13 +1,14 @@
-import {Component, OnInit, computed, inject, input} from '@angular/core'
+import {Component, computed, inject, input, OnInit} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 import {isNil} from 'lodash-es'
+import {DropdownModule} from 'primeng/dropdown'
 import {InputText} from 'primeng/inputtext'
+import {CategoryType} from '../../../../api/category/category-type.enum'
+import {CategoryService} from '../../../../api/category/category.service'
 import {Product} from '../../../../api/product/product.model'
 import {ProductService} from '../../../../api/product/product.service'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
-import {DropdownModule} from 'primeng/dropdown'
-import {CategoryService} from '../../../../api/category/category.service'
 
 @Component({
   selector: 'rts-product-form',
@@ -28,7 +29,10 @@ export class ProductFormComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder)
   private readonly categoryService = inject(CategoryService)
 
-  readonly categories = this.categoryService.selectAll
+  readonly productCategories = computed(() =>
+    this.categoryService.selectAll().filter(category => category.categoryType === CategoryType.PRODUCT)
+  )
+
   readonly productForm = computed(() =>
     this.formBuilder.nonNullable.group({
       id: this.product()?.id,
@@ -43,6 +47,7 @@ export class ProductFormComponent implements OnInit {
 
   ngOnInit() {
     this.productService.resetProcessingStatus()
+    this.categoryService.fetch()
   }
 
   resetForm() {

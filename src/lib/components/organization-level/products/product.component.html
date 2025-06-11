@@ -1,10 +1,12 @@
 <div class="flex align-items-center justify-content-between">
   <h3 class="font-bold">
-    Products <span class="font-normal text-color-secondary">{{ products().length }}</span>
+    Products <span class="font-normal">({{ products().length }})</span>
   </h3>
 
+  <rts-grid-filter [dataTable]="productsTable" />
+
   <rts-add-row [(addingIsActive)]="addingIsActive"
-               [disabled]="selectedProduct !== null || loading()">
+               [disabled]="selectedProduct() !== null || loading()">
   </rts-add-row>
 
 </div>
@@ -12,65 +14,40 @@
 <p-divider />
 
 <div class="flex gap-4">
-  <div class="w-2/3">
-    <div class="relative">
-      <p-table  [loading]="loading()"
-                dataKey="id"
-                sortField="productName"
-                [value]="products()"
-                [globalFilterFields]="['productName', 'categoryName', 'description']"
-                selectionMode="single"
-                [(selection)]="selectedProduct"
-                #productsTable>
+  <p-table [loading]="loading()"
+           dataKey="id"
+           sortField="productName"
+           scrollable="true"
+           scrollHeight="600px"
+           class="col-4"
+           [value]="products()"
+           [globalFilterFields]="['productName', 'categoryName', 'description']"
+           selectionMode="single"
+           [(selection)]="selectedProduct"
+           #productsTable>
 
-        <ng-template pTemplate="caption">
-            <rts-grid-filter [dataTable]="productsTable" />
-        </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="productName">
+          Name
+          <p-sortIcon field="productName" />
+        </th>
+        <th>Category</th>
+        <th>Description</th>
+      </tr>
+    </ng-template>
 
-        <ng-template pTemplate="header">
-          <tr>
-            <th pSortableColumn="productName">
-              Product
-                <p-sortIcon field="productName" />
-            </th>
-            <th pSortableColumn="categoryName">
-                Category
-              <p-sortIcon field="categoryName" />
-            </th>
-            <th pSortableColumn="description">
-              Description
-              <p-sortIcon field="description" />
-            </th>
-          </tr>
-        </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr [pSelectableRow]="product">
+        <td>{{ product?.productName | nullSafe }}</td>
+        <td>{{ product?.categoryName | nullSafe }}</td>
+        <td>{{ product?.description | nullSafe }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
 
-        <ng-template pTemplate="body" let-product>
-          <tr [pSelectableRow]="product">
-            <td>{{ product?.productName | nullSafe }}</td>
-            <td>{{ product?.categoryName | nullSafe }}</td>
-            <td>{{ product?.description | nullSafe }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </div>
+  <p-divider layout="vertical" />
 
-  <div class="w-1/3 filled-background p-3 rounded shadow-sm">
-    <div class="flex justify-between mb-2">
-      @if (selectedProduct) {
-        <p-button icon="pi pi-times"
-                  (click)="clearSelection()"
-                  label="Clear Selection"
-                  rounded severity="secondary" >
-        </p-button>
-      }
-    </div>
-
-    @if (selectedProduct) {
-      <rts-product-form [product]="selectedProduct" />
-    } @else if(addingIsActive()) {
-      <rts-product-form />
-    }
-  </div>
+  <rts-product-details [selectedProduct]="selectedProduct()" class="flex-grow-1"/>
 </div>
 

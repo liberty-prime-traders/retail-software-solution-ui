@@ -1,4 +1,4 @@
-<form [formGroup]="productForm()" class="flex flex-column gap-2">
+<form [formGroup]="productForm()" class="flex flex-column gap-2 filled-background pt-4 pb-2">
   <rts-form-field [required]="true" label="Product Name" for="productName">
     <input id="productName" class="flex-grow-1" pInputText formControlName="productName" />
   </rts-form-field>
@@ -6,7 +6,7 @@
   <rts-form-field [required]="true" label="Category" for="categoryId">
     <p-dropdown id="categoryId"
                 class="flex-grow-1"
-                [options]="categories()"
+                [options]="productCategories()"
                 optionLabel="categoryName"
                 optionValue="id"
                 formControlName="categoryId"
