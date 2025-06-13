@@ -51,5 +51,10 @@
     }
   </div>
 
-  <rts-product-details [selectedProduct]="selectedProduct()" class="flex-grow-1"/>
+  @if (addingIsActive()) {
+    <rts-product-form></rts-product-form>
+  }
+  @else {
+    <rts-product-details [selectedProduct]="selectedProduct()" class="flex-grow-1"/>
+  }
 </div>

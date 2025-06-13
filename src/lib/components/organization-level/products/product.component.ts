@@ -9,6 +9,7 @@ import {ProductDetailsComponent} from './product-details/product-details.compone
 import {FormsModule} from '@angular/forms'
 import {NgClass} from '@angular/common'
 import {Button} from 'primeng/button'
+import {ProductFormComponent} from './product-form/product-form.component'
 
 @Component({
   selector: 'rts-product',
@@ -22,7 +23,8 @@ import {Button} from 'primeng/button'
     ProductDetailsComponent,
     FormsModule,
     NgClass,
-    Button
+    Button,
+    ProductFormComponent
   ]
 })
 export class ProductComponent implements OnInit {
