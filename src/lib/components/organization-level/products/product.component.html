@@ -3,8 +3,12 @@
     Products <span class="font-normal text-color-secondary ml-2">{{ products().length }}</span>
   </h3>
 
-  <rts-add-row [(addingIsActive)]="addingIsActive"
-               [disabled]="selectedProduct() !== undefined || loading()"></rts-add-row>
+  <p-button (click)="setAddingActiveTrue()"
+            [disabled]="selectedProduct() !== undefined || loading()"
+            label="+ Add product"
+            rounded severity="secondary">
+  </p-button>
+
 </div>
 
 <p-divider />
@@ -52,6 +56,7 @@
   </div>
 
   @if (addingIsActive()) {
+    <p-button (click)="addingIsActive.set(false)" icon="pi pi-times" severity="info"/>
     <rts-product-form></rts-product-form>
   }
   @else {

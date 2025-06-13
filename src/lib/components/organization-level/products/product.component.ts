@@ -4,7 +4,6 @@ import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
 import {Product} from '../../../api/product/product.model'
 import {ProductService} from '../../../api/product/product.service'
-import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {ProductDetailsComponent} from './product-details/product-details.component'
 import {FormsModule} from '@angular/forms'
 import {NgClass} from '@angular/common'
@@ -18,7 +17,6 @@ import {ProductFormComponent} from './product-form/product-form.component'
   imports: [
     TableModule,
     Divider,
-    AddRowComponent,
     BlockUIModule,
     ProductDetailsComponent,
     FormsModule,
@@ -57,5 +55,9 @@ export class ProductComponent implements OnInit {
 
   clearSelection() {
     this.selectedProduct.set(undefined)
+  }
+
+  setAddingActiveTrue() {
+    this.addingIsActive.set(true)
   }
 }
