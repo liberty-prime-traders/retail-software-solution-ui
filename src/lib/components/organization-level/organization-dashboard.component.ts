@@ -30,7 +30,7 @@ export class OrganizationDashboardComponent {
   ]
 
   private readonly businessSettingsMenuItems: MenuItem[] = [
-    {label: 'Products', icon: 'pi pi-objects-column'},
+    {label: 'Products', icon: 'pi pi-objects-column', routerLink: 'products'},
     {label: 'Job Titles', icon: 'pi pi-gauge', routerLink: 'job-title'},
     {label: 'Categories', icon: 'pi pi-palette', routerLink: 'category'},
     {label: 'Units', icon: 'pi pi-percentage', routerLink: 'units'},

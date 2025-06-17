@@ -37,12 +37,14 @@ import {CanViewPlatformOrganization} from './route-guards/can-view-platform-orga
 import {
   OrganizationUserComponent
 } from '../lib/components/organization-level/organization-user/organization-user.component'
+import {ProductComponent} from '../lib/components/organization-level/products/product.component';
 
 const orgManagementChildRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
   {path: 'category', component: CategoryComponent},
   {path: 'job-title', component: JobTitleComponent},
   {path: 'units', component: UnitTreeComponent},
+  {path: 'products', component: ProductComponent},
   {path: 'payment-options', component: PaymentOptionComponent},
 
   {path: 'locations', component: LocationsComponent},

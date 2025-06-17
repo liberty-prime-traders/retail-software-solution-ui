@@ -1,0 +1,30 @@
+<form [formGroup]="productForm()" class="flex flex-column gap-2 filled-background pt-4 pb-2">
+  <rts-form-field [required]="true" label="Product Name" for="productName">
+    <input id="productName" class="flex-grow-1" pInputText formControlName="productName" />
+  </rts-form-field>
+
+  <rts-form-field [required]="true" label="Category" for="categoryId">
+    <p-dropdown id="categoryId"
+                class="flex-grow-1"
+                [options]="productCategories()"
+                optionLabel="categoryName"
+                optionValue="id"
+                formControlName="categoryId"
+                placeholder="Select a Category" >
+    </p-dropdown>
+  </rts-form-field>
+
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText formControlName="description" />
+  </rts-form-field>
+
+  <rts-forms-buttons [disableReset]="!productForm().dirty"
+                     [disableSave]="!productForm().valid || !productForm().dirty"
+                     [hideDelete]="!product()?.id"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (delete)="deleteProduct()"
+                     (save)="upsertProduct()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</form>
