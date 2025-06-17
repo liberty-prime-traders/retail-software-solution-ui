@@ -46,20 +46,22 @@
 
   <p-divider layout="vertical" />
 
-  <div class="flex justify-content-end mb-2">
+  <div class="flex flex-column gap-4 flex-grow-1">
     @if (selectedProduct()) {
-      <p-button icon="pi pi-times"
+      <p-button icon="pi pi-angle-double-left"
+                label="Unselect Product"
                 (click)="clearSelection()"
-                rounded severity="secondary">
+                rounded
+                severity="secondary">
       </p-button>
     }
-  </div>
 
-  @if (addingIsActive()) {
-    <p-button (click)="addingIsActive.set(false)" icon="pi pi-times" severity="info"/>
-    <rts-product-form></rts-product-form>
-  }
-  @else {
-    <rts-product-details [selectedProduct]="selectedProduct()" class="flex-grow-1"/>
-  }
+    @if (addingIsActive()) {
+      <p-button (click)="addingIsActive.set(false)" icon="pi pi-times" severity="info"/>
+      <rts-product-form></rts-product-form>
+    }
+    @else {
+      <rts-product-details [selectedProduct]="selectedProduct()" class="flex-grow-1"/>
+    }
+  </div>
 </div>
