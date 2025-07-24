@@ -37,6 +37,7 @@ import {CanViewPlatformOrganization} from './route-guards/can-view-platform-orga
 import {
   OrganizationUserComponent
 } from '../lib/components/organization-level/organization-user/organization-user.component'
+import {DbVersionComponent} from '../lib/components/db-version/db-version.component'
 
 const orgManagementChildRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
@@ -59,6 +60,7 @@ const locationRoutes: Routes = [
 
 const platformManagementRoutes: Routes = [
   {path: 'organizations', component: OrganizationComponent},
+  {path: 'db-versions', component: DbVersionComponent},
   {path: '', redirectTo: 'organizations', pathMatch: 'full'}
 ]
 
