@@ -3,9 +3,16 @@
     <input id="versionNumber"
            pInputText
            formControlName="versionNumber"
-           [class]="{'p-invalid': dbVersionForm.controls.versionNumber.invalid && dbVersionForm.controls.versionNumber.touched}">
+           [class]="{'p-invalid': dbVersionForm.controls.versionNumber.invalid && dbVersionForm.controls.versionNumber.touched}"
+    >
+
     @if (dbVersionForm.controls.versionNumber.invalid && dbVersionForm.controls.versionNumber.touched) {
-      <small class="p-error">Version number is required</small>
+      @if (dbVersionForm.controls.versionNumber.errors?.['required'] && dbVersionForm.controls.versionNumber.touched) {
+        <small class="text-red-500">Version number is required</small>
+      }
+      @if (dbVersionForm.controls.versionNumber.errors?.['invalidFormat'] && dbVersionForm.controls.versionNumber.touched) {
+        <small class="text-red-500">Format must be ###.###.###</small>
+      }
     }
   </rts-form-field>
 
@@ -17,6 +24,9 @@
               optionValue="id"
               [showClear]="true">
     </p-select>
+    @if (dbVersionForm.controls.prevVersionId.errors?.['required'] && dbVersionForm.controls.prevVersionId.touched) {
+      <small class="p-error">Previous version is required</small>
+    }
   </rts-form-field>
 
   <rts-forms-buttons [disableReset]="!dbVersionForm.dirty"
