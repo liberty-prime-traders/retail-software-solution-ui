@@ -37,7 +37,14 @@ import {CanViewPlatformOrganization} from './route-guards/can-view-platform-orga
 import {
   OrganizationUserComponent
 } from '../lib/components/organization-level/organization-user/organization-user.component'
-import {DbVersionComponent} from '../lib/components/db-version/db-version.component'
+import {DbVersionComponent} from '../lib/components/platform-level/db-version/db-version.component'
+import {DbMigrationComponent} from '../lib/components/platform-level/db-migration/db-migration.component'
+import {
+  RunMigrationComponent
+} from '../lib/components/platform-level/db-migration/run-migration/run-migration.component'
+import {
+  MigrationHistoryComponent
+} from '../lib/components/platform-level/db-migration/migration-history/migration-history.component'
 
 const orgManagementChildRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
@@ -58,9 +65,20 @@ const locationRoutes: Routes = [
   {path: '', component: LocationSummaryComponent}
 ]
 
+const dbMigrationsRoutes: Routes = [
+  {path: 'history', component: MigrationHistoryComponent},
+  {path: 'run', component: RunMigrationComponent},
+  {path: '', redirectTo: 'history', pathMatch: 'full'}
+]
+
 const platformManagementRoutes: Routes = [
   {path: 'organizations', component: OrganizationComponent},
   {path: 'db-versions', component: DbVersionComponent},
+  {
+    path: 'db-migrations',
+    component: DbMigrationComponent,
+    children: dbMigrationsRoutes
+  },
   {path: '', redirectTo: 'organizations', pathMatch: 'full'}
 ]
 

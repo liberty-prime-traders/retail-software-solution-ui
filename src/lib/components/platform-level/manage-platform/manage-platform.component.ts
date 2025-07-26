@@ -17,7 +17,8 @@ export class ManagePlatformComponent {
   ]
 
   private readonly dbMigrationsMenuItems: MenuItem[] = [
-    {label: 'DB Versions', icon: 'pi pi-database', routerLink: 'db-versions'}
+    {label: 'DB Versions', icon: 'pi pi-database', routerLink: 'db-versions'},
+    {label: 'DB Migrations', icon: 'pi pi-sync', routerLink: 'db-migrations'}
   ]
 
   readonly menuItems: MenuItem[] = [

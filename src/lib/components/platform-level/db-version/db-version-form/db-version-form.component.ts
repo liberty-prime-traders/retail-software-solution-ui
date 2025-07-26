@@ -7,12 +7,12 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms'
-import {DbVersionService} from '../../../api/db-version/db-version.service'
-import {DbVersion} from '../../../api/db-version/db-version.model'
-import {FormButtonsComponent} from '../../reusable/form-buttons/form-buttons.component'
-import {FormFieldComponent} from '../../reusable/form-field/form-field.component'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
+import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
+import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {DbVersion} from '../../../../api/db-version/db-version.model'
+import {DbVersionService} from '../../../../api/db-version/db-version.service'
 
 @Component({
   selector: 'rts-db-version-form',
