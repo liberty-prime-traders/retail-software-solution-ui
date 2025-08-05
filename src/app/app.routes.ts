@@ -45,12 +45,14 @@ import {
 import {
   MigrationHistoryComponent
 } from '../lib/components/platform-level/db-migration/migration-history/migration-history.component'
+import {ProductComponent} from '../lib/components/organization-level/products/product.component';
 
 const orgManagementChildRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
   {path: 'category', component: CategoryComponent},
   {path: 'job-title', component: JobTitleComponent},
   {path: 'units', component: UnitTreeComponent},
+  {path: 'products', component: ProductComponent},
   {path: 'payment-options', component: PaymentOptionComponent},
 
   {path: 'locations', component: LocationsComponent},
