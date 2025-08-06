@@ -55,7 +55,7 @@ export class SelectLocationComponent extends HasSubscriptionComponent implements
       this.locationService.refetch()
     }
   }
-  
+
   proceedToLocation(selectedLocation: Location) {
     this.sessionContextService.updateSelectedLocation(selectedLocation)
     const rerouteTo = this.routingContextService.returnTo() ?? '/secure/location-dashboard'

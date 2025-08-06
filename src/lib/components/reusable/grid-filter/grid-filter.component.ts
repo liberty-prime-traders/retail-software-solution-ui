@@ -7,16 +7,16 @@ import {Table} from 'primeng/table'
 import {BaseModel} from '../../../api/base-api/base.model'
 
 @Component({
-	selector: 'rts-grid-filter',
-	templateUrl: 'grid-filter.component.html',
-	imports: [
-		IconField,
-		InputIcon,
-		InputText,
-		NgClass
-	]
+  selector: 'rts-grid-filter',
+  templateUrl: 'grid-filter.component.html',
+  imports: [
+    IconField,
+    InputIcon,
+    InputText,
+    NgClass
+  ]
 })
 export class GridFilterComponent<T extends BaseModel> {
-	readonly dataTable = input.required<Table<T>>()
-	readonly margin = input<string>('m-2')
+  readonly dataTable = input.required<Table<T>>()
+  readonly margin = input<string>('m-2')
 }

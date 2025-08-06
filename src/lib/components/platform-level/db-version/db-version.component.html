@@ -1,0 +1,43 @@
+<h3>DB Versions</h3>
+
+<p-divider/>
+
+<p-table [loading]="loading()" [value]="dbVersions()">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Version Number</th>
+      <th>Sequence</th>
+      <th>Created On</th>
+      <th>Activated On</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-version>
+    <tr>
+      <td>{{ version.versionNumber }}</td>
+      <td>{{ version.sequenceNumber }}</td>
+      <td>{{ version.createdOn | date:'medium' }}</td>
+      <td>
+        @if (version.activatedOn) {
+          {{ version.activatedOn | date:'medium' }}
+        } @else {
+          <p-button label="Activate"
+                    icon="pi pi-check"
+                    [disabled]="loading()"
+                    (click)="activateVersion(version.id)">
+          </p-button>
+        }
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr rts-empty-row [colspan]="4" message="No DB Versions found"></tr>
+  </ng-template>
+</p-table>
+
+<rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
+  @if (addingIsActive()) {
+    <rts-db-version-form/>
+  }
+</rts-add-row>

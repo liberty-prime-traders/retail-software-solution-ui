@@ -16,7 +16,13 @@ export class ManagePlatformComponent {
     {label: 'Organizations', icon: 'pi pi-home', routerLink: 'organizations'}
   ]
 
+  private readonly dbMigrationsMenuItems: MenuItem[] = [
+    {label: 'DB Versions', icon: 'pi pi-database', routerLink: 'db-versions'},
+    {label: 'DB Migrations', icon: 'pi pi-sync', routerLink: 'db-migrations'}
+  ]
+
   readonly menuItems: MenuItem[] = [
-    {label: 'Home', items: this.homeMenuItems}
+    {label: 'Home', items: this.homeMenuItems},
+    {label: 'DB Migrations', items: this.dbMigrationsMenuItems}
   ]
 }

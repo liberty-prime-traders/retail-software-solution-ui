@@ -11,7 +11,7 @@
     <input id="description" pInputText formControlName="description">
   </rts-form-field>
 
-  <rts-form-field label="Base Unit" [required]="conversionFactor.value != null" for="baseUnit">
+  <rts-form-field label="Base Unit" [required]="conversionFactor.value !== null" for="baseUnit">
     <p-select id="baseUnit"
               formControlName="baseUnit"
               #baseUnit

@@ -44,7 +44,8 @@ export class WelcomeComponent {
       label: this.sessionContextService.locationIsSelected() ? 'Switch Location' : 'Select Location',
       visible: this.sessionContextService.organizationIsSelected(),
       command: () => this.switchLocation()
-    },{
+    },
+    {
       label: 'Switch Org',
       visible: this.sessionContextService.organizationIsSelected(),
       command: () => this.switchOrganization()
