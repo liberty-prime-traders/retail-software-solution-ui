@@ -1,13 +1,14 @@
-import {Component, inject, OnDestroy, signal} from '@angular/core'
-import {Divider} from 'primeng/divider'
-import {Subscription} from 'rxjs'
-import {TableModule} from 'primeng/table'
 import {DatePipe} from '@angular/common'
+import {Component, effect, inject, signal} from '@angular/core'
+import {MessageService} from 'primeng/api'
 import {Button} from 'primeng/button'
+import {Divider} from 'primeng/divider'
+import {TableModule} from 'primeng/table'
 import {DbVersionService} from '../../../api/db-version/db-version.service'
-import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
-import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
+import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {AddRowComponent} from '../../reusable/add-row/add-row.component'
+import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
+import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
 import {DbVersionFormComponent} from './db-version-form/db-version-form.component'
 
 @Component({
@@ -23,39 +24,39 @@ import {DbVersionFormComponent} from './db-version-form/db-version-form.componen
     DbVersionFormComponent
   ]
 })
-export class DbVersionComponent extends HasEditableGridComponent<DbVersionService> implements OnDestroy {
+export class DbVersionComponent extends HasEditableGridComponent<DbVersionService> {
   private readonly dbVersionService = inject(DbVersionService)
+  private readonly messageService = inject(MessageService)
+
   readonly loading = this.dbVersionService.selectLoading
   readonly dbVersions = this.dbVersionService.selectAll
 
   readonly apiService = this.dbVersionService
   readonly addingIsActive = signal(false)
   readonly rowIsExpanded = signal(false)
-
-  readonly activatingVersions = signal<Set<string>>(new Set())
-
-  isActivating(versionId: string) {
-    return this.activatingVersions().has(versionId)
-  }
-
-  private subscription: Subscription | undefined
+  private readonly userMadeActivationAttempt = signal(false)
 
   activateVersion(versionId: string) {
-    this.activatingVersions.update(versions => {
-      versions.add(versionId)
-      return new Set(versions)
-    })
+    this.dbVersionService.activateVersion(versionId)
+    this.userMadeActivationAttempt.set(true)
+  }
 
-    this.subscription = this.dbVersionService.activateVersion(versionId)
-    this.subscription.add(() => {
-      this.activatingVersions.update(versions => {
-        versions.delete(versionId)
-        return new Set(versions)
-      })
+  constructor() {
+    super()
+    effect(() => {
+      const madeActivationAttempt = this.userMadeActivationAttempt()
+      const processingStatus = this.dbVersionService.selectProcessingStatus()
+      if (madeActivationAttempt && processingStatus === ProcessingStatus.FAILURE) {
+        this.postErrorMessage()
+      }
     })
   }
 
-  ngOnDestroy() {
-    this.subscription?.unsubscribe()
+  private postErrorMessage() {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Activation Failed',
+      detail: this.dbVersionService.selectFailureMessages().at(0)
+    })
   }
 }

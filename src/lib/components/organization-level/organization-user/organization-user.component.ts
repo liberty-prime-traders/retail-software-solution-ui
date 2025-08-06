@@ -68,7 +68,7 @@ export class OrganizationUserComponent extends HasSubscriptionComponent implemen
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: `Successfully terminated selected user(s)`
+        detail: 'Successfully terminated selected user(s)'
       })
     }
   }

@@ -42,7 +42,8 @@ export class OrganizationDashboardComponent {
     {label: 'Business Settings', items: this.businessSettingsMenuItems},
     {
       label: 'Admin Settings',
-      items: this.orgAdminSettings, visible:
+      items: this.orgAdminSettings,
+      visible:
         this.sessionContextService.loggedInUserIsOrganizationAdmin()
     }
   ])

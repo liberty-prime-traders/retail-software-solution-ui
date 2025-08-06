@@ -19,14 +19,11 @@
       <td>{{ version.createdOn | date:'medium' }}</td>
       <td>
         @if (version.activatedOn) {
-          <span>
           {{ version.activatedOn | date:'medium' }}
-        </span>
         } @else {
           <p-button label="Activate"
                     icon="pi pi-check"
-                    [loading]="isActivating(version.id)"
-                    [disabled]="isActivating(version.id) || loading()"
+                    [disabled]="loading()"
                     (click)="activateVersion(version.id)">
           </p-button>
         }
@@ -41,6 +38,6 @@
 
 <rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
   @if (addingIsActive()) {
-    <rts-db-version-form [versions]="dbVersions()"/>
+    <rts-db-version-form/>
   }
 </rts-add-row>

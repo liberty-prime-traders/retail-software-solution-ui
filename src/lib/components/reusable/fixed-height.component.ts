@@ -2,7 +2,6 @@ import {AfterViewInit, Component, HostListener} from '@angular/core'
 
 @Component({template: ''})
 export abstract class FixedHeightComponent implements AfterViewInit {
-
   protected abstract readonly fixedHeightElementId: string
 
   ngAfterViewInit() {
@@ -11,7 +10,7 @@ export abstract class FixedHeightComponent implements AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    //this.adjustCardHeight()
+    // this.adjustCardHeight()
   }
 
   private adjustCardHeight() {

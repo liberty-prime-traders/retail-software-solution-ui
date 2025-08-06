@@ -6,7 +6,6 @@ import {OrganizationUserStore} from './organization-user.store'
 
 @Injectable({providedIn: 'root'})
 export class OrganizationUserService extends BaseService<OrganizationUser, Array<EntityId>> {
-
   constructor(protected override readonly store: OrganizationUserStore) {
     super(store)
   }

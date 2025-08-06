@@ -1,22 +1,15 @@
 <form [formGroup]="dbVersionForm" class="flex flex-column gap-2">
-  <rts-form-field label="Version Number" for="versionNumber">
-    <input id="versionNumber"
-           pInputText
-           formControlName="versionNumber"
-           [class]="{'p-invalid': dbVersionForm.controls.versionNumber.invalid && dbVersionForm.controls.versionNumber.touched}"
-    >
+  <rts-form-field [required]="true" label="Version Number" for="versionNumber">
+    <input id="versionNumber" pInputText formControlName="versionNumber">
 
     @if (dbVersionForm.controls.versionNumber.invalid && dbVersionForm.controls.versionNumber.touched) {
-      @if (dbVersionForm.controls.versionNumber.errors?.['required'] && dbVersionForm.controls.versionNumber.touched) {
-        <small class="text-red-500">Version number is required</small>
-      }
-      @if (dbVersionForm.controls.versionNumber.errors?.['invalidFormat'] && dbVersionForm.controls.versionNumber.touched) {
+      @if (dbVersionForm.controls.versionNumber.errors?.['invalidFormat']) {
         <small class="text-red-500">Format must be ###.###.###</small>
       }
     }
   </rts-form-field>
 
-  <rts-form-field label="Previous Version" for="prevVersionId">
+  <rts-form-field label="Previous Version" for="prevVersionId" [required]="hasPreviousVersions()">
     <p-select id="prevVersionId"
               formControlName="prevVersionId"
               [options]="versions()"
@@ -24,9 +17,6 @@
               optionValue="id"
               [showClear]="true">
     </p-select>
-    @if (dbVersionForm.controls.prevVersionId.errors?.['required'] && dbVersionForm.controls.prevVersionId.touched) {
-      <small class="p-error">Previous version is required</small>
-    }
   </rts-form-field>
 
   <rts-forms-buttons [disableReset]="!dbVersionForm.dirty"

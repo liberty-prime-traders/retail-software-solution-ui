@@ -1,88 +1,21 @@
 import {Routes} from '@angular/router'
 import {OktaAuthGuard, OktaCallbackComponent} from '@okta/okta-angular'
-import {CategoryComponent} from '../lib/components/organization-level/category/category.component'
-import {LocationSummaryComponent} from '../lib/components/location-level/location-summary/location-summary.component'
-import {JobTitleComponent} from '../lib/components/organization-level/jobtitle/jobtitle.component'
 import {LocationDashboardComponent} from '../lib/components/location-level/location-dashboard.component'
-import {
-  OrganizationSummaryComponent
-} from '../lib/components/organization-level/organization-summary/organization-summary.component'
-import {PaymentOptionComponent} from '../lib/components/organization-level/payment-option/payment-option.component'
-import {UnitTreeComponent} from '../lib/components/organization-level/unit-tree/unit-tree.component'
+import {OrganizationDashboardComponent} from '../lib/components/organization-level/organization-dashboard.component'
 import {
   CreateOrganizationComponent
 } from '../lib/components/platform-level/create-organization/create-organization.component'
 import {LandingComponent} from '../lib/components/platform-level/landing/landing.component'
-import {LocationsComponent} from '../lib/components/organization-level/locations/locations.component'
-import {OrganizationDashboardComponent} from '../lib/components/organization-level/organization-dashboard.component'
-import {
-  OrganizationAdminComponent
-} from '../lib/components/organization-level/organization-admin/organization-admin.component'
-import {
-  OrganizationProfileComponent
-} from '../lib/components/organization-level/organization-profile/organization-profile.component'
+import {ManagePlatformComponent} from '../lib/components/platform-level/manage-platform/manage-platform.component'
+import {MyJoinRequestsComponent} from '../lib/components/platform-level/my-join-request/my-join-request.component'
 import {SelectLocationComponent} from '../lib/components/platform-level/select-location/select-location.component'
 import {PublicComponent} from '../lib/components/public/public.component'
 import {CanViewLocation} from './route-guards/can-view-location'
 import {CanViewOrganization} from './route-guards/can-view-organization'
-import {
-  EndUserJoinRequestComponent
-} from '../lib/components/organization-level/end-user-join-request/end-user-join-request.component'
-import {MyJoinRequestsComponent} from '../lib/components/platform-level/my-join-request/my-join-request.component'
-import {ManagePlatformComponent} from '../lib/components/platform-level/manage-platform/manage-platform.component'
-import {
-  OrganizationComponent
-} from '../lib/components/platform-level/organization/organization.component'
 import {CanViewPlatformOrganization} from './route-guards/can-view-platform-organization.guard'
-import {
-  OrganizationUserComponent
-} from '../lib/components/organization-level/organization-user/organization-user.component'
-import {DbVersionComponent} from '../lib/components/platform-level/db-version/db-version.component'
-import {DbMigrationComponent} from '../lib/components/platform-level/db-migration/db-migration.component'
-import {
-  RunMigrationComponent
-} from '../lib/components/platform-level/db-migration/run-migration/run-migration.component'
-import {
-  MigrationHistoryComponent
-} from '../lib/components/platform-level/db-migration/migration-history/migration-history.component'
-import {ProductComponent} from '../lib/components/organization-level/products/product.component';
-
-const orgManagementChildRoutes: Routes = [
-  {path: 'summary', component: OrganizationSummaryComponent},
-  {path: 'category', component: CategoryComponent},
-  {path: 'job-title', component: JobTitleComponent},
-  {path: 'units', component: UnitTreeComponent},
-  {path: 'products', component: ProductComponent},
-  {path: 'payment-options', component: PaymentOptionComponent},
-
-  {path: 'locations', component: LocationsComponent},
-  {path: 'profile', component: OrganizationProfileComponent},
-  {path: 'admins', component: OrganizationAdminComponent},
-  {path: 'join-requests', component: EndUserJoinRequestComponent},
-  {path: 'users', component: OrganizationUserComponent},
-  {path: '', redirectTo: 'summary', pathMatch: 'full'}
-]
-
-const locationRoutes: Routes = [
-  {path: '', component: LocationSummaryComponent}
-]
-
-const dbMigrationsRoutes: Routes = [
-  {path: 'history', component: MigrationHistoryComponent},
-  {path: 'run', component: RunMigrationComponent},
-  {path: '', redirectTo: 'history', pathMatch: 'full'}
-]
-
-const platformManagementRoutes: Routes = [
-  {path: 'organizations', component: OrganizationComponent},
-  {path: 'db-versions', component: DbVersionComponent},
-  {
-    path: 'db-migrations',
-    component: DbMigrationComponent,
-    children: dbMigrationsRoutes
-  },
-  {path: '', redirectTo: 'organizations', pathMatch: 'full'}
-]
+import {locationRoutes} from './routes/location-level.routes'
+import {orgManagementRoutes} from './routes/org-level.routes'
+import {platformManagementRoutes} from './routes/platform-level.routes'
 
 const secureRoutes: Routes = [
   {path: '', component: LandingComponent, pathMatch: 'full'},
@@ -93,7 +26,7 @@ const secureRoutes: Routes = [
     path: 'manage-organization',
     component: OrganizationDashboardComponent,
     canActivate: [CanViewOrganization],
-    children: orgManagementChildRoutes
+    children: orgManagementRoutes
   },
   {
     path: 'manage-platform',

@@ -48,6 +48,6 @@ export class UnitValueComponent extends HasEditableGridComponent<UnitValueServic
   }
 
   override ngOnInit() {
-    //super.ngOnInit()
+    // super.ngOnInit()
   }
 }

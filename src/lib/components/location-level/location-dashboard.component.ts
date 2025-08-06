@@ -29,11 +29,11 @@ export class LocationDashboardComponent implements OnInit {
     {label: 'Sales', icon: 'pi pi-receipt'},
     {label: 'Purchase Orders', icon: 'pi pi-truck'},
     {label: 'Expenses', icon: 'pi pi-money-bill'},
-    {label: 'Inventory', icon: 'pi pi-box'},
+    {label: 'Inventory', icon: 'pi pi-box'}
   ]
 
   readonly menuItems: MenuItem[] = [
-    {label: 'Menu', items: this.commonTasksMenuItems},
+    {label: 'Menu', items: this.commonTasksMenuItems}
   ]
 
   ngOnInit() {
@@ -41,5 +41,4 @@ export class LocationDashboardComponent implements OnInit {
       this.router.navigate(['..'], {relativeTo: this.activatedRoute}).then()
     }
   }
-
 }

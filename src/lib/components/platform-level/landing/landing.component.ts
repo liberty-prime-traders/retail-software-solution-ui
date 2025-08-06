@@ -98,7 +98,7 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
       })
     }
   }
-  
+
   private proceedToSelectLocation() {
     const storedOrganization = this.localStorageService.getItem<Organization>(LocalStorageKey.ORGANIZATION)
     if (storedOrganization?.subdomain){
