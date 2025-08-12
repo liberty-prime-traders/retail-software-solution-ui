@@ -1,6 +1,8 @@
 import {Component, inject, OnInit, signal} from '@angular/core'
+import {FormsModule} from '@angular/forms'
 import {TableModule, TableRowCollapseEvent, TableRowExpandEvent} from 'primeng/table'
 import {Button} from 'primeng/button'
+import {DatePicker} from 'primeng/datepicker'
 import {Tag} from 'primeng/tag'
 import {MessageService} from 'primeng/api'
 import {DbMigrationHistoryService} from '../../../../api/db-migration/db-migration-history.service'
@@ -8,21 +10,20 @@ import {MigrationStatusSeverityPipe} from '../../../../utils/pipes/migration-sta
 import {MigrationTypeLabelPipe} from '../../../../utils/pipes/migration-type-label.pipe'
 import {DatePipe} from '@angular/common'
 import {MigrationHistory} from '../../../../api/db-migration/db-migration-history.model'
-import {DatePicker} from 'primeng/datepicker'
-import {Calendar} from 'primeng/calendar'
-import {FormsModule} from '@angular/forms'
+import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component';
 
 @Component({
   selector: 'rts-migration-history',
   imports: [
-    DatePicker,
     TableModule,
     Button,
     Tag,
     MigrationStatusSeverityPipe,
     MigrationTypeLabelPipe,
     DatePipe,
-    FormsModule
+    FormsModule,
+    DatePicker,
+    EmptyRowComponent
   ],
   templateUrl: './migration-history.component.html'
 })
@@ -51,6 +52,12 @@ export class MigrationHistoryComponent implements OnInit {
     }
   }
 
+  handleDateRangeChange(newDates: Date[]) {
+    console.log(newDates)
+    this.dateRange.set(newDates)
+    this.loadHistory()
+  }
+
   expandAll() {
     const expanded: Record<string, boolean> = {}
     this.migrations().forEach(m => {
@@ -61,25 +68,5 @@ export class MigrationHistoryComponent implements OnInit {
 
   collapseAll() {
     this.expandedRows.set({})
-  }
-
-  onRowExpand(event: TableRowExpandEvent) {
-    const migration = event.data as MigrationHistory
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Migration Expanded',
-      detail: `${migration.organizationName} - ${migration.versionNumber}`,
-      life: 3000
-    })
-  }
-
-  onRowCollapse(event: TableRowCollapseEvent) {
-    const migration = event.data as MigrationHistory
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Migration Collapsed',
-      detail: `${migration.organizationName} - ${migration.versionNumber}`,
-      life: 3000
-    })
   }
 }
