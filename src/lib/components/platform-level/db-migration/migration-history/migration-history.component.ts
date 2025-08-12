@@ -1,15 +1,13 @@
 import {Component, inject, OnInit, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {TableModule, TableRowCollapseEvent, TableRowExpandEvent} from 'primeng/table'
+import {TableModule} from 'primeng/table'
 import {Button} from 'primeng/button'
 import {DatePicker} from 'primeng/datepicker'
 import {Tag} from 'primeng/tag'
-import {MessageService} from 'primeng/api'
 import {DbMigrationHistoryService} from '../../../../api/db-migration/db-migration-history.service'
 import {MigrationStatusSeverityPipe} from '../../../../utils/pipes/migration-status-severity.pipe'
 import {MigrationTypeLabelPipe} from '../../../../utils/pipes/migration-type-label.pipe'
 import {DatePipe} from '@angular/common'
-import {MigrationHistory} from '../../../../api/db-migration/db-migration-history.model'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component';
 
 @Component({
@@ -29,7 +27,6 @@ import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component
 })
 export class MigrationHistoryComponent implements OnInit {
   private readonly dbMigrationHistoryService = inject(DbMigrationHistoryService)
-  private readonly messageService = inject(MessageService)
 
   readonly dateRange = signal<Date[]>([])
   readonly expandedRows = signal<Record<string, boolean>>({})
@@ -53,7 +50,6 @@ export class MigrationHistoryComponent implements OnInit {
   }
 
   handleDateRangeChange(newDates: Date[]) {
-    console.log(newDates)
     this.dateRange.set(newDates)
     this.loadHistory()
   }
