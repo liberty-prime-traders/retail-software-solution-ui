@@ -15,6 +15,4 @@ import {Card} from 'primeng/card'
     Card
   ]
 })
-export class DbMigrationComponent {
-
-}
+export class DbMigrationComponent {}
