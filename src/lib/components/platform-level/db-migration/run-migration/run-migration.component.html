@@ -8,7 +8,8 @@
       optionLabel="name"
       optionValue="id"
       [showClear]="true"
-      [loading]="loadingOrganizations()">
+      [loading]="loadingOrganizations()"
+      (onChange)="onOrganizationChange($event.value)">
     </p-dropdown>
   </rts-form-field>
 

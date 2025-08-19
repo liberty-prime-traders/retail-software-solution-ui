@@ -6,11 +6,10 @@ import {MultiSelectModule} from 'primeng/multiselect'
 import {DbVersionService} from '../../../../api/db-version/db-version.service'
 import {DbMigrationService} from '../../../../api/db-migration/db-migration.service'
 import {OrganizationService} from '../../../../api/organization/organization.service'
-import {LocationService} from '../../../../api/location/location.service'
-import {DbMigrationRequestDto} from '../../../../api/db-migration/db-migration-request.dto'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldDirection} from '../../../reusable/form-field/form-field-direction'
+import {OrganizationLocationService} from '../../../../api/organization-location/organization-location.service'
 
 @Component({
   selector: 'rts-run-migration',
@@ -29,7 +28,7 @@ export class RunMigrationComponent implements OnInit {
   private readonly dbMigrationService = inject(DbMigrationService)
   private readonly dbVersionService = inject(DbVersionService)
   private readonly organizationService = inject(OrganizationService)
-  private readonly locationService = inject(LocationService)
+  private readonly organizationLocationService = inject(OrganizationLocationService)
   private readonly formBuilder = inject(FormBuilder)
 
   readonly processingStatus = this.dbMigrationService.selectProcessingStatus
@@ -37,13 +36,13 @@ export class RunMigrationComponent implements OnInit {
 
   readonly dbVersions = this.dbVersionService.selectAll
   readonly organizations = this.organizationService.selectAll
-  readonly locations = this.locationService.selectAll
+  readonly locations = this.organizationLocationService.selectAll
 
   readonly loadingOrganizations = this.organizationService.selectLoading
   readonly loadingDbVersions = this.dbVersionService.selectLoading
-  readonly loadingLocations = this.locationService.selectLoading
+  readonly loadingLocations = this.organizationLocationService.selectLoading
 
-  readonly migrationForm = this.formBuilder.group({
+  readonly migrationForm = this.formBuilder.nonNullable.group({
     schemaOwnerId: ['', [Validators.required]],
     locationIdsToMigrate: [[], Validators.required],
     targetDbVersionId: ['', [Validators.required]]
@@ -52,14 +51,13 @@ export class RunMigrationComponent implements OnInit {
   ngOnInit(): void {
     this.dbMigrationService.resetProcessingStatus()
     this.organizationService.fetch()
-    this.locationService.fetch()
     this.dbVersionService.fetch()
   }
 
   runMigration() {
     if (this.migrationForm.valid) {
       const request = this.migrationForm.getRawValue()
-      this.dbMigrationService.runMigration(request as unknown as DbMigrationRequestDto)
+      this.dbMigrationService.runMigration(request)
     }
   }
 
@@ -68,4 +66,10 @@ export class RunMigrationComponent implements OnInit {
   }
 
   protected readonly FormFieldDirection = FormFieldDirection
+
+  onOrganizationChange(organizationId: string) {
+    if (organizationId) {
+      this.organizationLocationService.refetch({pathSuffix: `${organizationId}/locations`})
+    }
+  }
 }
