@@ -7,6 +7,7 @@
     <tr>
       <th>Version Number</th>
       <th>Sequence</th>
+      <th>Previous Version</th>
       <th>Created On</th>
       <th>Activated On</th>
     </tr>
@@ -16,6 +17,7 @@
     <tr>
       <td>{{ version.versionNumber }}</td>
       <td>{{ version.sequenceNumber }}</td>
+      <td>{{ version.prevVersion }}</td>
       <td>{{ version.createdOn | date:'medium' }}</td>
       <td>
         @if (version.activatedOn) {

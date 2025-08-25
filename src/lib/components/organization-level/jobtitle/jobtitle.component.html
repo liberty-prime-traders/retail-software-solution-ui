@@ -59,6 +59,10 @@
       </td>
     </tr>
   </ng-template>
+
+  <ng-template #emptymessage>
+    <tr rts-empty-row [colspan]="5" message="No Job Titles Were Found"></tr>
+  </ng-template>
 </p-table>
 
 <rts-add-row   [(addingIsActive)]="addingIsActive"  [disabled]="rowIsExpanded() || loading()">

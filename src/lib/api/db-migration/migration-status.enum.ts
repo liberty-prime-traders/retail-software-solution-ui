@@ -1,0 +1,7 @@
+export enum MigrationStatus {
+  INITIATED = 'INITIATED',
+  SUCCESS = 'SUCCESS',
+  PARTIAL = 'PARTIAL',
+  IGNORED = 'IGNORED',
+  FAILURE = 'FAILURE'
+}

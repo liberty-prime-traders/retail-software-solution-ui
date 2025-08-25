@@ -75,9 +75,9 @@ export class OrganizationUserComponent extends HasSubscriptionComponent implemen
 
   private onFailedTermination() {
     if (this.userMadeAtLeastOneTerminationAttempt()) {
-      this.organizationUserService.selectFailureMessages().forEach((parsedError) =>
+      this.organizationUserService.selectFailureMessages().forEach((parsedError) => {
         this.messageService.add({severity: 'error', detail: parsedError})
-      )
+      })
     }
   }
 }
