@@ -1,5 +1,5 @@
 export interface DbMigrationRequestDto {
-  schemaOwnerId: string;
+  organizationId: string;
   locationIdsToMigrate: Array<string>;
   targetDbVersionId: string;
 }

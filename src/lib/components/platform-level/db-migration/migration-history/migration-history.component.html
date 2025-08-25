@@ -6,15 +6,19 @@
 
   <ng-template pTemplate="caption">
     <div class="flex flex-wrap justify-content-between items-center gap-2 w-full">
-      <!-- Date Range Picker -->
-      <p-date-picker
-        [ngModel]="dateRange()"
-        (ngModelChange)="handleDateRangeChange($event)"
-        selectionMode="range"
-        [readonlyInput]="true">
-      </p-date-picker>
+      <div class="flex gap-2">
+        <p-date-picker [(ngModel)]="dateRange"
+                       [showTime]="true"
+                       [stepHour]="1"
+                       selectionMode="range"
+                       [readonlyInput]="true"
+                       [style]="{'min-width': '320px'}"
+                       styleClass="w-full">
+        </p-date-picker>
 
-      <!-- Action Buttons -->
+        <p-button label="Apply Filter" icon="pi pi-refresh" text (onClick)="reloadMigrationHistory()"/>
+      </div>
+
       <div class="flex flex-wrap justify-content-end gap-2">
         <p-button label="Expand All" icon="pi pi-plus" text (onClick)="expandAll()"/>
         <p-button label="Collapse All" icon="pi pi-minus" text (onClick)="collapseAll()"/>
@@ -31,15 +35,16 @@
       <th pSortableColumn="versionNumber">Version
         <p-sortIcon field="versionNumber"/>
       </th>
-      <th pSortableColumn="type">Type
-        <p-sortIcon field="type"/>
+      <th pSortableColumn="startOn">Start Date
+        <p-sortIcon field="startOn"/>
       </th>
-      <th pSortableColumn="startDate">Start Date
-        <p-sortIcon field="startDate"/>
+      <th pSortableColumn="endOn">End Date
+        <p-sortIcon field="endOn"/>
       </th>
       <th pSortableColumn="status">Status
         <p-sortIcon field="status"/>
       </th>
+      <th>Message</th>
     </tr>
   </ng-template>
 
@@ -51,27 +56,31 @@
                   [text]="true"
                   severity="secondary"
                   [rounded]="true"
-                  [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"/>
+                  [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
+        </p-button>
       </td>
       <td>{{ migration.organizationName }}</td>
       <td>{{ migration.versionNumber }}</td>
-      <td>{{ migration.type | migrationTypeLabel }}</td>
-      <td>{{ migration.startDate | date:'medium' }}</td>
+      <td>{{ migration.startOn | date:'medium' }}</td>
+      <td>{{ migration.endOn | date:'medium' }}</td>
       <td>
         <p-tag [value]="migration.status"
-               [severity]="migration.status | migrationStatusSeverity"/>
+               [severity]="migration.status | migrationStatusSeverity">
+        </p-tag>
       </td>
+      <td>
+        <span [pTooltip]="migration.message" class="pi pi-info-circle " tooltipStyleClass="text-sm"></span>
+      </td>
+
     </tr>
   </ng-template>
 
   <ng-template pTemplate="expandedrow" let-migration>
     <tr>
-      <td colspan="6">
-        <div class="p-4">
+      <td colspan="7" class="filled-background">
+        <div class="p-4 pt-0">
           <h5>Location Migrations</h5>
-          <p-table [value]="migration.locations"
-                   styleClass="p-datatable-gridlines"
-                   [tableStyle]="{ 'min-width': '50rem' }">
+          <p-table [value]="migration.locations" [tableStyle]="{ 'min-width': '50rem' }">
 
             <ng-template pTemplate="header">
               <tr>
@@ -81,14 +90,14 @@
                 <th pSortableColumn="versionNumber">Version
                   <p-sortIcon field="versionNumber"/>
                 </th>
+                <th pSortableColumn="startOn">Start Date
+                  <p-sortIcon field="startOn"/>
+                </th>
+                <th pSortableColumn="endOn">End Date
+                  <p-sortIcon field="endOn"/>
+                </th>
                 <th pSortableColumn="status">Status
                   <p-sortIcon field="status"/>
-                </th>
-                <th pSortableColumn="startDate">Start Date
-                  <p-sortIcon field="startDate"/>
-                </th>
-                <th pSortableColumn="endDate">End Date
-                  <p-sortIcon field="endDate"/>
                 </th>
                 <th>Message</th>
               </tr>
@@ -99,11 +108,10 @@
                 <td>{{ location.locationName }}</td>
                 <td>{{ location.versionNumber }}</td>
                 <td>
-                  <p-tag [value]="location.status"
-                         [severity]="location.status | migrationStatusSeverity"/>
+                  <p-tag [value]="location.status | prettifyEnum" [severity]="location.status | migrationStatusSeverity"/>
                 </td>
-                <td>{{ location.startDate | date:'short' }}</td>
-                <td>{{ location.endDate | date:'short' }}</td>
+                <td>{{ location.startOn | date:'medium' }}</td>
+                <td>{{ location.endOn | date:'medium' }}</td>
                 <td class="whitespace-nowrap overflow-hidden text-overflow-ellipsis max-w-xs">
                   {{ location.message }}
                 </td>

@@ -17,8 +17,7 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
   readonly processingIsUnderWay
   private readonly defaultApiRequestConfig: ApiRequestConfig = {
     upsertOnSuccess: false,
-    urlSuffix: '',
-    queryParams: {}
+    urlSuffix: ''
   }
   private readonly apiRequestConfig = signal<ApiRequestConfig>(this.defaultApiRequestConfig)
 
@@ -39,8 +38,7 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     const idPath = id ? `/${id}` : ''
     const urlSuffix = this.apiRequestConfig().urlSuffix
     const suffixPath = urlSuffix ? `/${urlSuffix}` : ''
-    const queryString = this.generateQueryParams(this.apiRequestConfig().queryParams)
-    return `/secured/${this.store.basePath}${idPath}${suffixPath}${queryString}`
+    return `/secured/${this.store.basePath}${idPath}${suffixPath}`
   }
 
   protected setProcessingStatus(processingStatus: ProcessingStatus): void {
@@ -85,22 +83,5 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     this.store.setError(error)
     this.store.setHasCache(false)
     return throwError(() => error)
-  }
-
-  private generateQueryParams(params?: Record<string, unknown>) {
-    if (!params) return ''
-    const parts: string[] = []
-    for (const [key, value] of Object.entries(params)) {
-      if (value === null || value === undefined) continue
-      const encodedKey = encodeURIComponent(key)
-      if (Array.isArray(value)) {
-        value.forEach(item => {
-          parts.push(`${encodedKey}=${encodeURIComponent(String(item))}`)
-        })
-      } else {
-        parts.push(`${encodedKey}=${encodeURIComponent(String(value))}`)
-      }
-    }
-    return parts.length ? `?${parts.join('&')}` : ''
   }
 }

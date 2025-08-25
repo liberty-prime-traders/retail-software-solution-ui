@@ -1,14 +1,15 @@
-import {Component, inject, OnInit, signal} from '@angular/core'
+import {DatePipe} from '@angular/common'
+import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {TableModule} from 'primeng/table'
 import {Button} from 'primeng/button'
 import {DatePicker} from 'primeng/datepicker'
+import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
-import {DbMigrationHistoryService} from '../../../../api/db-migration/db-migration-history.service'
+import {Tooltip} from 'primeng/tooltip'
+import {DbMigrationService} from '../../../../api/db-migration/db-migration.service'
 import {MigrationStatusSeverityPipe} from '../../../../utils/pipes/migration-status-severity.pipe'
-import {MigrationTypeLabelPipe} from '../../../../utils/pipes/migration-type-label.pipe'
-import {DatePipe} from '@angular/common'
-import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component';
+import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
+import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
 
 @Component({
   selector: 'rts-migration-history',
@@ -17,41 +18,38 @@ import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component
     Button,
     Tag,
     MigrationStatusSeverityPipe,
-    MigrationTypeLabelPipe,
     DatePipe,
     FormsModule,
     DatePicker,
-    EmptyRowComponent
+    EmptyRowComponent,
+    PrettifyEnumPipe,
+    Tooltip
   ],
   templateUrl: './migration-history.component.html'
 })
 export class MigrationHistoryComponent implements OnInit {
-  private readonly dbMigrationHistoryService = inject(DbMigrationHistoryService)
+  private readonly dbMigrationService = inject(DbMigrationService)
 
-  readonly dateRange = signal<Date[]>([])
+  private readonly startDate = this.getStartDate()
+  private readonly endDate = new Date()
+  readonly dateRange = model([this.startDate, this.endDate])
   readonly expandedRows = signal<Record<string, boolean>>({})
 
-  readonly migrations = this.dbMigrationHistoryService.selectAll
-  readonly loading = this.dbMigrationHistoryService.selectLoading
+  readonly migrations = this.dbMigrationService.selectAll
+  readonly loading = this.dbMigrationService.selectLoading
 
   ngOnInit() {
-    const end = new Date()
-    const start = new Date()
-    start.setMonth(end.getMonth() - 1)
-    this.dateRange.set([start, end])
-    this.loadHistory()
+    this.reloadMigrationHistory()
   }
 
-  loadHistory() {
-    const [start, end] = this.dateRange()
-    if (start && end) {
-      this.dbMigrationHistoryService.getHistory(start, end)
-    }
+  private getStartDate() {
+    const today = new Date()
+    today.setMonth(today.getMonth() - 1)
+    return today
   }
 
-  handleDateRangeChange(newDates: Date[]) {
-    this.dateRange.set(newDates)
-    this.loadHistory()
+  reloadMigrationHistory() {
+    this.dbMigrationService.refetch(this.dateRange())
   }
 
   expandAll() {

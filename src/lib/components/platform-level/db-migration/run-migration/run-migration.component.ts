@@ -1,15 +1,14 @@
-import {Component, inject, OnInit} from '@angular/core'
-import {FormBuilder, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms'
 import {CommonModule} from '@angular/common'
+import {Component, inject, OnInit} from '@angular/core'
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 import {DropdownModule} from 'primeng/dropdown'
 import {MultiSelectModule} from 'primeng/multiselect'
-import {DbVersionService} from '../../../../api/db-version/db-version.service'
 import {DbMigrationService} from '../../../../api/db-migration/db-migration.service'
-import {OrganizationService} from '../../../../api/organization/organization.service'
-import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
-import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
-import {FormFieldDirection} from '../../../reusable/form-field/form-field-direction'
+import {DbVersionService} from '../../../../api/db-version/db-version.service'
 import {OrganizationLocationService} from '../../../../api/organization-location/organization-location.service'
+import {OrganizationService} from '../../../../api/organization/organization.service'
+import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
+import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 
 @Component({
   selector: 'rts-run-migration',
@@ -43,7 +42,7 @@ export class RunMigrationComponent implements OnInit {
   readonly loadingLocations = this.organizationLocationService.selectLoading
 
   readonly migrationForm = this.formBuilder.nonNullable.group({
-    schemaOwnerId: ['', [Validators.required]],
+    organizationId: ['', [Validators.required]],
     locationIdsToMigrate: [[], Validators.required],
     targetDbVersionId: ['', [Validators.required]]
   })
@@ -64,8 +63,6 @@ export class RunMigrationComponent implements OnInit {
   resetForm() {
     this.migrationForm.reset()
   }
-
-  protected readonly FormFieldDirection = FormFieldDirection
 
   onOrganizationChange(organizationId: string) {
     if (organizationId) {
