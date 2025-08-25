@@ -5,6 +5,7 @@ import {CategoryService} from '../../../api/category/category.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {AddRowComponent} from '../../reusable/add-row/add-row.component'
+import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
 import {CategoryFormComponent} from './category-form/category-form.component'
@@ -19,7 +20,8 @@ import {CategoryFormComponent} from './category-form/category-form.component'
     CategoryFormComponent,
     AddRowComponent,
     PrettifyEnumPipe,
-    GridFilterComponent
+    GridFilterComponent,
+    EmptyRowComponent
   ]
 })
 export class CategoryComponent extends HasEditableGridComponent<CategoryService> {

@@ -8,7 +8,8 @@ import {DbMigrationRetryRequestDto} from './db-migration-retry-request.dto'
 import {OrganizationMigrationModel} from './organization-migration.model'
 
 @Injectable({providedIn: 'root'})
-export class DbMigrationService extends BaseService<OrganizationMigrationModel, DbMigrationRequestDto | DbMigrationRetryRequestDto> {
+export class DbMigrationService
+  extends BaseService<OrganizationMigrationModel, DbMigrationRequestDto | DbMigrationRetryRequestDto> {
   private readonly migrationCache: Map<string, OrganizationMigrationModel[]> = new Map()
   private readonly latestQuery = signal('')
 
@@ -31,16 +32,16 @@ export class DbMigrationService extends BaseService<OrganizationMigrationModel, 
     const key = `${start}|${end}`
     if (this.migrationCache.has(key)) {
       this.store.setAll(this.migrationCache.get(key) ?? [])
-      return
-    } else {
-      this.latestQuery.set(key)
-      return super.fetch(dateRange)
+      return undefined
     }
+    this.latestQuery.set(key)
+    return super.fetch(dateRange)
   }
 
   override getHttpParams(dateRange: Date[]): HttpParams {
     const [start, end] = this.getStartAndEnd(dateRange)
-    return new HttpParams().setNonNull('start', start).setNonNull('end', end)
+    return new HttpParams().setNonNull('start', start)
+      .setNonNull('end', end)
   }
 
   private getStartAndEnd(dateRange: Date[]): [string, string] {
