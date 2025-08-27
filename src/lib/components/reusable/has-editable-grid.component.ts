@@ -1,5 +1,5 @@
 import {Component, effect, OnInit, WritableSignal} from '@angular/core'
-import {BaseService} from '../../api/base-api/base.service'
+import {BaseService} from '../../api/util/base-api/base.service'
 import {ProcessingStatus} from '../../utils/types/processing-status.enum'
 
 @Component({template: ''})

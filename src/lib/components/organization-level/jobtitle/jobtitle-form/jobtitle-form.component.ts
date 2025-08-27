@@ -3,8 +3,8 @@ import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angula
 import {isNil} from 'lodash-es'
 import {DropdownModule} from 'primeng/dropdown'
 import {InputText} from 'primeng/inputtext'
-import {JobTitle} from '../../../../api/jobtitle/jobtitle.model'
-import {JobTitleService} from '../../../../api/jobtitle/jobtitle.service'
+import {JobTitle} from '../../../../api/organization-level/jobtitle/jobtitle.model'
+import {JobTitleService} from '../../../../api/organization-level/jobtitle/jobtitle.service'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 

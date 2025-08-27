@@ -9,7 +9,7 @@ import {Divider} from 'primeng/divider'
 import {Menubar} from 'primeng/menubar'
 import {ToggleSwitch} from 'primeng/toggleswitch'
 import {darkModeSelector} from '../../../app/app.preset'
-import {SysUserService} from '../../api/sys-user/sys-user.service'
+import {SysUserService} from '../../api/platform-level/sys-user/sys-user.service'
 import {RtsOktaService} from '../../utils/services/rts-okta.service'
 import {SessionContextService} from '../../utils/services/session-context.service'
 

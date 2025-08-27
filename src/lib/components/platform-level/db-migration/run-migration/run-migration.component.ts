@@ -3,10 +3,10 @@ import {Component, inject, OnInit} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 import {DropdownModule} from 'primeng/dropdown'
 import {MultiSelectModule} from 'primeng/multiselect'
-import {DbMigrationService} from '../../../../api/db-migration/db-migration.service'
-import {DbVersionService} from '../../../../api/db-version/db-version.service'
-import {OrganizationLocationService} from '../../../../api/organization-location/organization-location.service'
-import {OrganizationService} from '../../../../api/organization/organization.service'
+import {DbMigrationService} from '../../../../api/platform-level/db-migration/db-migration.service'
+import {DbVersionService} from '../../../../api/platform-level/db-version/db-version.service'
+import {OrganizationLocationService} from '../../../../api/platform-level/organization-location/organization-location.service'
+import {OrganizationService} from '../../../../api/platform-level/organization/organization.service'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 
@@ -66,7 +66,7 @@ export class RunMigrationComponent implements OnInit {
 
   onOrganizationChange(organizationId: string) {
     if (organizationId) {
-      this.organizationLocationService.refetch({pathSuffix: `${organizationId}/locations`})
+      this.organizationLocationService.refetch(organizationId)
     }
   }
 }

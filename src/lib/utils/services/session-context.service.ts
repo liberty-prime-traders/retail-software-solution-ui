@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, signal} from '@angular/core'
-import {Location} from '../../api/location/location.model'
-import {Organization} from '../../api/organization/organization.model'
+import {Location} from '../../api/organization-level/location/location.model'
+import {Organization} from '../../api/platform-level/organization/organization.model'
 import {LocalStorageKey} from '../types/local-storage-key.enum'
 import {LocalStorageService} from './local-storage.service'
 

@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core'
-import {MigrationStatus} from '../../api/db-migration/migration-status.enum'
+import {MigrationStatus} from '../../api/platform-level/db-migration/migration-status.enum'
 
 @Pipe({
   name: 'migrationStatusSeverity'
