@@ -1,0 +1,44 @@
+<form [formGroup]="form()" class="flex flex-column gap-2">
+  <rts-form-field [required]="true" label="Display Name" for="displayName">
+    <input id="displayName" pInputText formControlName="displayName">
+  </rts-form-field>
+
+  <rts-form-field [required]="true" label="Table Name" for="tableName">
+    <input id="tableName" pInputText formControlName="tableName">
+  </rts-form-field>
+
+  <rts-form-field label="Default Prefix" for="defaultPrefix" [required]="true">
+    <input id="defaultPrefix" pInputText formControlName="defaultPrefix">
+  </rts-form-field>
+
+  <rts-form-field label="Schema Level" for="schemaLevel" [required]="true">
+    <p-select id="schemaLevel" formControlName="schemaLevel" [options]="schemaLevel | enumToDropdown"/>
+  </rts-form-field>
+
+  <rts-form-field label="Minimum Version" for="minimumVersionId" [required]="true">
+     <p-select id="minimumVersionId"
+               formControlName="minimumVersionId"
+               [options]="dbVersions()"
+               optionLabel="versionNumber"
+               optionValue="id">
+     </p-select>
+  </rts-form-field>
+
+  <rts-form-field label="User Facing" for="userFacing">
+    <p-inputSwitch id="userFacing" formControlName="userFacing"/>
+  </rts-form-field>
+
+  <rts-form-field label="Description" for="description" [required]="true">
+    <textarea id="description" class="w-full" pInputText formControlName="description"></textarea>
+  </rts-form-field>
+
+  <rts-forms-buttons [disableReset]="!form().dirty"
+                     [disableSave]="!form().valid || !form().dirty"
+                     [hideDelete]="!registry()?.id"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (resetAction)="reset()"
+                     (save)="upsert()"
+                     (delete)="delete()">
+  </rts-forms-buttons>
+</form>

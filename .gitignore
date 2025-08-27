@@ -15,6 +15,7 @@ yarn-error.log
 .idea/
 .project
 .classpath
+.junie
 .c9/
 *.launch
 .settings/
@@ -36,6 +37,7 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
+.npmrc
 
 # System files
 .DS_Store

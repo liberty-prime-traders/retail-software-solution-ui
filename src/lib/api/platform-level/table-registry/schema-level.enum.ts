@@ -1,0 +1,5 @@
+export enum SchemaLevel {
+  PLATFORM = 'PLATFORM',
+  ORGANIZATION = 'ORGANIZATION',
+  LOCATION = 'LOCATION'
+}

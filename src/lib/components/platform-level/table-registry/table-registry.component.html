@@ -1,0 +1,85 @@
+<p-card>
+  <p-table [loading]="loading() && !addingIsActive()"
+           rowExpandMode="single"
+           dataKey="id"
+           scrollHeight="600px"
+           scrollable="true"
+           sortField="displayName"
+           #registryTable
+           [globalFilterFields]="['displayName','tableName','schemaLevel','defaultPrefix','description','createdBy']"
+           (onRowExpand)="rowIsExpanded.set(true)"
+           (onRowCollapse)="rowIsExpanded.set(false)"
+           [value]="registries()">
+
+    <ng-template pTemplate="caption">
+      <div class="flex justify-content-between align-items-center">
+        <h3>Table Registries</h3>
+        <rts-grid-filter [dataTable]="registryTable"/>
+      </div>
+    </ng-template>
+
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="displayName">Display Name
+          <p-sortIcon field="displayName"></p-sortIcon>
+        </th>
+        <th>Table Name</th>
+        <th pSortableColumn="schemaLevel">Schema Level
+          <p-sortIcon field="schemaLevel"></p-sortIcon>
+        </th>
+        <th pSortableColumn="defaultPrefix">Default Prefix
+          <p-sortIcon field="defaultPrefix"></p-sortIcon>
+        </th>
+        <th>User Facing</th>
+        <th pSortableColumn="minimumVersion">Minimum Version
+          <p-sortIcon field="minimumVersion"></p-sortIcon>
+        </th>
+        <th pSortableColumn="nextNumber">Next Number
+          <p-sortIcon field="nextNumber"></p-sortIcon>
+        </th>
+        <th>Created By</th>
+        <th style="width: 5rem"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-registry let-expanded="expanded">
+      <tr [pSelectableRow]="registry">
+        <td>{{ registry?.displayName | nullSafe }}</td>
+        <td>{{ registry?.tableName | nullSafe }}</td>
+        <td>{{ registry?.schemaLevel | prettifyEnum }}</td>
+        <td>{{ registry?.defaultPrefix | nullSafe }}</td>
+        <td>{{ registry?.userFacing ? 'Yes' : 'No' }}</td>
+        <td>{{ registry?.minimumVersion | nullSafe }}</td>
+        <td>{{ registry?.nextNumber | nullSafe }}</td>
+        <td>{{ registry?.createdBy | nullSafe }}</td>
+        <td>
+          <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading() || addingIsActive()"
+                    [pRowToggler]="registry">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template #expandedrow let-registry>
+      <tr>
+        <td colspan="9" class="filled-background">
+          <rts-table-registry-form [registry]="registry"/>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr rts-empty-row [colspan]="9" message="No Table Registries Were Found"></tr>
+    </ng-template>
+  </p-table>
+
+  <rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
+    @if (addingIsActive()) {
+      <rts-table-registry-form></rts-table-registry-form>
+    }
+  </rts-add-row>
+</p-card>
+
