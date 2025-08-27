@@ -8,6 +8,7 @@ import {
 } from '../../lib/components/platform-level/db-migration/run-migration/run-migration.component'
 import {DbVersionComponent} from '../../lib/components/platform-level/db-version/db-version.component'
 import {OrganizationComponent} from '../../lib/components/platform-level/organization/organization.component'
+import {TableRegistryComponent} from '../../lib/components/platform-level/table-registry/table-registry.component'
 
 const dbMigrationsRoutes: Routes = [
   {path: 'history', component: MigrationHistoryComponent},
@@ -18,6 +19,7 @@ const dbMigrationsRoutes: Routes = [
 export const platformManagementRoutes: Routes = [
   {path: 'organizations', component: OrganizationComponent},
   {path: 'db-versions', component: DbVersionComponent},
+  {path: 'table-registry', component: TableRegistryComponent},
   {
     path: 'db-migrations',
     component: DbMigrationComponent,
