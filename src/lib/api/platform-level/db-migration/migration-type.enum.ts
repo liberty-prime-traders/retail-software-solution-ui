@@ -1,0 +1,4 @@
+export enum MigrationType {
+  ORG_WITH_LOCATIONS = 'ORG_WITH_LOCATIONS',
+  LOCATIONS_ONLY = 'LOCATIONS'
+}

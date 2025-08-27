@@ -2,7 +2,6 @@ import {Component} from '@angular/core'
 import {RouterLink, RouterOutlet} from '@angular/router'
 import {Divider} from 'primeng/divider'
 import {TabsModule} from 'primeng/tabs'
-import {Card} from 'primeng/card'
 
 @Component({
   selector: 'rts-db-migration',
@@ -11,10 +10,7 @@ import {Card} from 'primeng/card'
     TabsModule,
     RouterOutlet,
     Divider,
-    RouterLink,
-    Card
+    RouterLink
   ]
 })
-export class DbMigrationComponent {
-
-}
+export class DbMigrationComponent {}

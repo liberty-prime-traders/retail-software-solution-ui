@@ -1,6 +1,6 @@
 import {Component, inject, signal} from '@angular/core'
 import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
-import {OrganizationService} from '../../../api/organization/organization.service'
+import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
 import {Divider} from 'primeng/divider'
 import {DatePipe} from '@angular/common'
 import {TableModule} from 'primeng/table'

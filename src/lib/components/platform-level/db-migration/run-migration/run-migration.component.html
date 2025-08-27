@@ -1,1 +1,51 @@
-<p>run-migration works!</p>
+<form [formGroup]="migrationForm" class="flex flex-column gap-2 bg-white p-4">
+  <rts-form-field label="Organization" for="organizationId" [required]="true">
+    <p-dropdown
+      id="organizationId"
+      formControlName="organizationId"
+      [options]="organizations()"
+      optionLabel="name"
+      optionValue="id"
+      [showClear]="true"
+      [loading]="loadingOrganizations()"
+      (onChange)="onOrganizationChange($event.value)">
+    </p-dropdown>
+  </rts-form-field>
+
+  <rts-form-field label="Target DB Version" for="targetDbVersionId" [required]="true">
+    <p-dropdown
+      id="targetDbVersionId"
+      formControlName="targetDbVersionId"
+      [options]="dbVersions()"
+      optionLabel="versionNumber"
+      optionValue="id"
+      [showClear]="true"
+      [loading]="loadingDbVersions()">
+    </p-dropdown>
+  </rts-form-field>
+
+
+  <rts-form-field label="Locations to Migrate" for="locationIdsToMigrate" [required]="true">
+    <p-multiSelect
+      id="locationIdsToMigrate"
+      formControlName="locationIdsToMigrate"
+      [options]="locations()"
+      optionLabel="name"
+      optionValue="id"
+      display="chip"
+      [showClear]="true"
+      [loading]="loadingLocations()">
+    </p-multiSelect>
+  </rts-form-field>
+
+  <rts-forms-buttons
+    [disableReset]="!migrationForm.dirty"
+    [disableSave]="!migrationForm.valid || !migrationForm.dirty"
+    [hideDelete]="true"
+    [processingStatus]="processingStatus()"
+    [failureMessages]="failureMessages()"
+    saveLabel="Execute"
+    (save)="runMigration()"
+    (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</form>

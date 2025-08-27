@@ -17,7 +17,7 @@ export abstract class FixedHeightComponent implements AfterViewInit {
     const card = document.querySelector(`#${this.fixedHeightElementId}`) as HTMLElement
     if (card) {
       const topPosition = card.getBoundingClientRect().top
-      const heightToBottom = window.innerHeight - topPosition // 20px for padding
+      const heightToBottom = window.innerHeight - topPosition
       card.style.maxHeight = `${heightToBottom}px`
       card.classList.add('overflow-y-auto')
     }

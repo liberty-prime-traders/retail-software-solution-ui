@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
-import {BaseService} from '../base-api/base.service'
+import {BaseService} from '../util/base-api/base.service'
 import {OrganizationUser} from './organization-user.model'
 import {OrganizationUserStore} from './organization-user.store'
 
