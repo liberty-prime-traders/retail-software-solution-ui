@@ -1,5 +1,5 @@
 import {Component, signal} from '@angular/core'
-import {UnitGroup} from '../../../api/unit-group/unitgroup.model'
+import {UnitGroup} from '../../../api/organization-level/unit-group/unitgroup.model'
 import {UnitGroupComponent} from './unit-group/unit-group.component'
 
 @Component({

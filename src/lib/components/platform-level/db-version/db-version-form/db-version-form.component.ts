@@ -9,7 +9,7 @@ import {
 } from '@angular/forms'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
-import {DbVersionService} from '../../../../api/db-version/db-version.service'
+import {DbVersionService} from '../../../../api/platform-level/db-version/db-version.service'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 
