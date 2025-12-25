@@ -8,7 +8,7 @@ import {NullishToZeroPipe} from '../../../utils/pipes/nullish-to-zero.pipe'
 import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
-import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
+import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
 import {PaymentOptionFormComponent} from './payment-option-form/payment-option-form.component'
 
 @Component({
@@ -26,7 +26,7 @@ import {PaymentOptionFormComponent} from './payment-option-form/payment-option-f
     EmptyRowComponent
   ]
 })
-export class PaymentOptionComponent extends HasEditableGridComponent<PaymentOptionService> {
+export class PaymentOptionComponent extends GridWithAddButtonComponent<PaymentOptionService> {
   private readonly paymentOptionService = inject(PaymentOptionService)
   readonly loading = this.paymentOptionService.selectLoading
   readonly paymentOptions = this.paymentOptionService.selectAll

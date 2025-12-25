@@ -38,6 +38,17 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
       .subscribe()
   }
 
+  putWithId(id: EntityId): Subscription {
+    this.startApiRequest()
+    return this.httpClient.put<RESPONSE>(this.getBasePath(id), {}).pipe(
+      first(),
+      tap((putResult: RESPONSE) => this.finishSavingWithSuccess(putResult)),
+      catchError((error: HttpErrorResponse) => this.setStoreError(error)),
+      finalize(() => this.finalizeApiRequest())
+    )
+      .subscribe()
+  }
+
   delete(id?: EntityId): Subscription | undefined {
     if (!id) {
       return

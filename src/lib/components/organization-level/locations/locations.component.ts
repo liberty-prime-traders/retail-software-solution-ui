@@ -10,7 +10,7 @@ import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
-import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
+import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
 import {LocationFormComponent} from './location-form/location-form.component'
 
 @Component({
@@ -28,7 +28,7 @@ import {LocationFormComponent} from './location-form/location-form.component'
     EmptyRowComponent
   ]
 })
-export class LocationsComponent extends HasEditableGridComponent<LocationService> {
+export class LocationsComponent extends GridWithAddButtonComponent<LocationService> {
   private readonly locationService = inject(LocationService)
 
   readonly apiService = this.locationService

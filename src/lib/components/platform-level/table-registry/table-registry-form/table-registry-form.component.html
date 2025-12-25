@@ -3,25 +3,8 @@
     <input id="displayName" pInputText formControlName="displayName">
   </rts-form-field>
 
-  <rts-form-field [required]="true" label="Table Name" for="tableName">
-    <input id="tableName" pInputText formControlName="tableName">
-  </rts-form-field>
-
   <rts-form-field label="Default Prefix" for="defaultPrefix" [required]="true">
     <input id="defaultPrefix" pInputText formControlName="defaultPrefix">
-  </rts-form-field>
-
-  <rts-form-field label="Schema Level" for="schemaLevel" [required]="true">
-    <p-select id="schemaLevel" formControlName="schemaLevel" [options]="schemaLevel | enumToDropdown"/>
-  </rts-form-field>
-
-  <rts-form-field label="Minimum Version" for="minimumVersionId" [required]="true">
-     <p-select id="minimumVersionId"
-               formControlName="minimumVersionId"
-               [options]="dbVersions()"
-               optionLabel="versionNumber"
-               optionValue="id">
-     </p-select>
   </rts-form-field>
 
   <rts-form-field label="User Facing" for="userFacing">

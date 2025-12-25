@@ -8,7 +8,7 @@ import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {NullishToZeroPipe} from '../../../../utils/pipes/nullish-to-zero.pipe'
 import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
 import {GridFilterComponent} from '../../../reusable/grid-filter/grid-filter.component'
-import {HasEditableGridComponent} from '../../../reusable/has-editable-grid.component'
+import {GridWithAddButtonComponent} from '../../../reusable/grid-with-add-button.component'
 import {UnitGroupFormComponent} from './unit-group-form/unit-group-form.component'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
 
@@ -29,7 +29,7 @@ import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component
     EmptyRowComponent
   ]
 })
-export class UnitGroupComponent extends HasEditableGridComponent<UnitGroupService> {
+export class UnitGroupComponent extends GridWithAddButtonComponent<UnitGroupService> {
   private readonly unitGroupService = inject(UnitGroupService)
   readonly loading = this.unitGroupService.selectLoading
   readonly unitGroups = this.unitGroupService.selectAll

@@ -1,15 +1,11 @@
-import {Component, computed, inject, input, OnInit, Signal} from '@angular/core'
+import {Component, computed, inject, input} from '@angular/core'
 import {NonNullableFormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {DropdownModule} from 'primeng/dropdown'
 import {InputSwitchModule} from 'primeng/inputswitch'
 import {InputTextModule} from 'primeng/inputtext'
-import {Select} from 'primeng/select'
-import {DbVersion} from '../../../../api/platform-level/db-version/db-version.model'
-import {DbVersionService} from '../../../../api/platform-level/db-version/db-version.service'
-import {SchemaLevel} from '../../../../api/platform-level/table-registry/schema-level.enum'
 import {TableRegistry} from '../../../../api/platform-level/table-registry/table-registry.model'
 import {TableRegistryService} from '../../../../api/platform-level/table-registry/table-registry.service'
-import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
+import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 
@@ -21,39 +17,27 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
     InputTextModule,
     InputSwitchModule,
     DropdownModule,
-    EnumToDropdownPipe,
     FormFieldComponent,
-    FormButtonsComponent,
-    Select
+    FormButtonsComponent
   ],
   standalone: true
 })
-export class TableRegistryFormComponent implements OnInit {
-  readonly registry = input<TableRegistry>()
+export class TableRegistryFormComponent extends BaseFormComponent<TableRegistryService>{
+  readonly registry = input.required<TableRegistry>()
   private readonly tableRegistryService = inject(TableRegistryService)
-  private readonly dbVersionService = inject(DbVersionService)
   private readonly formBuilder = inject(NonNullableFormBuilder)
+  protected readonly apiService = this.tableRegistryService
 
   readonly processingStatus = this.tableRegistryService.selectProcessingStatus
   readonly failureMessages = this.tableRegistryService.selectFailureMessages
 
-  readonly schemaLevel = SchemaLevel
-  readonly dbVersions: Signal<DbVersion[]> = this.dbVersionService.selectAll
-
   readonly form = computed(() => this.formBuilder.group({
-    id: [this.registry()?.id],
-    displayName: [this.registry()?.displayName, Validators.required],
-    tableName: [this.registry()?.tableName, Validators.required],
-    defaultPrefix: [this.registry()?.defaultPrefix ?? '', Validators.required],
-    schemaLevel: [this.registry()?.schemaLevel, Validators.required],
-    minimumVersionId: [this.registry()?.minimumVersionId, Validators.required],
-    description: [this.registry()?.description ?? '', Validators.required],
-    userFacing: [this.registry()?.userFacing]
+    id: [this.registry().id],
+    displayName: [this.registry().displayName, Validators.required],
+    defaultPrefix: [this.registry().defaultPrefix ?? '', Validators.required],
+    description: [this.registry().description ?? '', Validators.required],
+    userFacing: [this.registry().userFacing]
   }))
-
-  ngOnInit() {
-    this.dbVersionService.fetch()
-  }
 
   upsert() {
     const value = this.form().getRawValue()
@@ -65,7 +49,7 @@ export class TableRegistryFormComponent implements OnInit {
   }
 
   delete() {
-    const id = this.registry()?.id
+    const id = this.registry().id
     this.tableRegistryService.delete(id)
   }
 

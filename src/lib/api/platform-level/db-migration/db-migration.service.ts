@@ -40,7 +40,8 @@ export class DbMigrationService
 
   override getHttpParams(dateRange: Date[]): HttpParams {
     const [start, end] = this.getStartAndEnd(dateRange)
-    return new HttpParams().setNonNull('start', start)
+    return new HttpParams()
+      .setNonNull('start', start)
       .setNonNull('end', end)
   }
 

@@ -7,7 +7,7 @@ import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
-import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
+import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
 import {CategoryFormComponent} from './category-form/category-form.component'
 
 @Component({
@@ -24,7 +24,7 @@ import {CategoryFormComponent} from './category-form/category-form.component'
     EmptyRowComponent
   ]
 })
-export class CategoryComponent extends HasEditableGridComponent<CategoryService> {
+export class CategoryComponent extends GridWithAddButtonComponent<CategoryService> {
   private readonly categoryService = inject(CategoryService)
   readonly loading = this.categoryService.selectLoading
   readonly categories = this.categoryService.selectAll
