@@ -30,9 +30,7 @@ import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component
 export class MigrationHistoryComponent implements OnInit {
   private readonly dbMigrationService = inject(DbMigrationService)
 
-  private readonly startDate = this.getStartDate()
-  private readonly endDate = new Date()
-  readonly dateRange = model([this.startDate, this.endDate])
+  readonly dateRange = model([this.getStartDate(), new Date()])
   readonly expandedRows = signal<Record<string, boolean>>({})
 
   readonly migrations = this.dbMigrationService.selectAll

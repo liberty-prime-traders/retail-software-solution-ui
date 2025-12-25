@@ -1,14 +1,14 @@
-import {Component, effect, OnInit, WritableSignal} from '@angular/core'
+import {Component, effect, WritableSignal} from '@angular/core'
 import {BaseService} from '../../api/util/base-api/base.service'
 import {ProcessingStatus} from '../../utils/types/processing-status.enum'
+import {ExpandableGridComponent} from './expandable-grid.component'
 
 @Component({template: ''})
-export abstract class HasEditableGridComponent<SERVICE extends BaseService<any, any>> implements OnInit {
-  abstract readonly apiService: SERVICE
-  abstract readonly addingIsActive: WritableSignal<boolean>
-  abstract readonly rowIsExpanded: WritableSignal<boolean>
+export abstract class GridWithAddButtonComponent<SERVICE extends BaseService<any, any>> extends ExpandableGridComponent<SERVICE> {
+  protected abstract readonly addingIsActive: WritableSignal<boolean>
 
   constructor() {
+    super()
     effect(() => {
       const processingStatus = this.apiService.selectProcessingStatus()
       if (processingStatus === ProcessingStatus.SUCCESS) {
@@ -17,9 +17,6 @@ export abstract class HasEditableGridComponent<SERVICE extends BaseService<any, 
     })
   }
 
-  ngOnInit() {
-    this.apiService.fetch()
-  }
 
   closeAddRow() {
     this.addingIsActive.set(false)

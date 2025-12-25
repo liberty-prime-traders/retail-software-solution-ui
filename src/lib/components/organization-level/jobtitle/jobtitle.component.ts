@@ -7,7 +7,7 @@ import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
-import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
+import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
 import {JobTitleFormComponent} from './jobtitle-form/jobtitle-form.component'
 
 @Component({
@@ -23,7 +23,7 @@ import {JobTitleFormComponent} from './jobtitle-form/jobtitle-form.component'
     EmptyRowComponent
   ]
 })
-export class JobTitleComponent extends HasEditableGridComponent<JobTitleService> implements OnInit {
+export class JobTitleComponent extends GridWithAddButtonComponent<JobTitleService> implements OnInit {
   private readonly jobTitleService = inject(JobTitleService)
   readonly loading = this.jobTitleService.selectLoading
   readonly jobTitles = this.jobTitleService.selectAll

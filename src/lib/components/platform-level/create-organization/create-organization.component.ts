@@ -92,6 +92,7 @@ export class CreateOrganizationComponent extends HasSubscriptionComponent implem
   verifyDomain() {
     this.requestedSubdomain.set(this.domainControl.value)
     this.reservedSubdomainService.refetch({suggestedSubdomain: this.domainControl.value, pathSuffix: 'verify'})
+    this.organizationService.resetProcessingStatus()
   }
 
   createOrganization() {

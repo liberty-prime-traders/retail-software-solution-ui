@@ -1,5 +1,5 @@
 <p-card>
-  <p-table [loading]="loading() && !addingIsActive()"
+  <p-table [loading]="loading()"
            rowExpandMode="single"
            dataKey="id"
            scrollHeight="600px"
@@ -13,12 +13,12 @@
 
     <ng-template pTemplate="caption">
       <div class="flex justify-content-between align-items-center">
-        <h3>Table Registries</h3>
+        <h3>Table Registry</h3>
         <rts-grid-filter [dataTable]="registryTable"/>
       </div>
     </ng-template>
 
-    <ng-template #header>
+    <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="displayName">Display Name
           <p-sortIcon field="displayName"></p-sortIcon>
@@ -34,15 +34,12 @@
         <th pSortableColumn="minimumVersion">Minimum Version
           <p-sortIcon field="minimumVersion"></p-sortIcon>
         </th>
-        <th pSortableColumn="nextNumber">Next Number
-          <p-sortIcon field="nextNumber"></p-sortIcon>
-        </th>
-        <th>Created By</th>
+        <th>Validated</th>
         <th style="width: 5rem"></th>
       </tr>
     </ng-template>
 
-    <ng-template #body let-registry let-expanded="expanded">
+    <ng-template pTemplate="body" let-registry let-expanded="expanded">
       <tr [pSelectableRow]="registry">
         <td>{{ registry?.displayName | nullSafe }}</td>
         <td>{{ registry?.tableName | nullSafe }}</td>
@@ -50,20 +47,29 @@
         <td>{{ registry?.defaultPrefix | nullSafe }}</td>
         <td>{{ registry?.userFacing ? 'Yes' : 'No' }}</td>
         <td>{{ registry?.minimumVersion | nullSafe }}</td>
-        <td>{{ registry?.nextNumber | nullSafe }}</td>
-        <td>{{ registry?.createdBy | nullSafe }}</td>
+        <td>{{ registry?.validated ? 'Yes' : 'No' }}</td>
         <td>
-          <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                    rounded
-                    severity="secondary"
-                    [disabled]="loading() || addingIsActive()"
-                    [pRowToggler]="registry">
-          </p-button>
+          @if (registry?.validated) {
+            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                      rounded
+                      severity="secondary"
+                      [disabled]="loading()"
+                      [pRowToggler]="registry">
+            </p-button>
+          } @else {
+            <p-button label="Validate"
+                      icon="pi pi-check"
+                      rounded
+                      severity="info"
+                      [disabled]="loading()"
+                      (onClick)="validateTable(registry?.id)">
+            </p-button>
+          }
         </td>
       </tr>
     </ng-template>
 
-    <ng-template #expandedrow let-registry>
+    <ng-template pTemplate="expandedrow" let-registry>
       <tr>
         <td colspan="9" class="filled-background">
           <rts-table-registry-form [registry]="registry"/>
@@ -71,15 +77,9 @@
       </tr>
     </ng-template>
 
-    <ng-template #emptymessage>
-      <tr rts-empty-row [colspan]="9" message="No Table Registries Were Found"></tr>
+    <ng-template pTemplate="emptymessage">
+      <tr rts-empty-row [colspan]="9" message="No Tables Were Found"></tr>
     </ng-template>
   </p-table>
-
-  <rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
-    @if (addingIsActive()) {
-      <rts-table-registry-form></rts-table-registry-form>
-    }
-  </rts-add-row>
 </p-card>
 

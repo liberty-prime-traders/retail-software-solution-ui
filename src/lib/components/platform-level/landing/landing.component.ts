@@ -46,6 +46,7 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
 
   private readonly rtsOktaService = inject(RtsOktaService)
   readonly hasCreateRole$ = this.rtsOktaService.hasRole$(UserRole.ROLE_CREATE_ORGANIZATION)
+  readonly hasPlatformAdminRole$ = this.rtsOktaService.hasRole$(UserRole.ROLE_PLATFORM_ADMIN)
 
   readonly ProcessingStatus = ProcessingStatus
 

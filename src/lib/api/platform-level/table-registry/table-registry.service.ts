@@ -8,4 +8,9 @@ export class TableRegistryService extends BaseService<TableRegistry> {
   constructor(protected override readonly store: TableRegistryStore) {
     super(store)
   }
+
+  validateRegistry(registryId: string) {
+    this.patchApiRequestConfig({urlSuffix: `validate`})
+    return this.putWithId(registryId)
+  }
 }

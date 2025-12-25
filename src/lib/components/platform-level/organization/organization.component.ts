@@ -1,12 +1,12 @@
-import {Component, inject, signal} from '@angular/core'
-import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
-import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
-import {Divider} from 'primeng/divider'
 import {DatePipe} from '@angular/common'
+import {Component, inject} from '@angular/core'
+import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
+import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
-import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
+import {BaseGridComponent} from '../../reusable/base-grid.component'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
+import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 
 @Component({
   selector: 'rts-organization',
@@ -20,12 +20,10 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
     EmptyRowComponent
   ]
 })
-export class OrganizationComponent extends HasEditableGridComponent<OrganizationService> {
+export class OrganizationComponent extends BaseGridComponent<OrganizationService> {
   private readonly organizationService = inject(OrganizationService)
   readonly loading = this.organizationService.selectLoading
   readonly organizations = this.organizationService.selectAll
 
   readonly apiService = this.organizationService
-  readonly addingIsActive = signal(false)
-  readonly rowIsExpanded = signal(false)
 }

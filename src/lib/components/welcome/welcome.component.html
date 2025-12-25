@@ -1,17 +1,22 @@
 <div class="flex flex-column h-full">
-  <div class="w-full flex justify-content-between p-3">
+  <div class="w-full flex justify-content-between p-3 align-items-center">
     @if (isLoggedIn$ | async) {
-      @if (sessionContextService.selectedOrganization()) {
-        <div class="flex gap-2">
-          <p-avatar [label]="userInitials()" shape="circle"/>
-          <div class="flex flex-column gap-1">
+      <div class="flex gap-2">
+        <p-avatar [label]="userInitials()" shape="circle"/>
+        <div class="flex flex-column gap-1">
+          @if (sessionContextService.selectedOrganization()) {
             <span class="font-semibold text-2xl">{{sessionContextService.selectedOrganization()?.name}}</span>
             @if (sessionContextService.selectedLocation()) {
               <span>{{sessionContextService.selectedLocation()?.name}}</span>
             }
-          </div>
+          } @else {
+            <span class="font-semibold">No Organization Selected</span>
+            <span routerLink="/secure" class="font-italic text-cyan-600 cursor-pointer">
+                Select Organization
+            </span>
+          }
         </div>
-      }
+      </div>
 
       <div class="flex gap-1 align-items-center">
         <span class="font-semibold">Dark Mode</span>

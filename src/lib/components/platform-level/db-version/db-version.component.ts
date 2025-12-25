@@ -6,10 +6,8 @@ import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
 import {DbVersionService} from '../../../api/platform-level/db-version/db-version.service'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
-import {AddRowComponent} from '../../reusable/add-row/add-row.component'
+import {BaseGridComponent} from '../../reusable/base-grid.component'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
-import {HasEditableGridComponent} from '../../reusable/has-editable-grid.component'
-import {DbVersionFormComponent} from './db-version-form/db-version-form.component'
 
 @Component({
   selector: 'rts-db-version',
@@ -19,12 +17,10 @@ import {DbVersionFormComponent} from './db-version-form/db-version-form.componen
     Divider,
     DatePipe,
     Button,
-    EmptyRowComponent,
-    AddRowComponent,
-    DbVersionFormComponent
+    EmptyRowComponent
   ]
 })
-export class DbVersionComponent extends HasEditableGridComponent<DbVersionService> {
+export class DbVersionComponent extends BaseGridComponent<DbVersionService> {
   private readonly dbVersionService = inject(DbVersionService)
   private readonly messageService = inject(MessageService)
 
@@ -32,8 +28,6 @@ export class DbVersionComponent extends HasEditableGridComponent<DbVersionServic
   readonly dbVersions = this.dbVersionService.selectAll
 
   readonly apiService = this.dbVersionService
-  readonly addingIsActive = signal(false)
-  readonly rowIsExpanded = signal(false)
   private readonly userMadeActivationAttempt = signal(false)
 
   activateVersion(versionId: string) {

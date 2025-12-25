@@ -26,9 +26,6 @@
       <th pSortableColumn="description">Description
         <p-sortIcon field="description"></p-sortIcon>
       </th>
-      <th pSortableColumn="usageCount">Usage Count
-        <p-sortIcon field="usageCount"></p-sortIcon>
-      </th>
       <th pSortableColumn="createdBy">Created By
         <p-sortIcon field="createdBy"></p-sortIcon>
       </th>
@@ -43,7 +40,6 @@
       <td>{{organization?.name | nullSafe}}</td>
       <td>{{organization?.subdomain | nullSafe}}</td>
       <td>{{organization?.description | nullSafe}}</td>
-      <td>{{organization?.usageCount | nullSafe}}</td>
       <td>{{organization?.createdBy}}</td>
       <td>{{organization?.createdOn | date: 'medium'}}</td>
     </tr>

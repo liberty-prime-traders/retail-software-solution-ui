@@ -6,7 +6,7 @@ import {UnitValueService} from '../../../../api/organization-level/unit-value/un
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
 import {GridFilterComponent} from '../../../reusable/grid-filter/grid-filter.component'
-import {HasEditableGridComponent} from '../../../reusable/has-editable-grid.component'
+import {GridWithAddButtonComponent} from '../../../reusable/grid-with-add-button.component'
 import {UnitValueFormComponent} from './unit-value-form/unit-value-form.component'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
 
@@ -25,7 +25,7 @@ import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component
     EmptyRowComponent
   ]
 })
-export class UnitValueComponent extends HasEditableGridComponent<UnitValueService> implements OnInit {
+export class UnitValueComponent extends GridWithAddButtonComponent<UnitValueService> implements OnInit {
   readonly unitGroupId = input<EntityId>()
 
   private readonly unitValueService = inject(UnitValueService)
