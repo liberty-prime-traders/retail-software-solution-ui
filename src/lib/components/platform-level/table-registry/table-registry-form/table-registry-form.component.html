@@ -17,7 +17,7 @@
 
   <rts-forms-buttons [disableReset]="!form().dirty"
                      [disableSave]="!form().valid || !form().dirty"
-                     [hideDelete]="!registry()?.id"
+                     [hideDelete]="!registry().id"
                      [processingStatus]="processingStatus()"
                      [failureMessages]="failureMessages()"
                      (resetAction)="reset()"

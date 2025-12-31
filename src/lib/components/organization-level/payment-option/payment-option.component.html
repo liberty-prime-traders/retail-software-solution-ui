@@ -41,7 +41,7 @@
     </tr>
   </ng-template>
 
-  <ng-template #body let-paymentOption let-expanded="expanded">
+  <ng-template pTemplate="body" let-paymentOption let-expanded="expanded">
     <tr>
       <td>{{paymentOption?.name | nullSafe}}</td>
       <td>{{paymentOption?.description | nullSafe}}</td>

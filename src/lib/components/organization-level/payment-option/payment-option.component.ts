@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core'
+import {Component, inject} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
@@ -28,10 +28,8 @@ import {PaymentOptionFormComponent} from './payment-option-form/payment-option-f
 })
 export class PaymentOptionComponent extends GridWithAddButtonComponent<PaymentOptionService> {
   private readonly paymentOptionService = inject(PaymentOptionService)
-  readonly loading = this.paymentOptionService.selectLoading
   readonly paymentOptions = this.paymentOptionService.selectAll
 
   readonly apiService = this.paymentOptionService
-  readonly addingIsActive = signal(false)
-  readonly rowIsExpanded = signal<boolean>(false)
+
 }

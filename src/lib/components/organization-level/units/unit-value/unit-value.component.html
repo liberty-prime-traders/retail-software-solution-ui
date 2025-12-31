@@ -1,20 +1,23 @@
 <p-table [loading]="loading() && !addingIsActive()"
          rowExpandMode="single"
-         size="small"
          dataKey="id"
          sortField="name"
-          #unitValuesTable
-          [globalFilterFields]="['name', 'code', 'description', 'baseUnitName']"
+         #unitValuesTable
+         [globalFilterFields]="['name', 'code', 'description', 'baseUnitName']"
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
          [value]="unitValues()">
 
   <ng-template pTemplate="caption">
-    <rts-grid-filter [dataTable]="unitValuesTable"/>
+    <div class="flex justify-content-between align-items-center">
+      <h3>Unit Values</h3>
+      <rts-grid-filter [dataTable]="unitValuesTable"/>
+    </div>
   </ng-template>
 
   <ng-template #header>
     <tr>
+      <th style="width: 5rem;"></th>
       <th pSortableColumn="name">
         Name
         <p-sortIcon field="name"></p-sortIcon>
@@ -32,27 +35,28 @@
         <p-sortIcon field="baseUnitName"></p-sortIcon>
       </th>
       <th pSortableColumn="conversionFactor">
-        Conversion Factor
+        Multiplier
         <p-sortIcon field="conversionFactor"></p-sortIcon>
       </th>
-      <th style="width: 5rem"></th>
   </ng-template>
 
-  <ng-template #body let-unitvalue let-expanded="expanded">
+  <ng-template pTemplate="body" let-unitvalue let-expanded="expanded">
     <tr [pSelectableRow]="unitvalue">
+      <td>
+        <p-button [icon]="expanded ? 'pi pi-angle-down' : 'pi pi-angle-right'"
+                  rounded
+                  pRipple
+                  severity="secondary"
+                  [text]="true"
+                  [disabled]="loading() || addingIsActive()"
+                  [pRowToggler]="unitvalue">
+        </p-button>
+      </td>
       <td>{{unitvalue?.name | nullSafe}}</td>
       <td>{{unitvalue?.code | nullSafe}}</td>
       <td>{{unitvalue?.description | nullSafe}}</td>
       <td>{{unitvalue?.baseUnitName | nullSafe}}</td>
       <td>{{unitvalue?.conversionFactor | nullSafe}}</td>
-      <td>
-        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                  rounded
-                  severity="secondary"
-                  [disabled]="loading() || addingIsActive()"
-                  [pRowToggler]="unitvalue">
-        </p-button>
-      </td>
     </tr>
   </ng-template>
 

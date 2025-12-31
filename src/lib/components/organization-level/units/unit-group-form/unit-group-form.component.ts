@@ -1,11 +1,12 @@
-import {Component, computed, inject, input, OnInit} from '@angular/core'
+import {Component, computed, inject, input} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {isNil} from 'lodash-es'
 import {InputText} from 'primeng/inputtext'
-import {UnitGroup} from '../../../../../api/organization-level/unit-group/unitgroup.model'
-import {UnitGroupService} from '../../../../../api/organization-level/unit-group/unitgroup.service'
-import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-buttons.component'
-import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
+import {UnitGroup} from '../../../../api/organization-level/unit-group/unitgroup.model'
+import {UnitGroupService} from '../../../../api/organization-level/unit-group/unitgroup.service'
+import {BaseFormComponent} from '../../../reusable/base-form.component'
+import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
+import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 
 @Component({
   selector: 'rts-unit-group-form',
@@ -17,24 +18,18 @@ import {FormFieldComponent} from '../../../../reusable/form-field/form-field.com
     FormFieldComponent
   ]
 })
-export class UnitGroupFormComponent implements OnInit {
+export class UnitGroupFormComponent extends BaseFormComponent<UnitGroupService> {
   readonly unitGroup = input<UnitGroup>()
 
   private readonly unitGroupService = inject(UnitGroupService)
   private readonly formBuilder = inject(FormBuilder)
+  protected readonly apiService = this.unitGroupService
 
   readonly unitGroupForm = computed(() => this.formBuilder.nonNullable.group({
     id: this.unitGroup()?.id,
     name: [this.unitGroup()?.name, Validators.required],
     description: this.unitGroup()?.description
   }))
-
-  readonly processingStatus = this.unitGroupService.selectProcessingStatus
-  readonly failureMessages = this.unitGroupService.selectFailureMessages
-
-  ngOnInit() {
-    this.unitGroupService.resetProcessingStatus()
-  }
 
   resetForm() {
     this.unitGroupForm().reset(this.unitGroup())

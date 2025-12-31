@@ -1,4 +1,4 @@
-import {Component, effect, inject, input, model, signal} from '@angular/core'
+import {Component, effect, inject, input, model} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
@@ -34,10 +34,7 @@ export class LocationsComponent extends GridWithAddButtonComponent<LocationServi
   readonly apiService = this.locationService
 
   readonly organizationId = input<EntityId>()
-  readonly loading = this.locationService.selectLoading
   readonly locations = this.locationService.selectAll
-  readonly addingIsActive = signal(false)
-  readonly rowIsExpanded = signal<boolean>(false)
   readonly selectedLocation = model<Location | undefined>()
 
   constructor() {

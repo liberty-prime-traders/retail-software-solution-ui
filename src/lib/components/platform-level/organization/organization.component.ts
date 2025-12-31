@@ -22,7 +22,6 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
 })
 export class OrganizationComponent extends BaseGridComponent<OrganizationService> {
   private readonly organizationService = inject(OrganizationService)
-  readonly loading = this.organizationService.selectLoading
   readonly organizations = this.organizationService.selectAll
 
   readonly apiService = this.organizationService

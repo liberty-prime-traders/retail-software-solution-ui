@@ -28,9 +28,6 @@ export class TableRegistryFormComponent extends BaseFormComponent<TableRegistryS
   private readonly formBuilder = inject(NonNullableFormBuilder)
   protected readonly apiService = this.tableRegistryService
 
-  readonly processingStatus = this.tableRegistryService.selectProcessingStatus
-  readonly failureMessages = this.tableRegistryService.selectFailureMessages
-
   readonly form = computed(() => this.formBuilder.group({
     id: [this.registry().id],
     displayName: [this.registry().displayName, Validators.required],

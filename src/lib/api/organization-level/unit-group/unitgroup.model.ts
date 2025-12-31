@@ -5,5 +5,4 @@ export interface UnitGroup extends BaseModel{
   description?: string
   createdBy?: string
   createdOn?: number
-  usageCount?: number
 }
