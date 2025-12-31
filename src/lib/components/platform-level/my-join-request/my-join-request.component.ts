@@ -34,15 +34,13 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
 export class MyJoinRequestsComponent extends BaseGridComponent<MyJoinRequestService> {
   private readonly joinRequestService = inject(MyJoinRequestService)
   private readonly router = inject(Router)
-  readonly loading = this.joinRequestService.selectLoading
-  readonly myJoinRequests = this.joinRequestService.selectAll
-
   readonly apiService = this.joinRequestService
 
-  readonly ProcessingStatus = ProcessingStatus
-
+  readonly myJoinRequests = this.joinRequestService.selectAll
   readonly processingStatus = this.joinRequestService.selectProcessingStatus
   readonly failureMessages = this.joinRequestService.selectFailureMessages
+
+  readonly ProcessingStatus = ProcessingStatus
 
   goBack() {
     this.router.navigate(['/landing']).then()

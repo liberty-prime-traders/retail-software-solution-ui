@@ -1,11 +1,11 @@
-import {Component, effect, WritableSignal} from '@angular/core'
+import {Component, effect, signal} from '@angular/core'
 import {BaseService} from '../../api/util/base-api/base.service'
 import {ProcessingStatus} from '../../utils/types/processing-status.enum'
 import {ExpandableGridComponent} from './expandable-grid.component'
 
 @Component({template: ''})
 export abstract class GridWithAddButtonComponent<SERVICE extends BaseService<any, any>> extends ExpandableGridComponent<SERVICE> {
-  protected abstract readonly addingIsActive: WritableSignal<boolean>
+  readonly addingIsActive = signal(false)
 
   constructor() {
     super()

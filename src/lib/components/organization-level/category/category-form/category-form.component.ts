@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, OnInit} from '@angular/core'
+import {Component, computed, inject, input} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 import {isNil} from 'lodash-es'
 import {DropdownModule} from 'primeng/dropdown'
@@ -8,6 +8,7 @@ import {CategoryType} from '../../../../api/organization-level/category/category
 import {Category} from '../../../../api/organization-level/category/category.model'
 import {CategoryService} from '../../../../api/organization-level/category/category.service'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
+import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 
@@ -26,11 +27,12 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
     FormFieldComponent
   ]
 })
-export class CategoryFormComponent implements OnInit {
+export class CategoryFormComponent extends BaseFormComponent<CategoryService> {
   readonly category = input<Category>()
 
   private readonly categoryService = inject(CategoryService)
   private readonly formBuilder = inject(FormBuilder)
+  protected readonly apiService = this.categoryService
 
   readonly categoryForm = computed(() => this.formBuilder.nonNullable.group({
     id: this.category()?.id,
@@ -40,12 +42,6 @@ export class CategoryFormComponent implements OnInit {
   }))
 
   readonly categoryType = CategoryType
-  readonly processingStatus = this.categoryService.selectProcessingStatus
-  readonly failureMessages = this.categoryService.selectFailureMessages
-
-  ngOnInit() {
-    this.categoryService.resetProcessingStatus()
-  }
 
   resetForm() {
     this.categoryForm().reset(this.category())
@@ -58,6 +54,7 @@ export class CategoryFormComponent implements OnInit {
     } else {
       this.categoryService.put(updatedCategory)
     }
+    this.savedAtLeastOnce.set(true)
   }
 
   deleteCategory() {

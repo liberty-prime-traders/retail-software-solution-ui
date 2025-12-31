@@ -21,7 +21,7 @@
               [options]="baseUnitOptions()"/>
   </rts-form-field>
 
-  <rts-form-field label="Conversion Factor" [required]="baseUnit.selectedOption" for="conversionFactor">
+  <rts-form-field label="Multiplier" [required]="baseUnit.selectedOption" for="conversionFactor">
     <p-inputNumber id="conversionFactor" #conversionFactor formControlName="conversionFactor" [maxFractionDigits]="3"/>
   </rts-form-field>
 

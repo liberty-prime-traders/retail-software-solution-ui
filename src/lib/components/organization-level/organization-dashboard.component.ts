@@ -43,8 +43,7 @@ export class OrganizationDashboardComponent {
     {
       label: 'Admin Settings',
       items: this.orgAdminSettings,
-      visible:
-        this.sessionContextService.loggedInUserIsOrganizationAdmin()
+      visible: this.sessionContextService.loggedInUserIsOrganizationAdmin()
     }
   ])
 }

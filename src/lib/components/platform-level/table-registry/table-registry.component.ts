@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core'
+import {Component, inject} from '@angular/core'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {TableModule} from 'primeng/table'
@@ -28,10 +28,7 @@ export class TableRegistryComponent extends ExpandableGridComponent<TableRegistr
   private readonly tableRegistryService = inject(TableRegistryService)
   protected readonly apiService = this.tableRegistryService
 
-  readonly loading = this.tableRegistryService.selectLoading
   readonly registries = this.tableRegistryService.selectAll
-
-  readonly rowIsExpanded = signal(false)
 
   validateTable(registryId: string) {
     this.tableRegistryService.validateRegistry(registryId)

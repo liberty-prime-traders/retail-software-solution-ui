@@ -19,7 +19,7 @@ import {
 } from '../../lib/components/organization-level/organization-user/organization-user.component'
 import {PaymentOptionComponent} from '../../lib/components/organization-level/payment-option/payment-option.component'
 import {ProductComponent} from '../../lib/components/organization-level/products/product.component'
-import {UnitTreeComponent} from '../../lib/components/organization-level/unit-tree/unit-tree.component'
+import {UnitTreeComponent} from '../../lib/components/organization-level/units/unit-tree.component'
 
 export const orgManagementRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},

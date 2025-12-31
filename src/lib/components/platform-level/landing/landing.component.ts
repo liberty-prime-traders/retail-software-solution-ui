@@ -2,25 +2,27 @@ import {CommonModule} from '@angular/common'
 import {Component, computed, inject, OnInit, signal} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {ActivatedRoute, Router, RouterLink} from '@angular/router'
+import {MessageService} from 'primeng/api'
 import {Card} from 'primeng/card'
 import {InputText} from 'primeng/inputtext'
-import {filter, finalize, of} from 'rxjs'
+import {finalize, of, skipWhile, take} from 'rxjs'
 import {catchError, tap} from 'rxjs/operators'
+import {
+  OrganizationAdminService
+} from '../../../api/platform-level/organization/organization-admin/organization-admin.service'
 import {OrganizationLaunchResponse} from '../../../api/platform-level/organization/organization-launch-response.model'
-import {OrganizationAdminService} from '../../../api/platform-level/organization/organization-admin/organization-admin.service'
 import {Organization} from '../../../api/platform-level/organization/organization.model'
+import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
 import {SysUserService} from '../../../api/platform-level/sys-user/sys-user.service'
 import {parseError} from '../../../utils/error.util'
 import {LocalStorageService} from '../../../utils/services/local-storage.service'
 import {RtsOktaService} from '../../../utils/services/rts-okta.service'
 import {SessionContextService} from '../../../utils/services/session-context.service'
 import {LocalStorageKey} from '../../../utils/types/local-storage-key.enum'
-import {UserRole} from '../../../utils/types/user-role.enum'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
+import {UserRole} from '../../../utils/types/user-role.enum'
 import {FormButtonsComponent} from '../../reusable/form-buttons/form-buttons.component'
 import {HasSubscriptionComponent} from '../../reusable/has-subscription.component'
-import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
-import {MessageService} from 'primeng/api'
 
 @Component({
   selector: 'rts-landing',
@@ -111,8 +113,9 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
 
   private checkIfUserIsOrganizationAdmin() {
     return this.organizationAdminService.isOrganizationAdmin$().pipe(
-      filter(isAdmin => Boolean(isAdmin)),
-      tap(() => this.sessionContextService.promoteToOrganizationAdmin())
+      skipWhile(isAdmin => !Boolean(isAdmin)),
+      tap(() => this.sessionContextService.promoteToOrganizationAdmin()),
+      take(1)
     )
       .subscribe()
   }

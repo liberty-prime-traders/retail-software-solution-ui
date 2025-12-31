@@ -1,0 +1,80 @@
+<div class="flex align-items-center justify-content-between mb-3">
+  <h3 class="font-bold">Units</h3>
+
+  <p-button (click)="setAddingActiveTrue()"
+            [disabled]="loading()"
+            label="+ Add Unit Group"
+            rounded severity="secondary">
+  </p-button>
+</div>
+
+<p-divider/>
+
+@if (unitGroups().length < 1 && !addingIsActive()) {
+  <ng-container *ngTemplateOutlet="noUnitGroups"/>
+
+} @else {
+  <div class="flex gap-3">
+    <div class="col-3">
+      <div class="p-2 mb-1 surface-border">
+        <input type="text"
+               [(ngModel)]="searchTerm"
+               placeholder="Search..."
+               class="w-full p-inputtext p-component"/>
+      </div>
+
+      @if (filteredUnits().length < 1) {
+        <ng-container *ngTemplateOutlet="noUnitGroups"/>
+
+      } @else {
+        <div class="overflow-auto" style="max-height: 600px;">
+          @for (unit of filteredUnits(); track unit.id) {
+            <div (click)="selectUnit(unit)"
+                 class="p-3 cursor-pointer hover:surface-400"
+                 [ngClass]="{'bg-bluegray-100': selectedUnitGroup()?.id === unit.id}">
+
+              <div class="flex justify-content-between align-items-center">
+                <div class="flex flex-column">
+                  <span class="font-medium truncate w-12rem">{{ unit.name }}</span>
+                  <small>{{ unit.description }}</small>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <p-divider layout="vertical" />
+
+    <div class="flex flex-column gap-4 flex-grow-1">
+
+      @if (addingIsActive()) {
+        <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info"/>
+        <rts-unit-group-form (successfulSave)="successfulSave()"/>
+      } @else if (selectedUnitGroup()) {
+        <p-accordion>
+          <p-accordion-panel value="0">
+            <p-accordion-header>Edit {{selectedUnitGroup()?.name ?? 'Unit'}}</p-accordion-header>
+            <p-accordion-content>
+              <rts-unit-group-form [unitGroup]="selectedUnitGroup()"/>
+            </p-accordion-content>
+          </p-accordion-panel>
+        </p-accordion>
+
+        <rts-unit-value [unitGroupId]="selectedUnitGroup()!.id!" class="flex-grow-1"/>
+      } @else {
+        <span>Select a unit to see its details</span>
+      }
+    </div>
+  </div>
+}
+
+<ng-template #noUnitGroups>
+  <div class="text-center py-4">
+    <div class="flex flex-column align-items-center">
+      <i class="pi pi-inbox text-6xl text-400 mb-2"></i>
+      <span class="text-500">No Unit Groups Found</span>
+    </div>
+  </div>
+</ng-template>

@@ -30,7 +30,7 @@
     </tr>
   </ng-template>
 
-  <ng-template #body let-location let-expanded="expanded">
+  <ng-template pTemplate="body" let-location let-expanded="expanded">
     <tr [pSelectableRow]="location">
       <td>{{location?.name | nullSafe}}</td>
       <td>{{location?.description | nullSafe}}</td>

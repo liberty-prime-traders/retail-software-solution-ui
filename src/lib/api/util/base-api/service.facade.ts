@@ -15,6 +15,7 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
   readonly selectProcessingStatus
   readonly selectFailureMessages
   readonly processingIsUnderWay
+  readonly lastSavedResponse = signal<RESPONSE|undefined>(undefined)
   private readonly defaultApiRequestConfig: ApiRequestConfig = {
     upsertOnSuccess: false,
     urlSuffix: ''
@@ -74,6 +75,7 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
       }
     } else if (!isNil(result)) {
       this.store.upsert(result)
+      this.lastSavedResponse.set(result)
     }
     this.store.setHasCache(true)
     this.setProcessingStatus(ProcessingStatus.SUCCESS)

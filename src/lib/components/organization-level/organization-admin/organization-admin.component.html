@@ -40,7 +40,7 @@
     </tr>
   </ng-template>
 
-  <ng-template #body let-organizationAdmin>
+  <ng-template pTemplate="body" let-organizationAdmin>
     <tr [pSelectableRow]="organizationAdmin">
       <td>
         <p-tableCheckbox [value]="organizationAdmin" />

@@ -23,11 +23,9 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 export class DbVersionComponent extends BaseGridComponent<DbVersionService> {
   private readonly dbVersionService = inject(DbVersionService)
   private readonly messageService = inject(MessageService)
-
-  readonly loading = this.dbVersionService.selectLoading
-  readonly dbVersions = this.dbVersionService.selectAll
-
   readonly apiService = this.dbVersionService
+
+  readonly dbVersions = this.dbVersionService.selectAll
   private readonly userMadeActivationAttempt = signal(false)
 
   activateVersion(versionId: string) {

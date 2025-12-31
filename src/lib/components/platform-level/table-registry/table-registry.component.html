@@ -2,11 +2,11 @@
   <p-table [loading]="loading()"
            rowExpandMode="single"
            dataKey="id"
-           scrollHeight="600px"
+           scrollHeight="650px"
            scrollable="true"
            sortField="displayName"
            #registryTable
-           [globalFilterFields]="['displayName','tableName','schemaLevel','defaultPrefix','description','createdBy']"
+           [globalFilterFields]="['displayName','tableName','schemaLevel','defaultPrefix','description']"
            (onRowExpand)="rowIsExpanded.set(true)"
            (onRowCollapse)="rowIsExpanded.set(false)"
            [value]="registries()">
