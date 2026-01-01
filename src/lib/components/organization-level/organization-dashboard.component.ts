@@ -34,7 +34,8 @@ export class OrganizationDashboardComponent {
     {label: 'Job Titles', icon: 'pi pi-gauge', routerLink: 'job-title'},
     {label: 'Categories', icon: 'pi pi-palette', routerLink: 'category'},
     {label: 'Units', icon: 'pi pi-percentage', routerLink: 'units'},
-    {label: 'Payment Options', icon: 'pi pi-dollar', routerLink: 'payment-options'}
+    {label: 'Payment Options', icon: 'pi pi-dollar', routerLink: 'payment-options'},
+    {label: 'Tags', icon: 'pi pi-tags', routerLink: 'tags'}
   ]
 
   readonly menuItems: Signal<MenuItem[]> = computed(() => [

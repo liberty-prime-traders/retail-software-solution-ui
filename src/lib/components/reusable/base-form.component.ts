@@ -5,7 +5,7 @@ import {ProcessingStatus} from '../../utils/types/processing-status.enum'
 @Component({template: ''})
 export abstract class BaseFormComponent<SERVICE extends BaseService<any, any>> implements OnInit {
 
-  readonly successfulSave = output<boolean>()
+  readonly successfulSave = output<void>()
 
   protected abstract readonly apiService: SERVICE
 
@@ -17,7 +17,7 @@ export abstract class BaseFormComponent<SERVICE extends BaseService<any, any>> i
   constructor() {
     effect(() => {
       if (this.processingStatus() === ProcessingStatus.SUCCESS && this.savedAtLeastOnce()) {
-        this.successfulSave.emit(true)
+        this.successfulSave.emit()
       }
     })
   }

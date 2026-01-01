@@ -1,0 +1,27 @@
+<form [formGroup]="tagForm()" class="flex flex-column gap-2">
+  <rts-form-field [required]="true" label="Tag Name" for="tagName">
+    <input id="tagName" class="flex-grow-1" pInputText formControlName="tagName">
+  </rts-form-field>
+
+  <rts-form-field label="Category" for="category" [required]="true">
+    <p-select id="category"
+              class="flex-grow-1"
+              formControlName="category"
+              [options]="categoryType | enumToDropdown">
+    </p-select>
+  </rts-form-field>
+
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText formControlName="description">
+  </rts-form-field>
+
+  <rts-forms-buttons [disableReset]="!tagForm().dirty"
+                     [disableSave]="!tagForm().valid || !tagForm().dirty"
+                     [hideDelete]="!tag()?.id"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (delete)="deleteTag()"
+                     (save)="upsertTag()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</form>

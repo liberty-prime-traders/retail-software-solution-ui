@@ -19,6 +19,7 @@ import {
 } from '../../lib/components/organization-level/organization-user/organization-user.component'
 import {PaymentOptionComponent} from '../../lib/components/organization-level/payment-option/payment-option.component'
 import {ProductComponent} from '../../lib/components/organization-level/products/product.component'
+import {TagComponent} from '../../lib/components/organization-level/tag/tag.component'
 import {UnitTreeComponent} from '../../lib/components/organization-level/units/unit-tree.component'
 
 export const orgManagementRoutes: Routes = [
@@ -28,6 +29,7 @@ export const orgManagementRoutes: Routes = [
   {path: 'units', component: UnitTreeComponent},
   {path: 'products', component: ProductComponent},
   {path: 'payment-options', component: PaymentOptionComponent},
+  {path: 'tags', component: TagComponent},
 
   {path: 'locations', component: LocationsComponent},
   {path: 'profile', component: OrganizationProfileComponent},
