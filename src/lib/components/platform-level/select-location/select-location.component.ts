@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common'
+
 import {Component, inject, OnInit, Signal} from '@angular/core'
 import {ReactiveFormsModule} from '@angular/forms'
 import {ActivatedRoute, Router} from '@angular/router'
@@ -19,7 +19,6 @@ import {HasSubscriptionComponent} from '../../reusable/has-subscription.componen
   selector: 'rts-select-location',
   templateUrl: 'select-location.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     Select,
     Button,

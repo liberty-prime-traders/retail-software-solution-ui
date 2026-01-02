@@ -1,6 +1,6 @@
 <form [formGroup]="migrationForm" class="flex flex-column gap-2 bg-white p-4">
   <rts-form-field label="Organization" for="organizationId" [required]="true">
-    <p-dropdown
+    <p-select
       id="organizationId"
       formControlName="organizationId"
       [options]="organizations()"
@@ -9,11 +9,11 @@
       [showClear]="true"
       [loading]="loadingOrganizations()"
       (onChange)="onOrganizationChange($event.value)">
-    </p-dropdown>
+    </p-select>
   </rts-form-field>
 
   <rts-form-field label="Target DB Version" for="targetDbVersionId" [required]="true">
-    <p-dropdown
+    <p-select
       id="targetDbVersionId"
       formControlName="targetDbVersionId"
       [options]="dbVersions()"
@@ -21,7 +21,7 @@
       optionValue="id"
       [showClear]="true"
       [loading]="loadingDbVersions()">
-    </p-dropdown>
+    </p-select>
   </rts-form-field>
 
 

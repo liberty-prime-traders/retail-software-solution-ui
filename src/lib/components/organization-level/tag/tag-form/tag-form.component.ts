@@ -1,7 +1,6 @@
 import {Component, computed, inject, input} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 import {isNil} from 'lodash-es'
-import {DropdownModule} from 'primeng/dropdown'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
 import {CategoryType} from '../../../../api/organization-level/category/category-type.enum'
@@ -21,7 +20,6 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
     FormsModule,
     InputText,
     ReactiveFormsModule,
-    DropdownModule,
     Select,
     FormFieldComponent,
     EnumToDropdownPipe
