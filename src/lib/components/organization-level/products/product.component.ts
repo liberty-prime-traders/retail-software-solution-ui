@@ -1,13 +1,13 @@
 import {Component, computed, inject, model, OnInit, signal} from '@angular/core'
+import {FormsModule} from '@angular/forms'
 import {BlockUIModule} from 'primeng/blockui'
+import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
 import {Product} from '../../../api/organization-level/product/product.model'
 import {ProductService} from '../../../api/organization-level/product/product.service'
 import {ProductDetailsComponent} from './product-details/product-details.component'
-import {FormsModule} from '@angular/forms'
-import {NgClass} from '@angular/common'
-import {Button} from 'primeng/button'
+import {ProductFilterComponent} from './product-filter/product-filter.component'
 import {ProductFormComponent} from './product-form/product-form.component'
 
 @Component({
@@ -20,9 +20,9 @@ import {ProductFormComponent} from './product-form/product-form.component'
     BlockUIModule,
     ProductDetailsComponent,
     FormsModule,
-    NgClass,
     Button,
-    ProductFormComponent
+    ProductFormComponent,
+    ProductFilterComponent
   ]
 })
 export class ProductComponent implements OnInit {

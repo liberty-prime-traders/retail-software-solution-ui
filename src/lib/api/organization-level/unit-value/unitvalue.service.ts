@@ -39,4 +39,13 @@ export class UnitValueService extends BaseService<UnitValue> {
     }
     super.finishSavingWithSuccess(result)
   }
+
+  override finishDeletingWithSuccess(id: EntityId) {
+    this.unitValuesCache.keys().forEach(key => {
+      if (this.unitValuesCache.hasEntry(key, id)) {
+        this.unitValuesCache.deleteById(key, id)
+      }
+    })
+    super.finishDeletingWithSuccess(id)
+  }
 }

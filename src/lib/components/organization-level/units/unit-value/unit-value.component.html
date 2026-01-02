@@ -1,7 +1,7 @@
 <p-table [loading]="loading() && !addingIsActive()"
          rowExpandMode="single"
          dataKey="id"
-         sortField="name"
+         sortField="conversionFactor"
          #unitValuesTable
          [globalFilterFields]="['name', 'code', 'description', 'baseUnitName']"
          (onRowExpand)="rowIsExpanded.set(true)"

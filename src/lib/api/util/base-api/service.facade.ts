@@ -81,6 +81,11 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     this.setProcessingStatus(ProcessingStatus.SUCCESS)
   }
 
+  protected finishDeletingWithSuccess(id: EntityId) {
+    this.store.remove(id)
+    this.setProcessingStatus(ProcessingStatus.SUCCESS)
+  }
+
   protected setStoreError(error: HttpErrorResponse) {
     this.store.setError(error)
     this.store.setHasCache(false)
