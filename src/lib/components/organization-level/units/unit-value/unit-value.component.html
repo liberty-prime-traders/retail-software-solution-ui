@@ -15,7 +15,7 @@
     </div>
   </ng-template>
 
-  <ng-template #header>
+  <ng-template pTemplate="header">
     <tr>
       <th style="width: 5rem;"></th>
       <th pSortableColumn="name">
@@ -60,7 +60,7 @@
     </tr>
   </ng-template>
 
-  <ng-template #expandedrow let-unitvalue>
+  <ng-template pTemplate="expandedrow" let-unitvalue>
     <tr>
       <td colspan="6" class="filled-background">
         <rts-unit-value-form [unitValue]="unitvalue"
@@ -71,7 +71,7 @@
     </tr>
   </ng-template>
 
-  <ng-template #emptymessage>
+  <ng-template pTemplate="emptymessage">
     <tr rts-empty-row [colspan]="6" message="No Units Values Were Found"></tr>
   </ng-template>
 </p-table>

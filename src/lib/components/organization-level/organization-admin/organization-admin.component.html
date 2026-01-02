@@ -12,20 +12,20 @@
     <div class="flex justify-content-between align-items-center">
       <h3>Organization Admins</h3>
       <div class="flex justify-content-end gap-6 mb-3 align-items-center">
-      <span class="font-italic text-cyan-600 cursor-pointer">
-        Terminate Selected Admin
-      </span>
+        <span class="font-italic text-cyan-600 cursor-pointer">
+          Terminate Selected Admin
+        </span>
 
         <span class="font-italic text-bluegray-600 cursor-pointer">
-        + Add Admin
-      </span>
+          + Add Admin
+        </span>
 
         <rts-grid-filter [dataTable]="adminTable" margin="m-0"/>
       </div>
     </div>
   </ng-template>
 
-  <ng-template #header>
+  <ng-template pTemplate="header">
     <tr>
       <th style="width: 4rem"></th>
       <th pSortableColumn="user">Name
