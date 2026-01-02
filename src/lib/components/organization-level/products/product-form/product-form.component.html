@@ -4,14 +4,14 @@
   </rts-form-field>
 
   <rts-form-field [required]="true" label="Category" for="categoryId">
-    <p-dropdown id="categoryId"
+    <p-select id="categoryId"
                 class="flex-grow-1"
                 [options]="productCategories()"
                 optionLabel="categoryName"
                 optionValue="id"
                 formControlName="categoryId"
                 placeholder="Select a Category" >
-    </p-dropdown>
+    </p-select>
   </rts-form-field>
 
   <rts-form-field label="Description" for="description">

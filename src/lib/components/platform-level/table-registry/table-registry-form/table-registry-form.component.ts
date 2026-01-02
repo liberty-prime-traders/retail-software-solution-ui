@@ -1,8 +1,7 @@
 import {Component, computed, inject, input} from '@angular/core'
 import {NonNullableFormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
-import {DropdownModule} from 'primeng/dropdown'
-import {InputSwitchModule} from 'primeng/inputswitch'
 import {InputTextModule} from 'primeng/inputtext'
+import {ToggleSwitch} from 'primeng/toggleswitch'
 import {TableRegistry} from '../../../../api/platform-level/table-registry/table-registry.model'
 import {TableRegistryService} from '../../../../api/platform-level/table-registry/table-registry.service'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
@@ -15,10 +14,9 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
   imports: [
     ReactiveFormsModule,
     InputTextModule,
-    InputSwitchModule,
-    DropdownModule,
     FormFieldComponent,
-    FormButtonsComponent
+    FormButtonsComponent,
+    ToggleSwitch
   ],
   standalone: true
 })

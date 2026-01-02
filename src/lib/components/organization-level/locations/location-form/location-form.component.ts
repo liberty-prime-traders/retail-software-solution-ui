@@ -2,7 +2,6 @@ import {Component, computed, inject, input, OnInit} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 import {EntityId} from '@ngrx/signals/entities'
 import {isNil} from 'lodash-es'
-import {DropdownModule} from 'primeng/dropdown'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
 import {LocationType} from '../../../../api/organization-level/location/location-type.enum'
@@ -20,7 +19,6 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
     FormsModule,
     InputText,
     ReactiveFormsModule,
-    DropdownModule,
     EnumToDropdownPipe,
     Select,
     FormFieldComponent

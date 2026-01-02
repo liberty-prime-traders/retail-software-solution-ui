@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common'
+
 import {Component, effect, inject, OnInit, Signal, signal} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {ActivatedRoute, Router, RouterLink} from '@angular/router'
@@ -21,7 +21,6 @@ import {HasSubscriptionComponent} from '../../reusable/has-subscription.componen
   selector: 'rts-create-organization',
   templateUrl: 'create-organization.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     ButtonModule,
     InputTextModule,

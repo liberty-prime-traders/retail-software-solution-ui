@@ -2,7 +2,7 @@
          [loading]="loading()"
          dataKey="id"
          [expandedRowKeys]="expandedRows()"
-         styleClass="p-datatable-striped">
+         class="p-datatable-striped">
 
   <ng-template pTemplate="caption">
     <div class="flex flex-wrap justify-content-between items-center gap-2 w-full">
@@ -12,8 +12,8 @@
                        [stepHour]="1"
                        selectionMode="range"
                        [readonlyInput]="true"
-                       [style]="{'min-width': '320px'}"
-                       styleClass="w-full">
+                       inputStyleClass="w-full"
+                       [style]="{'min-width': '320px'}">
         </p-date-picker>
 
         <p-button label="Apply Filter" icon="pi pi-refresh" text (onClick)="reloadMigrationHistory()"/>

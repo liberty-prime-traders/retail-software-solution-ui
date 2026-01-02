@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common'
+
 import {Component, effect, inject, OnInit} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {ButtonModule} from 'primeng/button'
@@ -15,7 +15,6 @@ import {FormFieldComponent} from '../../reusable/form-field/form-field.component
   selector: 'rts-update-organization',
   templateUrl: 'organization-profile.component.html',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     ButtonModule,
     InputTextModule,

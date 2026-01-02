@@ -1,8 +1,8 @@
-import {CommonModule} from '@angular/common'
+
 import {Component, inject, OnInit} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
-import {DropdownModule} from 'primeng/dropdown'
 import {MultiSelectModule} from 'primeng/multiselect'
+import {Select} from 'primeng/select'
 import {DbMigrationService} from '../../../../api/platform-level/db-migration/db-migration.service'
 import {DbVersionService} from '../../../../api/platform-level/db-version/db-version.service'
 import {OrganizationLocationService} from '../../../../api/platform-level/organization-location/organization-location.service'
@@ -13,13 +13,12 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
 @Component({
   selector: 'rts-run-migration',
   imports: [
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    DropdownModule,
     MultiSelectModule,
     FormFieldComponent,
-    FormButtonsComponent
+    FormButtonsComponent,
+    Select
   ],
   templateUrl: './run-migration.component.html'
 })
