@@ -42,6 +42,7 @@ export class UnitGroupFormComponent extends BaseFormComponent<UnitGroupService> 
     } else {
       this.unitGroupService.put(updatedUnitGroup)
     }
+    this.savedAtLeastOnce.set(true)
   }
 
   deleteUnitGroup() {

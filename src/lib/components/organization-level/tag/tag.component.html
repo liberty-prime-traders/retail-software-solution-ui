@@ -59,7 +59,7 @@
       </div>
     </ng-template>
 
-    <ng-template #header>
+    <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="tagName">Tag Name
           <p-sortIcon field="tagName"></p-sortIcon>
@@ -78,7 +78,7 @@
     <ng-template pTemplate="body" let-tag let-expanded="expanded">
       <tr [pSelectableRow]="tag">
         <td>{{ tag?.tagName | nullSafe }}</td>
-        <td>{{ tag?.category?.categoryName | nullSafe }}</td>
+        <td>{{ tag?.category | prettifyEnum | nullSafe }}</td>
         <td>{{ tag?.description | nullSafe }}</td>
         <td>{{ tag?.createdBy | nullSafe }}</td>
         <td>
@@ -92,7 +92,7 @@
       </tr>
     </ng-template>
 
-    <ng-template #expandedrow let-tag>
+    <ng-template pTemplate="expandedrow" let-tag>
       <tr>
         <td colspan="5" class="filled-background">
           <rts-tag-form [tag]="tag"></rts-tag-form>
@@ -100,7 +100,7 @@
       </tr>
     </ng-template>
 
-    <ng-template #emptymessage>
+    <ng-template pTemplate="emptymessage">
       <tr rts-empty-row [colspan]="5" message="No Tags Were Found"></tr>
     </ng-template>
   </p-table>
