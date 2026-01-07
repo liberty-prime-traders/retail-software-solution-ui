@@ -14,6 +14,10 @@ html, body {
   content: "* ";
 }
 
+.error-message {
+  color: theme.$red;
+}
+
 .filled-background {
   background-color: theme.$globalBackground;
 }
@@ -26,5 +30,8 @@ html, body {
 .dark-mode {
   .inactive {
     background-color: var(--p-slate-400) !important;
+  }
+  .p-menu-item-link-active {
+    color: var(--p-slate-900);
   }
 }

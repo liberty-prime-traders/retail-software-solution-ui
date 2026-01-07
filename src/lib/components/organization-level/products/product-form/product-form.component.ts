@@ -1,69 +1,67 @@
-import {Component, computed, inject, input, OnInit} from '@angular/core'
-import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
-import {isNil} from 'lodash-es'
+import {Component, inject, input, OnInit, Signal, signal} from '@angular/core'
+import {Field, form} from '@angular/forms/signals'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
-import {CategoryType} from '../../../../api/organization-level/category/category-type.enum'
 import {CategoryService} from '../../../../api/organization-level/category/category.service'
 import {Product} from '../../../../api/organization-level/product/product.model'
 import {ProductService} from '../../../../api/organization-level/product/product.service'
+import {UnitValue} from '../../../../api/organization-level/unit-value/unitvalue.model'
+import {UnitValueService} from '../../../../api/organization-level/unit-value/unitvalue.service'
+import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {ProductFormDefinition} from './product-form.definition'
 
 @Component({
   selector: 'rts-product-form',
   templateUrl: 'product-form.component.html',
   standalone: true,
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
     InputText,
     FormButtonsComponent,
     FormFieldComponent,
-    Select
+    Select,
+    Field
   ]
 })
-export class ProductFormComponent implements OnInit {
+export class ProductFormComponent extends BaseFormComponent<ProductService> implements OnInit {
   readonly product = input<Product>()
+
   private readonly productService = inject(ProductService)
-  private readonly formBuilder = inject(FormBuilder)
   private readonly categoryService = inject(CategoryService)
+  private readonly unitValueService = inject(UnitValueService)
+  protected override apiService: ProductService =  this.productService
 
-  readonly productCategories = computed(() =>
-    this.categoryService.selectAll().filter(category => category.categoryType === CategoryType.PRODUCT)
+  readonly productCategories = this.categoryService.productCategories
+  readonly unitValues: Signal<UnitValue[]> = this.unitValueService.selectAll
+
+  private readonly productFormValue = signal<ProductFormDefinition.ProductFormModel>(
+    ProductFormDefinition.defaultProductFormModel
   )
 
-  readonly productForm = computed(() =>
-    this.formBuilder.nonNullable.group({
-      id: this.product()?.id,
-      productName: [this.product()?.productName ?? '', Validators.required],
-      description: [this.product()?.description ?? ''],
-      categoryId: [this.product()?.categoryId ?? '', Validators.required]
-    })
-  )
+  readonly productFormFields = ProductFormDefinition.fieldMap
 
-  readonly processingStatus = this.productService.selectProcessingStatus
-  readonly failureMessages = this.productService.selectFailureMessages
+  readonly productForm = form(this.productFormValue, ProductFormDefinition.productFormSchema)
 
-  ngOnInit() {
-    this.productService.resetProcessingStatus()
+
+  override ngOnInit() {
+    super.ngOnInit()
     this.categoryService.fetch()
+    this.unitValueService.fetch()
   }
 
   resetForm() {
-    this.productForm().reset({
-      ...this.product(),
-      categoryId: this.product()?.categoryId ?? ''
-    })
+    this.productFormValue.set(ProductFormDefinition.convertToFormModel(this.product()))
   }
 
   upsertProduct() {
-    const updatedProduct: Partial<Product> = {...this.productForm().getRawValue()}
-    if (isNil(updatedProduct.id)) {
-      this.productService.post(updatedProduct)
-    } else {
+    const updatedProduct: Partial<Product> = ProductFormDefinition.convertToBackendModel(this.productFormValue())
+    if (updatedProduct.id) {
       this.productService.put(updatedProduct)
+    } else {
+      this.productService.post(updatedProduct)
     }
+    this.savedAtLeastOnce.set(true)
   }
 
   deleteProduct() {

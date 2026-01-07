@@ -1,7 +1,5 @@
 <div class="flex align-items-center justify-content-between mb-3">
-  <h3 class="font-bold">
-    Products <span class="font-normal text-color-secondary ml-2">{{ products().length }}</span>
-  </h3>
+  <h3 class="font-bold">Products</h3>
 
   <p-button (click)="setAddingActiveTrue()"
             [disabled]="selectedProduct() !== undefined || loading()"
@@ -22,8 +20,8 @@
 
   <div class="flex flex-column gap-4 flex-grow-1">
     @if (addingIsActive()) {
-      <p-button (click)="addingIsActive.set(false)" icon="pi pi-times" severity="info"/>
-      <rts-product-form></rts-product-form>
+      <p-button (click)="setAddingActiveFalse()" icon="pi pi-times" severity="info"/>
+      <rts-product-form (successfulSave)="setAddingActiveFalse()"/>
     }
     @else {
       <rts-product-details class="flex-grow-1"/>

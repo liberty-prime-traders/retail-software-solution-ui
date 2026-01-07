@@ -1,0 +1,39 @@
+<p-table [value]="filteredProducts()"
+         [loading]="loading()"
+         dataKey="id"
+         scrollHeight="600px"
+         scrollable="true"
+         sortField="productName"
+         #productsTable
+         [globalFilterFields]="['productName', 'description', 'categoryName', 'baseUnit']">
+
+  <ng-template pTemplate="caption">
+    <rts-grid-filter [dataTable]="productsTable" placeholder="Refine Search"/>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="productName">Product Name
+        <p-sortIcon field="productName"></p-sortIcon>
+      </th>
+      <th pSortableColumn="categoryName">Category
+        <p-sortIcon field="categoryName"></p-sortIcon>
+      </th>
+      <th pSortableColumn="baseUnit">Base Unit
+        <p-sortIcon field="baseUnit"></p-sortIcon>
+      </th>
+      <th pSortableColumn="description">Description
+        <p-sortIcon field="description"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-product>
+    <tr [pSelectableRow]="product">
+      <td>{{ product?.productName | nullSafe }}</td>
+      <td>{{ product?.categoryName | nullSafe }}</td>
+      <td>{{ product?.baseUnit | nullSafe }}</td>
+      <td>{{ product?.description | nullSafe }}</td>
+    </tr>
+  </ng-template>
+</p-table>

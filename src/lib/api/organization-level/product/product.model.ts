@@ -1,5 +1,5 @@
-import {BaseModel} from '../../util/base-api/base.model'
 import {EntityId} from '@ngrx/signals/entities'
+import {BaseModel} from '../../util/base-api/base.model'
 
 export interface Product extends BaseModel{
   createdBy?: string
@@ -7,9 +7,12 @@ export interface Product extends BaseModel{
   productName?: string
   description?: string
   categoryName?: string
-  categoryId?: EntityId
+  categoryId?: string
   baseUnit?: string
-  tags?: TagSummary[]
+  baseUnitId?: string
+  activeTags?: TagSummary[]
+  tagsToAdd?: string[],
+  tagsToRemove?: string[]
 }
 
 export interface TagSummary {
