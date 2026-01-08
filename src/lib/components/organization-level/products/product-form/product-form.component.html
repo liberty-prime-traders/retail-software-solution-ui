@@ -52,16 +52,23 @@
     </p-pickList>
   </p-panel>
 
-  <rts-forms-buttons [disableReset]="!productForm().dirty"
-                     [disableSave]="productForm().invalid() || !productForm().dirty"
-                     [hideDelete]="!originalProduct()?.id"
-                     [signalForm]="productForm()"
-                     [fieldMap]="productFormFields"
-                     [processingStatus]="processingStatus()"
-                     [failureMessages]="failureMessages()"
-                     deleteLabel="Deactivate"
-                     (delete)="deleteProduct()"
-                     (save)="upsertProduct()"
-                     (resetAction)="resetForm()">
-  </rts-forms-buttons>
+  @if (productIsInactive()) {
+    <p-button label="Reactivate" (onClick)="reactivateProduct()" severity="success"/>
+
+  } @else {
+    <rts-forms-buttons [disableReset]="!productForm().dirty"
+                       [disableSave]="productForm().invalid() || !productForm().dirty"
+                       [hideDelete]="!originalProduct()?.id"
+                       [signalForm]="productForm()"
+                       [fieldMap]="productFormFields"
+                       [processingStatus]="processingStatus()"
+                       [failureMessages]="failureMessages()"
+                       deleteLabel="Deactivate"
+                       deleteWarning="Confirm Deactivation of Product?"
+                       (delete)="deactivateProduct()"
+                       (save)="upsertProduct()"
+                       (resetAction)="resetForm()">
+    </rts-forms-buttons>
+  }
+
 </form>

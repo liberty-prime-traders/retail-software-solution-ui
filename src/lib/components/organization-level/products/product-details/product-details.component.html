@@ -37,9 +37,12 @@
   </ng-template>
 
   <ng-template pTemplate="body" let-product let-expanded="expanded">
+
+    @let productIsInactive = product.status !== ProductStatus.ACTIVE;
+
     <tr [pSelectableRow]="product">
-      <td>{{ product?.referenceNumber | nullSafe }}</td>
-      <td>{{ product?.productName | nullSafe }}</td>
+      <td [ngClass]="{'line-through': productIsInactive}">{{ product?.referenceNumber | nullSafe }}</td>
+      <td [ngClass]="{'line-through': productIsInactive}">{{ product?.productName | nullSafe }}</td>
       <td>{{ product?.categoryName | nullSafe }}</td>
       <td>{{ product?.baseUnit | nullSafe }}</td>
       <td>{{ product?.description | nullSafe }}</td>

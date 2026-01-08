@@ -1,5 +1,6 @@
 import {BaseModel} from '../../util/base-api/base.model'
 import {Tag} from '../tag/tag.model'
+import {ProductStatus} from './product-status.enum'
 
 export interface Product extends BaseModel{
   createdBy?: string
@@ -10,6 +11,7 @@ export interface Product extends BaseModel{
   categoryId?: string
   baseUnit?: string
   baseUnitId?: string
+  status?: ProductStatus
   activeTags?: TagSummary[]
   tagsToAdd?: string[],
   tagsToRemove?: string[]

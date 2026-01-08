@@ -1,7 +1,9 @@
+import {NgClass} from '@angular/common'
 import {Component, computed, inject, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
+import {ProductStatus} from '../../../../api/organization-level/product/product-status.enum'
 import {Product} from '../../../../api/organization-level/product/product.model'
 import {ProductService} from '../../../../api/organization-level/product/product.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
@@ -18,12 +20,15 @@ import {ProductFormComponent} from '../product-form/product-form.component'
     GridFilterComponent,
     NullSafePipe,
     Button,
-    ProductFormComponent
+    ProductFormComponent,
+    NgClass
   ]
 })
 export class ProductDetailsComponent extends ExpandableGridComponent<ProductService> {
   private readonly productService = inject(ProductService)
   protected readonly apiService: ProductService = this.productService
+
+  readonly ProductStatus = ProductStatus
 
   readonly products = this.productService.selectAll
   readonly searchTerm = signal('')

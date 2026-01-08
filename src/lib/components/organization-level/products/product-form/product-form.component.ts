@@ -3,11 +3,13 @@ import {Component, computed, inject, Input, model, OnInit, Signal, signal} from 
 import {FormsModule} from '@angular/forms'
 import {Field, form} from '@angular/forms/signals'
 import {PrimeTemplate} from 'primeng/api'
+import {Button} from 'primeng/button'
 import {InputText} from 'primeng/inputtext'
 import {Panel} from 'primeng/panel'
 import {PickList} from 'primeng/picklist'
 import {Select} from 'primeng/select'
 import {CategoryService} from '../../../../api/organization-level/category/category.service'
+import {ProductStatus} from '../../../../api/organization-level/product/product-status.enum'
 import {Product} from '../../../../api/organization-level/product/product.model'
 import {ProductService} from '../../../../api/organization-level/product/product.service'
 import {Tag} from '../../../../api/organization-level/tag/tag.model'
@@ -35,7 +37,8 @@ import {ProductFormTagDisplayComponent} from './tag-display.component'
     NgClass,
     FormsModule,
     PickList,
-    PrimeTemplate
+    PrimeTemplate,
+    Button
   ]
 })
 export class ProductFormComponent extends BaseFormComponent<ProductService> implements OnInit {
@@ -63,6 +66,10 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
 
   readonly originalTagIds = computed(() =>
     new Set(this.originalProduct()?.activeTags?.map(tag => String(tag.id)) ?? [])
+  )
+
+  readonly productIsInactive = computed(() =>
+    this.originalProduct() && this.originalProduct()?.status !== ProductStatus.ACTIVE
   )
 
   readonly availableTags = computed(() =>
@@ -103,9 +110,15 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
     this.savedAtLeastOnce.set(true)
   }
 
-  deleteProduct() {
+  deactivateProduct() {
     if (this.productFormValue()?.id) {
-      this.productService.delete(this.productFormValue()?.id)
+      this.productService.deactivateProduct(this.productFormValue()?.id)
+    }
+  }
+
+  reactivateProduct() {
+    if (this.productFormValue()?.id) {
+      this.productService.reactivateProduct(this.productFormValue()?.id)
     }
   }
 
