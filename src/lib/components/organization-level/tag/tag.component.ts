@@ -34,7 +34,7 @@ export class TagComponent extends GridWithAddButtonComponent<TagService> {
   private readonly tagService = inject(TagService)
   readonly apiService = this.tagService
 
-  readonly selectedCategory = signal<CategoryType | undefined>(undefined)
+  readonly selectedCategory = signal<CategoryType | undefined>(CategoryType.PRODUCT)
   readonly selectedCategoryStash = signal<CategoryType | undefined>(undefined)
   readonly tags = computed(() => this.tagService.selectAll().filter(
     tag => tag.category === this.selectedCategory())

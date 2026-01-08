@@ -1,4 +1,5 @@
 import {Component, computed, input, model, output, signal} from '@angular/core'
+import {FieldState} from '@angular/forms/signals'
 import {ConfirmationService} from 'primeng/api'
 import {ButtonModule} from 'primeng/button'
 import {ConfirmDialogModule} from 'primeng/confirmdialog'
@@ -6,6 +7,7 @@ import {ProgressSpinner} from 'primeng/progressspinner'
 import {Tag} from 'primeng/tag'
 import {FormAction} from '../../../utils/types/form-action.enum'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
+import {ErrorSummaryComponent} from '../error-summary/error-summary.component'
 import {TooltipComponent} from '../tooltip/tooltip.component'
 
 @Component({
@@ -17,13 +19,17 @@ import {TooltipComponent} from '../tooltip/tooltip.component'
     ConfirmDialogModule,
     ProgressSpinner,
     Tag,
-    TooltipComponent
+    TooltipComponent,
+    ErrorSummaryComponent
   ]
 })
-export class FormButtonsComponent {
+export class FormButtonsComponent<T> {
   readonly save = output()
   readonly delete = output()
   readonly resetAction = output()
+
+  readonly signalForm = input<FieldState<unknown>>()
+  readonly fieldMap = input<Map<keyof T, string>>()
 
   readonly hideDelete = input(false)
   readonly hideReset = input(false)

@@ -1,54 +1,62 @@
-<div class="flex justify-content-between p-4 pb-1">
-  @if (!hideDelete()) {
-    <div class="flex justify-content-between flex-grow-1">
-      <p-button [label]="deleteLabel()"
-                icon="pi pi-trash"
-                severity="danger"
-                (click)="deleteIsActive.set(true)"
-                [disabled]="disableDelete() || deleteIsActive() || processingIsUnderway()">
-      </p-button>
-
-      @if (deleteIsActive()) {
-        <div class="flex gap-1 align-items-center">
-          <div>{{deleteWarning()}}</div>
-          <p-button label="Yes" size="small" severity="secondary" (click)="confirmDelete()"/>
-          <p-button label="No" size="small" severity="primary" (click)="deleteIsActive.set(false)"/>
-        </div>
-      }
-    </div>
-  }
-
-  @if (!deleteIsActive()) {
-    <div class="flex gap-2 align-items-center flex-grow-1 justify-content-end">
-      @if (processingIsUnderway()) {
-        <span class="font-light">{{inProgressMessage()}}</span>
-        <p-progress-spinner [style]="{width: '25px', height: '25px'}"/>
-
-      } @else if (processingStatus() === ProcessingStatus.SUCCESS) {
-        <p-tag severity="success" [value]="successMessage()" icon="pi pi-check"/>
-
-      } @else if (processingStatus() === ProcessingStatus.FAILURE) {
-        <rts-tooltip [messages]="failureMessages() ?? []"/>
-        <p-tag severity="danger" value="Failed" icon="pi pi-exclamation-triangle"/>
-      }
-
-      @if (!hideReset()) {
-        <p-button [label]="resetLabel()"
-                  icon="pi pi-times"
-                  severity="secondary"
-                  (click)="confirmReset()"
-                  [disabled]="disableReset() || processingIsUnderway()">
+<div class=" p-4 pb-1">
+  <div class="flex justify-content-between">
+    @if (!hideDelete()) {
+      <div class="flex justify-content-between flex-grow-1">
+        <p-button [label]="deleteLabel()"
+                  icon="pi pi-trash"
+                  severity="danger"
+                  (click)="deleteIsActive.set(true)"
+                  [disabled]="disableDelete() || deleteIsActive() || processingIsUnderway()">
         </p-button>
-      }
 
-      @if (!hideSave()) {
-        <p-button [label]="saveLabel()"
-                  icon="pi pi-check"
-                  severity="primary"
-                  (click)="confirmSave()"
-                  [disabled]="disableSave() || processingIsUnderway()">
-        </p-button>
-      }
-    </div>
+        @if (deleteIsActive()) {
+          <div class="flex gap-1 align-items-center">
+            <div>{{deleteWarning()}}</div>
+            <p-button label="Yes" size="small" severity="secondary" (click)="confirmDelete()"/>
+            <p-button label="No" size="small" severity="primary" (click)="deleteIsActive.set(false)"/>
+          </div>
+        }
+      </div>
+    }
+
+    @if (!deleteIsActive()) {
+      <div class="flex gap-2 align-items-center flex-grow-1 justify-content-end">
+        @if (processingIsUnderway()) {
+          <span class="font-light">{{inProgressMessage()}}</span>
+          <p-progress-spinner [style]="{width: '25px', height: '25px'}"/>
+
+        } @else if (processingStatus() === ProcessingStatus.SUCCESS) {
+          <p-tag severity="success" [value]="successMessage()" icon="pi pi-check"/>
+
+        } @else if (processingStatus() === ProcessingStatus.FAILURE) {
+          <rts-tooltip [messages]="failureMessages() ?? []"/>
+          <p-tag severity="danger" value="Failed" icon="pi pi-exclamation-triangle"/>
+        }
+
+        @if (!hideReset()) {
+          <p-button [label]="resetLabel()"
+                    icon="pi pi-times"
+                    severity="secondary"
+                    (click)="confirmReset()"
+                    [disabled]="disableReset() || processingIsUnderway()">
+          </p-button>
+        }
+
+        @if (!hideSave()) {
+          <p-button [label]="saveLabel()"
+                    icon="pi pi-check"
+                    severity="primary"
+                    (click)="confirmSave()"
+                    [disabled]="disableSave() || processingIsUnderway()">
+          </p-button>
+        }
+      </div>
+    }
+  </div>
+
+  @if (fieldMap(); as fieldMap) {
+    @if (signalForm()?.dirty()) {
+      <rts-error-summary [errors]="signalForm()?.errorSummary()" [fieldMap]="fieldMap"/>
+    }
   }
 </div>

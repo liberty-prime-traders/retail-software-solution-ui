@@ -1,0 +1,24 @@
+@use "./colors" as theme;
+
+html, body {
+  font-family: system-ui;
+  background-image: url("assets/bg.svg");
+}
+
+form  {
+  padding-top: 1.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.required-label::before {
+  color: theme.$red;
+  content: "* ";
+}
+
+.error-message {
+  color: theme.$red;
+}
+
+.filled-background {
+  background-color: theme.$globalBackground;
+}

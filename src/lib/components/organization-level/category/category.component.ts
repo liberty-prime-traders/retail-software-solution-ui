@@ -34,7 +34,7 @@ export class CategoryComponent extends GridWithAddButtonComponent<CategoryServic
   private readonly categoryService = inject(CategoryService)
   readonly apiService = this.categoryService
 
-  readonly selectedCategory = signal<CategoryType | undefined>(undefined)
+  readonly selectedCategory = signal<CategoryType|undefined>(CategoryType.PRODUCT)
   readonly selectedCategoryStash = signal<CategoryType | undefined>(undefined)
   readonly categories = computed(() => this.categoryService.selectAll().filter(
     cat => cat.categoryType === this.selectedCategory())

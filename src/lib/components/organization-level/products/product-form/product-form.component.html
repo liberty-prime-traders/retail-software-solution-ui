@@ -1,6 +1,6 @@
-<form [formGroup]="productForm()" class="flex flex-column gap-2 filled-background pt-4 pb-2">
+<form class="flex flex-column gap-2" [ngClass]="productFormValue().id ? '' : 'filled-background'">
   <rts-form-field [required]="true" label="Product Name" for="productName">
-    <input id="productName" class="flex-grow-1" pInputText formControlName="productName" />
+    <input id="productName" class="flex-grow-1" pInputText [field]="productForm.productName" />
   </rts-form-field>
 
   <rts-form-field [required]="true" label="Category" for="categoryId">
@@ -9,22 +9,66 @@
                 [options]="productCategories()"
                 optionLabel="categoryName"
                 optionValue="id"
-                formControlName="categoryId"
+                [field]="productForm.categoryId"
                 placeholder="Select a Category" >
     </p-select>
   </rts-form-field>
 
-  <rts-form-field label="Description" for="description">
-    <input id="description" pInputText formControlName="description" />
+  <rts-form-field [required]="true" label="Base Unit" for="baseUnitId">
+    <p-select id="baseUnitId"
+              class="flex-grow-1"
+              [options]="unitValues()"
+              optionLabel="name"
+              optionValue="id"
+              [field]="productForm.baseUnitId"
+              placeholder="Select a Unit" >
+    </p-select>
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!productForm().dirty"
-                     [disableSave]="!productForm().valid || !productForm().dirty"
-                     [hideDelete]="!product()?.id"
-                     [processingStatus]="processingStatus()"
-                     [failureMessages]="failureMessages()"
-                     (delete)="deleteProduct()"
-                     (save)="upsertProduct()"
-                     (resetAction)="resetForm()">
-  </rts-forms-buttons>
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText [field]="productForm.description" />
+  </rts-form-field>
+
+  <p-panel class="m-4" header="Assign tags to product" toggleable collapsed>
+    <p-pickList [source]="availableTags()"
+                [(target)]="selectedTags"
+                [dragdrop]="true"
+                metaKeySelection
+                [keepSelection]="true"
+                dataKey="id"
+                [showSourceControls]="false"
+                [showTargetControls]="false"
+                (onMoveToTarget)="onTagMove()"
+                (onMoveToSource)="onTagMove()"
+                (onMoveAllToTarget)="onTagMove()"
+                (onMoveAllToSource)="onTagMove()"
+                [responsive]="true"
+                class="p-2"
+                filterBy="tagName"
+                breakpoint="1400px">
+      <ng-template let-item pTemplate="item">
+        <rts-tag-display [currentTag]="item" [productFormValue]="productFormValue()"/>
+      </ng-template>
+    </p-pickList>
+  </p-panel>
+
+  @if (productIsInactive()) {
+    <p-button label="Reactivate" (onClick)="reactivateProduct()" severity="success"/>
+
+  } @else {
+    <rts-forms-buttons [disableReset]="!productForm().dirty"
+                       [disableSave]="productForm().invalid() || !productForm().dirty"
+                       [hideDelete]="!originalProduct()?.id"
+                       [signalForm]="productForm()"
+                       [fieldMap]="productFormFields"
+                       [processingStatus]="processingStatus()"
+                       [failureMessages]="failureMessages()"
+                       deleteLabel="Deactivate"
+                       deleteWarning="Confirm Deactivation of Product?"
+                       (delete)="deactivateProduct()"
+                       (save)="upsertProduct()"
+                       (resetAction)="resetForm()">
+    </rts-forms-buttons>
+  }
+
 </form>

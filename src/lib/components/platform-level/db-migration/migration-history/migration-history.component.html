@@ -67,7 +67,7 @@
       <td>{{ migration.startOn | date:'medium' }}</td>
       <td>{{ migration.endOn | date:'medium' }}</td>
       <td>
-        <p-tag [value]="migration.status"
+        <p-tag [value]="migration.status | prettifyEnum"
                [severity]="migration.status | migrationStatusSeverity">
         </p-tag>
       </td>
@@ -109,11 +109,11 @@
               <tr>
                 <td>{{ location.locationName }}</td>
                 <td>{{ location.versionNumber }}</td>
+                <td>{{ location.startOn | date:'medium' }}</td>
+                <td>{{ location.endOn | date:'medium' }}</td>
                 <td>
                   <p-tag [value]="location.status | prettifyEnum" [severity]="location.status | migrationStatusSeverity"/>
                 </td>
-                <td>{{ location.startOn | date:'medium' }}</td>
-                <td>{{ location.endOn | date:'medium' }}</td>
                 <td class="whitespace-nowrap overflow-hidden text-overflow-ellipsis max-w-xs">
                   {{ location.message }}
                 </td>

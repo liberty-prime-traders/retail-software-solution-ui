@@ -3,7 +3,6 @@ import {inject} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {finalize, Subscription} from 'rxjs'
 import {catchError, first, tap} from 'rxjs/operators'
-import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {BaseModel} from './base.model'
 import {BaseStore} from './base.store'
 import {FetchService} from './fetch-service'
@@ -56,10 +55,7 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
     this.startApiRequest()
     return this.httpClient.delete(this.getBasePath(id)).pipe(
       first(),
-      tap(() => {
-        this.store.remove(id)
-        this.setProcessingStatus(ProcessingStatus.SUCCESS)
-      }),
+      tap(() => this.finishDeletingWithSuccess(id)),
       catchError((error: HttpErrorResponse) => this.setStoreError(error)),
       finalize(() => this.finalizeApiRequest())
     )

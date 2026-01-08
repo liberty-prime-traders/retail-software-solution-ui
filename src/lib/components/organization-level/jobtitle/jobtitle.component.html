@@ -65,7 +65,7 @@
   </ng-template>
 </p-table>
 
-<rts-add-row   [(addingIsActive)]="addingIsActive"  [disabled]="rowIsExpanded() || loading()">
+<rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
   @if (addingIsActive()) {
     <rts-jobtitle-form></rts-jobtitle-form>
   }

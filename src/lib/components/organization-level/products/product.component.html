@@ -1,7 +1,5 @@
 <div class="flex align-items-center justify-content-between mb-3">
-  <h3 class="font-bold">
-    Products <span class="font-normal text-color-secondary ml-2">{{ products().length }}</span>
-  </h3>
+  <h3 class="font-bold">Products</h3>
 
   <p-button (click)="setAddingActiveTrue()"
             [disabled]="selectedProduct() !== undefined || loading()"
@@ -15,53 +13,18 @@
 
 <div class="flex gap-3">
   <div class="col-3">
-    <div class="shadow-1 overflow-auto" style="max-height: 600px;">
-      <div class="p-2 border-bottom-1 surface-border">
-        <input type="text"
-               [(ngModel)]="searchTerm"
-               placeholder="Search..."
-               class="w-full p-inputtext p-component" />
-      </div>
-
-      @for (product of filteredProducts(); track product.id) {
-        <div (click)="selectProduct(product)"
-             class="p-3 surface-border cursor-pointer hover:surface-400"
-             [ngClass]="{'surface-hover': selectedProduct()?.id === product.id}">
-
-          <div class="flex justify-content-between align-items-center">
-            <div class="flex flex-column">
-            <span class="font-medium truncate w-12rem">
-              {{ product.productName }}
-            </span>
-              <small>{{ product.categoryName }}</small>
-            </div>
-            <div class="text-right font-semibold">
-              {{ product.description || '--' }}
-            </div>
-          </div>
-        </div>
-      }
-    </div>
+    <rts-product-filter/>
   </div>
 
   <p-divider layout="vertical" />
 
   <div class="flex flex-column gap-4 flex-grow-1">
-    @if (selectedProduct()) {
-      <p-button icon="pi pi-angle-double-left"
-                label="Unselect Product"
-                (click)="clearSelection()"
-                rounded
-                severity="secondary">
-      </p-button>
-    }
-
     @if (addingIsActive()) {
-      <p-button (click)="addingIsActive.set(false)" icon="pi pi-times" severity="info"/>
-      <rts-product-form></rts-product-form>
+      <p-button label="Cancel" (click)="setAddingActiveFalse()" icon="pi pi-times" severity="info"/>
+      <rts-product-form (successfulSave)="setAddingActiveFalse()"/>
     }
     @else {
-      <rts-product-details [selectedProduct]="selectedProduct()" class="flex-grow-1"/>
+      <rts-product-details class="flex-grow-1"/>
     }
   </div>
 </div>

@@ -1,0 +1,17 @@
+:root, :host {
+  font-size: inherit;
+}
+
+.p-menu-item-link-active {
+  background-color: var(--p-primary-100);
+  border-radius: 4px;
+}
+
+.dark-mode {
+  .inactive {
+    background-color: var(--p-slate-400) !important;
+  }
+  .p-menu-item-link-active {
+    color: var(--p-slate-900);
+  }
+}

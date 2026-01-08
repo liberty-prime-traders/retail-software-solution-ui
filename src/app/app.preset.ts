@@ -35,17 +35,6 @@ export const AppPreset = definePreset(Aura, {
           950: '{slate.950}'
         }
       }
-    },
-    components: {
-      menu: {
-        colorScheme: {
-          dark: {
-            item: {
-              color: '{slate.200}'
-            }
-          }
-        }
-      }
     }
   },
   extend: {
