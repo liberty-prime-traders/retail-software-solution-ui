@@ -1,5 +1,5 @@
-import {EntityId} from '@ngrx/signals/entities'
 import {BaseModel} from '../../util/base-api/base.model'
+import {Tag} from '../tag/tag.model'
 
 export interface Product extends BaseModel{
   createdBy?: string
@@ -15,7 +15,4 @@ export interface Product extends BaseModel{
   tagsToRemove?: string[]
 }
 
-export interface TagSummary {
-  id: EntityId
-  tagName: string
-}
+export type TagSummary = Pick<Tag, 'id' | 'tagName'>

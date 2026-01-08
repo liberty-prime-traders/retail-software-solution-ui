@@ -2,36 +2,11 @@
 @use 'primeflex/primeflex.css';
 @use 'primeflex/themes/primeone-dark.css';
 @use "primeicons/primeicons.css";
-@use "colors" as theme;
 
-html, body {
-  font-family: system-ui;
-  background-image: url("assets/bg.svg");
-}
+@use "@nisccoop/modern-design-system/themes/mds/core.css";
+@use "@nisccoop/modern-design-system/themes/mds/fonts.scss";
+@use "@nisccoop/modern-design-system/themes/mds.css";
+@use "@nisccoop/modern-design-system/themes/mds/class-theme-switcher.css";
 
-.required-label::before {
-  color: theme.$red;
-  content: "* ";
-}
-
-.error-message {
-  color: theme.$red;
-}
-
-.filled-background {
-  background-color: theme.$globalBackground;
-}
-
-.p-menu-item-link-active {
-  background-color: var(--p-primary-100);
-  border-radius: 4px;
-}
-
-.dark-mode {
-  .inactive {
-    background-color: var(--p-slate-400) !important;
-  }
-  .p-menu-item-link-active {
-    color: var(--p-slate-900);
-  }
-}
+@use "assets/styles/framework-overrides";
+@use "assets/styles/rts-styles";

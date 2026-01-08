@@ -20,7 +20,7 @@
 
   <div class="flex flex-column gap-4 flex-grow-1">
     @if (addingIsActive()) {
-      <p-button (click)="setAddingActiveFalse()" icon="pi pi-times" severity="info"/>
+      <p-button label="Cancel" (click)="setAddingActiveFalse()" icon="pi pi-times" severity="info"/>
       <rts-product-form (successfulSave)="setAddingActiveFalse()"/>
     }
     @else {

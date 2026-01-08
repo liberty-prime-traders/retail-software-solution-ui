@@ -1,3 +1,4 @@
+import {NgClass} from '@angular/common'
 import {Component, computed, inject, input} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 import {isNil} from 'lodash-es'
@@ -22,7 +23,8 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
     ReactiveFormsModule,
     Select,
     FormFieldComponent,
-    EnumToDropdownPipe
+    EnumToDropdownPipe,
+    NgClass
   ]
 })
 export class TagFormComponent extends BaseFormComponent<TagService> {

@@ -1,4 +1,4 @@
-<form [formGroup]="categoryForm()" class="flex flex-column gap-2">
+<form [formGroup]="categoryForm()" class="flex flex-column gap-2" [ngClass]="category()?.id ? '' : 'filled-background'">
   <rts-form-field [required]="true" label="Category Name" for="categoryName">
     <input id="categoryName" class="flex-grow-1" pInputText formControlName="categoryName">
   </rts-form-field>

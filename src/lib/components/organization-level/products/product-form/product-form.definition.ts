@@ -38,7 +38,7 @@ export namespace ProductFormDefinition {
   })
 
   export const convertToFormModel = (product?: Product): ProductFormModel => ({
-    id: String(product?.id),
+    id: product?.id as string ?? '',
     productName: product?.productName ?? '',
     description: product?.description ?? '',
     categoryId: product?.categoryId ?? '',

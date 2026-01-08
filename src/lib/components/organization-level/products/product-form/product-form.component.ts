@@ -1,16 +1,24 @@
-import {Component, inject, input, OnInit, Signal, signal} from '@angular/core'
+import {NgClass} from '@angular/common'
+import {Component, computed, inject, Input, model, OnInit, Signal, signal} from '@angular/core'
+import {FormsModule} from '@angular/forms'
 import {Field, form} from '@angular/forms/signals'
+import {PrimeTemplate} from 'primeng/api'
 import {InputText} from 'primeng/inputtext'
+import {Panel} from 'primeng/panel'
+import {PickList} from 'primeng/picklist'
 import {Select} from 'primeng/select'
 import {CategoryService} from '../../../../api/organization-level/category/category.service'
 import {Product} from '../../../../api/organization-level/product/product.model'
 import {ProductService} from '../../../../api/organization-level/product/product.service'
+import {Tag} from '../../../../api/organization-level/tag/tag.model'
+import {TagService} from '../../../../api/organization-level/tag/tag.service'
 import {UnitValue} from '../../../../api/organization-level/unit-value/unitvalue.model'
 import {UnitValueService} from '../../../../api/organization-level/unit-value/unitvalue.service'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {ProductFormDefinition} from './product-form.definition'
+import {ProductFormTagDisplayComponent} from './tag-display.component'
 
 @Component({
   selector: 'rts-product-form',
@@ -21,37 +29,68 @@ import {ProductFormDefinition} from './product-form.definition'
     FormButtonsComponent,
     FormFieldComponent,
     Select,
-    Field
+    Field,
+    Panel,
+    ProductFormTagDisplayComponent,
+    NgClass,
+    FormsModule,
+    PickList,
+    PrimeTemplate
   ]
 })
 export class ProductFormComponent extends BaseFormComponent<ProductService> implements OnInit {
-  readonly product = input<Product>()
 
   private readonly productService = inject(ProductService)
   private readonly categoryService = inject(CategoryService)
   private readonly unitValueService = inject(UnitValueService)
+  private readonly tagService = inject(TagService)
   protected override apiService: ProductService =  this.productService
 
-  readonly productCategories = this.categoryService.productCategories
-  readonly unitValues: Signal<UnitValue[]> = this.unitValueService.selectAll
+  @Input()
+  set product(product: Product) {
+    if (product) {
+      this.originalProduct.set(product)
+      this.productFormValue.set(ProductFormDefinition.convertToFormModel(product))
+      this.selectedTags.set(Array.from(product.activeTags ?? []))
+    }
+  }
 
-  private readonly productFormValue = signal<ProductFormDefinition.ProductFormModel>(
+  readonly originalProduct = signal<Product|undefined>(undefined)
+  readonly productCategories = this.categoryService.productCategories
+  private readonly productTags = this.tagService.productTags
+  readonly unitValues: Signal<UnitValue[]> = this.unitValueService.selectAll
+  readonly selectedTags = model<Partial<Tag>[]>([])
+
+  readonly originalTagIds = computed(() =>
+    new Set(this.originalProduct()?.activeTags?.map(tag => String(tag.id)) ?? [])
+  )
+
+  readonly availableTags = computed(() =>
+    this.productTags().filter(tag => !this.originalTagIds().has(String(tag.id)))
+  )
+
+  readonly productFormValue = signal<ProductFormDefinition.ProductFormModel>(
     ProductFormDefinition.defaultProductFormModel
   )
 
-  readonly productFormFields = ProductFormDefinition.fieldMap
-
   readonly productForm = form(this.productFormValue, ProductFormDefinition.productFormSchema)
-
+  readonly productFormFields = ProductFormDefinition.fieldMap
 
   override ngOnInit() {
     super.ngOnInit()
     this.categoryService.fetch()
     this.unitValueService.fetch()
+    this.tagService.fetch()
   }
 
   resetForm() {
-    this.productFormValue.set(ProductFormDefinition.convertToFormModel(this.product()))
+    this.productFormValue.set(ProductFormDefinition.convertToFormModel(this.originalProduct()))
+    this.selectedTags.set(Array.from(this.originalProduct()?.activeTags ?? []))
+  }
+
+  onTagMove() {
+    this.selectedTags.set([...this.selectedTags()])
+    this.updateTagsInFormModel()
   }
 
   upsertProduct() {
@@ -65,8 +104,20 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
   }
 
   deleteProduct() {
-    if (this.product()?.id) {
-      this.productService.delete(this.product()?.id)
+    if (this.productFormValue()?.id) {
+      this.productService.delete(this.productFormValue()?.id)
     }
+  }
+
+  updateTagsInFormModel() {
+    const formValue = this.productFormValue()
+    const selectedTagIds = new Set(this.selectedTags().map(tag => String(tag.id)))
+    formValue.tagsToAdd = new Set(
+      Array.from(selectedTagIds).filter(tagId => !this.originalTagIds().has(tagId))
+    )
+    formValue.tagsToRemove = new Set(
+      Array.from(this.originalTagIds()).filter(tagId => !selectedTagIds.has(tagId))
+    )
+    this.productFormValue.set(formValue)
   }
 }

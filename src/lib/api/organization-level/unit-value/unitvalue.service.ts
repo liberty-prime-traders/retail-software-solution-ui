@@ -1,6 +1,7 @@
 import {HttpParams} from '@angular/common/http'
 import {computed, Injectable, signal, Signal} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
+import {groupBy} from 'lodash-es'
 import {Subscription} from 'rxjs'
 import {Multimap} from '../../../utils/types/Multimap.type'
 import {BaseService} from '../../util/base-api/base.service'
@@ -47,8 +48,8 @@ export class UnitValueService extends BaseService<UnitValue> {
   override finishSavingWithSuccess(result: UnitValue | UnitValue[]) {
     if (result) {
       if (Array.isArray(result)) {
-        const unitGroupId = String(result[0].unitGroupId)
-        this.unitValuesCache.set(unitGroupId, result)
+        const map = Multimap.createFromObject(groupBy(result, 'unitGroupId'))
+        this.unitValuesCache.patchFromMap(map)
       } else {
         this.unitValuesCache.patch(String(result.unitGroupId), [result])
       }

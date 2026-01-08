@@ -72,6 +72,13 @@ export class Multimap<V extends BaseModel> {
     })
   }
 
+  patchFromMap(otherMap: Map<string, V[]>) {
+    otherMap.forEach((v, k) => {
+      this.patch(k, v)
+    })
+    return this
+  }
+
   patch(key: string, collection: readonly V[]): Multimap<V> {
     if (collection.length === 0) return this
     const collectionIds = new Set(collection.map(v => v.id))

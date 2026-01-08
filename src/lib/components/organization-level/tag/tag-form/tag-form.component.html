@@ -1,4 +1,4 @@
-<form [formGroup]="tagForm()" class="flex flex-column gap-2">
+<form [formGroup]="tagForm()" class="flex flex-column gap-2" [ngClass]="tag()?.id ? '' : 'filled-background'">
   <rts-form-field [required]="true" label="Tag Name" for="tagName">
     <input id="tagName" class="flex-grow-1" pInputText formControlName="tagName">
   </rts-form-field>

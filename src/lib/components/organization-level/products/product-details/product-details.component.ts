@@ -1,11 +1,13 @@
 import {Component, computed, inject, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
+import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Product} from '../../../../api/organization-level/product/product.model'
 import {ProductService} from '../../../../api/organization-level/product/product.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
-import {BaseGridComponent} from '../../../reusable/base-grid.component'
+import {ExpandableGridComponent} from '../../../reusable/expandable-grid.component'
 import {GridFilterComponent} from '../../../reusable/grid-filter/grid-filter.component'
+import {ProductFormComponent} from '../product-form/product-form.component'
 
 @Component({
   selector: 'rts-product-details',
@@ -14,10 +16,12 @@ import {GridFilterComponent} from '../../../reusable/grid-filter/grid-filter.com
     FormsModule,
     TableModule,
     GridFilterComponent,
-    NullSafePipe
+    NullSafePipe,
+    Button,
+    ProductFormComponent
   ]
 })
-export class ProductDetailsComponent extends BaseGridComponent<ProductService> {
+export class ProductDetailsComponent extends ExpandableGridComponent<ProductService> {
   private readonly productService = inject(ProductService)
   protected readonly apiService: ProductService = this.productService
 
