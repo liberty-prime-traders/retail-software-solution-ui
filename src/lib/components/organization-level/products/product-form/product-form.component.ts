@@ -8,7 +8,7 @@ import {InputText} from 'primeng/inputtext'
 import {Panel} from 'primeng/panel'
 import {PickList} from 'primeng/picklist'
 import {Select} from 'primeng/select'
-import {CategoryService} from '../../../../api/organization-level/category/category.service'
+import {ProductGroupService} from '../../../../api/organization-level/product-group/product-group.service'
 import {ProductStatus} from '../../../../api/organization-level/product/product-status.enum'
 import {Product} from '../../../../api/organization-level/product/product.model'
 import {ProductService} from '../../../../api/organization-level/product/product.service'
@@ -44,7 +44,7 @@ import {ProductFormTagDisplayComponent} from './tag-display.component'
 export class ProductFormComponent extends BaseFormComponent<ProductService> implements OnInit {
 
   private readonly productService = inject(ProductService)
-  private readonly categoryService = inject(CategoryService)
+  private readonly productGroupService = inject(ProductGroupService)
   private readonly unitValueService = inject(UnitValueService)
   private readonly tagService = inject(TagService)
   protected override apiService: ProductService =  this.productService
@@ -59,7 +59,7 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
   }
 
   readonly originalProduct = signal<Product|undefined>(undefined)
-  readonly productCategories = this.categoryService.productCategories
+  readonly productGroups = this.productGroupService.selectAll
   private readonly productTags = this.tagService.productTags
   readonly unitValues: Signal<UnitValue[]> = this.unitValueService.selectAll
   readonly selectedTags = model<Partial<Tag>[]>([])
@@ -85,7 +85,7 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
 
   override ngOnInit() {
     super.ngOnInit()
-    this.categoryService.fetch()
+    this.productGroupService.fetch()
     this.unitValueService.fetch()
     this.tagService.fetch()
   }

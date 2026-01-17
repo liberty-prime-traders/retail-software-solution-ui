@@ -8,7 +8,7 @@
          scrollable="true"
          sortField="productName"
          #productsTable
-         [globalFilterFields]="['productName', 'description', 'categoryName', 'baseUnit']">
+         [globalFilterFields]="['productName', 'description', 'productGroupName', 'baseUnit']">
 
   <ng-template pTemplate="caption">
     <div class="flex justify-content-between align-items-center">
@@ -27,8 +27,8 @@
       <th pSortableColumn="productName">Product Name
         <p-sortIcon field="productName"/>
       </th>
-      <th pSortableColumn="categoryName">Category
-        <p-sortIcon field="categoryName"/>
+      <th pSortableColumn="productGroupName">Product Group
+        <p-sortIcon field="productGroupName"/>
       </th>
       <th pSortableColumn="baseUnit">Base Unit
         <p-sortIcon field="baseUnit"/>
@@ -46,7 +46,7 @@
     <tr [pSelectableRow]="product" [ngClass]="{'opacity-60': product.status !== ProductStatus.ACTIVE}">
       <td>{{ product?.referenceNumber | nullSafe }}</td>
       <td>{{ product?.productName | nullSafe }}</td>
-      <td>{{ product?.categoryName | nullSafe }}</td>
+      <td>{{ product?.productGroupName | nullSafe }}</td>
       <td>{{ product?.baseUnit | nullSafe }}</td>
       <td>{{ product?.description | nullSafe }}</td>
       <td>

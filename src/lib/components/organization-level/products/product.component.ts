@@ -5,6 +5,7 @@ import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
 import {CategoryService} from '../../../api/organization-level/category/category.service'
+import {ProductGroupService} from '../../../api/organization-level/product-group/product-group.service'
 import {Product} from '../../../api/organization-level/product/product.model'
 import {ProductService} from '../../../api/organization-level/product/product.service'
 import {UnitValueService} from '../../../api/organization-level/unit-value/unitvalue.service'
@@ -33,6 +34,7 @@ export class ProductComponent extends BaseGridComponent<ProductService> {
 
   private readonly productService = inject(ProductService)
   private readonly categoryService = inject(CategoryService)
+  private readonly productGroupService = inject(ProductGroupService)
   private readonly unitValueService = inject(UnitValueService)
   readonly productDataService = inject(ProductDataService)
 
@@ -41,6 +43,7 @@ export class ProductComponent extends BaseGridComponent<ProductService> {
   override readonly loading = computed(() =>
     this.productService.selectLoading()
     || this.categoryService.selectLoading()
+    || this.productGroupService.selectLoading()
     || this.unitValueService.selectLoading()
   )
 

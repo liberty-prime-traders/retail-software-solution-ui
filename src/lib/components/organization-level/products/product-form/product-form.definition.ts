@@ -6,7 +6,7 @@ export namespace ProductFormDefinition {
     id: string
     productName: string
     description: string
-    categoryId: string
+    productGroupId: string
     baseUnitId: string
     tagsToAdd: Set<string>
     tagsToRemove: Set<string>
@@ -16,7 +16,7 @@ export namespace ProductFormDefinition {
     [
       ['productName', 'Product Name'],
       ['description', 'Description'],
-      ['categoryId', 'Category'],
+      ['productGroupId', 'Product Group'],
       ['baseUnitId', 'Base Unit']
     ]
   )
@@ -25,7 +25,7 @@ export namespace ProductFormDefinition {
     id: '',
     productName: '',
     description: '',
-    categoryId: '',
+    productGroupId: '',
     baseUnitId: '',
     tagsToAdd: new Set<string>(),
     tagsToRemove: new Set<string>()
@@ -33,7 +33,7 @@ export namespace ProductFormDefinition {
 
   export const productFormSchema = schema<ProductFormModel>((path) => {
     required(path.productName)
-    required(path.categoryId)
+    required(path.productGroupId)
     required(path.baseUnitId)
   })
 
@@ -41,7 +41,7 @@ export namespace ProductFormDefinition {
     id: product?.id as string ?? '',
     productName: product?.productName ?? '',
     description: product?.description ?? '',
-    categoryId: product?.categoryId ?? '',
+    productGroupId: product?.productGroupId ?? '',
     baseUnitId: product?.baseUnitId ?? '',
     tagsToAdd: new Set<string>(),
     tagsToRemove: new Set<string>()
@@ -51,7 +51,7 @@ export namespace ProductFormDefinition {
     id: formValue.id,
     productName: formValue.productName,
     description: formValue.description,
-    categoryId: formValue.categoryId,
+    productGroupId: formValue.productGroupId,
     baseUnitId: formValue.baseUnitId,
     tagsToAdd: Array.from(formValue.tagsToAdd),
     tagsToRemove: Array.from(formValue.tagsToRemove)

@@ -6,6 +6,7 @@
   <rts-form-field [required]="true" label="Category" for="categoryId">
     <p-select id="categoryId"
               class="flex-grow-1"
+              [filter]="true"
               [options]="productCategories()"
               optionLabel="categoryName"
               optionValue="id"

@@ -5,14 +5,16 @@
     <input id="productName" class="flex-grow-1" pInputText [field]="productForm.productName" />
   </rts-form-field>
 
-  <rts-form-field [required]="true" label="Category" for="categoryId"  [labelColumnSize]="labelSize">
-    <p-select id="categoryId"
-                class="flex-grow-1"
-                [options]="productCategories()"
-                optionLabel="categoryName"
-                optionValue="id"
-                [field]="productForm.categoryId"
-                placeholder="Select a Category" >
+  <rts-form-field [required]="true" label="Product Group" for="productGroupId"  [labelColumnSize]="labelSize">
+    <p-select id="productGroupId"
+              class="flex-grow-1"
+              [options]="productGroups()"
+              optionLabel="groupName"
+              showClear
+              [filter]="true"
+              optionValue="id"
+              [field]="productForm.productGroupId"
+              placeholder="Select a Product Group" >
     </p-select>
   </rts-form-field>
 

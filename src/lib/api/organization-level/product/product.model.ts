@@ -7,8 +7,8 @@ export interface Product extends BaseModel{
   createdOn?: number
   productName?: string
   description?: string
-  categoryName?: string
-  categoryId?: string
+  productGroupName?: string
+  productGroupId?: string
   baseUnit?: string
   baseUnitId?: string
   status?: ProductStatus
