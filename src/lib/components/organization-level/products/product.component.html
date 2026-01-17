@@ -2,7 +2,7 @@
   <h3 class="font-bold">Products</h3>
 
   <p-button (click)="setAddingActiveTrue()"
-            [disabled]="selectedProduct() !== undefined || loading()"
+            [disabled]="selectedProduct() !== undefined || loading() || addingIsActive() || productDataService.showingAdvancedFilter()"
             label="+ Add product"
             rounded severity="secondary">
   </p-button>
@@ -12,11 +12,22 @@
 <p-divider />
 
 <div class="flex gap-3">
-  <div class="col-3">
-    <rts-product-filter/>
-  </div>
+  @if (productDataService.showingAdvancedFilter()) {
+    <div class="col-3">
+      <div class="flex justify-content-between align-items-center">
+        <span class="text-2xl font-italic">Filters:</span>
+        <p-button icon="pi pi-times"
+                  label="Quit Advanced Filter"
+                  severity="secondary"
+                  text
+                  (onClick)="productDataService.toggleAdvancedFilter(false)">
+        </p-button>
+      </div>
+      <rts-product-filter/>
+    </div>
 
-  <p-divider layout="vertical" />
+    <p-divider layout="vertical" />
+  }
 
   <div class="flex flex-column gap-4 flex-grow-1">
     @if (addingIsActive()) {
@@ -24,7 +35,7 @@
       <rts-product-form (successfulSave)="setAddingActiveFalse()"/>
     }
     @else {
-      <rts-product-details class="flex-grow-1"/>
+      <rts-product-details class="flex-grow-1" />
     }
   </div>
 </div>

@@ -50,7 +50,7 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
   protected override apiService: ProductService =  this.productService
 
   @Input()
-  set product(product: Product) {
+  set product(product: Product|null) {
     if (product) {
       this.originalProduct.set(product)
       this.productFormValue.set(ProductFormDefinition.convertToFormModel(product))

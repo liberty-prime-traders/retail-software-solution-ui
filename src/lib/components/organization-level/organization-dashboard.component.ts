@@ -1,6 +1,7 @@
-import {Component, computed, inject, Signal} from '@angular/core'
+import {Component, computed, inject, signal, Signal} from '@angular/core'
 import {RouterOutlet} from '@angular/router'
-import {MenuItem} from 'primeng/api'
+import {MenuItem, PrimeTemplate} from 'primeng/api'
+import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
 import {SessionContextService} from '../../utils/services/session-context.service'
@@ -11,7 +12,9 @@ import {SessionContextService} from '../../utils/services/session-context.servic
   imports: [
     RouterOutlet,
     Menu,
-    Card
+    Card,
+    PrimeTemplate,
+    Button
   ]
 })
 export class OrganizationDashboardComponent {
@@ -31,6 +34,7 @@ export class OrganizationDashboardComponent {
 
   private readonly businessSettingsMenuItems: MenuItem[] = [
     {label: 'Products', icon: 'pi pi-objects-column', routerLink: 'products'},
+    {label: 'Product Groups', icon: 'pi pi-clone', routerLink: 'product-groups'},
     {label: 'Job Titles', icon: 'pi pi-gauge', routerLink: 'job-title'},
     {label: 'Categories', icon: 'pi pi-palette', routerLink: 'category'},
     {label: 'Units', icon: 'pi pi-percentage', routerLink: 'units'},
@@ -47,4 +51,6 @@ export class OrganizationDashboardComponent {
       visible: this.sessionContextService.loggedInUserIsOrganizationAdmin()
     }
   ])
+
+  readonly showMenu = signal(true)
 }

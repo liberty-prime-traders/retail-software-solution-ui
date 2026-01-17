@@ -14,7 +14,9 @@ export interface Product extends BaseModel{
   status?: ProductStatus
   activeTags?: TagSummary[]
   tagsToAdd?: string[],
-  tagsToRemove?: string[]
+  tagsToRemove?: string[],
+  cursor?: number,
+  similarityScore?: number
 }
 
 export type TagSummary = Pick<Tag, 'id' | 'tagName'>

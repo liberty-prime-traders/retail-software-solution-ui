@@ -1,9 +1,11 @@
 <form class="flex flex-column gap-2" [ngClass]="productFormValue().id ? '' : 'filled-background'">
-  <rts-form-field [required]="true" label="Product Name" for="productName">
+  @let labelSize = originalProduct() ? 3 : 2;
+
+  <rts-form-field [required]="true" label="Product Name" for="productName" [labelColumnSize]="labelSize">
     <input id="productName" class="flex-grow-1" pInputText [field]="productForm.productName" />
   </rts-form-field>
 
-  <rts-form-field [required]="true" label="Category" for="categoryId">
+  <rts-form-field [required]="true" label="Category" for="categoryId"  [labelColumnSize]="labelSize">
     <p-select id="categoryId"
                 class="flex-grow-1"
                 [options]="productCategories()"
@@ -14,7 +16,7 @@
     </p-select>
   </rts-form-field>
 
-  <rts-form-field [required]="true" label="Base Unit" for="baseUnitId">
+  <rts-form-field [required]="true" label="Base Unit" for="baseUnitId" [labelColumnSize]="labelSize">
     <p-select id="baseUnitId"
               class="flex-grow-1"
               [options]="unitValues()"
@@ -25,7 +27,7 @@
     </p-select>
   </rts-form-field>
 
-  <rts-form-field label="Description" for="description">
+  <rts-form-field  label="Description" for="description" [labelColumnSize]="labelSize">
     <input id="description" pInputText [field]="productForm.description" />
   </rts-form-field>
 

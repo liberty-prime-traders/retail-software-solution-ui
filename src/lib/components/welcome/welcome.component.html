@@ -1,48 +1,69 @@
 <div class="flex flex-column h-full">
-  <div class="w-full flex justify-content-between p-3 align-items-center">
-    @if (isLoggedIn$ | async) {
-      <div class="flex gap-2">
-        <p-avatar [label]="userInitials()" shape="circle"/>
-        <div class="flex flex-column gap-1">
-          @if (sessionContextService.selectedOrganization()) {
-            <span class="font-semibold text-2xl">{{sessionContextService.selectedOrganization()?.name}}</span>
-            @if (sessionContextService.selectedLocation()) {
-              <span>{{sessionContextService.selectedLocation()?.name}}</span>
-            }
-          } @else {
-            <span class="font-semibold">No Organization Selected</span>
-            <span routerLink="/secure" class="font-italic text-cyan-600 cursor-pointer">
+
+  @if (fullScreen()) {
+    <div class="flex justify-content-end p-1">
+      <p-button icon="pi pi-arrow-down-left-and-arrow-up-right-to-center"
+                (onClick)="fullScreen.set(false)"
+                severity="secondary">
+      </p-button>
+    </div>
+
+  } @else {
+    <div class="w-full flex justify-content-between p-3 align-items-center">
+      @if (isLoggedIn$ | async) {
+        <div class="flex gap-2">
+          <p-avatar [label]="userInitials()" shape="circle"/>
+          <div class="flex flex-column gap-1">
+            @if (sessionContextService.selectedOrganization()) {
+              <span class="font-semibold text-2xl">{{sessionContextService.selectedOrganization()?.name}}</span>
+              @if (sessionContextService.selectedLocation()) {
+                <span>{{sessionContextService.selectedLocation()?.name}}</span>
+              }
+            } @else {
+              <span class="font-semibold">No Organization Selected</span>
+              <span routerLink="/secure" class="font-italic text-cyan-600 cursor-pointer">
                 Select Organization
             </span>
-          }
+            }
+          </div>
         </div>
-      </div>
 
-      <div class="flex gap-1 align-items-center">
-        <span class="font-semibold">Dark Mode</span>
-        <p-toggle-switch [(ngModel)]="darkMode"/>
-      </div>
-
-      <div class="flex gap-2 justify-content-end align-items-center">
-        <p-menubar [model]="quickActionsMenu()" class="text-sm font-semibold"/>
-        <div class="flex" [ngClass]="quickActionsMenuVisible() ? '' : 'flex-grow-1 justify-content-end'">
-          <p-button icon="pi pi-user" label="Logout" (onClick)="logout()" severity="info"/>
+        <div class="flex gap-1 align-items-center">
+          <span class="font-semibold">Dark Mode</span>
+          <p-toggle-switch [(ngModel)]="darkMode"/>
         </div>
-      </div>
+
+        <div class="flex gap-2 justify-content-end align-items-center">
+          <p-menubar [model]="quickActionsMenu()" class="text-sm font-semibold"/>
+          <div class="flex" [ngClass]="quickActionsMenuVisible() ? '' : 'flex-grow-1 justify-content-end'">
+            <p-button icon="pi pi-user" label="Logout" (onClick)="logout()" severity="info"/>
+          </div>
+        </div>
 
 
-    } @else {
-      <div class="flex flex-grow-1 justify-content-end">
-        <p-button icon="pi pi-user" severity="secondary" label="Login" routerLink="/secure"/>
+      } @else {
+        <div class="flex flex-grow-1 justify-content-end">
+          <p-button icon="pi pi-user" severity="secondary" label="Login" routerLink="/secure"/>
+        </div>
+      }
+    </div>
+
+    <p-divider/>
+
+    <div class="h-1rem"></div>
+  }
+
+
+  <div class="flex-grow-1 relative">
+    @if (!fullScreen()) {
+      <div class="absolute right-50 top-0 z-1 flex justify-content-end p-1">
+        <p-button icon="pi pi-window-maximize"
+                  (onClick)="fullScreen.set(true)"
+                  pTooltip="Full Screen"
+                  severity="secondary">
+        </p-button>
       </div>
     }
-  </div>
-
-  <p-divider></p-divider>
-
-  <div class="h-1rem"></div>
-
-  <div class="flex-grow-1">
     <router-outlet/>
   </div>
 </div>

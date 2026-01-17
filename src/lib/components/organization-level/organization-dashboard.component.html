@@ -1,5 +1,18 @@
 <div class="flex gap-4 mr-3 h-full">
-  <p-menu [model]="menuItems()" class="block h-full filled-background"/>
+  @if (showMenu()) {
+    <p-menu [model]="menuItems()" class="block h-full filled-background">
+      <ng-template pTemplate="start">
+        <div class="pl-1 pt-1">
+          <p-button icon="pi pi-times" severity="secondary" (onClick)="showMenu.set(false)"/>
+        </div>
+      </ng-template>
+    </p-menu>
+
+  } @else {
+    <div class="pl-1">
+      <p-button icon="pi pi-bars" (onClick)="showMenu.set(true)"/>
+    </div>
+  }
 
   <p-card class="flex-grow-1">
     <router-outlet />

@@ -1,5 +1,5 @@
-<p-table [value]="filteredProducts()"
-         [loading]="loading()"
+<p-table [value]="productDataService.products()"
+         [loading]="productDataService.loading()"
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
          rowExpandMode="single"
@@ -11,7 +11,12 @@
          [globalFilterFields]="['productName', 'description', 'categoryName', 'baseUnit']">
 
   <ng-template pTemplate="caption">
-    <rts-grid-filter [dataTable]="productsTable" placeholder="Refine Search"/>
+    <div class="flex justify-content-between align-items-center">
+      @if (!productDataService.showingAdvancedFilter()) {
+        <p-button icon="pi pi-chevron-right" label="Advanced Filter" (onClick)="showAdvancedFilter()"/>
+        <rts-grid-filter [dataTable]="productsTable" placeholder="Search"/>
+      }
+    </div>
   </ng-template>
 
   <ng-template pTemplate="header">
@@ -31,21 +36,30 @@
       <th pSortableColumn="description">Description
         <p-sortIcon field="description"/>
       </th>
-
+      <th>Tags</th>
       <th style="width: 5rem"></th>
     </tr>
   </ng-template>
 
   <ng-template pTemplate="body" let-product let-expanded="expanded">
 
-    @let productIsInactive = product.status !== ProductStatus.ACTIVE;
-
-    <tr [pSelectableRow]="product">
-      <td [ngClass]="{'line-through': productIsInactive}">{{ product?.referenceNumber | nullSafe }}</td>
-      <td [ngClass]="{'line-through': productIsInactive}">{{ product?.productName | nullSafe }}</td>
+    <tr [pSelectableRow]="product" [ngClass]="{'opacity-60': product.status !== ProductStatus.ACTIVE}">
+      <td>{{ product?.referenceNumber | nullSafe }}</td>
+      <td>{{ product?.productName | nullSafe }}</td>
       <td>{{ product?.categoryName | nullSafe }}</td>
       <td>{{ product?.baseUnit | nullSafe }}</td>
       <td>{{ product?.description | nullSafe }}</td>
+      <td>
+        @let tags = product.activeTags;
+        @if (tags?.length) {
+          <div class="flex gap-1 flex-wrap">
+            @for (tag of tags; track tag.id) {
+              <p-tag [value]="tag.tagName"/>
+            }
+          </div>
+
+        }
+      </td>
       <td>
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
@@ -59,7 +73,7 @@
 
   <ng-template pTemplate="expandedrow" let-product>
     <tr>
-      <td colspan="6" class="filled-background">
+      <td colspan="7" class="filled-background">
         <rts-product-form [product]="product"/>
       </td>
     </tr>

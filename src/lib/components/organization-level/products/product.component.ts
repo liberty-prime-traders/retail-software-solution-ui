@@ -9,6 +9,7 @@ import {Product} from '../../../api/organization-level/product/product.model'
 import {ProductService} from '../../../api/organization-level/product/product.service'
 import {UnitValueService} from '../../../api/organization-level/unit-value/unitvalue.service'
 import {BaseGridComponent} from '../../reusable/base-grid.component'
+import {ProductDataService} from './product-data.servive'
 import {ProductDetailsComponent} from './product-details/product-details.component'
 import {ProductFilterComponent} from './product-filter/product-filter.component'
 import {ProductFormComponent} from './product-form/product-form.component'
@@ -33,6 +34,8 @@ export class ProductComponent extends BaseGridComponent<ProductService> {
   private readonly productService = inject(ProductService)
   private readonly categoryService = inject(CategoryService)
   private readonly unitValueService = inject(UnitValueService)
+  readonly productDataService = inject(ProductDataService)
+
   protected override apiService: ProductService = this.productService
 
   override readonly loading = computed(() =>
