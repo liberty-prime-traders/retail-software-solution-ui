@@ -14,7 +14,7 @@ import {OrganizationLaunchResponse} from '../../../api/platform-level/organizati
 import {Organization} from '../../../api/platform-level/organization/organization.model'
 import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
 import {SysUserService} from '../../../api/platform-level/sys-user/sys-user.service'
-import {parseError} from '../../../utils/error.util'
+import {parseError} from '../../../utils/errors'
 import {LocalStorageService} from '../../../utils/services/local-storage.service'
 import {RtsOktaService} from '../../../utils/services/rts-okta.service'
 import {SessionContextService} from '../../../utils/services/session-context.service'

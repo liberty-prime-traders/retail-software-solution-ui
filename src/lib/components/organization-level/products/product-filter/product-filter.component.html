@@ -36,21 +36,4 @@
 
   </div>
 
-  <div class="h-2rem"></div>
-  <div class="flex gap-3 mt-2 justify-content-end">
-    <p-button label="Clear"
-              icon="pi pi-times"
-              class="cursor-pointer"
-              (click)="productDataService.resetFilters()"
-              severity="secondary">
-    </p-button>
-
-    <p-button label="Refresh Products"
-              icon="pi pi-refresh"
-              [disabled]="productDataService.filterForm.invalid"
-              (click)="productDataService.applyFilters()"
-              severity="primary">
-    </p-button>
-  </div>
-
 </form>

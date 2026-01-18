@@ -2,25 +2,24 @@
   <h3 class="font-bold">Products</h3>
 
   <p-button (click)="setAddingActiveTrue()"
-            [disabled]="selectedProduct() !== undefined || loading() || addingIsActive() || productDataService.showingAdvancedFilter()"
+            [disabled]="selectedProduct() !== undefined || loading() || addingIsActive() || showAdvancedFilter()"
             label="+ Add product"
             rounded severity="secondary">
   </p-button>
-
 </div>
 
 <p-divider />
 
 <div class="flex gap-3">
-  @if (productDataService.showingAdvancedFilter()) {
+  @if (showAdvancedFilter()) {
     <div class="col-3">
       <div class="flex justify-content-between align-items-center">
         <span class="text-2xl font-italic">Filters:</span>
         <p-button icon="pi pi-times"
-                  label="Quit Advanced Filter"
+                  label="Hide Advanced Filter"
                   severity="secondary"
                   text
-                  (onClick)="productDataService.toggleAdvancedFilter(false)">
+                  (onClick)="toggleAdvancedFilter(false)">
         </p-button>
       </div>
       <rts-product-filter/>
@@ -35,6 +34,18 @@
       <rts-product-form (successfulSave)="setAddingActiveFalse()"/>
     }
     @else {
+      <div class="flex justify-content-between align-items-center">
+        @if (!showAdvancedFilter()) {
+          <p-button icon="pi pi-chevron-right" label="Advanced Filter" (onClick)="toggleAdvancedFilter(true)"/>
+        }
+
+        @if (advancedFilterApplied()) {
+          <p-message severity="info"> Advanced Filter is in use </p-message>
+        }
+
+        <rts-search [(searchValue)]="searchValue" [ngClass]="{'flex-grow-1': showAdvancedFilter()}"/>
+      </div>
+
       <rts-product-details class="flex-grow-1" />
     }
   </div>

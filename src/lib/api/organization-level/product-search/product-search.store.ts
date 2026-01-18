@@ -7,5 +7,5 @@ import {ProductSearchParameters} from './product-search-parameters.model'
 export class ProductSearchStore extends createPaginatedBaseStore<Product, ProductSearchParameters>()
   implements PaginatedBaseStore<Product, ProductSearchParameters> {
 
-  readonly basePath = 'products/structured-search'
+  readonly basePath = 'products/search'
 }

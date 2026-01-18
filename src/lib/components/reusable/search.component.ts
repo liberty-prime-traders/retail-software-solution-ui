@@ -30,6 +30,7 @@ import {InputText} from 'primeng/inputtext'
   `
 })
 export class SearchComponent {
-  readonly searchValue = model<string>()
+  readonly searchValue = model<string>('')
   readonly placeholder = input<string>('Search...')
+
 }

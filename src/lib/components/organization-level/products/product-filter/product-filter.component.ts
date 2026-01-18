@@ -1,6 +1,5 @@
 import {Component, inject, model, OnInit} from '@angular/core'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
-import {Button} from 'primeng/button'
 import {Checkbox} from 'primeng/checkbox'
 import {InputText} from 'primeng/inputtext'
 import {MultiSelect} from 'primeng/multiselect'
@@ -21,7 +20,6 @@ import {ProductDataService} from '../product-data.servive'
     InputText,
     ReactiveFormsModule,
     MultiSelect,
-    Button,
     EnumToDropdownPipe,
     Checkbox
   ]

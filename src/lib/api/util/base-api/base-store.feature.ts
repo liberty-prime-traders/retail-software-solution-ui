@@ -9,7 +9,7 @@ import {
   upsertEntity,
   withEntities
 } from '@ngrx/signals/entities'
-import {parseError} from '../../../utils/error.util'
+import {parseError} from '../../../utils/errors'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {BaseModel} from './base.model'
 import {BaseState, createInitialState} from './base.state'

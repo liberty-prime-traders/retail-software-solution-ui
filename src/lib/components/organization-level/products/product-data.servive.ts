@@ -1,7 +1,6 @@
-import {computed, inject, Injectable, signal} from '@angular/core'
-import {toSignal} from '@angular/core/rxjs-interop'
+import {computed, inject, Injectable} from '@angular/core'
 import {NonNullableFormBuilder, Validators} from '@angular/forms'
-import {map} from 'rxjs'
+import {debounceTime, map, startWith} from 'rxjs'
 import {ProductSearchService} from '../../../api/organization-level/product-search/product-search.service'
 import {ProductStatus} from '../../../api/organization-level/product/product-status.enum'
 import {ProductService} from '../../../api/organization-level/product/product.service'
@@ -12,24 +11,11 @@ export class ProductDataService {
   private readonly productSearchService = inject(ProductSearchService)
   private readonly formBuilder = inject(NonNullableFormBuilder)
 
-  private readonly showAdvancedFilter = signal(false)
-  readonly showingAdvancedFilter = this.showAdvancedFilter.asReadonly()
+  readonly products = this.productSearchService.selectAll
 
-  readonly products = computed(() => {
-    if (this.showAdvancedFilter()) {
-      return this.productSearchService.selectAll()
-    } else {
-      return this.productService.selectAll()
-    }
-  })
-
-  readonly loading = computed(() => {
-    if (this.showAdvancedFilter()) {
-      return this.productSearchService.selectLoading()
-    } else {
-      return this.productService.selectLoading()
-    }
-  })
+  readonly loading = computed(() =>
+    this.productSearchService.selectLoading() || this.productService.selectLoading()
+  )
 
   readonly filterForm = this.formBuilder.group({
     referenceNumber: [''],
@@ -38,35 +24,35 @@ export class ProductDataService {
     statusList: [[ProductStatus.ACTIVE], [Validators.required]]
   })
 
-  private readonly advancedFilterApplied$ = this.filterForm.valueChanges.pipe(
+  readonly filterFormChanges$ = this.filterForm.valueChanges.pipe(
+    startWith(this.filterForm.value),
+    debounceTime(1000),
+  )
+
+  readonly advancedFilterApplied$ = this.filterFormChanges$.pipe(
     map(() => {
       const referenceNumberPopulated = !!this.filterForm.get('referenceNumber')?.value
       const categoryIdsPopulated = (this.filterForm.get('categoryIds')?.value ?? []).length > 0
       const tagIdsPopulated = (this.filterForm.get('tagIds')?.value ?? []).length > 0
       const statusList = this.filterForm.get('statusList')?.value ?? []
-      const statusListPopulated = statusList.length > 1 || statusList[0] !== ProductStatus.ACTIVE
+      const statusListPopulated = statusList.length > 1
+        || (statusList.length === 1 && statusList[0] !== ProductStatus.ACTIVE)
 
       return referenceNumberPopulated || categoryIdsPopulated || tagIdsPopulated || statusListPopulated
     })
   )
 
-  readonly advancedFilterApplied = toSignal(this.advancedFilterApplied$, {initialValue: false})
-
-  resetFilters() {
-    this.filterForm.reset()
-  }
-
-  applyFilters() {
-    const filters = this.filterForm.value
-    this.productSearchService.refetch({
-      referenceNumber: filters.referenceNumber,
-      categoryIds: filters.categoryIds,
-      tagsIds: filters.tagIds,
-      statusList: filters.statusList
-    })
-  }
-
-  toggleAdvancedFilter(show: boolean) {
-    this.showAdvancedFilter.set(show)
+  applyFilters(searchText: string): null {
+    if (this.filterForm.valid) {
+      const filters = this.filterForm.value
+      this.productSearchService.refetch({
+        searchText: searchText,
+        referenceNumber: filters.referenceNumber,
+        categoryIds: filters.categoryIds,
+        tagsIds: filters.tagIds,
+        statusList: filters.statusList
+      })
+    }
+    return null
   }
 }

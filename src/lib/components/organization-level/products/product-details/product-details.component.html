@@ -6,18 +6,7 @@
          dataKey="id"
          scrollHeight="600px"
          scrollable="true"
-         sortField="productName"
-         #productsTable
-         [globalFilterFields]="['productName', 'description', 'productGroupName', 'baseUnit']">
-
-  <ng-template pTemplate="caption">
-    <div class="flex justify-content-between align-items-center">
-      @if (!productDataService.showingAdvancedFilter()) {
-        <p-button icon="pi pi-chevron-right" label="Advanced Filter" (onClick)="showAdvancedFilter()"/>
-        <rts-grid-filter [dataTable]="productsTable" placeholder="Search"/>
-      }
-    </div>
-  </ng-template>
+         sortField="productName">
 
   <ng-template pTemplate="header">
     <tr>
@@ -64,7 +53,7 @@
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   severity="secondary"
-                  [disabled]="loading()"
+                  [disabled]="productDataService.loading()"
                   [pRowToggler]="product">
         </p-button>
       </td>
