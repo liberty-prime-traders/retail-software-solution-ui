@@ -16,9 +16,9 @@ import {UnitValueService} from '../../../api/organization-level/unit-value/unitv
 import {debouncedSignal} from '../../../utils/signals'
 import {HasSubscriptionComponent} from '../../reusable/has-subscription.component'
 import {SearchComponent} from '../../reusable/search.component'
-import {ProductDataService} from './product-data.servive'
 import {ProductDetailsComponent} from './product-details/product-details.component'
 import {ProductFilterComponent} from './product-filter/product-filter.component'
+import {ProductFilterService} from './product-filter/product-filter.service'
 import {ProductFormComponent} from './product-form/product-form.component'
 
 @Component({
@@ -45,7 +45,7 @@ export class ProductComponent extends HasSubscriptionComponent implements OnInit
   private readonly categoryService = inject(CategoryService)
   private readonly productGroupService = inject(ProductGroupService)
   private readonly unitValueService = inject(UnitValueService)
-  readonly productDataService = inject(ProductDataService)
+  readonly productFilterService = inject(ProductFilterService)
 
   readonly loading = computed(() =>
     this.productService.selectLoading()
@@ -62,13 +62,13 @@ export class ProductComponent extends HasSubscriptionComponent implements OnInit
 
   private readonly debouncedSearchValue = debouncedSignal(this.searchValue, 1000)
 
-  readonly advancedFilterApplied = toSignal(this.productDataService.advancedFilterApplied$, {initialValue: false})
+  readonly advancedFilterApplied = toSignal(this.productFilterService.advancedFilterApplied$, {initialValue: false})
 
   private readonly applyFilters$ = combineLatest([
     toObservable(this.debouncedSearchValue),
-    this.productDataService.filterFormChanges$
+    this.productFilterService.filterFormChanges$
   ]).pipe(
-    switchMap(([searchText, _]) => of(this.productDataService.applyFilters(searchText)))
+    switchMap(([searchText, _]) => of(this.productFilterService.applyFilters(searchText)))
   ).subscribe()
 
   ngOnInit() {

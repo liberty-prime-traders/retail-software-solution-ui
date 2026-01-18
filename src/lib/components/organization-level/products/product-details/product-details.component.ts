@@ -1,12 +1,12 @@
 import {NgClass} from '@angular/common'
-import {Component, inject, model, signal} from '@angular/core'
+import {Component, inject, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
 import {ProductStatus} from '../../../../api/organization-level/product/product-status.enum'
+import {ProductService} from '../../../../api/organization-level/product/product.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
-import {ProductDataService} from '../product-data.servive'
 import {ProductFormComponent} from '../product-form/product-form.component'
 
 @Component({
@@ -23,9 +23,11 @@ import {ProductFormComponent} from '../product-form/product-form.component'
   ]
 })
 export class ProductDetailsComponent {
-  readonly productDataService = inject(ProductDataService)
+  private readonly productService = inject(ProductService)
 
   readonly ProductStatus = ProductStatus
   readonly rowIsExpanded = signal<boolean>(false)
-  readonly freeFormSearch = model<string>()
+
+  readonly products = this.productService.selectAll
+  readonly loading = this.productService.selectLoading
 }

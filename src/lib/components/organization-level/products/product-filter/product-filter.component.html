@@ -1,4 +1,4 @@
-<form class="flex flex-column gap-2 mt-4 h-full" [formGroup]="productDataService.filterForm">
+<form class="flex flex-column gap-2 mt-4 h-full" [formGroup]="productFilterService.filterForm">
 
   <rts-form-field label="Reference Number" for="referenceNumber" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
     <input placeholder="Starts with ..." id="referenceNumber" class="flex-grow-1" pInputText formControlName="referenceNumber" />

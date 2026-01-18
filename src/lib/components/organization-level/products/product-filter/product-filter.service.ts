@@ -1,21 +1,13 @@
-import {computed, inject, Injectable} from '@angular/core'
+import {inject, Injectable} from '@angular/core'
 import {NonNullableFormBuilder, Validators} from '@angular/forms'
 import {debounceTime, map, startWith} from 'rxjs'
-import {ProductSearchService} from '../../../api/organization-level/product-search/product-search.service'
-import {ProductStatus} from '../../../api/organization-level/product/product-status.enum'
-import {ProductService} from '../../../api/organization-level/product/product.service'
+import {ProductSearchService} from '../../../../api/organization-level/product-search/product-search.service'
+import {ProductStatus} from '../../../../api/organization-level/product/product-status.enum'
 
 @Injectable({providedIn: 'root'})
-export class ProductDataService {
-  private readonly productService = inject(ProductService)
+export class ProductFilterService {
   private readonly productSearchService = inject(ProductSearchService)
   private readonly formBuilder = inject(NonNullableFormBuilder)
-
-  readonly products = this.productSearchService.selectAll
-
-  readonly loading = computed(() =>
-    this.productSearchService.selectLoading() || this.productService.selectLoading()
-  )
 
   readonly filterForm = this.formBuilder.group({
     referenceNumber: [''],

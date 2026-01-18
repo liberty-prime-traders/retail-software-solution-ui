@@ -9,7 +9,7 @@ import {TagService} from '../../../../api/organization-level/tag/tag.service'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
 import {FormFieldDirection} from '../../../reusable/form-field/form-field-direction'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
-import {ProductDataService} from '../product-data.servive'
+import {ProductFilterService} from './product-filter.service'
 
 @Component({
   selector: 'rts-product-filter',
@@ -28,7 +28,7 @@ export class ProductFilterComponent implements OnInit {
 
   private readonly tagService = inject(TagService)
   private readonly categoryService = inject(CategoryService)
-  readonly productDataService = inject(ProductDataService)
+  readonly productFilterService = inject(ProductFilterService)
 
   readonly productTags = this.tagService.productTags
   readonly productCategories = this.categoryService.productCategories

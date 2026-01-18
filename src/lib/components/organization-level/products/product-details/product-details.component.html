@@ -1,5 +1,5 @@
-<p-table [value]="productDataService.products()"
-         [loading]="productDataService.loading()"
+<p-table [value]="products()"
+         [loading]="loading()"
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
          rowExpandMode="single"
@@ -53,7 +53,7 @@
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   severity="secondary"
-                  [disabled]="productDataService.loading()"
+                  [disabled]="loading()"
                   [pRowToggler]="product">
         </p-button>
       </td>

@@ -20,7 +20,7 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     upsertOnSuccess: false,
     urlSuffix: ''
   }
-  private readonly apiRequestConfig = signal<ApiRequestConfig>(this.defaultApiRequestConfig)
+  protected readonly apiRequestConfig = signal<ApiRequestConfig>(this.defaultApiRequestConfig)
 
   protected constructor(protected readonly store: BaseStore<RESPONSE>) {
     this.selectLoading = this.store.loading
