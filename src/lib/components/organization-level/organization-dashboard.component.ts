@@ -1,6 +1,6 @@
 import {Component, computed, inject, signal, Signal} from '@angular/core'
 import {RouterOutlet} from '@angular/router'
-import {MenuItem, PrimeTemplate} from 'primeng/api'
+import {MenuItem} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
@@ -13,7 +13,6 @@ import {SessionContextService} from '../../utils/services/session-context.servic
     RouterOutlet,
     Menu,
     Card,
-    PrimeTemplate,
     Button
   ]
 })

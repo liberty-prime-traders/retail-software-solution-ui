@@ -1,16 +1,18 @@
 <div class="flex gap-4 mr-3 h-full">
   @if (showMenu()) {
-    <p-menu [model]="menuItems()" class="block h-full filled-background">
-      <ng-template pTemplate="start">
-        <div class="pl-1 pt-1">
-          <p-button icon="pi pi-times" severity="secondary" (onClick)="showMenu.set(false)"/>
-        </div>
-      </ng-template>
-    </p-menu>
+    <div class="relative">
+      <p-button icon="pi pi-bars"
+                (onClick)="showMenu.set(false)"
+                size="small"
+                severity="secondary"
+                class="absolute position-right-5 position-top-3 z-1">
+      </p-button>
+      <p-menu [model]="menuItems()" class="block h-full filled-background"/>
+    </div>
 
   } @else {
     <div class="pl-1">
-      <p-button icon="pi pi-bars" (onClick)="showMenu.set(true)"/>
+      <p-button icon="pi pi-bars" (onClick)="showMenu.set(true)" size="small" severity="secondary"/>
     </div>
   }
 

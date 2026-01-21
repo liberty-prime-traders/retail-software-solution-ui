@@ -8,7 +8,7 @@ import {CategoryStore} from './category.store'
 export class CategoryService extends BaseService<Category> {
 
   readonly productCategories = computed(() =>
-  this.selectAll().filter(category => category.categoryType === CategoryType.PRODUCT)
+    this.selectAll().filter(category => category.categoryType === CategoryType.PRODUCT)
   )
 
   constructor(protected override readonly store: CategoryStore) {

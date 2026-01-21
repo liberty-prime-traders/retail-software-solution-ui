@@ -22,6 +22,10 @@ export const withBaseStore = <ENTITY extends BaseModel>(selectId: SelectEntityId
   })),
   withMethods((store) => ({
 
+    selectForId(id: EntityId): ENTITY | undefined {
+      return store.entityMap()[id]
+    },
+
     setAll(entities: ENTITY[]) {
       patchState(store, upsertEntities(entities, {selectId}))
     },

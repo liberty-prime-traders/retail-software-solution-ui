@@ -2,29 +2,23 @@
          [loading]="loading()"
          (onRowExpand)="rowIsExpanded.set(true)"
          (onRowCollapse)="rowIsExpanded.set(false)"
+         (onLazyLoad)="onLazyLoad($event)"
+         [lazy]="true"
          rowExpandMode="single"
          dataKey="id"
          scrollHeight="600px"
          scrollable="true"
-         sortField="productName">
+         [rows]="20"
+         [virtualScroll]="true"
+         [virtualScrollItemSize]="65">
 
   <ng-template pTemplate="header">
     <tr>
-      <th pSortableColumn="referenceNumber">Reference Number
-        <p-sortIcon field="referenceNumber"/>
-      </th>
-      <th pSortableColumn="productName">Product Name
-        <p-sortIcon field="productName"/>
-      </th>
-      <th pSortableColumn="productGroupName">Product Group
-        <p-sortIcon field="productGroupName"/>
-      </th>
-      <th pSortableColumn="baseUnit">Base Unit
-        <p-sortIcon field="baseUnit"/>
-      </th>
-      <th pSortableColumn="description">Description
-        <p-sortIcon field="description"/>
-      </th>
+      <th>Reference Number</th>
+      <th>Product Name</th>
+      <th>Product Group</th>
+      <th>Base Unit</th>
+      <th>Description</th>
       <th>Tags</th>
       <th style="width: 5rem"></th>
     </tr>
@@ -32,7 +26,7 @@
 
   <ng-template pTemplate="body" let-product let-expanded="expanded">
 
-    <tr [pSelectableRow]="product" [ngClass]="{'opacity-60': product.status !== ProductStatus.ACTIVE}">
+    <tr style="height: 65px" [pSelectableRow]="product" [ngClass]="{'opacity-60': product.status !== ProductStatus.ACTIVE}">
       <td>{{ product?.referenceNumber | nullSafe }}</td>
       <td>{{ product?.productName | nullSafe }}</td>
       <td>{{ product?.productGroupName | nullSafe }}</td>
@@ -46,7 +40,8 @@
               <p-tag [value]="tag.tagName"/>
             }
           </div>
-
+        } @else {
+          --
         }
       </td>
       <td>

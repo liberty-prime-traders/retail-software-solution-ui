@@ -1,4 +1,6 @@
-<form class="flex flex-column gap-2" [ngClass]="productFormValue().id ? '' : 'filled-background'">
+<p-block-ui [blocked]="dependenciesLoading()"/>
+
+<form class="flex flex-column gap-2" [ngClass]="productFormValue().id ? '' : 'filled-background'" >
   @let labelSize = originalProduct() ? 3 : 2;
 
   <rts-form-field [required]="true" label="Product Name" for="productName" [labelColumnSize]="labelSize">
@@ -9,10 +11,10 @@
     <p-select id="productGroupId"
               class="flex-grow-1"
               [options]="productGroups()"
-              optionLabel="groupName"
-              showClear
+              [group]="true"
+              filterBy="label"
+              [showClear]="true"
               [filter]="true"
-              optionValue="id"
               [field]="productForm.productGroupId"
               placeholder="Select a Product Group" >
     </p-select>
@@ -22,8 +24,7 @@
     <p-select id="baseUnitId"
               class="flex-grow-1"
               [options]="unitValues()"
-              optionLabel="name"
-              optionValue="id"
+              group
               [field]="productForm.baseUnitId"
               placeholder="Select a Unit" >
     </p-select>

@@ -1,14 +1,16 @@
-export const parseError = (error: any): string[] => {
-  if (error === null) {
+import {isNil} from 'lodash-es'
+
+export const parseError = (errorObj: any): string[] => {
+  if (isNil(errorObj) || isNil(errorObj.error)) {
     return ['Unknown Error, Contact Admin']
   }
   let err = []
-  if (typeof error.error === 'string') {
-    err = [error.error]
-  } else if (error.error instanceof Array) {
-    err = error.error
-  } else if ('message' in error.error) {
-    err = [error.error['message']]
+  if (typeof errorObj.error === 'string') {
+    err = [errorObj.error]
+  } else if (errorObj.error instanceof Array) {
+    err = errorObj.error
+  } else if ('message' in errorObj.error) {
+    err = [errorObj.error['message']]
   }
 
   return err

@@ -1,5 +1,6 @@
 import {HttpErrorResponse} from '@angular/common/http'
 import {catchError, finalize, first, Subscription, tap} from 'rxjs'
+import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {BaseModel} from '../base-api/base.model'
 import {BaseService} from '../base-api/base.service'
 import {PageRequest} from './page-request.model'
@@ -9,7 +10,7 @@ import {PaginatedBaseStore} from './paginated-base.store'
 export abstract class PaginatedBaseService<RESPONSE extends BaseModel, PARAMETERS>
   extends BaseService<RESPONSE, PageRequest<PARAMETERS>> {
 
-  protected static readonly BATCH_SIZE = 20
+  protected static readonly BATCH_SIZE = 60
 
   protected constructor(protected override readonly store: PaginatedBaseStore<RESPONSE, PARAMETERS>) {
     super(store)
@@ -61,6 +62,7 @@ export abstract class PaginatedBaseService<RESPONSE extends BaseModel, PARAMETER
       hasMore: response.hasMore,
       lastSearchParams: parameters
     })
+    this.setProcessingStatus(ProcessingStatus.SUCCESS)
   }
 
 }

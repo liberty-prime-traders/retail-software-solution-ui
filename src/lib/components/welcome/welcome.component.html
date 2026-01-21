@@ -54,12 +54,13 @@
   }
 
 
-  <div class="flex-grow-1 relative">
+  <div class="relative">
     @if (!fullScreen()) {
-      <div class="absolute right-50 top-0 z-1 flex justify-content-end p-1">
-        <p-button icon="pi pi-window-maximize"
+      <div class="absolute position-right-17 position-top-1 z-1">
+        <p-button icon="pi pi-arrow-up-right-and-arrow-down-left-from-center"
                   (onClick)="fullScreen.set(true)"
                   pTooltip="Full Screen"
+                  size="small"
                   severity="secondary">
         </p-button>
       </div>
