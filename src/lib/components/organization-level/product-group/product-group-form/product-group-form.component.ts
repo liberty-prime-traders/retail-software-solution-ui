@@ -2,7 +2,7 @@ import {Component, inject, Input, OnInit, signal} from '@angular/core'
 import {Field, form} from '@angular/forms/signals'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
-import {CategoryService} from '../../../../api/organization-level/category/category.service'
+import {ProductCategoryService} from '../../../../api/organization-level/product-category/product-category.service'
 import {ProductGroup} from '../../../../api/organization-level/product-group/product-group.model'
 import {ProductGroupService} from '../../../../api/organization-level/product-group/product-group.service'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
@@ -25,7 +25,7 @@ import {ProductGroupFormDefinition} from './product-group-form.definition'
 export class ProductGroupFormComponent extends BaseFormComponent<ProductGroupService> implements OnInit {
 
   private readonly productGroupService = inject(ProductGroupService)
-  private readonly categoryService = inject(CategoryService)
+  private readonly productCategoryService = inject(ProductCategoryService)
   protected override apiService: ProductGroupService = this.productGroupService
 
   @Input()
@@ -37,7 +37,7 @@ export class ProductGroupFormComponent extends BaseFormComponent<ProductGroupSer
   }
 
   readonly originalProductGroup = signal<ProductGroup|undefined>(undefined)
-  readonly productCategories = this.categoryService.productCategories
+  readonly productCategories = this.productCategoryService.selectAll
 
   readonly productGroupFormValue = signal<ProductGroupFormDefinition.ProductGroupFormModel>(
     ProductGroupFormDefinition.defaultProductGroupFormModel
@@ -48,7 +48,7 @@ export class ProductGroupFormComponent extends BaseFormComponent<ProductGroupSer
 
   override ngOnInit() {
     super.ngOnInit()
-    this.categoryService.fetch()
+    this.productCategoryService.fetch()
   }
 
   resetForm() {

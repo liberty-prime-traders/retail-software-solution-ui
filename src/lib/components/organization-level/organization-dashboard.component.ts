@@ -32,17 +32,21 @@ export class OrganizationDashboardComponent {
   ]
 
   private readonly businessSettingsMenuItems: MenuItem[] = [
-    {label: 'Products', icon: 'pi pi-objects-column', routerLink: 'products'},
-    {label: 'Product Groups', icon: 'pi pi-clone', routerLink: 'product-groups'},
     {label: 'Job Titles', icon: 'pi pi-gauge', routerLink: 'job-title'},
-    {label: 'Categories', icon: 'pi pi-palette', routerLink: 'category'},
     {label: 'Units', icon: 'pi pi-percentage', routerLink: 'units'},
     {label: 'Payment Options', icon: 'pi pi-dollar', routerLink: 'payment-options'},
     {label: 'Tags', icon: 'pi pi-tags', routerLink: 'tags'}
   ]
 
+  private readonly productSettingsMenuItems: MenuItem[] = [
+    {label: 'Product Categories', icon: 'pi pi-palette', routerLink: 'product-category'},
+    {label: 'Product Groups', icon: 'pi pi-clone', routerLink: 'product-groups'},
+    {label: 'Product Lines', icon: 'pi pi-objects-column', routerLink: 'products'}
+  ]
+
   readonly menuItems: Signal<MenuItem[]> = computed(() => [
     {label: 'Home', items: this.organizationHomeMenuItems},
+    {label: 'Products', items: this.productSettingsMenuItems},
     {label: 'Business Settings', items: this.businessSettingsMenuItems},
     {
       label: 'Admin Settings',

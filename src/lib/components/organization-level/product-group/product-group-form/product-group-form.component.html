@@ -3,7 +3,7 @@
     <input id="groupName" class="flex-grow-1" pInputText [field]="productGroupForm.groupName" />
   </rts-form-field>
 
-  <rts-form-field [required]="true" label="Category" for="categoryId">
+  <rts-form-field [required]="true" label="Product Category" for="categoryId">
     <p-select id="categoryId"
               class="flex-grow-1"
               [filter]="true"
@@ -11,7 +11,7 @@
               optionLabel="categoryName"
               optionValue="id"
               [field]="productGroupForm.categoryId"
-              placeholder="Select a Category" >
+              placeholder="Select a Product Category" >
     </p-select>
   </rts-form-field>
 

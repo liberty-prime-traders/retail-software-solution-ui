@@ -8,7 +8,7 @@ import {Divider} from 'primeng/divider'
 import {Message} from 'primeng/message'
 import {TableModule} from 'primeng/table'
 import {combineLatest, of, switchMap} from 'rxjs'
-import {CategoryService} from '../../../api/organization-level/category/category.service'
+import {ProductCategoryService} from '../../../api/organization-level/product-category/product-category.service'
 import {ProductGroupService} from '../../../api/organization-level/product-group/product-group.service'
 import {Product} from '../../../api/organization-level/product/product.model'
 import {ProductService} from '../../../api/organization-level/product/product.service'
@@ -42,14 +42,14 @@ import {ProductFormComponent} from './product-form/product-form.component'
 export class ProductComponent extends HasSubscriptionComponent implements OnInit {
 
   private readonly productService = inject(ProductService)
-  private readonly categoryService = inject(CategoryService)
+  private readonly productCategoryService = inject(ProductCategoryService)
   private readonly productGroupService = inject(ProductGroupService)
   private readonly unitValueService = inject(UnitValueService)
   readonly productFilterService = inject(ProductFilterService)
 
   readonly loading = computed(() =>
     this.productService.selectLoading()
-    || this.categoryService.selectLoading()
+    || this.productCategoryService.selectLoading()
     || this.productGroupService.selectLoading()
     || this.unitValueService.selectLoading()
   )

@@ -1,9 +1,10 @@
 import {Component, inject, model, OnInit} from '@angular/core'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
+import {Button} from 'primeng/button'
 import {Checkbox} from 'primeng/checkbox'
 import {InputText} from 'primeng/inputtext'
 import {MultiSelect} from 'primeng/multiselect'
-import {CategoryService} from '../../../../api/organization-level/category/category.service'
+import {ProductCategoryService} from '../../../../api/organization-level/product-category/product-category.service'
 import {ProductStatus} from '../../../../api/organization-level/product/product-status.enum'
 import {TagService} from '../../../../api/organization-level/tag/tag.service'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
@@ -21,17 +22,18 @@ import {ProductFilterService} from './product-filter.service'
     ReactiveFormsModule,
     MultiSelect,
     EnumToDropdownPipe,
-    Checkbox
+    Checkbox,
+    Button
   ]
 })
 export class ProductFilterComponent implements OnInit {
 
   private readonly tagService = inject(TagService)
-  private readonly categoryService = inject(CategoryService)
+  private readonly productCategoryService = inject(ProductCategoryService)
   readonly productFilterService = inject(ProductFilterService)
 
   readonly productTags = this.tagService.productTags
-  readonly productCategories = this.categoryService.productCategories
+  readonly productCategories = this.productCategoryService.selectAll
 
   readonly FormFieldDirection = FormFieldDirection
   readonly ProductStatus = ProductStatus
@@ -40,7 +42,7 @@ export class ProductFilterComponent implements OnInit {
 
   ngOnInit() {
     this.tagService.fetch()
-    this.categoryService.fetch()
+    this.productCategoryService.fetch()
   }
 
 }

@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router'
-import {CategoryComponent} from '../../lib/components/organization-level/category/category.component'
+import {ProductCategoryComponent} from '../../lib/components/organization-level/product-category/product-category.component'
 import {
   EndUserJoinRequestComponent
 } from '../../lib/components/organization-level/end-user-join-request/end-user-join-request.component'
@@ -25,7 +25,7 @@ import {UnitTreeComponent} from '../../lib/components/organization-level/units/u
 
 export const orgManagementRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
-  {path: 'category', component: CategoryComponent},
+  {path: 'product-category', component: ProductCategoryComponent},
   {path: 'job-title', component: JobTitleComponent},
   {path: 'units', component: UnitTreeComponent},
   {path: 'products', component: ProductComponent},

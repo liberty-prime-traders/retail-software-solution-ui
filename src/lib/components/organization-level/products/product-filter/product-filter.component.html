@@ -4,14 +4,14 @@
     <input placeholder="Starts with ..." id="referenceNumber" class="flex-grow-1" pInputText formControlName="referenceNumber" />
   </rts-form-field>
 
-  <rts-form-field label="Categories" for="categoryIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
+  <rts-form-field label="Product Categories" for="categoryIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
     <p-multiSelect id="categoryIds"
                    class="flex-grow-1"
                    [options]="productCategories()"
                    optionLabel="categoryName"
                    optionValue="id"
                    formControlName="categoryIds"
-                   placeholder="Select Categories" >
+                   placeholder="Select Product Categories" >
     </p-multiSelect>
   </rts-form-field>
 
@@ -29,11 +29,23 @@
   <div class="flex flex-column gap-2">
     @for (statusOption of (ProductStatus | enumToDropdown); track statusOption.value) {
       <div class="flex align-items-center gap-2">
-        <p-checkbox [value]="statusOption.value" formControlName="statusList" [inputId]="'statusOption' + $index" name="status"/>
+        <p-checkbox [value]="statusOption.value"
+                    formControlName="statusList"
+                    [inputId]="'statusOption' + $index"
+                    name="status">
+        </p-checkbox>
+
         <label [for]="'statusOption' + $index">{{ statusOption.label }}</label>
       </div>
     }
+  </div>
 
+  <div class="flex justify-content-end pt-4">
+    <p-button label="Reset Filters"
+              (onClick)="productFilterService.resetFilters()"
+              severity="secondary"
+              icon="pi pi-filter-slash">
+    </p-button>
   </div>
 
 </form>

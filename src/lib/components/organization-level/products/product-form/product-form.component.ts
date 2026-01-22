@@ -9,8 +9,8 @@ import {InputText} from 'primeng/inputtext'
 import {Panel} from 'primeng/panel'
 import {PickList} from 'primeng/picklist'
 import {Select} from 'primeng/select'
-import {Category} from '../../../../api/organization-level/category/category.model'
-import {CategoryService} from '../../../../api/organization-level/category/category.service'
+import {ProductCategory} from '../../../../api/organization-level/product-category/product-category.model'
+import {ProductCategoryService} from '../../../../api/organization-level/product-category/product-category.service'
 import {ProductGroup} from '../../../../api/organization-level/product-group/product-group.model'
 import {ProductGroupService} from '../../../../api/organization-level/product-group/product-group.service'
 import {ProductStatus} from '../../../../api/organization-level/product/product-status.enum'
@@ -52,7 +52,7 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
 
   private readonly productService = inject(ProductService)
   private readonly productGroupService = inject(ProductGroupService)
-  private readonly categoryService = inject(CategoryService)
+  private readonly productCategoryService = inject(ProductCategoryService)
   private readonly unitValueService = inject(UnitValueService)
   private readonly unitGroupService = inject(UnitGroupService)
   private readonly tagService = inject(TagService)
@@ -93,22 +93,22 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
     this.productGroupService.selectLoading()
     || this.unitValueService.selectLoading()
     || this.unitGroupService.selectLoading()
-    || this.categoryService.selectLoading()
+    || this.productCategoryService.selectLoading()
     || this.tagService.selectLoading()
   )
 
-  private readonly productGroupDropdownConfig: ToSelectItemOptions<Category, ProductGroup> = {
+  private readonly productGroupDropdownConfig: ToSelectItemOptions<ProductCategory, ProductGroup> = {
     itemValueBy: (productGroup: ProductGroup) => productGroup.id,
     itemLabelBy: (productGroup: ProductGroup) => productGroup.groupName ?? '',
     groupBy: (productGroup: ProductGroup) => productGroup.categoryId ?? '',
-    groupLabelBy: (category: Category) => category.categoryName ?? '',
-    groupValueBy: (category: Category) => category.id
+    groupLabelBy: (productCategory: ProductCategory) => productCategory.categoryName ?? '',
+    groupValueBy: (productCategory: ProductCategory) => productCategory.id
   }
 
   readonly productGroups = computed(() => {
     const productGroups = this.productGroupService.selectAll()
-    const categories = this.categoryService.productCategories()
-    return toSelectItems<Category, ProductGroup>(productGroups, this.productGroupDropdownConfig, categories)
+    const productCategories = this.productCategoryService.selectAll()
+    return toSelectItems<ProductCategory, ProductGroup>(productGroups, this.productGroupDropdownConfig, productCategories)
   })
 
   readonly unitValues: Signal<Array<SelectItemType<UnitValue>>> = computed(() => {
@@ -132,7 +132,7 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
     this.unitGroupService.fetch()
     this.unitValueService.fetch()
     this.tagService.fetch()
-    this.categoryService.fetch()
+    this.productCategoryService.fetch()
   }
 
   resetForm() {

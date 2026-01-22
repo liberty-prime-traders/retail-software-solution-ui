@@ -34,6 +34,10 @@ export class ProductFilterService {
     })
   )
 
+  resetFilters(): void {
+    this.filterForm.reset()
+  }
+
   applyFilters(searchText: string): null {
     if (this.filterForm.valid) {
       const filters = this.filterForm.value

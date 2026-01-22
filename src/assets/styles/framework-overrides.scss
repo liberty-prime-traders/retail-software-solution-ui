@@ -14,4 +14,7 @@
   .p-menu-item-link-active {
     color: var(--p-slate-900);
   }
+  .bg-bluegray-100 {
+    background-color: var(--p-datatable-header-cell-selected-background) !important;
+  }
 }
