@@ -1,7 +1,11 @@
 <form class="flex flex-column gap-2 mt-4 h-full" [formGroup]="productFilterService.filterForm">
 
   <rts-form-field label="Reference Number" for="referenceNumber" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
-    <input placeholder="Starts with ..." id="referenceNumber" class="flex-grow-1" pInputText formControlName="referenceNumber" />
+    <input [placeholder]="referenceNumberPlaceholder()"
+           id="referenceNumber"
+           class="flex-grow-1"
+           pInputText
+           formControlName="referenceNumber" />
   </rts-form-field>
 
   <rts-form-field label="Product Categories" for="categoryIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">

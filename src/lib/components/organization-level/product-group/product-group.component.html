@@ -44,7 +44,7 @@
   </ng-template>
 
   <ng-template pTemplate="body" let-productGroup let-expanded="expanded">
-    <tr [pSelectableRow]="productGroup">
+    <tr [ngClass]="{ 'expanded-row': expanded }">
       <td>{{ productGroup?.referenceNumber | nullSafe }}</td>
       <td>{{ productGroup?.groupName | nullSafe }}</td>
       <td>{{ productGroup?.categoryName | nullSafe }}</td>

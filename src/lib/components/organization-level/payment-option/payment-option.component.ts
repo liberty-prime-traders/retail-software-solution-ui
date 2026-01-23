@@ -1,3 +1,4 @@
+import {NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
@@ -23,7 +24,8 @@ import {PaymentOptionFormComponent} from './payment-option-form/payment-option-f
     AddRowComponent,
     FormsModule,
     GridFilterComponent,
-    EmptyRowComponent
+    EmptyRowComponent,
+    NgClass
   ]
 })
 export class PaymentOptionComponent extends GridWithAddButtonComponent<PaymentOptionService> {

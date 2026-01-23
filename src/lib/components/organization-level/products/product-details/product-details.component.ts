@@ -9,6 +9,7 @@ import {ProductSearchService} from '../../../../api/organization-level/product-s
 import {ProductStatus} from '../../../../api/organization-level/product/product-status.enum'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
+import {ProductFilterService} from '../product-filter/product-filter.service'
 import {ProductFormComponent} from '../product-form/product-form.component'
 
 @Component({
@@ -26,6 +27,7 @@ import {ProductFormComponent} from '../product-form/product-form.component'
 })
 export class ProductDetailsComponent {
   private readonly productSearchService = inject(ProductSearchService)
+  readonly productFilterService = inject(ProductFilterService)
 
   private readonly table = viewChild(Table)
 
@@ -34,7 +36,7 @@ export class ProductDetailsComponent {
   private readonly lastIndexBeforeReload = signal(0)
   private readonly waitingForScrollRestore = signal(false)
 
-  readonly products = this.productSearchService.selectAll
+  readonly products = this.productFilterService.filteredProducts
   readonly loading = computed(() =>
     this.productSearchService.selectLoading() || this.waitingForScrollRestore()
   )

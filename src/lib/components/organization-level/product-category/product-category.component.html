@@ -52,7 +52,7 @@
       </ng-template>
 
       <ng-template pTemplate="body" let-productCategory let-expanded="expanded">
-        <tr [pSelectableRow]="productCategory">
+        <tr [ngClass]="{ 'expanded-row': expanded }">
           <td>{{ productCategory?.referenceNumber | nullSafe }}</td>
           <td>{{ productCategory?.categoryName | nullSafe }}</td>
           <td>{{ productCategory?.description | nullSafe }}</td>
@@ -70,7 +70,7 @@
 
       <ng-template pTemplate="expandedrow" let-productCategory>
         <tr>
-          <td colspan="4" class="filled-background">
+          <td colspan="5" class="filled-background">
             <rts-product-category-form [productCategory]="productCategory"/>
           </td>
         </tr>

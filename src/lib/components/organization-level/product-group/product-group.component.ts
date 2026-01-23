@@ -1,3 +1,4 @@
+import {NgClass} from '@angular/common'
 import {Component, inject, model, OnInit} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
@@ -20,7 +21,8 @@ import {ProductGroupFormComponent} from './product-group-form/product-group-form
     ProductGroupFormComponent,
     AddRowComponent,
     GridFilterComponent,
-    EmptyRowComponent
+    EmptyRowComponent,
+    NgClass
   ]
 })
 export class ProductGroupComponent extends GridWithAddButtonComponent<ProductGroupService> implements OnInit {

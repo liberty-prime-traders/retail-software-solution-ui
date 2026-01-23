@@ -1,5 +1,5 @@
-import {Component, input, model} from '@angular/core'
-import {FormsModule} from '@angular/forms'
+import {Component, input} from '@angular/core'
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms'
 import {IconField} from 'primeng/iconfield'
 import {InputIcon} from 'primeng/inputicon'
 import {InputText} from 'primeng/inputtext'
@@ -10,7 +10,8 @@ import {InputText} from 'primeng/inputtext'
     InputText,
     InputIcon,
     IconField,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
 
   ],
   template: `
@@ -23,14 +24,14 @@ import {InputText} from 'primeng/inputtext'
                type="text"
                #searchInput
                [placeholder]="placeholder()"
-               [(ngModel)]="searchValue"
+               [formControl]="searchValueControl()"
         />
       </p-icon-field>
     </div>
   `
 })
 export class SearchComponent {
-  readonly searchValue = model<string>('')
+  readonly searchValueControl = input<FormControl>(new FormControl(''))
   readonly placeholder = input<string>('Search...')
 
 }

@@ -76,7 +76,7 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-tag let-expanded="expanded">
-      <tr [pSelectableRow]="tag">
+      <tr [ngClass]="{ 'expanded-row': expanded }">
         <td>{{ tag?.tagName | nullSafe }}</td>
         <td>{{ tag?.category | prettifyEnum | nullSafe }}</td>
         <td>{{ tag?.description | nullSafe }}</td>

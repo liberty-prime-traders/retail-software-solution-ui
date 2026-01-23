@@ -23,6 +23,10 @@ form  {
   background-color: theme.$globalBackground;
 }
 
+.expanded-row {
+  background-color: theme.$expandedRowBackground !important;
+}
+
 $positions: left right center top bottom;
 @each $position in $positions {
   @for $i from 0 through 20 {

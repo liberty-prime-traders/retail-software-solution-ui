@@ -9,7 +9,7 @@
          scrollHeight="600px"
          scrollable="true"
          [rows]="20"
-         [virtualScroll]="true"
+         [virtualScroll]="!productFilterService.requireClientSideFilter()"
          [virtualScrollItemSize]="65">
 
   <ng-template pTemplate="header">
@@ -26,7 +26,11 @@
 
   <ng-template pTemplate="body" let-product let-expanded="expanded">
 
-    <tr style="height: 65px" [pSelectableRow]="product" [ngClass]="{'opacity-60': product.status !== ProductStatus.ACTIVE}">
+    <tr style="height: 65px"
+        [ngClass]="{
+          'opacity-60': product.status !== ProductStatus.ACTIVE,
+          'expanded-row': expanded
+        }">
       <td>{{ product?.referenceNumber | nullSafe }}</td>
       <td>{{ product?.productName | nullSafe }}</td>
       <td>{{ product?.productGroupName | nullSafe }}</td>

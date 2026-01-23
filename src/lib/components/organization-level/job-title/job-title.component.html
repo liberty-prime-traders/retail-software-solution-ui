@@ -36,26 +36,26 @@
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-jobtitle let-expanded="expanded">
-    <tr [pSelectableRow]="jobtitle">
-      <td>{{ jobtitle?.value | nullSafe }}</td>
-      <td>{{ jobtitle?.createdBy | nullSafe }}</td>
-      <td>{{ jobtitle?.usageCount | nullSafe }}</td>
+  <ng-template pTemplate="body" let-jobTitle let-expanded="expanded">
+    <tr [ngClass]="{ 'expanded-row': expanded }">
+      <td>{{ jobTitle?.value | nullSafe }}</td>
+      <td>{{ jobTitle?.createdBy | nullSafe }}</td>
+      <td>{{ jobTitle?.usageCount | nullSafe }}</td>
       <td>
         <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   severity="secondary"
                   [disabled]="loading() || addingIsActive()"
-                  [pRowToggler]="jobtitle" >
+                  [pRowToggler]="jobTitle" >
         </p-button>
       </td>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="expandedrow" let-jobtitle>
+  <ng-template pTemplate="expandedrow" let-jobTitle>
     <tr>
       <td colspan="5" class="filled-background">
-        <rts-jobtitle-form [jobtitle]="jobtitle" />
+        <rts-job-title-form [jobTitle]="jobTitle" />
       </td>
     </tr>
   </ng-template>
@@ -67,6 +67,6 @@
 
 <rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
   @if (addingIsActive()) {
-    <rts-jobtitle-form></rts-jobtitle-form>
+    <rts-job-title-form/>
   }
 </rts-add-row>

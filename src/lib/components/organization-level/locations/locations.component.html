@@ -31,7 +31,7 @@
   </ng-template>
 
   <ng-template pTemplate="body" let-location let-expanded="expanded">
-    <tr [pSelectableRow]="location">
+    <tr [ngClass]="{ 'expanded-row': expanded }">
       <td>{{location?.name | nullSafe}}</td>
       <td>{{location?.description | nullSafe}}</td>
       <td>{{location?.locationType | prettifyEnum}}</td>

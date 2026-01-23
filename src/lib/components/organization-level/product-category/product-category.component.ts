@@ -1,3 +1,4 @@
+import {NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
 import {ReactiveFormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
@@ -19,7 +20,8 @@ import {ProductCategoryFormComponent} from './product-category-form/product-cate
     ProductCategoryFormComponent,
     GridFilterComponent,
     EmptyRowComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgClass
   ]
 })
 export class ProductCategoryComponent extends GridWithAddButtonComponent<ProductCategoryService> {

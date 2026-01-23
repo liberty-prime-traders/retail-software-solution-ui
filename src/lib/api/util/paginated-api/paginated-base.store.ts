@@ -9,6 +9,7 @@ import {PaginatedState} from './paginated.state'
 export interface PaginatedBaseStore<ENTITY extends BaseModel, PARAMETERS> extends BaseStore<ENTITY> {
   currentCursor: Signal<number>
   hasMore: Signal<boolean>
+  requireClientSideFilter: Signal<boolean>
   lastSearchParams: Signal<PARAMETERS>
   setPaginationState(paginatedState: PaginatedState<PARAMETERS>): void
   resetPagination(): void

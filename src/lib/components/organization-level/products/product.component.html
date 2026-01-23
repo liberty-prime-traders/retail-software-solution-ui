@@ -43,7 +43,7 @@
           <p-message severity="info"> Advanced Filter is in use </p-message>
         }
 
-        <rts-search [(searchValue)]="searchValue" [ngClass]="{'flex-grow-1': showAdvancedFilter()}"/>
+        <rts-search [searchValueControl]="searchValueFormControl" [ngClass]="{'flex-grow-1': showAdvancedFilter()}"/>
       </div>
 
       <rts-product-details class="flex-grow-1" />

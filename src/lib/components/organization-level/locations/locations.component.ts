@@ -1,3 +1,4 @@
+import {NgClass} from '@angular/common'
 import {Component, effect, inject, input, model} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {Button} from 'primeng/button'
@@ -25,7 +26,8 @@ import {LocationFormComponent} from './location-form/location-form.component'
     LocationFormComponent,
     PrettifyEnumPipe,
     GridFilterComponent,
-    EmptyRowComponent
+    EmptyRowComponent,
+    NgClass
   ]
 })
 export class LocationsComponent extends GridWithAddButtonComponent<LocationService> {

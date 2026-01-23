@@ -1,9 +1,9 @@
 import {Routes} from '@angular/router'
+import {JobTitleComponent} from '../../lib/components/organization-level/job-title/job-title.component'
 import {ProductCategoryComponent} from '../../lib/components/organization-level/product-category/product-category.component'
 import {
   EndUserJoinRequestComponent
 } from '../../lib/components/organization-level/end-user-join-request/end-user-join-request.component'
-import {JobTitleComponent} from '../../lib/components/organization-level/jobtitle/jobtitle.component'
 import {LocationsComponent} from '../../lib/components/organization-level/locations/locations.component'
 import {
   OrganizationAdminComponent

@@ -1,3 +1,4 @@
+import {NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
@@ -21,7 +22,8 @@ import {TableRegistryFormComponent} from './table-registry-form/table-registry-f
     EmptyRowComponent,
     GridFilterComponent,
     TableRegistryFormComponent,
-    Card
+    Card,
+    NgClass
   ]
 })
 export class TableRegistryComponent extends ExpandableGridComponent<TableRegistryService> {
