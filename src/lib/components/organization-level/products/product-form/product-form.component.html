@@ -1,31 +1,36 @@
-<form class="flex flex-column gap-2" [ngClass]="productFormValue().id ? '' : 'filled-background'">
-  <rts-form-field [required]="true" label="Product Name" for="productName">
+<p-block-ui [blocked]="dependenciesLoading()"/>
+
+<form class="flex flex-column gap-2" [ngClass]="productFormValue().id ? '' : 'filled-background'" >
+  @let labelSize = originalProduct() ? 3 : 2;
+
+  <rts-form-field [required]="true" label="Product Name" for="productName" [labelColumnSize]="labelSize">
     <input id="productName" class="flex-grow-1" pInputText [field]="productForm.productName" />
   </rts-form-field>
 
-  <rts-form-field [required]="true" label="Category" for="categoryId">
-    <p-select id="categoryId"
-                class="flex-grow-1"
-                [options]="productCategories()"
-                optionLabel="categoryName"
-                optionValue="id"
-                [field]="productForm.categoryId"
-                placeholder="Select a Category" >
+  <rts-form-field [required]="true" label="Product Group" for="productGroupId"  [labelColumnSize]="labelSize">
+    <p-select id="productGroupId"
+              class="flex-grow-1"
+              [options]="productGroups()"
+              [group]="true"
+              filterBy="label"
+              [showClear]="true"
+              [filter]="true"
+              [field]="productForm.productGroupId"
+              placeholder="Select a Product Group" >
     </p-select>
   </rts-form-field>
 
-  <rts-form-field [required]="true" label="Base Unit" for="baseUnitId">
+  <rts-form-field [required]="true" label="Base Unit" for="baseUnitId" [labelColumnSize]="labelSize">
     <p-select id="baseUnitId"
               class="flex-grow-1"
               [options]="unitValues()"
-              optionLabel="name"
-              optionValue="id"
+              group
               [field]="productForm.baseUnitId"
               placeholder="Select a Unit" >
     </p-select>
   </rts-form-field>
 
-  <rts-form-field label="Description" for="description">
+  <rts-form-field  label="Description" for="description" [labelColumnSize]="labelSize">
     <input id="description" pInputText [field]="productForm.description" />
   </rts-form-field>
 

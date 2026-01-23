@@ -4,7 +4,7 @@
         'flex-column gap-1': layout() === formFieldDirection.VERTICAL
      }">
 
-    <label [for]="for()" class="font-semibold" [ngClass]="required() ? 'required-label' : ''">
+    <label [for]="for()" class="font-semibold" [ngClass]="labelClass()">
       {{ label() }}:
     </label>
 

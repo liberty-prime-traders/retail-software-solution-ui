@@ -1,6 +1,7 @@
-import {Component, computed, inject, Signal} from '@angular/core'
+import {Component, computed, inject, signal, Signal} from '@angular/core'
 import {RouterOutlet} from '@angular/router'
 import {MenuItem} from 'primeng/api'
+import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
 import {SessionContextService} from '../../utils/services/session-context.service'
@@ -11,7 +12,8 @@ import {SessionContextService} from '../../utils/services/session-context.servic
   imports: [
     RouterOutlet,
     Menu,
-    Card
+    Card,
+    Button
   ]
 })
 export class OrganizationDashboardComponent {
@@ -30,16 +32,21 @@ export class OrganizationDashboardComponent {
   ]
 
   private readonly businessSettingsMenuItems: MenuItem[] = [
-    {label: 'Products', icon: 'pi pi-objects-column', routerLink: 'products'},
     {label: 'Job Titles', icon: 'pi pi-gauge', routerLink: 'job-title'},
-    {label: 'Categories', icon: 'pi pi-palette', routerLink: 'category'},
     {label: 'Units', icon: 'pi pi-percentage', routerLink: 'units'},
     {label: 'Payment Options', icon: 'pi pi-dollar', routerLink: 'payment-options'},
     {label: 'Tags', icon: 'pi pi-tags', routerLink: 'tags'}
   ]
 
+  private readonly productSettingsMenuItems: MenuItem[] = [
+    {label: 'Product Categories', icon: 'pi pi-palette', routerLink: 'product-category'},
+    {label: 'Product Groups', icon: 'pi pi-clone', routerLink: 'product-groups'},
+    {label: 'Product Lines', icon: 'pi pi-objects-column', routerLink: 'products'}
+  ]
+
   readonly menuItems: Signal<MenuItem[]> = computed(() => [
     {label: 'Home', items: this.organizationHomeMenuItems},
+    {label: 'Products', items: this.productSettingsMenuItems},
     {label: 'Business Settings', items: this.businessSettingsMenuItems},
     {
       label: 'Admin Settings',
@@ -47,4 +54,6 @@ export class OrganizationDashboardComponent {
       visible: this.sessionContextService.loggedInUserIsOrganizationAdmin()
     }
   ])
+
+  readonly showMenu = signal(true)
 }

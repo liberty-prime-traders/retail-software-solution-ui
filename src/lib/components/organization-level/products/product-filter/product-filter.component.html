@@ -1,25 +1,23 @@
-<span class="text-2xl font-italic">Filters:</span>
-
-<form class="flex flex-column gap-2 mt-4" [formGroup]="filterForm">
-  <rts-form-field label="Product Name" for="productName" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
-    <input id="productName" class="flex-grow-1" pInputText formControlName="productName" />
-  </rts-form-field>
+<form class="flex flex-column gap-2 mt-4 h-full" [formGroup]="productFilterService.filterForm">
 
   <rts-form-field label="Reference Number" for="referenceNumber" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
-    <input id="referenceNumber" class="flex-grow-1" pInputText formControlName="referenceNumber" />
+    <input [placeholder]="referenceNumberPlaceholder()"
+           id="referenceNumber"
+           class="flex-grow-1"
+           pInputText
+           formControlName="referenceNumber" />
   </rts-form-field>
 
-  <rts-form-field label="Category" for="categoryIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
+  <rts-form-field label="Product Categories" for="categoryIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
     <p-multiSelect id="categoryIds"
                    class="flex-grow-1"
                    [options]="productCategories()"
                    optionLabel="categoryName"
                    optionValue="id"
                    formControlName="categoryIds"
-                   placeholder="Select Categories" >
+                   placeholder="Select Product Categories" >
     </p-multiSelect>
   </rts-form-field>
-
 
   <rts-form-field  label="Tags" for="tagIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
     <p-multiSelect id="tagIds"
@@ -32,22 +30,25 @@
     </p-multiSelect>
   </rts-form-field>
 
-  <rts-form-field label="Description" for="description" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
-    <input id="description" pInputText formControlName="description" />
-  </rts-form-field>
+  <div class="flex flex-column gap-2">
+    @for (statusOption of (ProductStatus | enumToDropdown); track statusOption.value) {
+      <div class="flex align-items-center gap-2">
+        <p-checkbox [value]="statusOption.value"
+                    formControlName="statusList"
+                    [inputId]="'statusOption' + $index"
+                    name="status">
+        </p-checkbox>
 
-  <div class="flex gap-3 mt-2 justify-content-end">
-    <p-button label="Clear"
-              icon="pi pi-times"
-              class="cursor-pointer"
-              (click)="resetFilters()"
-              severity="secondary">
-    </p-button>
+        <label [for]="'statusOption' + $index">{{ statusOption.label }}</label>
+      </div>
+    }
+  </div>
 
-    <p-button label="Update Filters"
-              icon="pi pi-filter"
-              (click)="applyFilters()"
-              severity="primary">
+  <div class="flex justify-content-end pt-4">
+    <p-button label="Reset Filters"
+              (onClick)="productFilterService.resetFilters()"
+              severity="secondary"
+              icon="pi pi-filter-slash">
     </p-button>
   </div>
 

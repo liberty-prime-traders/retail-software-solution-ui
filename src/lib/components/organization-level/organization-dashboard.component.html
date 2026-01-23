@@ -1,5 +1,20 @@
 <div class="flex gap-4 mr-3 h-full">
-  <p-menu [model]="menuItems()" class="block h-full filled-background"/>
+  @if (showMenu()) {
+    <div class="relative">
+      <p-button icon="pi pi-bars"
+                (onClick)="showMenu.set(false)"
+                size="small"
+                severity="secondary"
+                class="absolute position-right-5 position-top-3 z-1">
+      </p-button>
+      <p-menu [model]="menuItems()" class="block h-full filled-background"/>
+    </div>
+
+  } @else {
+    <div class="pl-1">
+      <p-button icon="pi pi-bars" (onClick)="showMenu.set(true)" size="small" severity="secondary"/>
+    </div>
+  }
 
   <p-card class="flex-grow-1">
     <router-outlet />

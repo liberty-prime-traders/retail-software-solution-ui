@@ -1,5 +1,5 @@
 import {AsyncPipe, NgClass} from '@angular/common'
-import {Component, computed, effect, inject, model, Signal} from '@angular/core'
+import {Component, computed, effect, inject, model, signal, Signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Router, RouterLink, RouterOutlet} from '@angular/router'
 import {MenuItem} from 'primeng/api'
@@ -8,6 +8,7 @@ import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {Menubar} from 'primeng/menubar'
 import {ToggleSwitch} from 'primeng/toggleswitch'
+import {Tooltip} from 'primeng/tooltip'
 import {darkModeSelector} from '../../../app/app.preset'
 import {SysUserService} from '../../api/platform-level/sys-user/sys-user.service'
 import {RtsOktaService} from '../../utils/services/rts-okta.service'
@@ -17,7 +18,7 @@ import {SessionContextService} from '../../utils/services/session-context.servic
   selector: 'rts-welcome',
   templateUrl: 'welcome.component.html',
   styleUrls: ['welcome.component.scss'],
-  imports: [RouterOutlet, Divider, Button, RouterLink, AsyncPipe, Avatar, Menubar, NgClass, ToggleSwitch, FormsModule]
+  imports: [RouterOutlet, Divider, Button, RouterLink, AsyncPipe, Avatar, Menubar, NgClass, ToggleSwitch, FormsModule, Tooltip]
 })
 export class WelcomeComponent {
   private readonly rtsOktaService = inject(RtsOktaService)
@@ -28,6 +29,7 @@ export class WelcomeComponent {
   private readonly loggedInUser = this.userService.selectFirst
 
   readonly darkMode = model(false)
+  readonly fullScreen = signal(false)
 
   readonly userInitials = computed(() => {
     const user = this.loggedInUser()

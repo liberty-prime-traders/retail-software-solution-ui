@@ -3,6 +3,7 @@ import {FieldState} from '@angular/forms/signals'
 import {ConfirmationService} from 'primeng/api'
 import {ButtonModule} from 'primeng/button'
 import {ConfirmDialogModule} from 'primeng/confirmdialog'
+import {Message} from 'primeng/message'
 import {ProgressSpinner} from 'primeng/progressspinner'
 import {Tag} from 'primeng/tag'
 import {FormAction} from '../../../utils/types/form-action.enum'
@@ -20,7 +21,8 @@ import {TooltipComponent} from '../tooltip/tooltip.component'
     ProgressSpinner,
     Tag,
     TooltipComponent,
-    ErrorSummaryComponent
+    ErrorSummaryComponent,
+    Message
   ]
 })
 export class FormButtonsComponent<T> {

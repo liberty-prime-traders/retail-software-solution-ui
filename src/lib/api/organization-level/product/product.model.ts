@@ -7,14 +7,16 @@ export interface Product extends BaseModel{
   createdOn?: number
   productName?: string
   description?: string
-  categoryName?: string
-  categoryId?: string
+  productGroupName?: string
+  productGroupId?: string
   baseUnit?: string
   baseUnitId?: string
   status?: ProductStatus
   activeTags?: TagSummary[]
   tagsToAdd?: string[],
-  tagsToRemove?: string[]
+  tagsToRemove?: string[],
+  cursor?: number,
+  similarityScore?: number
 }
 
 export type TagSummary = Pick<Tag, 'id' | 'tagName'>

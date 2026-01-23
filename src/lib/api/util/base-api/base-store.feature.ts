@@ -9,7 +9,7 @@ import {
   upsertEntity,
   withEntities
 } from '@ngrx/signals/entities'
-import {parseError} from '../../../utils/error.util'
+import {parseError} from '../../../utils/errors'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {BaseModel} from './base.model'
 import {BaseState, createInitialState} from './base.state'
@@ -21,6 +21,10 @@ export const withBaseStore = <ENTITY extends BaseModel>(selectId: SelectEntityId
     selectFirst: computed(() => store.entities()[0])
   })),
   withMethods((store) => ({
+
+    selectForId(id: EntityId): ENTITY | undefined {
+      return store.entityMap()[id]
+    },
 
     setAll(entities: ENTITY[]) {
       patchState(store, upsertEntities(entities, {selectId}))

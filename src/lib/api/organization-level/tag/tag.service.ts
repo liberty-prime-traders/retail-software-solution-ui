@@ -1,6 +1,6 @@
 import {computed, Injectable} from '@angular/core'
+import {CategoryType} from '../../../utils/types/category-type.enum'
 import {BaseService} from '../../util/base-api/base.service'
-import {CategoryType} from '../category/category-type.enum'
 import {Tag} from './tag.model'
 import {TagStore} from './tag.store'
 

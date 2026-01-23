@@ -9,8 +9,8 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
 
 
 @Component({
-  selector: 'rts-jobtitle-form',
-  templateUrl: 'jobtitle-form.component.html',
+  selector: 'rts-job-title-form',
+  templateUrl: 'job-title-form.component.html',
   imports: [
     FormButtonsComponent,
     FormsModule,
@@ -20,14 +20,14 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
   ]
 })
 export class JobTitleFormComponent implements OnInit {
-  readonly jobtitle = input<JobTitle>()
+  readonly jobTitle = input<JobTitle>()
 
   private readonly jobTitleService = inject(JobTitleService)
   private readonly formBuilder = inject(FormBuilder)
 
   readonly jobTitleForm = computed(() => this.formBuilder.nonNullable.group({
-    id: this.jobtitle()?.id,
-    value: [this.jobtitle()?.value, Validators.required]
+    id: this.jobTitle()?.id,
+    value: [this.jobTitle()?.value, Validators.required]
   }))
 
   readonly processingStatus = this.jobTitleService.selectProcessingStatus
@@ -38,7 +38,7 @@ export class JobTitleFormComponent implements OnInit {
   }
 
   resetForm() {
-    this.jobTitleForm().reset(this.jobtitle())
+    this.jobTitleForm().reset(this.jobTitle())
   }
 
   upsertJobTitle() {
@@ -51,6 +51,6 @@ export class JobTitleFormComponent implements OnInit {
   }
 
   deleteJobTitle() {
-    this.jobTitleService.delete(this.jobtitle()?.id)
+    this.jobTitleService.delete(this.jobTitle()?.id)
   }
 }

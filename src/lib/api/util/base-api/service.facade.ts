@@ -15,12 +15,13 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
   readonly selectProcessingStatus
   readonly selectFailureMessages
   readonly processingIsUnderWay
+  readonly selectCount
   readonly lastSavedResponse = signal<RESPONSE|undefined>(undefined)
   private readonly defaultApiRequestConfig: ApiRequestConfig = {
     upsertOnSuccess: false,
     urlSuffix: ''
   }
-  private readonly apiRequestConfig = signal<ApiRequestConfig>(this.defaultApiRequestConfig)
+  protected readonly apiRequestConfig = signal<ApiRequestConfig>(this.defaultApiRequestConfig)
 
   protected constructor(protected readonly store: BaseStore<RESPONSE>) {
     this.selectLoading = this.store.loading
@@ -28,7 +29,12 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     this.selectAll = this.store.entities
     this.selectProcessingStatus = this.store.processingStatus
     this.selectFailureMessages = this.store.failureMessages
+    this.selectCount = computed(() => this.store.entities().length)
     this.processingIsUnderWay = computed(() => this.selectProcessingStatus() === ProcessingStatus.IN_PROGRESS)
+  }
+
+  selectForId(id: EntityId): RESPONSE | undefined {
+    return this.store.selectForId(id)
   }
 
   protected prepareResponse(body: RESPONSE | RESPONSE[], idParam?: EntityId): any {

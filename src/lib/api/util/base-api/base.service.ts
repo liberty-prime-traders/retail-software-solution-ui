@@ -9,7 +9,7 @@ import {FetchService} from './fetch-service'
 
 export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<RESPONSE>>
   extends FetchService<RESPONSE> {
-  private readonly httpClient = inject(HttpClient)
+  protected readonly httpClient = inject(HttpClient)
 
   protected constructor(protected override readonly store: BaseStore<RESPONSE>) {
     super(store, inject(HttpClient))

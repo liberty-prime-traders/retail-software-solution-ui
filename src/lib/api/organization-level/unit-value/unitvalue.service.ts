@@ -15,8 +15,8 @@ export class UnitValueService extends BaseService<UnitValue> {
   private readonly unitValuesCache = new Multimap<UnitValue>()
   private readonly fetchedAll = signal(false)
 
-  override readonly selectAll = computed(() =>
-    this.unitValuesCache.values()
+  readonly selectAllAsMap = computed(() =>
+    this.unitValuesCache.asMap()
   )
 
   readonly selectForGroup =  (unitGroupId: Signal<EntityId>) =>

@@ -1,3 +1,4 @@
+import {NgClass} from '@angular/common'
 import {Component, inject, input, OnInit} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {Button} from 'primeng/button'
@@ -24,7 +25,8 @@ import {UnitValueFormComponent} from './unit-value-form/unit-value-form.componen
     NullSafePipe,
     GridFilterComponent,
     EmptyRowComponent,
-    Ripple
+    Ripple,
+    NgClass
   ]
 })
 export class UnitValueComponent extends GridWithAddButtonComponent<UnitValueService> implements OnInit {

@@ -40,7 +40,7 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-registry let-expanded="expanded">
-      <tr [pSelectableRow]="registry">
+      <tr [ngClass]="{ 'expanded-row': expanded }">
         <td>{{ registry?.displayName | nullSafe }}</td>
         <td>{{ registry?.tableName | nullSafe }}</td>
         <td>{{ registry?.schemaLevel | prettifyEnum }}</td>

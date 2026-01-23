@@ -42,7 +42,7 @@
   </ng-template>
 
   <ng-template pTemplate="body" let-paymentOption let-expanded="expanded">
-    <tr>
+    <tr [ngClass]="{ 'expanded-row': expanded }">
       <td>{{paymentOption?.name | nullSafe}}</td>
       <td>{{paymentOption?.description | nullSafe}}</td>
       <td>{{paymentOption?.createdBy | nullSafe}}</td>

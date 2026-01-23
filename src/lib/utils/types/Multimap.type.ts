@@ -41,6 +41,10 @@ export class Multimap<V extends BaseModel> {
     );
   }
 
+  asMap(): Map<string, V[]> {
+    return this.map()
+  }
+
   keys(): Set<string> {
     return new Set(this.map().keys())
   }

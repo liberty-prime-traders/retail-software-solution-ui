@@ -17,7 +17,6 @@
 
   <ng-template pTemplate="header">
     <tr>
-      <th style="width: 5rem;"></th>
       <th pSortableColumn="name">
         Name
         <p-sortIcon field="name"></p-sortIcon>
@@ -38,12 +37,18 @@
         Multiplier
         <p-sortIcon field="conversionFactor"></p-sortIcon>
       </th>
+      <th style="width: 5rem;"></th>
   </ng-template>
 
   <ng-template pTemplate="body" let-unitvalue let-expanded="expanded">
-    <tr [pSelectableRow]="unitvalue">
+    <tr [ngClass]="{ 'expanded-row': expanded }">
+      <td>{{unitvalue?.name | nullSafe}}</td>
+      <td>{{unitvalue?.code | nullSafe}}</td>
+      <td>{{unitvalue?.description | nullSafe}}</td>
+      <td>{{unitvalue?.baseUnitName | nullSafe}}</td>
+      <td>{{unitvalue?.conversionFactor | nullSafe}}</td>
       <td>
-        <p-button [icon]="expanded ? 'pi pi-angle-down' : 'pi pi-angle-right'"
+        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                   rounded
                   pRipple
                   severity="secondary"
@@ -52,11 +57,6 @@
                   [pRowToggler]="unitvalue">
         </p-button>
       </td>
-      <td>{{unitvalue?.name | nullSafe}}</td>
-      <td>{{unitvalue?.code | nullSafe}}</td>
-      <td>{{unitvalue?.description | nullSafe}}</td>
-      <td>{{unitvalue?.baseUnitName | nullSafe}}</td>
-      <td>{{unitvalue?.conversionFactor | nullSafe}}</td>
     </tr>
   </ng-template>
 
