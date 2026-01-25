@@ -9,6 +9,7 @@ import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
+import {AutoResizeConfig} from '../../welcome/auto-resize-config'
 import {ProductGroupFormComponent} from './product-group-form/product-group-form.component'
 
 @Component({
@@ -31,4 +32,6 @@ export class ProductGroupComponent extends GridWithAddButtonComponent<ProductGro
 
   readonly productGroups = this.productGroupService.selectAll
   selectedProductGroup = model<ProductGroup|undefined>(undefined)
+
+  readonly productGroupTableId = AutoResizeConfig.productGroupsId
 }

@@ -4,7 +4,13 @@ import {toErrorMessages} from '../../../utils/form-validation'
 
 @Component({
   selector: 'rts-error-summary',
-  templateUrl: 'error-summary.component.html',
+  template: `
+    @if (errorMessages().length > 0) {
+      @for(message of errorMessages(); track message) {
+        <div class="error-message">{{ message }}</div>
+      }
+    }
+  `,
   imports: []
 })
 export class ErrorSummaryComponent<T> {

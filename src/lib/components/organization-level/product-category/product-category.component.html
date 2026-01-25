@@ -1,24 +1,22 @@
-<div class="flex flex-column gap-4 flex-grow-1">
+<div class="flex flex-column gap-4 flex-grow-1" [id]="productCategoryTableId">
   @if (addingIsActive()) {
     <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info" class="align-self-end"/>
     <rts-product-category-form (successfulSave)="successfulSave()"/>
 
   } @else {
-    <p-table  [loading]="loading() && !addingIsActive()"
-              rowExpandMode="single"
-              dataKey="id"
-              scrollHeight="600px"
-              scrollable="true"
-              sortField="categoryName"
-              #productCategoriesTable
-              [globalFilterFields]="['categoryName', 'description', 'createdBy']"
-              (onRowExpand)="rowIsExpanded.set(true)"
-              (onRowCollapse)="rowIsExpanded.set(false)"
-              [value]="productCategories()">
+    <p-table [loading]="loading() && !addingIsActive()"
+             rowExpandMode="single"
+             dataKey="id"
+             scrollHeight="flex"
+             [scrollable]="true"
+             sortField="categoryName"
+             #productCategoriesTable
+             [globalFilterFields]="['categoryName', 'description', 'createdBy']"
+             (onRowExpand)="rowIsExpanded.set(true)"
+             (onRowCollapse)="rowIsExpanded.set(false)"
+             [value]="productCategories()">
 
       <ng-template pTemplate="caption">
-
-
         <div class="flex justify-content-between align-items-center">
           <h3 class="font-bold">Product Categories</h3>
 
@@ -30,8 +28,6 @@
                     rounded
                     severity="secondary">
           </p-button>
-
-
         </div>
       </ng-template>
 

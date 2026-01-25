@@ -1,69 +1,72 @@
-<p-table [value]="products()"
-         [loading]="loading()"
-         (onRowExpand)="rowIsExpanded.set(true)"
-         (onRowCollapse)="rowIsExpanded.set(false)"
-         (onLazyLoad)="onLazyLoad($event)"
-         [lazy]="true"
-         rowExpandMode="single"
-         dataKey="id"
-         scrollHeight="600px"
-         scrollable="true"
-         [rows]="20"
-         [virtualScroll]="!productFilterService.requireClientSideFilter()"
-         [virtualScrollItemSize]="65">
+<div [id]="productLinesElementId">
+  <p-table [value]="products()"
+           [loading]="loading()"
+           (onRowExpand)="rowIsExpanded.set(true)"
+           (onRowCollapse)="rowIsExpanded.set(false)"
+           (onLazyLoad)="onLazyLoad($event)"
+           [lazy]="true"
+           rowExpandMode="single"
+           dataKey="id"
+           scrollHeight="flex"
+           scrollable="true"
+           [rows]="20"
+           [virtualScroll]="!productFilterService.requireClientSideFilter()"
+           [virtualScrollItemSize]="65">
 
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Reference</th>
-      <th>Product Name</th>
-      <th>Product Group</th>
-      <th>Base Unit</th>
-      <th>Description</th>
-      <th>Tags</th>
-      <th style="width: 5rem"></th>
-    </tr>
-  </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Reference</th>
+        <th>Product Name</th>
+        <th>Product Group</th>
+        <th>Base Unit</th>
+        <th>Description</th>
+        <th>Tags</th>
+        <th style="width: 5rem"></th>
+      </tr>
+    </ng-template>
 
-  <ng-template pTemplate="body" let-product let-expanded="expanded">
+    <ng-template pTemplate="body" let-product let-expanded="expanded">
 
-    <tr style="height: 65px"
-        [ngClass]="{
+      <tr style="height: 65px"
+          [ngClass]="{
           'opacity-60': product.status !== ProductStatus.ACTIVE,
           'expanded-row': expanded
         }">
-      <td>{{ product?.referenceNumber | nullSafe }}</td>
-      <td>{{ product?.productName | nullSafe }}</td>
-      <td>{{ product?.productGroupName | nullSafe }}</td>
-      <td>{{ product?.baseUnit | nullSafe }}</td>
-      <td>{{ product?.description | nullSafe }}</td>
-      <td>
-        @let tags = product.activeTags;
-        @if (tags?.length) {
-          <div class="flex gap-1 flex-wrap">
-            @for (tag of tags; track tag.id) {
-              <p-tag [value]="tag.tagName"/>
-            }
-          </div>
-        } @else {
-          --
-        }
-      </td>
-      <td>
-        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                  rounded
-                  severity="secondary"
-                  [disabled]="loading()"
-                  [pRowToggler]="product">
-        </p-button>
-      </td>
-    </tr>
-  </ng-template>
+        <td>{{ product?.referenceNumber | nullSafe }}</td>
+        <td>{{ product?.productName | nullSafe }}</td>
+        <td>{{ product?.productGroupName | nullSafe }}</td>
+        <td>{{ product?.baseUnit | nullSafe }}</td>
+        <td>{{ product?.description | nullSafe }}</td>
+        <td>
+          @let tags = product.activeTags;
+          @if (tags?.length) {
+            <div class="flex gap-1 flex-wrap">
+              @for (tag of tags; track tag.id) {
+                <p-tag [value]="tag.tagName"/>
+              }
+            </div>
+          } @else {
+            --
+          }
+        </td>
+        <td>
+          <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading()"
+                    [pRowToggler]="product">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
 
-  <ng-template pTemplate="expandedrow" let-product>
-    <tr>
-      <td colspan="7" class="filled-background">
-        <rts-product-form [product]="product"/>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+    <ng-template pTemplate="expandedrow" let-product>
+      <tr>
+        <td colspan="7" class="filled-background">
+          <rts-product-form [product]="product"/>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>

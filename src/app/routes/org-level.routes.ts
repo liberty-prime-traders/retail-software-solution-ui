@@ -1,4 +1,5 @@
 import {Routes} from '@angular/router'
+import {ContactComponent} from '../../lib/components/organization-level/contact/contact.component'
 import {JobTitleComponent} from '../../lib/components/organization-level/job-title/job-title.component'
 import {ProductCategoryComponent} from '../../lib/components/organization-level/product-category/product-category.component'
 import {
@@ -32,6 +33,7 @@ export const orgManagementRoutes: Routes = [
   {path: 'product-groups', component: ProductGroupComponent},
   {path: 'payment-options', component: PaymentOptionComponent},
   {path: 'tags', component: TagComponent},
+  {path: 'contacts', component: ContactComponent},
 
   {path: 'locations', component: LocationsComponent},
   {path: 'profile', component: OrganizationProfileComponent},

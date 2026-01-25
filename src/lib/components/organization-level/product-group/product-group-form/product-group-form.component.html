@@ -1,6 +1,6 @@
 <form class="flex flex-column gap-2">
   <rts-form-field [required]="true" label="Group Name" for="groupName">
-    <input id="groupName" class="flex-grow-1" pInputText [field]="productGroupForm.groupName" />
+    <input id="groupName" class="flex-grow-1" pInputText [formField]="productGroupForm.groupName" />
   </rts-form-field>
 
   <rts-form-field [required]="true" label="Product Category" for="categoryId">
@@ -10,13 +10,13 @@
               [options]="productCategories()"
               optionLabel="categoryName"
               optionValue="id"
-              [field]="productGroupForm.categoryId"
+              [formField]="productGroupForm.categoryId"
               placeholder="Select a Product Category" >
     </p-select>
   </rts-form-field>
 
   <rts-form-field label="Description" for="description">
-    <input id="description" pInputText [field]="productGroupForm.description" />
+    <input id="description" pInputText [formField]="productGroupForm.description" />
   </rts-form-field>
 
   <rts-forms-buttons [disableReset]="!productGroupForm().dirty"

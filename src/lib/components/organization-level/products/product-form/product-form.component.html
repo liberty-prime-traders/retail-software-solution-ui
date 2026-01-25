@@ -4,7 +4,7 @@
   @let labelSize = originalProduct() ? 3 : 2;
 
   <rts-form-field [required]="true" label="Product Name" for="productName" [labelColumnSize]="labelSize">
-    <input id="productName" class="flex-grow-1" pInputText [field]="productForm.productName" />
+    <input id="productName" class="flex-grow-1" pInputText [formField]="productForm.productName" />
   </rts-form-field>
 
   <rts-form-field [required]="true" label="Product Group" for="productGroupId"  [labelColumnSize]="labelSize">
@@ -15,7 +15,7 @@
               filterBy="label"
               [showClear]="true"
               [filter]="true"
-              [field]="productForm.productGroupId"
+              [formField]="productForm.productGroupId"
               placeholder="Select a Product Group" >
     </p-select>
   </rts-form-field>
@@ -25,13 +25,13 @@
               class="flex-grow-1"
               [options]="unitValues()"
               group
-              [field]="productForm.baseUnitId"
+              [formField]="productForm.baseUnitId"
               placeholder="Select a Unit" >
     </p-select>
   </rts-form-field>
 
   <rts-form-field  label="Description" for="description" [labelColumnSize]="labelSize">
-    <input id="description" pInputText [field]="productForm.description" />
+    <input id="description" pInputText [formField]="productForm.description" />
   </rts-form-field>
 
   <p-panel class="m-4" header="Assign tags to product" toggleable collapsed>

@@ -9,6 +9,8 @@ import {ProductSearchService} from '../../../../api/organization-level/product-s
 import {ProductStatus} from '../../../../api/organization-level/product/product-status.enum'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
+import {AutoStretchComponent} from '../../../reusable/auto-stretch.component'
+import {AutoResizeConfig} from '../../../welcome/auto-resize-config'
 import {ProductFilterService} from '../product-filter/product-filter.service'
 import {ProductFormComponent} from '../product-form/product-form.component'
 
@@ -25,12 +27,13 @@ import {ProductFormComponent} from '../product-form/product-form.component'
     Tag
   ]
 })
-export class ProductDetailsComponent {
+export class ProductDetailsComponent extends AutoStretchComponent {
   private readonly productSearchService = inject(ProductSearchService)
   readonly productFilterService = inject(ProductFilterService)
 
   private readonly table = viewChild(Table)
 
+  readonly productLinesElementId = AutoResizeConfig.productLinesId
   readonly ProductStatus = ProductStatus
   readonly rowIsExpanded = signal<boolean>(false)
   private readonly lastIndexBeforeReload = signal(0)

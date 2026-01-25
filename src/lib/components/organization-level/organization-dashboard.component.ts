@@ -32,6 +32,7 @@ export class OrganizationDashboardComponent {
   ]
 
   private readonly businessSettingsMenuItems: MenuItem[] = [
+    {label: 'Contacts', icon: 'pi pi-address-book', routerLink: 'contacts'},
     {label: 'Job Titles', icon: 'pi pi-gauge', routerLink: 'job-title'},
     {label: 'Units', icon: 'pi pi-percentage', routerLink: 'units'},
     {label: 'Payment Options', icon: 'pi pi-dollar', routerLink: 'payment-options'},

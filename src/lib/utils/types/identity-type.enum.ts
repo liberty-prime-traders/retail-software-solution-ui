@@ -1,0 +1,4 @@
+export enum IdentityType {
+  ORGANIZATION = 'ORGANIZATION',
+  INDIVIDUAL = 'INDIVIDUAL'
+}

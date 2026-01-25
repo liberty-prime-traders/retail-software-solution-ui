@@ -1,9 +1,9 @@
-<div class="flex flex-column h-full">
+<div class="flex flex-column" (onResize)="onResize()">
 
   @if (fullScreen()) {
     <div class="flex justify-content-end p-1">
       <p-button icon="pi pi-arrow-down-left-and-arrow-up-right-to-center"
-                (onClick)="fullScreen.set(false)"
+                (onClick)="setFullScreen(false)"
                 severity="secondary">
       </p-button>
     </div>
@@ -48,17 +48,14 @@
       }
     </div>
 
-    <p-divider/>
-
-    <div class="h-1rem"></div>
+    <p-divider class="mb-4"/>
   }
-
 
   <div class="relative">
     @if (!fullScreen()) {
       <div class="absolute position-right-17 position-top-1 z-1">
         <p-button icon="pi pi-arrow-up-right-and-arrow-down-left-from-center"
-                  (onClick)="fullScreen.set(true)"
+                  (onClick)="setFullScreen(true)"
                   pTooltip="Full Screen"
                   size="small"
                   severity="secondary">

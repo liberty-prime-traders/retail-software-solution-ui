@@ -1,7 +1,7 @@
 import {NgClass} from '@angular/common'
 import {Component, computed, inject, Input, model, OnInit, Signal, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {Field, form} from '@angular/forms/signals'
+import {FormField, form} from '@angular/forms/signals'
 import {PrimeTemplate} from 'primeng/api'
 import {BlockUI} from 'primeng/blockui'
 import {Button} from 'primeng/button'
@@ -37,7 +37,7 @@ import {ProductFormTagDisplayComponent} from './tag-display.component'
     FormButtonsComponent,
     FormFieldComponent,
     Select,
-    Field,
+    FormField,
     Panel,
     ProductFormTagDisplayComponent,
     NgClass,

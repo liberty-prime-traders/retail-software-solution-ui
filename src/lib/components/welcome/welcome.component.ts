@@ -1,7 +1,8 @@
 import {AsyncPipe, NgClass} from '@angular/common'
-import {Component, computed, effect, inject, model, signal, Signal} from '@angular/core'
+import {Component, computed, effect, inject, model, OnInit, signal, Signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Router, RouterLink, RouterOutlet} from '@angular/router'
+import {NgxResizeObserverModule} from 'ngx-resize-observer'
 import {MenuItem} from 'primeng/api'
 import {Avatar} from 'primeng/avatar'
 import {Button} from 'primeng/button'
@@ -13,14 +14,29 @@ import {darkModeSelector} from '../../../app/app.preset'
 import {SysUserService} from '../../api/platform-level/sys-user/sys-user.service'
 import {RtsOktaService} from '../../utils/services/rts-okta.service'
 import {SessionContextService} from '../../utils/services/session-context.service'
+import {AutoResizeConfig} from './auto-resize-config'
 
 @Component({
   selector: 'rts-welcome',
   templateUrl: 'welcome.component.html',
   styleUrls: ['welcome.component.scss'],
-  imports: [RouterOutlet, Divider, Button, RouterLink, AsyncPipe, Avatar, Menubar, NgClass, ToggleSwitch, FormsModule, Tooltip]
+  providers: [NgxResizeObserverModule],
+  imports: [
+    RouterOutlet,
+    Divider,
+    Button,
+    RouterLink,
+    AsyncPipe,
+    Avatar,
+    Menubar,
+    NgClass,
+    ToggleSwitch,
+    FormsModule,
+    Tooltip,
+    NgxResizeObserverModule
+  ]
 })
-export class WelcomeComponent {
+export class WelcomeComponent implements OnInit {
   private readonly rtsOktaService = inject(RtsOktaService)
   private readonly router = inject(Router)
   readonly sessionContextService = inject(SessionContextService)
@@ -78,8 +94,21 @@ export class WelcomeComponent {
     })
   }
 
+  ngOnInit() {
+    this.onResize()
+  }
+
   logout() {
     this.router.navigateByUrl('/').then(() => this.rtsOktaService.signOut())
+  }
+
+  setFullScreen(isFullScreen: boolean): void {
+    this.fullScreen.set(isFullScreen)
+    this.onResize()
+  }
+
+  protected onResize() {
+    AutoResizeConfig.stretchAllElements()
   }
 
   private switchOrganization() {
