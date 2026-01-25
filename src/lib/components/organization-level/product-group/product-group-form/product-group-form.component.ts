@@ -1,5 +1,5 @@
 import {Component, inject, Input, OnInit, signal} from '@angular/core'
-import {Field, form} from '@angular/forms/signals'
+import {FormField, form} from '@angular/forms/signals'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
 import {ProductCategoryService} from '../../../../api/organization-level/product-category/product-category.service'
@@ -19,7 +19,7 @@ import {ProductGroupFormDefinition} from './product-group-form.definition'
     InputText,
     FormFieldComponent,
     Select,
-    Field
+    FormField
   ]
 })
 export class ProductGroupFormComponent extends BaseFormComponent<ProductGroupService> implements OnInit {

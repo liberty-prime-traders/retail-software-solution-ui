@@ -6,6 +6,8 @@ import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {UnitGroup} from '../../../api/organization-level/unit-group/unitgroup.model'
 import {UnitGroupService} from '../../../api/organization-level/unit-group/unitgroup.service'
+import {AutoStretchComponent} from '../../reusable/auto-stretch.component'
+import {AutoResizeConfig} from '../../welcome/auto-resize-config'
 import {UnitGroupFormComponent} from './unit-group-form/unit-group-form.component'
 import {UnitValueComponent} from './unit-value/unit-value.component'
 
@@ -27,11 +29,12 @@ import {UnitValueComponent} from './unit-value/unit-value.component'
     AccordionContent
   ]
 })
-export class UnitTreeComponent implements OnInit {
+export class UnitTreeComponent extends AutoStretchComponent implements OnInit {
   private readonly unitGroupService = inject(UnitGroupService)
   readonly loading = this.unitGroupService.selectLoading
   readonly unitGroups = this.unitGroupService.selectAll
 
+  readonly unitsElementId = AutoResizeConfig.unitsId
   readonly addingIsActive = signal(false)
   readonly rowIsExpanded = signal<boolean>(false)
   readonly searchTerm = signal('')

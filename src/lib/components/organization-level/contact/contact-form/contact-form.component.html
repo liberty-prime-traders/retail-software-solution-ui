@@ -1,0 +1,85 @@
+<form class="flex flex-column gap-2">
+
+  <p-panel>
+    <rts-form-field [required]="true" label="Contact Type" for="contactType">
+      <p-select id="contactType"
+                class="flex-grow-1"
+                [options]="contactType | enumToDropdown"
+                [formField]="contactForm.contactType">
+      </p-select>
+    </rts-form-field>
+
+    <rts-form-field [required]="true" label="Status" for="status">
+      <p-select id="status"
+                class="flex-grow-1"
+                [options]="contactStatus | enumToDropdown"
+                [formField]="contactForm.status">
+      </p-select>
+    </rts-form-field>
+
+    <rts-form-field [required]="true" label="Identity Type" for="identityType">
+      <p-select id="identityType"
+                class="flex-grow-1"
+                [options]="identityType | enumToDropdown"
+                [formField]="contactForm.identityType">
+      </p-select>
+    </rts-form-field>
+
+    @if (isOrganization()) {
+      <rts-form-field [required]="true" label="Company Name" for="companyName">
+        <input id="companyName" class="flex-grow-1" pInputText [formField]="contactForm.companyName">
+      </rts-form-field>
+
+    } @else {
+      <rts-form-field [required]="true" label="First Name" for="firstName">
+        <input id="firstName" class="flex-grow-1" pInputText [formField]="contactForm.firstName">
+      </rts-form-field>
+
+      <rts-form-field label="Last Name" for="lastName">
+        <input id="lastName" class="flex-grow-1" pInputText [formField]="contactForm.lastName">
+      </rts-form-field>
+    }
+  </p-panel>
+
+  <p-panel header="Additional Information" toggleable collapsed>
+
+    <rts-form-field label="Email" for="email">
+      <input id="email" class="flex-grow-1" pInputText [formField]="contactForm.email" type="email">
+    </rts-form-field>
+
+    <rts-form-field label="Phone" for="phone">
+      <input id="phone" class="flex-grow-1" pInputText [formField]="contactForm.phone" type="tel">
+    </rts-form-field>
+
+    <rts-form-field label="Address" for="address">
+      <textarea id="address" [formField]="contactForm.address" rows="3"></textarea>
+    </rts-form-field>
+
+    <rts-form-field label="Credit Limit" for="creditLimit">
+      <p-inputNumber id="creditLimit"
+                     class="flex-grow-1"
+                     [formField]="contactForm.creditLimit"
+                     currency="USD"
+                     mode="currency">
+      </p-inputNumber>
+    </rts-form-field>
+
+    <rts-form-field label="Notes" for="notes">
+      <textarea id="notes" [formField]="contactForm.notes" rows="4"></textarea>
+    </rts-form-field>
+  </p-panel>
+
+
+
+  <rts-forms-buttons [disableReset]="!contactForm().dirty"
+                     [disableSave]="contactForm().invalid() || !contactForm().dirty"
+                     [hideDelete]="!originalContact()?.id"
+                     [signalForm]="contactForm()"
+                     [fieldMap]="contactFormFields"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (delete)="deleteContact()"
+                     (save)="upsertContact()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</form>

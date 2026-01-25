@@ -1,7 +1,7 @@
 import {Component} from '@angular/core'
-import {WelcomeComponent} from '../lib/components/welcome/welcome.component'
-import {ToastModule} from 'primeng/toast'
 import {MessageService} from 'primeng/api'
+import {ToastModule} from 'primeng/toast'
+import {WelcomeComponent} from '../lib/components/welcome/welcome.component'
 
 @Component({
   selector: 'rts-root',
