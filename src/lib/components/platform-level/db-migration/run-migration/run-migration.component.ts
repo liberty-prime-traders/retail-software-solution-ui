@@ -42,7 +42,7 @@ export class RunMigrationComponent implements OnInit {
 
   readonly migrationForm = this.formBuilder.nonNullable.group({
     organizationId: ['', [Validators.required]],
-    locationIdsToMigrate: [[], Validators.required],
+    locationIdsToMigrate: [[]],
     targetDbVersionId: ['', [Validators.required]]
   })
 

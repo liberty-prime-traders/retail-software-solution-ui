@@ -9,7 +9,9 @@ import {Tooltip} from 'primeng/tooltip'
 import {DbMigrationService} from '../../../../api/platform-level/db-migration/db-migration.service'
 import {MigrationStatusSeverityPipe} from '../../../../utils/pipes/migration-status-severity.pipe'
 import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
+import {AutoStretchComponent} from '../../../reusable/auto-stretch.component'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
+import {AutoResizeConfig} from '../../../welcome/auto-resize-config'
 
 @Component({
   selector: 'rts-migration-history',
@@ -27,7 +29,7 @@ import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component
   ],
   templateUrl: './migration-history.component.html'
 })
-export class MigrationHistoryComponent implements OnInit {
+export class MigrationHistoryComponent extends AutoStretchComponent implements OnInit {
   private readonly dbMigrationService = inject(DbMigrationService)
 
   readonly dateRange = model([this.getStartDate(), new Date()])
@@ -35,6 +37,8 @@ export class MigrationHistoryComponent implements OnInit {
 
   readonly migrations = this.dbMigrationService.selectAll
   readonly loading = this.dbMigrationService.selectLoading
+
+  readonly dbMigrationElementId = AutoResizeConfig.dbMigrationsId
 
   ngOnInit() {
     this.reloadMigrationHistory()

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core'
 import {RouterLink, RouterOutlet} from '@angular/router'
-import {Divider} from 'primeng/divider'
 import {TabsModule} from 'primeng/tabs'
+import {AutoStretchComponent} from '../../reusable/auto-stretch.component'
 
 @Component({
   selector: 'rts-db-migration',
@@ -9,8 +9,7 @@ import {TabsModule} from 'primeng/tabs'
   imports: [
     TabsModule,
     RouterOutlet,
-    Divider,
     RouterLink
   ]
 })
-export class DbMigrationComponent {}
+export class DbMigrationComponent extends AutoStretchComponent {}

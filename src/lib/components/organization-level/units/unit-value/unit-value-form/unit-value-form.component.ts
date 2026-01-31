@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, OnInit} from '@angular/core'
+import {Component, computed, inject, input} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, ValidatorFn, Validators} from '@angular/forms'
 import {EntityId} from '@ngrx/signals/entities'
 import {isNil} from 'lodash-es'
@@ -7,6 +7,7 @@ import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
 import {UnitValue} from '../../../../../api/organization-level/unit-value/unitvalue.model'
 import {UnitValueService} from '../../../../../api/organization-level/unit-value/unitvalue.service'
+import {BaseFormComponent} from '../../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
 
@@ -22,13 +23,14 @@ import {FormFieldComponent} from '../../../../reusable/form-field/form-field.com
     InputNumber
   ]
 })
-export class UnitValueFormComponent implements OnInit {
+export class UnitValueFormComponent extends BaseFormComponent<UnitValueService> {
   readonly unitValue = input<UnitValue>()
   readonly unitGroupId = input<EntityId>()
   readonly baseUnitOptions = input<Array<UnitValue>>([])
 
   private readonly unitValueService = inject(UnitValueService)
   private readonly formBuilder = inject(FormBuilder)
+  protected readonly apiService = this.unitValueService
 
   readonly unitValueForm = computed(() => this.formBuilder.nonNullable.group({
     id: this.unitValue()?.id,
@@ -38,13 +40,6 @@ export class UnitValueFormComponent implements OnInit {
     baseUnit: this.unitValue()?.baseUnit,
     conversionFactor: this.unitValue()?.conversionFactor
   }, {validators: this.getDependentFieldsValidator()}))
-
-  readonly processingStatus = this.unitValueService.selectProcessingStatus
-  readonly failureMessages = this.unitValueService.selectFailureMessages
-
-  ngOnInit() {
-    this.unitValueService.resetProcessingStatus()
-  }
 
   resetForm() {
     this.unitValueForm().reset()
