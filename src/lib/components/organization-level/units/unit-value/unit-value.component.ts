@@ -6,7 +6,6 @@ import {Ripple} from 'primeng/ripple'
 import {TableModule} from 'primeng/table'
 import {UnitValueService} from '../../../../api/organization-level/unit-value/unitvalue.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
-import {AddRowComponent} from '../../../reusable/add-row/add-row.component'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../../reusable/grid-with-add-button.component'
@@ -20,8 +19,6 @@ import {UnitValueFormComponent} from './unit-value-form/unit-value-form.componen
     NullSafePipe,
     Button,
     UnitValueFormComponent,
-    AddRowComponent,
-    AddRowComponent,
     NullSafePipe,
     GridFilterComponent,
     EmptyRowComponent,

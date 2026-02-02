@@ -2,6 +2,7 @@ import {NgClass, NgTemplateOutlet} from '@angular/common'
 import {Component, computed, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion'
+import {BlockUI} from 'primeng/blockui'
 import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {UnitGroup} from '../../../api/organization-level/unit-group/unitgroup.model'
@@ -26,7 +27,8 @@ import {UnitValueComponent} from './unit-value/unit-value.component'
     Accordion,
     AccordionPanel,
     AccordionHeader,
-    AccordionContent
+    AccordionContent,
+    BlockUI
   ]
 })
 export class UnitTreeComponent extends AutoStretchComponent implements OnInit {

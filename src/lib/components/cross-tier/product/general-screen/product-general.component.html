@@ -1,11 +1,18 @@
 <div class="flex align-items-center justify-content-between mb-3">
-  <h3 class="font-bold">Products</h3>
+  @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
+    <h3 class="font-bold">{{organizationName()}} Products</h3>
 
-  <p-button (click)="setAddingActiveTrue()"
-            [disabled]="selectedProduct() !== undefined || loading() || addingIsActive() || showAdvancedFilter()"
-            label="+ Add product"
-            rounded severity="secondary">
-  </p-button>
+  } @else if (schemaLevel() === SchemaLevel.LOCATION) {
+    <h3 class="font-bold">{{locationName()}} Products</h3>
+  }
+
+  @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
+    <p-button (click)="setAddingActiveTrue()"
+              [disabled]="addingIsActive() || showAdvancedFilter()"
+              label="+ Add product"
+              rounded severity="secondary">
+    </p-button>
+  }
 </div>
 
 <p-divider />
@@ -22,7 +29,7 @@
                   (onClick)="toggleAdvancedFilter(false)">
         </p-button>
       </div>
-      <rts-product-filter/>
+      <rts-product-filter [schemaLevel]="schemaLevel()"/>
     </div>
 
     <p-divider layout="vertical" />
@@ -31,7 +38,7 @@
   <div class="flex flex-column gap-4 flex-grow-1">
     @if (addingIsActive()) {
       <p-button label="Cancel" (click)="setAddingActiveFalse()" icon="pi pi-times" severity="info"/>
-      <rts-product-form (successfulSave)="setAddingActiveFalse()"/>
+      <rts-organization-product-form (successfulSave)="setAddingActiveFalse()"/>
     }
     @else {
       <div class="flex justify-content-between align-items-center">
@@ -46,7 +53,7 @@
         <rts-search [searchValueControl]="searchValueFormControl" [ngClass]="{'flex-grow-1': showAdvancedFilter()}"/>
       </div>
 
-      <rts-product-details class="flex-grow-1" />
+      <rts-product-grid class="flex-grow-1" [schemaLevel]="schemaLevel()" />
     }
   </div>
 </div>

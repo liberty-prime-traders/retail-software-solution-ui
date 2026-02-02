@@ -1,16 +1,18 @@
 import {HttpErrorResponse} from '@angular/common/http'
 import {Signal} from '@angular/core'
+import {isEqual} from 'lodash-es'
 import {catchError, finalize, first, Subscription, tap} from 'rxjs'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {BaseModel} from '../base-api/base.model'
 import {BaseService} from '../base-api/base.service'
-import {PageRequest} from './page-request.model'
+import {CURSOR, PageRequest} from './page-request.model'
 import {PageResponse} from './page-response.model'
 import {PaginatedBaseStore} from './paginated-base.store'
 
 export abstract class PaginatedBaseService<RESPONSE extends BaseModel, PARAMETERS>
   extends BaseService<RESPONSE, PageRequest<PARAMETERS>> {
 
+  protected abstract readonly defaultCursor: CURSOR
   readonly requireClientSideFilter: Signal<boolean>
   protected static readonly BATCH_SIZE = 60
 
@@ -19,7 +21,13 @@ export abstract class PaginatedBaseService<RESPONSE extends BaseModel, PARAMETER
     this.requireClientSideFilter = this.store.requireClientSideFilter
   }
 
-  abstract parametersHaveChanged(newParams: PARAMETERS): boolean
+  parametersHaveChanged(newParams: PARAMETERS): boolean {
+    const lastParams = this.store.lastSearchParams()
+    if (!lastParams) {
+      return true
+    }
+    return !isEqual(lastParams, newParams)
+  }
 
   override resetStoreAndClearCache() {
     super.resetStoreAndClearCache()
@@ -32,7 +40,7 @@ export abstract class PaginatedBaseService<RESPONSE extends BaseModel, PARAMETER
       return undefined
     }
     this.resetStoreAndClearCache()
-    return this.executeSearch(parameters, 0)
+    return this.executeSearch(parameters, this.defaultCursor)
   }
 
   loadNext(): Subscription | undefined {
@@ -43,7 +51,7 @@ export abstract class PaginatedBaseService<RESPONSE extends BaseModel, PARAMETER
     return this.executeSearch(lastSearchParams, this.store.currentCursor())
   }
 
-  private executeSearch(parameters: PARAMETERS, previousCursor: number): Subscription {
+  private executeSearch(parameters: PARAMETERS, previousCursor: CURSOR): Subscription {
     this.startApiRequest()
     const pageRequest: PageRequest<PARAMETERS> = {
       previousCursor,

@@ -1,0 +1,51 @@
+<form class="flex flex-column gap-2">
+  @let labelSize = 3;
+
+  <rts-form-field [required]="true"
+                  label="Minimum Stock Level"
+                  for="minStockLevel"
+                  [labelColumnSize]="labelSize">
+    <p-input-number id="minStockLevel"
+                   class="flex-grow-1"
+                   [formField]="locationProductForm.minStockLevel"
+                   [min]="0"
+                   [showButtons]="true"
+                   placeholder="Enter minimum stock level">
+    </p-input-number>
+  </rts-form-field>
+
+  <rts-form-field [required]="true"
+                  label="Default Sale Price"
+                  for="defaultSalePrice"
+                  [labelColumnSize]="labelSize">
+    <p-input-number id="defaultSalePrice"
+                   class="flex-grow-1"
+                   [formField]="locationProductForm.defaultSalePrice"
+                   [min]="0"
+                   [minFractionDigits]="2"
+                   [maxFractionDigits]="2"
+                   mode="currency"
+                   currency="USD"
+                   placeholder="Enter default sale price" >
+    </p-input-number>
+  </rts-form-field>
+
+  <rts-forms-buttons [disableReset]="!locationProductForm().dirty"
+                     [disableSave]="locationProductForm().invalid() || !locationProductForm().dirty"
+                     [hideSave]="productIsInactive()"
+                     [hideReset]="productIsInactive()"
+                     [deleteSeverity]="productIsInactive() ? 'success' : 'danger'"
+                     [deleteIcon]="productIsInactive() ? 'pi pi-check' : 'pi pi-trash'"
+                     [deleteLabel]="productIsInactive() ? 'Reactivate' : 'Deactivate'"
+                     [deleteWarning]="productIsInactive() ? 'Confirm Reactivation of Product?' : 'Confirm Deactivation of Product?'"
+                     [deleteInProgressMessage]="productIsInactive() ? 'Reactivating Product...' : 'Deactivating Product...'"
+                     (delete)="productIsInactive() ? reactivateProduct() : deactivateProduct()"
+                     [signalForm]="locationProductForm()"
+                     [fieldMap]="locationProductFormFields"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (save)="updateLocationProduct()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+
+</form>

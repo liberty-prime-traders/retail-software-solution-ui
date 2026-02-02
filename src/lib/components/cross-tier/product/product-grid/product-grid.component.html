@@ -1,8 +1,8 @@
 <div [id]="productLinesElementId">
   <p-table [value]="products()"
            [loading]="loading()"
-           (onRowExpand)="rowIsExpanded.set(true)"
-           (onRowCollapse)="rowIsExpanded.set(false)"
+           (onRowExpand)="onRowExpand()"
+           (onRowCollapse)="onRowCollapse()"
            (onLazyLoad)="onLazyLoad($event)"
            [lazy]="true"
            rowExpandMode="single"
@@ -20,7 +20,11 @@
         <th>Product Group</th>
         <th>Base Unit</th>
         <th>Description</th>
-        <th>Tags</th>
+
+        @if (isOrganizationLevel()) {
+          <th>Tags</th>
+        }
+
         <th style="width: 5rem"></th>
       </tr>
     </ng-template>
@@ -37,18 +41,11 @@
         <td>{{ product?.productGroupName | nullSafe }}</td>
         <td>{{ product?.baseUnit | nullSafe }}</td>
         <td>{{ product?.description | nullSafe }}</td>
-        <td>
-          @let tags = product.activeTags;
-          @if (tags?.length) {
-            <div class="flex gap-1 flex-wrap">
-              @for (tag of tags; track tag.id) {
-                <p-tag [value]="tag.tagName"/>
-              }
-            </div>
-          } @else {
-            --
-          }
-        </td>
+        @if (isOrganizationLevel()) {
+          <td>
+            <ng-container *ngTemplateOutlet="tagTemplate; context: { $implicit: product }"/>
+          </td>
+        }
         <td>
           <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                     rounded
@@ -62,11 +59,30 @@
 
     <ng-template pTemplate="expandedrow" let-product>
       <tr>
-        <td colspan="7" class="filled-background">
-          <rts-product-form [product]="product"/>
-        </td>
+        @if (isOrganizationLevel()){
+          <td colspan="7" class="filled-background">
+            <rts-organization-product-form [product]="product"/>
+          </td>
+        } @else if (isLocationLevel()) {
+          <td colspan="6" class="filled-background">
+            <rts-location-product-form [locationProduct]="product"/>
+          </td>
+        }
       </tr>
     </ng-template>
   </p-table>
 
 </div>
+
+<ng-template #tagTemplate let-product>
+  @let tags = product.activeTags;
+  @if (tags?.length) {
+    <div class="flex gap-1 flex-wrap">
+      @for (tag of tags; track tag.id) {
+        <p-tag [value]="tag.tagName"/>
+      }
+    </div>
+  } @else {
+    --
+  }
+</ng-template>

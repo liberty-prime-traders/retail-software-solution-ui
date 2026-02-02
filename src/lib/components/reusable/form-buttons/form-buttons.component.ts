@@ -1,7 +1,7 @@
 import {Component, computed, input, model, output, signal} from '@angular/core'
 import {FieldState} from '@angular/forms/signals'
 import {ConfirmationService} from 'primeng/api'
-import {ButtonModule} from 'primeng/button'
+import {ButtonModule, ButtonSeverity} from 'primeng/button'
 import {ConfirmDialogModule} from 'primeng/confirmdialog'
 import {Message} from 'primeng/message'
 import {ProgressSpinner} from 'primeng/progressspinner'
@@ -45,6 +45,9 @@ export class FormButtonsComponent<T> {
   readonly resetLabel = input('Reset')
   readonly deleteLabel = input('Delete')
   readonly deleteWarning = input('Are you sure you want to delete this record?')
+
+  readonly deleteIcon = input('pi pi-trash')
+  readonly deleteSeverity = input<ButtonSeverity>('danger')
 
   readonly processingStatus = model<ProcessingStatus|undefined|null>(ProcessingStatus.IDLE)
   readonly deleteInProgressMessage = input('Deleting...')

@@ -1,83 +1,98 @@
-<p-table [loading]="loading() && !addingIsActive()"
-         rowExpandMode="single"
-         dataKey="id"
-         sortField="conversionFactor"
-         #unitValuesTable
-         [globalFilterFields]="['name', 'code', 'description', 'baseUnitName']"
-         (onRowExpand)="rowIsExpanded.set(true)"
-         (onRowCollapse)="rowIsExpanded.set(false)"
-         [value]="unitValues()">
-
-  <ng-template pTemplate="caption">
-    <div class="flex justify-content-between align-items-center">
-      <h3>Unit Values</h3>
-      <rts-grid-filter [dataTable]="unitValuesTable"/>
-    </div>
-  </ng-template>
-
-  <ng-template pTemplate="header">
-    <tr>
-      <th pSortableColumn="name">
-        Name
-        <p-sortIcon field="name"></p-sortIcon>
-      </th>
-      <th pSortableColumn="code">
-        Code
-        <p-sortIcon field="code"></p-sortIcon>
-      </th>
-      <th pSortableColumn="description">
-        Description
-        <p-sortIcon field="description"></p-sortIcon>
-      </th>
-      <th pSortableColumn="baseUnitName">
-        Base Unit
-        <p-sortIcon field="baseUnitName"></p-sortIcon>
-      </th>
-      <th pSortableColumn="conversionFactor">
-        Multiplier
-        <p-sortIcon field="conversionFactor"></p-sortIcon>
-      </th>
-      <th style="width: 5rem;"></th>
-  </ng-template>
-
-  <ng-template pTemplate="body" let-unitvalue let-expanded="expanded">
-    <tr [ngClass]="{ 'expanded-row': expanded }">
-      <td>{{unitvalue?.name | nullSafe}}</td>
-      <td>{{unitvalue?.code | nullSafe}}</td>
-      <td>{{unitvalue?.description | nullSafe}}</td>
-      <td>{{unitvalue?.baseUnitName | nullSafe}}</td>
-      <td>{{unitvalue?.conversionFactor | nullSafe}}</td>
-      <td>
-        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                  rounded
-                  pRipple
-                  severity="secondary"
-                  [text]="true"
-                  [disabled]="loading() || addingIsActive()"
-                  [pRowToggler]="unitvalue">
-        </p-button>
-      </td>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="expandedrow" let-unitvalue>
-    <tr>
-      <td colspan="6" class="filled-background">
-        <rts-unit-value-form [unitValue]="unitvalue"
-                             [unitGroupId]="unitGroupId()"
-                             [baseUnitOptions]="unitValues()">
-        </rts-unit-value-form>
-      </td>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="emptymessage">
-    <tr rts-empty-row [colspan]="6" message="No Units Values Were Found"></tr>
-  </ng-template>
-</p-table>
-
-<rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
+<div class="flex flex-column gap-4 flex-grow-1">
   @if (addingIsActive()) {
-    <rts-unit-value-form [unitGroupId]="unitGroupId()" [baseUnitOptions]="unitValues()"/>
+    <p-button (click)="addingIsActive.set(false)" label="Cancel" icon="pi pi-times" severity="info" class="align-self-end"/>
+    <rts-unit-value-form [unitGroupId]="unitGroupId()"
+                         (successfulSave)="addingIsActive.set(false)"
+                         [baseUnitOptions]="unitValues()">
+    </rts-unit-value-form>
+
+  } @else {
+
+    <p-table [loading]="loading() && !addingIsActive()"
+             rowExpandMode="single"
+             dataKey="id"
+             sortField="conversionFactor"
+             #unitValuesTable
+             [globalFilterFields]="['name', 'code', 'description', 'baseUnitName']"
+             (onRowExpand)="rowIsExpanded.set(true)"
+             (onRowCollapse)="rowIsExpanded.set(false)"
+             [value]="unitValues()">
+
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between align-items-center">
+          <h3 class="font-bold">Unit Values</h3>
+
+          <rts-grid-filter [dataTable]="unitValuesTable"/>
+
+          <p-button (click)="addingIsActive.set(true)"
+                    [disabled]="loading()"
+                    label="+ Add Unit Value"
+                    rounded
+                    severity="secondary">
+          </p-button>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="name">
+            Name
+            <p-sortIcon field="name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="code">
+            Code
+            <p-sortIcon field="code"></p-sortIcon>
+          </th>
+          <th pSortableColumn="description">
+            Description
+            <p-sortIcon field="description"></p-sortIcon>
+          </th>
+          <th pSortableColumn="baseUnitName">
+            Base Unit
+            <p-sortIcon field="baseUnitName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="conversionFactor">
+            Multiplier
+            <p-sortIcon field="conversionFactor"></p-sortIcon>
+          </th>
+          <th style="width: 5rem;"></th>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-unitvalue let-expanded="expanded">
+        <tr [ngClass]="{ 'expanded-row': expanded }">
+          <td>{{unitvalue?.name | nullSafe}}</td>
+          <td>{{unitvalue?.code | nullSafe}}</td>
+          <td>{{unitvalue?.description | nullSafe}}</td>
+          <td>{{unitvalue?.baseUnitName | nullSafe}}</td>
+          <td>{{unitvalue?.conversionFactor | nullSafe}}</td>
+          <td>
+            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                      rounded
+                      pRipple
+                      severity="secondary"
+                      [text]="true"
+                      [disabled]="loading() || addingIsActive()"
+                      [pRowToggler]="unitvalue">
+            </p-button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="expandedrow" let-unitvalue>
+        <tr>
+          <td colspan="6" class="filled-background">
+            <rts-unit-value-form [unitValue]="unitvalue"
+                                 [unitGroupId]="unitGroupId()"
+                                 [baseUnitOptions]="unitValues()">
+            </rts-unit-value-form>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr rts-empty-row [colspan]="6" message="No Units Values Were Found"></tr>
+      </ng-template>
+    </p-table>
   }
-</rts-add-row>
+</div>
+
