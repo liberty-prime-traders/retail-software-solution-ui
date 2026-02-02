@@ -1,17 +1,16 @@
-import {Injectable} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {Subscription} from 'rxjs'
 import {BaseService} from '../../util/base-api/base.service'
-import {Product} from './product.model'
-import {ProductSearchStore} from '../product-search/product-search.store'
+import {PaginatedBaseStore} from '../../util/paginated-api/paginated-base.store'
+import {BaseProduct} from './base-product.model'
+import {ProductSearchParameters} from './product-search-parameters.model'
 
 
-@Injectable({providedIn: 'root'})
-export class ProductService extends BaseService<Product> {
+export abstract class ProductService<PRODUCT extends BaseProduct> extends BaseService<PRODUCT> {
 
-  private readonly basePath = '/secured/products'
+  protected abstract readonly basePath: string
 
-  constructor(protected override readonly store: ProductSearchStore) {
+  protected constructor(protected override readonly store: PaginatedBaseStore<PRODUCT, ProductSearchParameters>) {
     super(store)
   }
 

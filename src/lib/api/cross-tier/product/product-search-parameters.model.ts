@@ -1,9 +1,9 @@
-import {ProductStatus} from '../product/product-status.enum'
+import {ProductStatus} from './product-status.enum'
 
 export interface ProductSearchParameters {
   searchText?: string
   referenceNumber?: string
   categoryIds?: string[]
-  tagsIds?: string[]
+  tagIds?: string[]
   statusList?: ProductStatus[]
 }

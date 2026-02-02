@@ -1,5 +1,7 @@
+export declare type CURSOR = string | number
+
 export interface PageRequest<PARAMETER> {
-  previousCursor: number
+  previousCursor: CURSOR
   requestedSize: number
   parameters: PARAMETER
 }

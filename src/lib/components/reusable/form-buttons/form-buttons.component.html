@@ -3,8 +3,8 @@
     @if (!hideDelete()) {
       <div class="flex gap-2 flex-grow-1">
         <p-button [label]="deleteLabel()"
-                  icon="pi pi-trash"
-                  severity="danger"
+                  [icon]="deleteIcon()"
+                  [severity]="deleteSeverity()"
                   (click)="deleteIsActive.set(true)"
                   [disabled]="disableDelete() || deleteIsActive() || processingIsUnderway()">
         </p-button>

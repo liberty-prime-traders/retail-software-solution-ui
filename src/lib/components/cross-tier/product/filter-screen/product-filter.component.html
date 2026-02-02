@@ -19,16 +19,18 @@
     </p-multiSelect>
   </rts-form-field>
 
-  <rts-form-field  label="Tags" for="tagIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
-    <p-multiSelect id="tagIds"
-                   class="flex-grow-1"
-                   [options]="productTags()"
-                   optionLabel="tagName"
-                   optionValue="id"
-                   formControlName="tagIds"
-                   placeholder="Select Tags" >
-    </p-multiSelect>
-  </rts-form-field>
+  @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
+    <rts-form-field  label="Tags" for="tagIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
+      <p-multiSelect id="tagIds"
+                     class="flex-grow-1"
+                     [options]="productTags()"
+                     optionLabel="tagName"
+                     optionValue="id"
+                     formControlName="tagIds"
+                     placeholder="Select Tags" >
+      </p-multiSelect>
+    </rts-form-field>
+  }
 
   <div class="flex flex-column gap-2">
     @for (statusOption of (ProductStatus | enumToDropdown); track statusOption.value) {

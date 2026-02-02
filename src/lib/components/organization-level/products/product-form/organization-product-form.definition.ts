@@ -1,7 +1,7 @@
 import {required, schema} from '@angular/forms/signals'
-import {Product} from '../../../../api/organization-level/product/product.model'
+import {OrganizationProduct} from '../../../../api/organization-level/product/organization-product.model'
 
-export namespace ProductFormDefinition {
+export namespace OrganizationProductFormDefinition {
   export interface ProductFormModel {
     id: string
     productName: string
@@ -37,7 +37,7 @@ export namespace ProductFormDefinition {
     required(path.baseUnitId)
   })
 
-  export const convertToFormModel = (product?: Product): ProductFormModel => ({
+  export const convertToFormModel = (product?: OrganizationProduct): ProductFormModel => ({
     id: product?.id as string ?? '',
     productName: product?.productName ?? '',
     description: product?.description ?? '',
@@ -47,7 +47,7 @@ export namespace ProductFormDefinition {
     tagsToRemove: new Set<string>()
   })
 
-  export const convertToBackendModel = (formValue: ProductFormModel): Partial<Product> => ({
+  export const convertToBackendModel = (formValue: ProductFormModel): Partial<OrganizationProduct> => ({
     id: formValue.id,
     productName: formValue.productName,
     description: formValue.description,

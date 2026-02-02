@@ -70,6 +70,7 @@
                        [failureMessages]="failureMessages()"
                        deleteLabel="Deactivate"
                        deleteWarning="Confirm Deactivation of Product?"
+                       deleteInProgressMessage="Deactivating Product..."
                        (delete)="deactivateProduct()"
                        (save)="upsertProduct()"
                        (resetAction)="resetForm()">

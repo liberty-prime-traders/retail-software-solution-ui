@@ -1,7 +1,7 @@
 import {NgClass} from '@angular/common'
 import {Component, computed, inject, Input, model, OnInit, Signal, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {FormField, form} from '@angular/forms/signals'
+import {form, FormField} from '@angular/forms/signals'
 import {PrimeTemplate} from 'primeng/api'
 import {BlockUI} from 'primeng/blockui'
 import {Button} from 'primeng/button'
@@ -9,13 +9,13 @@ import {InputText} from 'primeng/inputtext'
 import {Panel} from 'primeng/panel'
 import {PickList} from 'primeng/picklist'
 import {Select} from 'primeng/select'
+import {ProductStatus} from '../../../../api/cross-tier/product/product-status.enum'
 import {ProductCategory} from '../../../../api/organization-level/product-category/product-category.model'
 import {ProductCategoryService} from '../../../../api/organization-level/product-category/product-category.service'
 import {ProductGroup} from '../../../../api/organization-level/product-group/product-group.model'
 import {ProductGroupService} from '../../../../api/organization-level/product-group/product-group.service'
-import {ProductStatus} from '../../../../api/organization-level/product/product-status.enum'
-import {Product} from '../../../../api/organization-level/product/product.model'
-import {ProductService} from '../../../../api/organization-level/product/product.service'
+import {OrganizationProduct} from '../../../../api/organization-level/product/organization-product.model'
+import {OrganizationProductService} from '../../../../api/organization-level/product/organization-product.service'
 import {Tag} from '../../../../api/organization-level/tag/tag.model'
 import {TagService} from '../../../../api/organization-level/tag/tag.service'
 import {UnitGroupService} from '../../../../api/organization-level/unit-group/unitgroup.service'
@@ -25,12 +25,12 @@ import {SelectItemType, ToSelectItemOptions, toSelectItems} from '../../../../ut
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
-import {ProductFormDefinition} from './product-form.definition'
+import {OrganizationProductFormDefinition} from './organization-product-form.definition'
 import {ProductFormTagDisplayComponent} from './tag-display.component'
 
 @Component({
-  selector: 'rts-product-form',
-  templateUrl: 'product-form.component.html',
+  selector: 'rts-organization-product-form',
+  templateUrl: 'organization-product-form.component.html',
   standalone: true,
   imports: [
     InputText,
@@ -48,26 +48,26 @@ import {ProductFormTagDisplayComponent} from './tag-display.component'
     BlockUI
   ]
 })
-export class ProductFormComponent extends BaseFormComponent<ProductService> implements OnInit {
+export class OrganizationProductFormComponent extends BaseFormComponent<OrganizationProductService> implements OnInit {
 
-  private readonly productService = inject(ProductService)
+  private readonly productService = inject(OrganizationProductService)
   private readonly productGroupService = inject(ProductGroupService)
   private readonly productCategoryService = inject(ProductCategoryService)
   private readonly unitValueService = inject(UnitValueService)
   private readonly unitGroupService = inject(UnitGroupService)
   private readonly tagService = inject(TagService)
-  protected override apiService: ProductService =  this.productService
+  protected override apiService: OrganizationProductService =  this.productService
 
   @Input()
-  set product(product: Product|null) {
+  set product(product: OrganizationProduct|null) {
     if (product) {
       this.originalProduct.set(product)
-      this.productFormValue.set(ProductFormDefinition.convertToFormModel(product))
+      this.productFormValue.set(OrganizationProductFormDefinition.convertToFormModel(product))
       this.selectedTags.set(Array.from(product.activeTags ?? []))
     }
   }
 
-  readonly originalProduct = signal<Product|undefined>(undefined)
+  readonly originalProduct = signal<OrganizationProduct|undefined>(undefined)
 
   private readonly productTags = this.tagService.productTags
 
@@ -85,8 +85,8 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
     this.productTags().filter(tag => !this.originalTagIds().has(String(tag.id)))
   )
 
-  readonly productFormValue = signal<ProductFormDefinition.ProductFormModel>(
-    ProductFormDefinition.defaultProductFormModel
+  readonly productFormValue = signal<OrganizationProductFormDefinition.ProductFormModel>(
+    OrganizationProductFormDefinition.defaultProductFormModel
   )
 
   readonly dependenciesLoading = computed(() =>
@@ -123,8 +123,8 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
     return result
   })
 
-  readonly productForm = form(this.productFormValue, ProductFormDefinition.productFormSchema)
-  readonly productFormFields = ProductFormDefinition.fieldMap
+  readonly productForm = form(this.productFormValue, OrganizationProductFormDefinition.productFormSchema)
+  readonly productFormFields = OrganizationProductFormDefinition.fieldMap
 
   override ngOnInit() {
     super.ngOnInit()
@@ -136,7 +136,7 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
   }
 
   resetForm() {
-    this.productFormValue.set(ProductFormDefinition.convertToFormModel(this.originalProduct()))
+    this.productFormValue.set(OrganizationProductFormDefinition.convertToFormModel(this.originalProduct()))
     this.selectedTags.set(Array.from(this.originalProduct()?.activeTags ?? []))
   }
 
@@ -146,7 +146,7 @@ export class ProductFormComponent extends BaseFormComponent<ProductService> impl
   }
 
   upsertProduct() {
-    const updatedProduct: Partial<Product> = ProductFormDefinition.convertToBackendModel(this.productFormValue())
+    const updatedProduct: Partial<OrganizationProduct> = OrganizationProductFormDefinition.convertToBackendModel(this.productFormValue())
     if (updatedProduct.id) {
       this.productService.put(updatedProduct)
     } else {
