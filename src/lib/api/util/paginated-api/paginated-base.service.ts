@@ -1,5 +1,5 @@
 import {HttpErrorResponse} from '@angular/common/http'
-import {Signal} from '@angular/core'
+import {computed, signal, Signal} from '@angular/core'
 import {isEqual} from 'lodash-es'
 import {catchError, finalize, first, Subscription, tap} from 'rxjs'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
@@ -14,7 +14,9 @@ export abstract class PaginatedBaseService<RESPONSE extends BaseModel, PARAMETER
 
   protected abstract readonly defaultCursor: CURSOR
   readonly requireClientSideFilter: Signal<boolean>
-  protected static readonly BATCH_SIZE = 60
+  private readonly paginatedEntities = signal<RESPONSE[]>([])
+  override selectCount = computed(() => this.paginatedEntities().length)
+  override selectAll = this.paginatedEntities.asReadonly()
 
   protected constructor(protected override readonly store: PaginatedBaseStore<RESPONSE, PARAMETERS>) {
     super(store)
@@ -31,6 +33,7 @@ export abstract class PaginatedBaseService<RESPONSE extends BaseModel, PARAMETER
 
   override resetStoreAndClearCache() {
     super.resetStoreAndClearCache()
+    this.paginatedEntities.set([])
     this.store.resetPagination()
   }
 
@@ -67,7 +70,7 @@ export abstract class PaginatedBaseService<RESPONSE extends BaseModel, PARAMETER
   }
 
   finishSavingPageWithSuccess(response: PageResponse<RESPONSE>, parameters: PARAMETERS): void {
-    this.store.upsertMany(response.contents)
+    this.mergePaginatedEntities(response.contents)
     this.store.setPaginationState({
       currentCursor: response.currentCursor,
       hasMore: response.hasMore,
@@ -77,4 +80,11 @@ export abstract class PaginatedBaseService<RESPONSE extends BaseModel, PARAMETER
     this.setProcessingStatus(ProcessingStatus.SUCCESS)
   }
 
+  private mergePaginatedEntities(newEntities: RESPONSE[]) {
+    this.paginatedEntities.update(current => {
+      const merged = [...current]
+      merged.push(...newEntities)
+      return merged
+    })
+  }
 }

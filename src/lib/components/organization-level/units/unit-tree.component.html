@@ -5,7 +5,7 @@
     <h3 class="font-bold">Units</h3>
 
     <p-button (click)="setAddingActiveTrue()"
-              [disabled]="loading()"
+              [disabled]="loading() || addingIsActive()"
               label="+ Add Unit Group"
               rounded severity="secondary">
     </p-button>

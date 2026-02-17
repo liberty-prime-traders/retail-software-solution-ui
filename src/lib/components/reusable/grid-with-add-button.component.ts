@@ -17,6 +17,17 @@ export abstract class GridWithAddButtonComponent<SERVICE extends BaseService<any
     })
   }
 
+  setAddingActiveTrue() {
+    this.addingIsActive.set(true)
+  }
+
+  setAddingActiveFalse() {
+    this.addingIsActive.set(false)
+  }
+
+  successfulSave() {
+    this.setAddingActiveFalse()
+  }
 
   closeAddRow() {
     this.addingIsActive.set(false)

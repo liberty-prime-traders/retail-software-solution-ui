@@ -23,7 +23,7 @@
           <rts-grid-filter [dataTable]="productCategoriesTable"/>
 
           <p-button (click)="setAddingActiveTrue()"
-                    [disabled]="loading()"
+                    [disabled]="loading() || addingIsActive()"
                     label="+ Add Product Category"
                     rounded
                     severity="secondary">

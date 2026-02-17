@@ -31,16 +31,4 @@ export class ProductCategoryComponent extends GridWithAddButtonComponent<Product
 
   readonly productCategories = this.productCategoryService.selectAll
   readonly productCategoryTableId = AutoResizeConfig.productCategoriesId
-
-  setAddingActiveTrue() {
-    this.addingIsActive.set(true)
-  }
-
-  setAddingActiveFalse() {
-    this.addingIsActive.set(false)
-  }
-
-  successfulSave() {
-    this.setAddingActiveFalse()
-  }
 }
