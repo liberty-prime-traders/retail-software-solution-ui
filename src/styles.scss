@@ -5,45 +5,6 @@
 
 @use "assets/styles/framework-overrides";
 @use "assets/styles/rts-styles";
-@import 'primeflex/primeflex.css';
-@import 'primeflex/themes/primeone-dark.css';
 
-/* ============================================================
-   RTSS-147: Full-page responsive background
-   ------------------------------------------------------------
-   The background image itself is provided by the app/theme
-   (e.g. /media/bg.svg). This fix ensures:
-   - the background scales correctly (cover)
-   - layout containers stretch to the full viewport
-   ============================================================ */
 
-html,
-body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
 
-  // Ensure any background applied at this level fills the screen
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
-
-body {
-  min-height: 100vh;   // Fallback
-  min-height: 100dvh;  // Modern browsers (dynamic viewport)
-}
-
-/* Angular root must span the full viewport */
-rts-root {
-  display: block;
-  min-height: 100vh;
-  min-height: 100dvh;
-}
-
-/* Landing / welcome page container */
-rts-welcome.full-block {
-  display: block;
-  min-height: 100vh;
-  min-height: 100dvh;
-}
