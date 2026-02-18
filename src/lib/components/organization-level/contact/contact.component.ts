@@ -49,18 +49,18 @@ export class ContactComponent extends GridWithAddButtonComponent<ContactService>
     this.addingIsActive.set(false)
   }
 
-  setAddingActiveTrue() {
+  override setAddingActiveTrue() {
     this.addingIsActive.set(true)
     this.selectedContactTypeStash.set(this.selectedContactType())
     this.selectedContactType.set(undefined)
   }
 
-  setAddingActiveFalse() {
+  override setAddingActiveFalse() {
     this.addingIsActive.set(false)
     this.selectedContactType.set(this.selectedContactTypeStash())
   }
 
-  successfulSave() {
+  override successfulSave() {
     this.setAddingActiveFalse()
     this.selectedContactType.set(this.contactService.lastSavedResponse()?.contactType)
   }

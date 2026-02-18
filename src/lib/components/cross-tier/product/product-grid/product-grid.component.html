@@ -1,6 +1,5 @@
 <div [id]="productLinesElementId">
   <p-table [value]="products()"
-           [loading]="loading()"
            (onRowExpand)="onRowExpand()"
            (onRowCollapse)="onRowCollapse()"
            (onLazyLoad)="onLazyLoad($event)"
@@ -30,31 +29,38 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-product let-expanded="expanded">
-
-      <tr style="height: 65px"
-          [ngClass]="{
+      @if (product?.placeholder) {
+        <tr>
+          <td style="height: 65px" colspan="7">
+            <p-skeleton class="h-full"/>
+          </td>
+        </tr>
+      } @else {
+        <tr style="height: 65px"
+            [ngClass]="{
           'opacity-60': product.status !== ProductStatus.ACTIVE,
           'expanded-row': expanded
         }">
-        <td>{{ product?.referenceNumber | nullSafe }}</td>
-        <td>{{ product?.productName | nullSafe }}</td>
-        <td>{{ product?.productGroupName | nullSafe }}</td>
-        <td>{{ product?.baseUnit | nullSafe }}</td>
-        <td>{{ product?.description | nullSafe }}</td>
-        @if (isOrganizationLevel()) {
+          <td>{{ product?.referenceNumber | nullSafe }}</td>
+          <td>{{ product?.productName | nullSafe }}</td>
+          <td>{{ product?.productGroupName | nullSafe }}</td>
+          <td>{{ product?.baseUnit | nullSafe }}</td>
+          <td>{{ product?.description | nullSafe }}</td>
+          @if (isOrganizationLevel()) {
+            <td>
+              <ng-container *ngTemplateOutlet="tagTemplate; context: { $implicit: product }"/>
+            </td>
+          }
           <td>
-            <ng-container *ngTemplateOutlet="tagTemplate; context: { $implicit: product }"/>
+            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                      rounded
+                      severity="secondary"
+                      [disabled]="loading()"
+                      [pRowToggler]="product">
+            </p-button>
           </td>
-        }
-        <td>
-          <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                    rounded
-                    severity="secondary"
-                    [disabled]="loading()"
-                    [pRowToggler]="product">
-          </p-button>
-        </td>
-      </tr>
+        </tr>
+      }
     </ng-template>
 
     <ng-template pTemplate="expandedrow" let-product>

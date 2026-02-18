@@ -47,18 +47,18 @@ export class TagComponent extends GridWithAddButtonComponent<TagService> {
     this.addingIsActive.set(false)
   }
 
-  setAddingActiveTrue() {
+  override setAddingActiveTrue() {
     this.addingIsActive.set(true)
     this.selectedCategoryStash.set(this.selectedCategory())
     this.selectedCategory.set(undefined)
   }
 
-  setAddingActiveFalse() {
+  override setAddingActiveFalse() {
     this.addingIsActive.set(false)
     this.selectedCategory.set(this.selectedCategoryStash())
   }
 
-  successfulSave() {
+  override successfulSave() {
     this.setAddingActiveFalse()
     this.selectedCategory.set(this.tagService.lastSavedResponse()?.category)
   }
