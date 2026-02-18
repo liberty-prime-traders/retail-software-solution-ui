@@ -1,5 +1,5 @@
 import {HttpErrorResponse} from '@angular/common/http'
-import {computed, signal} from '@angular/core'
+import {computed, Signal, signal} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {isNil} from 'lodash-es'
 import {throwError} from 'rxjs'
@@ -11,11 +11,11 @@ import {BaseStore} from './base.store'
 export abstract class ServiceFacade<RESPONSE extends BaseModel> {
   readonly selectLoading
   readonly selectFirst
-  readonly selectAll
+  readonly selectAll: Signal<RESPONSE[]>
   readonly selectProcessingStatus
   readonly selectFailureMessages
   readonly processingIsUnderWay
-  readonly selectCount
+  readonly selectCount: Signal<number>
   readonly lastSavedResponse = signal<RESPONSE|undefined>(undefined)
   private readonly defaultApiRequestConfig: ApiRequestConfig = {
     upsertOnSuccess: false,
@@ -29,7 +29,7 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     this.selectAll = this.store.entities
     this.selectProcessingStatus = this.store.processingStatus
     this.selectFailureMessages = this.store.failureMessages
-    this.selectCount = computed(() => this.store.entities().length)
+    this.selectCount = computed(() => this.selectAll().length)
     this.processingIsUnderWay = computed(() => this.selectProcessingStatus() === ProcessingStatus.IN_PROGRESS)
   }
 

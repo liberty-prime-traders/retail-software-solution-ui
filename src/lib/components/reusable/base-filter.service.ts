@@ -1,10 +1,10 @@
 import {computed, inject, signal} from '@angular/core'
 import {FormGroup, NonNullableFormBuilder} from '@angular/forms'
 import {debounceTime, distinctUntilChanged, map, Observable, of, startWith, switchMap} from 'rxjs'
-import {BaseModel} from '../../api/util/base-api/base.model'
 import {PaginatedBaseService} from '../../api/util/paginated-api/paginated-base.service'
+import {PaginatedModel} from '../../api/util/paginated-api/paginated.model'
 
-export abstract class BaseFilterService<ENTITY extends BaseModel, PARAMETERS> {
+export abstract class BaseFilterService<ENTITY extends PaginatedModel, PARAMETERS> {
   protected readonly formBuilder = inject(NonNullableFormBuilder)
 
   protected abstract getFilterForm(): FormGroup

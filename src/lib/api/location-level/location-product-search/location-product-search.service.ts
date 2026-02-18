@@ -4,7 +4,7 @@ import {PaginatedBaseService} from '../../util/paginated-api/paginated-base.serv
 import {LocationProduct} from '../location-product/location-product.model'
 import {LocationProductSearchStore} from './location-product-search.store'
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class LocationProductSearchService extends PaginatedBaseService<LocationProduct, ProductSearchParameters> {
   protected override readonly defaultCursor = ''
 

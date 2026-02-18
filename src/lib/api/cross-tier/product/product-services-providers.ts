@@ -15,15 +15,11 @@ import {
 import {PaginatedBaseService} from '../../util/paginated-api/paginated-base.service'
 
 export const provideLocationServices = (): Provider[] => [
-  LocationProductSearchService,
-  LocationProductFilterService,
   {provide: ProductFilterService, useExisting: LocationProductFilterService},
   {provide: PaginatedBaseService, useExisting: LocationProductSearchService}
 ]
 
 export const provideOrganizationServices = (): Provider[] => [
-  OrganizationProductSearchService,
-  OrganizationProductFilterService,
   {provide: ProductFilterService, useExisting: OrganizationProductFilterService},
   {provide: PaginatedBaseService, useExisting: OrganizationProductSearchService}
 ]
