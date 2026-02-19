@@ -1,12 +1,11 @@
-import {Component, computed, inject, input, OnInit} from '@angular/core'
-import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
+import {Component, computed, effect, inject, input, OnInit, signal} from '@angular/core'
+import {FormsModule} from '@angular/forms'
 import {isNil} from 'lodash-es'
 import {InputText} from 'primeng/inputtext'
 import {JobTitle} from '../../../../api/organization-level/jobtitle/jobtitle.model'
 import {JobTitleService} from '../../../../api/organization-level/jobtitle/jobtitle.service'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
-
 
 @Component({
   selector: 'rts-job-title-form',
@@ -15,34 +14,71 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
     FormButtonsComponent,
     FormsModule,
     InputText,
-    ReactiveFormsModule,
     FormFieldComponent
   ]
 })
-export class JobTitleFormComponent implements OnInit {
+class JobTitleFormComponent implements OnInit {
   readonly jobTitle = input<JobTitle>()
 
   private readonly jobTitleService = inject(JobTitleService)
-  private readonly formBuilder = inject(FormBuilder)
-
-  readonly jobTitleForm = computed(() => this.formBuilder.nonNullable.group({
-    id: this.jobTitle()?.id,
-    value: [this.jobTitle()?.value, Validators.required]
-  }))
 
   readonly processingStatus = this.jobTitleService.selectProcessingStatus
   readonly failureMessages = this.jobTitleService.selectFailureMessages
+
+
+  readonly id = signal<JobTitle['id'] | undefined>(undefined)
+  readonly value = signal<string>('')
+
+
+  readonly touched = signal(false)
+  readonly valueError = computed<string | null>(() => {
+    if (!this.touched()) return null
+    const MIN_LENGTH = 1
+
+    return this.value().trim().length < MIN_LENGTH
+      ? 'Job title is required'
+      : null
+  })
+
+  readonly isValid = computed<boolean>(() =>
+    Boolean(this.value().trim())
+  )
+
+
+  constructor() {
+    // Sync local signal state whenever input changes (selecting a row / edit mode)
+    effect(() => {
+      const jt = this.jobTitle()
+      this.id.set(jt?.id)
+      this.value.set(jt?.value ?? '')
+      this.touched.set(false)
+    })
+  }
 
   ngOnInit() {
     this.jobTitleService.resetProcessingStatus()
   }
 
+  markTouched() {
+    this.touched.set(true)
+  }
+
   resetForm() {
-    this.jobTitleForm().reset(this.jobTitle())
+    const jt = this.jobTitle()
+    this.id.set(jt?.id)
+    this.value.set(jt?.value ?? '')
+    this.touched.set(false)
   }
 
   upsertJobTitle() {
-    const updatedJobTitle: Partial<JobTitle> = {...this.jobTitleForm().getRawValue()}
+    this.touched.set(true)
+    if (!this.isValid()) return
+
+    const updatedJobTitle: Partial<JobTitle> = {
+      id: this.id(),
+      value: this.value().trim()
+    }
+
     if (isNil(updatedJobTitle.id)) {
       this.jobTitleService.post(updatedJobTitle)
     } else {
@@ -54,3 +90,6 @@ export class JobTitleFormComponent implements OnInit {
     this.jobTitleService.delete(this.jobTitle()?.id)
   }
 }
+
+export default JobTitleFormComponent
+

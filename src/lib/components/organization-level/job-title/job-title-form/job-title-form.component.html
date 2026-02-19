@@ -1,15 +1,26 @@
-<form [formGroup]="jobTitleForm()" class="flex flex-column gap-2">
+<form class="flex flex-column gap-2">
   <rts-form-field [required]="true" label="Value" for="value">
-    <input id="value" pInputText formControlName="value">
+    <input
+      id="value"
+      pInputText
+      [value]="value()"
+      (input)="value.set($any($event.target).value)"
+      (blur)="markTouched()"
+    />
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!jobTitleForm().dirty"
-                     [disableSave]="!jobTitleForm().valid || !jobTitleForm().dirty"
-                     [hideDelete]="!jobTitle()?.id"
-                     [processingStatus]="processingStatus()"
-                     [failureMessages]="failureMessages()"
-                     (delete)="deleteJobTitle()"
-                     (save)="upsertJobTitle()"
-                     (resetAction)="resetForm()">
+  @if (valueError(); as err) {
+    <small class="p-error">{{ err }}</small>
+  }
+
+  <rts-forms-buttons
+    [disableReset]="value() === (jobTitle()?.value ?? '')"
+    [disableSave]="!isValid() || value() === (jobTitle()?.value ?? '')"
+    [hideDelete]="!jobTitle()?.id"
+    [processingStatus]="processingStatus()"
+    [failureMessages]="failureMessages()"
+    (delete)="deleteJobTitle()"
+    (save)="upsertJobTitle()"
+    (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>
