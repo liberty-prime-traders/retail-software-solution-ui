@@ -28,13 +28,18 @@ export class LocationDashboardComponent implements OnInit {
     {label: 'Products', icon: 'pi pi-objects-column', routerLink: 'products'},
     {label: 'External Contacts', icon: 'pi pi-address-book'},
     {label: 'Sales', icon: 'pi pi-receipt'},
-    {label: 'Purchase Orders', icon: 'pi pi-truck'},
+    {label: 'Purchase Orders', icon: 'pi pi-truck', routerLink: 'purchases'},
     {label: 'Expenses', icon: 'pi pi-money-bill'},
     {label: 'Inventory', icon: 'pi pi-box'}
   ]
 
+  private readonly adminTasksMenuItems: MenuItem[] = [
+    {label: 'Sync', icon: 'pi pi-sync', routerLink: 'sync'}
+  ]
+
   readonly menuItems: MenuItem[] = [
-    {label: 'Menu', items: this.commonTasksMenuItems}
+    {label: 'Menu', items: this.commonTasksMenuItems},
+    {label: 'Admin Tasks', items: this.adminTasksMenuItems}
   ]
 
   ngOnInit() {

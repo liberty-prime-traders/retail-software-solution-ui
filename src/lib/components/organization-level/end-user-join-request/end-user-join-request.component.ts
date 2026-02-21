@@ -9,7 +9,7 @@ import {EndUserJoinRequest} from '../../../api/organization-level/end-user-join-
 import {EndUserJoinRequestService} from '../../../api/organization-level/end-user-join-request/end-user-join-request.service'
 import {OrganizationUserService} from '../../../api/organization-level/organization_user/organization-user.service'
 import {JoinRequestStatus} from '../../../api/util/join-request/join-request-status.enum'
-import {ActivityStatusSeverityPipe} from '../../../utils/pipes/activity-status-severity.pipe'
+import {JoinRequestStatusSeverityPipe} from '../../../utils/pipes/join-request-status-severity.pipe'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
@@ -21,7 +21,7 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
   templateUrl: 'end-user-join-request.component.html',
   imports: [
     DatePipe,
-    ActivityStatusSeverityPipe,
+    JoinRequestStatusSeverityPipe,
     TableModule,
     NullSafePipe,
     GridFilterComponent,

@@ -1,6 +1,6 @@
-import {ContactStatus} from '../../../utils/types/contact-status.enum'
-import {ContactType} from '../../../utils/types/contact-type.enum'
-import {IdentityType} from '../../../utils/types/identity-type.enum'
+import {ContactStatus} from './contact-status.enum'
+import {ContactType} from './contact-type.enum'
+import {IdentityType} from './identity-type.enum'
 import {BaseModel} from '../../util/base-api/base.model'
 
 export interface Contact extends BaseModel {

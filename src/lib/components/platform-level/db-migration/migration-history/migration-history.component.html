@@ -4,8 +4,9 @@
            dataKey="id"
            scrollable
            scrollHeight="flex"
-           [expandedRowKeys]="expandedRows()"
-           class="p-datatable-striped">
+           sortField="startOn"
+           [sortOrder]="-1"
+           [expandedRowKeys]="expandedRows()">
 
     <ng-template pTemplate="caption">
       <div class="flex flex-wrap justify-content-between items-center gap-2 w-full">
@@ -55,7 +56,7 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-migration let-expanded="expanded">
-      <tr>
+      <tr [ngClass]="{'expanded-row': expanded}">
         <td>
           <p-button type="button"
                     [pRowToggler]="migration"
@@ -83,53 +84,7 @@
     <ng-template pTemplate="expandedrow" let-migration>
       <tr>
         <td colspan="7" class="filled-background">
-          <div class="p-4 pt-0">
-            <h5>Location Migrations</h5>
-            <p-table [value]="migration.locations" [tableStyle]="{ 'min-width': '50rem' }">
-
-              <ng-template pTemplate="header">
-                <tr>
-                  <th pSortableColumn="locationName">Location
-                    <p-sortIcon field="locationName"/>
-                  </th>
-                  <th pSortableColumn="versionNumber">Version
-                    <p-sortIcon field="versionNumber"/>
-                  </th>
-                  <th pSortableColumn="startOn">Start Date
-                    <p-sortIcon field="startOn"/>
-                  </th>
-                  <th pSortableColumn="endOn">End Date
-                    <p-sortIcon field="endOn"/>
-                  </th>
-                  <th pSortableColumn="status">Status
-                    <p-sortIcon field="status"/>
-                  </th>
-                  <th>Message</th>
-                </tr>
-              </ng-template>
-
-              <ng-template pTemplate="body" let-location>
-                <tr>
-                  <td>{{ location.locationName }}</td>
-                  <td>{{ location.versionNumber }}</td>
-                  <td>{{ location.startOn | date:'medium' }}</td>
-                  <td>{{ location.endOn | date:'medium' }}</td>
-                  <td>
-                    <p-tag [value]="location.status | prettifyEnum" [severity]="location.status | migrationStatusSeverity"/>
-                  </td>
-                  <td class="whitespace-nowrap overflow-hidden text-overflow-ellipsis max-w-xs">
-                    {{ location.message }}
-                  </td>
-                </tr>
-              </ng-template>
-
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <td colspan="6">No location migrations found</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
+          <rts-location-migration-grid [locations]="migration.locations"/>
         </td>
       </tr>
     </ng-template>
