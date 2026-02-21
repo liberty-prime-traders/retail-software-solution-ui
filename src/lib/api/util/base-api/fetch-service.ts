@@ -24,8 +24,13 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
     return this.fetch(params)
   }
 
-  fetchById(idParam: string, additionalParams?: PARAMS) {
+  fetchById(idParam: EntityId, additionalParams?: PARAMS) {
     return this.doFetch(additionalParams, idParam)
+  }
+
+  refetchById(idParam: EntityId, additionalParams?: PARAMS) {
+    this.store.setHasCache(false)
+    return this.fetchById(idParam, additionalParams)
   }
 
   private doFetch(params?: PARAMS, idParam?: EntityId): Subscription | undefined {

@@ -1,4 +1,4 @@
-import {DatePipe} from '@angular/common'
+import {DatePipe, NgClass} from '@angular/common'
 import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
@@ -7,7 +7,8 @@ import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
 import {Tooltip} from 'primeng/tooltip'
 import {DbMigrationService} from '../../../../api/platform-level/db-migration/db-migration.service'
-import {MigrationStatusSeverityPipe} from '../../../../utils/pipes/migration-status-severity.pipe'
+import {LocationMigrationGridComponent} from './location-migration-grid/location-migration-grid.component'
+import {MigrationStatusSeverityPipe} from './migration-status-severity.pipe'
 import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
 import {AutoStretchComponent} from '../../../reusable/auto-stretch.component'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
@@ -25,7 +26,9 @@ import {AutoResizeConfig} from '../../../welcome/auto-resize-config'
     DatePicker,
     EmptyRowComponent,
     PrettifyEnumPipe,
-    Tooltip
+    Tooltip,
+    NgClass,
+    LocationMigrationGridComponent
   ],
   templateUrl: './migration-history.component.html'
 })

@@ -1,8 +1,8 @@
 import {applyWhen, pattern, required, schema, SchemaPath} from '@angular/forms/signals'
 import {Contact} from '../../../../api/organization-level/contact/contact.model'
-import {ContactStatus} from '../../../../utils/types/contact-status.enum'
-import {ContactType} from '../../../../utils/types/contact-type.enum'
-import {IdentityType} from '../../../../utils/types/identity-type.enum'
+import {ContactStatus} from '../../../../api/organization-level/contact/contact-status.enum'
+import {ContactType} from '../../../../api/organization-level/contact/contact-type.enum'
+import {IdentityType} from '../../../../api/organization-level/contact/identity-type.enum'
 
 export namespace ContactFormDefinition {
   export interface ContactFormModel {
