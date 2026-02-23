@@ -12,11 +12,11 @@
 
   } @else {
     <div class="pl-1">
-      <p-button icon="pi pi-bars" severity="secondary" (onClick)="showNavigation.set(!showNavigation())"/>
+      <p-button icon="pi pi-bars" severity="secondary" (onClick)="showNavigation.set(true)" size="small"/>
     </div>
   }
 
-  <p-card class="flex-grow-1">
+  <p-card class="flex-grow-1" id="locationContent" [rtsAutoStretch]="'locationContent'">
     <router-outlet/>
   </p-card>
 

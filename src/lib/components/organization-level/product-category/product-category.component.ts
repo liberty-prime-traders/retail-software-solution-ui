@@ -8,7 +8,6 @@ import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
-import {AutoResizeConfig} from '../../welcome/auto-resize-config'
 import {ProductCategoryFormComponent} from './product-category-form/product-category-form.component'
 
 @Component({
@@ -30,5 +29,4 @@ export class ProductCategoryComponent extends GridWithAddButtonComponent<Product
   readonly apiService = this.productCategoryService
 
   readonly productCategories = this.productCategoryService.selectAll
-  readonly productCategoryTableId = AutoResizeConfig.productCategoriesId
 }

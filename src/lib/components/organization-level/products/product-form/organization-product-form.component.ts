@@ -31,7 +31,6 @@ import {ProductFormTagDisplayComponent} from './tag-display.component'
 @Component({
   selector: 'rts-organization-product-form',
   templateUrl: 'organization-product-form.component.html',
-  standalone: true,
   imports: [
     InputText,
     FormButtonsComponent,

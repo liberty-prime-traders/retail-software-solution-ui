@@ -1,4 +1,4 @@
-<div [id]="contactsElementId">
+<div id="contacts" [rtsAutoStretch]="'contacts'">
   <div class="flex align-items-center justify-content-between mb-3">
     <h3 class="font-bold">Contacts</h3>
 
@@ -13,17 +13,14 @@
   <p-divider/>
 
   <div class="flex gap-3">
-    <div class="col-3">
-      <div class="overflow-auto" style="max-height: 600px;">
-        @for (contactType of CONTACT_TYPES; track contactType) {
-          <div (click)="selectContactType(contactType)"
-               class="p-3 cursor-pointer hover:surface-400"
-               [ngClass]="{'bg-bluegray-100': selectedContactType() === contactType}">
-            <span class="font-medium truncate w-12rem">{{ contactType | prettifyEnum }}</span>
-          </div>
-        }
-      </div>
-
+    <div class="col-2">
+      @for (contactType of CONTACT_TYPES; track contactType) {
+        <div (click)="selectContactType(contactType)"
+             class="p-3 cursor-pointer hover:surface-400"
+             [ngClass]="{'bg-bluegray-100': selectedContactType() === contactType}">
+          <span class="font-medium truncate w-12rem">{{ contactType | prettifyEnum }}</span>
+        </div>
+      }
     </div>
 
     <p-divider layout="vertical" />

@@ -5,7 +5,6 @@ import {ProductGeneralComponent} from '../../cross-tier/product/general-screen/p
 
 @Component({
   selector: 'rts-location-product',
-  standalone: true,
   imports: [
     ProductGeneralComponent
   ],

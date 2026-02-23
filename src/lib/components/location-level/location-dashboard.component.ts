@@ -5,6 +5,7 @@ import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
 import {SessionContextService} from '../../utils/services/session-context.service'
+import {AutoStretchDirective} from '../reusable/auto-stretch.directive'
 
 @Component({
   selector: 'rts-private',
@@ -12,7 +13,8 @@ import {SessionContextService} from '../../utils/services/session-context.servic
     RouterOutlet,
     Button,
     Menu,
-    Card
+    Card,
+    AutoStretchDirective
   ],
   templateUrl: 'location-dashboard.component.html'
 })
@@ -26,9 +28,8 @@ export class LocationDashboardComponent implements OnInit {
   private readonly commonTasksMenuItems: MenuItem[] = [
     {label: 'Summary', icon: 'pi pi-home', routerLink: './', routerLinkActiveOptions: {exact: true}},
     {label: 'Products', icon: 'pi pi-objects-column', routerLink: 'products'},
-    {label: 'External Contacts', icon: 'pi pi-address-book'},
+    {label: 'Purchases', icon: 'pi pi-truck', routerLink: 'purchases'},
     {label: 'Sales', icon: 'pi pi-receipt'},
-    {label: 'Purchase Orders', icon: 'pi pi-truck', routerLink: 'purchases'},
     {label: 'Expenses', icon: 'pi pi-money-bill'},
     {label: 'Inventory', icon: 'pi pi-box'}
   ]

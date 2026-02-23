@@ -16,7 +16,6 @@ import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
 @Component({
   selector: 'rts-active-sync',
   templateUrl: 'active-sync.component.html',
-  standalone: true,
   imports: [
     Button,
     Tag,

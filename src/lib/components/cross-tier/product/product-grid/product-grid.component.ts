@@ -15,9 +15,10 @@ import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {
   LocationProductFormComponent
 } from '../../../location-level/location-products/location-product-form/location-product-form.component'
-import {OrganizationProductFormComponent} from '../../../organization-level/products/product-form/organization-product-form.component'
-import {AutoStretchComponent} from '../../../reusable/auto-stretch.component'
-import {AutoResizeConfig} from '../../../welcome/auto-resize-config'
+import {
+  OrganizationProductFormComponent
+} from '../../../organization-level/products/product-form/organization-product-form.component'
+import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {ProductFilterService} from '../product-filter.service'
 
 @Component({
@@ -33,14 +34,14 @@ import {ProductFilterService} from '../product-filter.service'
     NgTemplateOutlet,
     OrganizationProductFormComponent,
     LocationProductFormComponent,
-    Skeleton
+    Skeleton,
+    AutoStretchDirective
   ]
 })
-export class ProductGridComponent<PRODUCT extends BaseProduct> extends AutoStretchComponent {
+export class ProductGridComponent<PRODUCT extends BaseProduct> {
   readonly productSearchService = inject(PaginatedBaseService<PRODUCT, ProductSearchParameters>)
   readonly productFilterService = inject(ProductFilterService<PRODUCT>)
 
-  readonly productLinesElementId = AutoResizeConfig.productLinesId
   readonly ProductStatus = ProductStatus
 
   protected readonly table = viewChild.required(Table)

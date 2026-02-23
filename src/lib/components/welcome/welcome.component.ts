@@ -14,7 +14,7 @@ import {darkModeSelector} from '../../../app/app.preset'
 import {SysUserService} from '../../api/platform-level/sys-user/sys-user.service'
 import {RtsOktaService} from '../../utils/services/rts-okta.service'
 import {SessionContextService} from '../../utils/services/session-context.service'
-import {AutoResizeConfig} from './auto-resize-config'
+import {AutoStretchService} from '../reusable/auto-stretch.service'
 
 @Component({
   selector: 'rts-welcome',
@@ -41,9 +41,9 @@ export class WelcomeComponent implements OnInit {
   private readonly router = inject(Router)
   readonly sessionContextService = inject(SessionContextService)
   private readonly userService = inject(SysUserService)
+  private readonly autoStretchService = inject(AutoStretchService)
 
   private readonly loggedInUser = this.userService.selectFirst
-
   readonly darkMode = model(false)
   readonly fullScreen = signal(false)
 
@@ -108,7 +108,7 @@ export class WelcomeComponent implements OnInit {
   }
 
   protected onResize() {
-    AutoResizeConfig.stretchAllElements()
+    this.autoStretchService.triggerStretch()
   }
 
   private switchOrganization() {

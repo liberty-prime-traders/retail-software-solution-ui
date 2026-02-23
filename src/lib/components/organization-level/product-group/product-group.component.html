@@ -1,4 +1,4 @@
-<div class="flex flex-column gap-4 flex-grow-1" [id]="productGroupTableId">
+<div class="flex flex-column gap-4 flex-grow-1" id="productGroups" [rtsAutoStretch]="'productGroups'">
   @if (addingIsActive()) {
     <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info" class="align-self-end"/>
     <rts-product-group-form (successfulSave)="successfulSave()"/>

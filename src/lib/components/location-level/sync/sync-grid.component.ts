@@ -10,7 +10,6 @@ import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
 @Component({
   selector: 'rts-sync-grid',
   templateUrl: 'sync-grid.component.html',
-  standalone: true,
   imports: [
     TableModule,
     Tag,

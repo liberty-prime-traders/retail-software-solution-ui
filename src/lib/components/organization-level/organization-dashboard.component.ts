@@ -5,6 +5,7 @@ import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
 import {SessionContextService} from '../../utils/services/session-context.service'
+import {AutoStretchDirective} from '../reusable/auto-stretch.directive'
 
 @Component({
   selector: 'rts-manage-organization',
@@ -13,7 +14,8 @@ import {SessionContextService} from '../../utils/services/session-context.servic
     RouterOutlet,
     Menu,
     Card,
-    Button
+    Button,
+    AutoStretchDirective
   ]
 })
 export class OrganizationDashboardComponent {

@@ -14,7 +14,6 @@ import {SyncGridComponent} from './sync-grid.component'
 @Component({
   selector: 'rts-sync',
   templateUrl: 'sync.component.html',
-  standalone: true,
   imports: [
     Button,
     Select,
