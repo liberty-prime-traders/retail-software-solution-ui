@@ -4,7 +4,8 @@ import {
   EntityId,
   removeAllEntities,
   removeEntity,
-  SelectEntityId, setAllEntities,
+  SelectEntityId,
+  setAllEntities,
   upsertEntities,
   upsertEntity,
   withEntities

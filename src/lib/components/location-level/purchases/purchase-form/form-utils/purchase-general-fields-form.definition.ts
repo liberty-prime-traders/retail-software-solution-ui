@@ -1,4 +1,4 @@
-import {required, schema, SchemaPathTree} from '@angular/forms/signals'
+import {required, schema} from '@angular/forms/signals'
 import {PurchaseStatus} from '../../../../../api/location-level/purchase/purchase-status.enum'
 import {Purchase} from '../../../../../api/location-level/purchase/purchase.model'
 

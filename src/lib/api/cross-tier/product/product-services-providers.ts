@@ -9,9 +9,7 @@ import {
 import {
   LocationProductPaginatedSearchService
 } from '../../location-level/location-product/location-product-paginated-search.service'
-import {
-  OrganizationProductSearchService
-} from '../../organization-level/product/organization-product-search.service'
+import {OrganizationProductSearchService} from '../../organization-level/product/organization-product-search.service'
 import {PaginatedBaseService} from '../../util/paginated-api/paginated-base.service'
 
 export const provideLocationServices = (): Provider[] => [

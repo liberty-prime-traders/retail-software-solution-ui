@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core'
-import {Subscription} from 'rxjs'
 import {ProductSearchParameters} from '../../cross-tier/product/product-search-parameters.model'
 import {PaginatedBaseService} from '../../util/paginated-api/paginated-base.service'
 import {LocationProduct} from './location-product.model'

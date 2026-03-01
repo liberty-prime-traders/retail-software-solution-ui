@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 import {ProductService} from '../../cross-tier/product/product.service'
-import {LocationProductStore} from './location-product.store'
 import {LocationProduct} from './location-product.model'
+import {LocationProductStore} from './location-product.store'
 
 @Injectable({providedIn: 'root'})
 export class LocationProductService extends ProductService<LocationProduct> {

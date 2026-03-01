@@ -1,7 +1,7 @@
 import {EntityId} from '@ngrx/signals/entities'
+import {BaseModel} from '../../util/base-api/base.model'
 import {LocationProduct} from '../location-product/location-product.model'
 import {PurchaseStatus} from './purchase-status.enum'
-import {BaseModel} from '../../util/base-api/base.model'
 
 export interface Purchase extends BaseModel {
   supplierId: string

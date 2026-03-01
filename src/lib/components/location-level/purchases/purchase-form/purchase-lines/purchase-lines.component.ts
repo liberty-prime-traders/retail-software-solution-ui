@@ -10,12 +10,10 @@ import {TableModule} from 'primeng/table'
 import {BehaviorSubject, debounceTime, distinctUntilChanged, filter} from 'rxjs'
 import {tap} from 'rxjs/operators'
 import {
-  LocationProductStore
-} from '../../../../../api/location-level/location-product/location-product.store'
-import {
   LocationProductQuickSearchService
 } from '../../../../../api/location-level/location-product/location-product-quick-search.service'
 import {LocationProduct} from '../../../../../api/location-level/location-product/location-product.model'
+import {LocationProductStore} from '../../../../../api/location-level/location-product/location-product.store'
 import {ProductLabelPipe} from '../../../../../utils/pipes/product-label.pipe'
 import {SelectItem, toSelectItems} from '../../../../../utils/types/select-item.type'
 import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'

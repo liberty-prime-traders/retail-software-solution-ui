@@ -3,8 +3,8 @@ import {ProductSearchParameters} from '../../cross-tier/product/product-search-p
 import {ProductStatus} from '../../cross-tier/product/product-status.enum'
 import {BaseService} from '../../util/base-api/base.service'
 import {PageRequest} from '../../util/paginated-api/page-request.model'
-import {LocationProductStore} from './location-product.store'
 import {LocationProduct} from './location-product.model'
+import {LocationProductStore} from './location-product.store'
 
 @Injectable()
 export class LocationProductQuickSearchService extends BaseService<LocationProduct, PageRequest<ProductSearchParameters>> {
