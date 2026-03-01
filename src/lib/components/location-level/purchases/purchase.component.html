@@ -1,0 +1,16 @@
+<div class="flex align-items-center justify-content-between">
+  <h3 class="font-bold">Purchases</h3>
+  @if (formIsVisible()) {
+    <p-button label="Cancel" (click)="clearSelectedPurchase()" icon="pi pi-times" severity="info"/>
+  } @else {
+    <p-button label="New Purchase" (click)="startNewPurchase()" icon="pi pi-plus"/>
+  }
+</div>
+
+@if (formIsVisible()) {
+  <rts-purchase-form [purchase]="selectedPurchase()"/>
+} @else {
+  <div class="pt-3">
+    <rts-purchase-grid (editPurchase)="onEditPurchase($event)" />
+  </div>
+}

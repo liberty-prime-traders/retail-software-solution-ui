@@ -4,7 +4,7 @@ import {
   EntityId,
   removeAllEntities,
   removeEntity,
-  SelectEntityId,
+  SelectEntityId, setAllEntities,
   upsertEntities,
   upsertEntity,
   withEntities
@@ -27,7 +27,7 @@ export const withBaseStore = <ENTITY extends BaseModel>(selectId: SelectEntityId
     },
 
     setAll(entities: ENTITY[]) {
-      patchState(store, upsertEntities(entities, {selectId}))
+      patchState(store, setAllEntities(entities, {selectId}))
     },
 
     upsertMany(entities: ENTITY[]) {

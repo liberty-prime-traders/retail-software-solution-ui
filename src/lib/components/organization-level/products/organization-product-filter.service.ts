@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core'
 import {
   OrganizationProductSearchService
-} from '../../../api/organization-level/product-search/organization-product-search.service'
+} from '../../../api/organization-level/product/organization-product-search.service'
 import {OrganizationProduct} from '../../../api/organization-level/product/organization-product.model'
 import {ProductFilterService} from '../../cross-tier/product/product-filter.service'
 

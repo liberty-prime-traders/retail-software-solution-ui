@@ -4,6 +4,8 @@ import {EntityId} from '@ngrx/signals/entities'
 import {isNil} from 'lodash-es'
 import {throwError} from 'rxjs'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
+import {RtsDeclaredTypes} from '../../../utils/types/rts-declared-types'
+import {isPaginated} from '../paginated-api/page-response.model'
 import {ApiRequestConfig} from './api-request-config'
 import {BaseModel} from './base.model'
 import {BaseStore} from './base.store'
@@ -37,8 +39,14 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     return this.store.selectForId(id)
   }
 
-  protected prepareResponse(body: RESPONSE | RESPONSE[], idParam?: EntityId): any {
-    return idParam ? [{...body, id: idParam}] : body
+  protected prepareResponse(body: RtsDeclaredTypes.OrPaginated<RESPONSE>, idParam?: EntityId): any {
+    if (idParam) {
+      return {...body, id: idParam}
+    }
+    if (isPaginated(body)) {
+      return body.contents
+    }
+    return body
   }
 
   protected getBasePath(id?: EntityId): string {
@@ -71,7 +79,7 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     this.setProcessingStatus(ProcessingStatus.IDLE)
   }
 
-  protected finishSavingWithSuccess(response: RESPONSE | RESPONSE[], idParam?: EntityId) {
+  protected finishSavingWithSuccess(response: RtsDeclaredTypes.OrPaginated<RESPONSE>, idParam?: EntityId) {
     const result = this.prepareResponse(response, idParam)
     if (Array.isArray(result)) {
       if (this.apiRequestConfig().upsertOnSuccess) {

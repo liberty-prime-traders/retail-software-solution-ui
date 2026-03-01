@@ -7,16 +7,16 @@ import {
   OrganizationProductFilterService
 } from '../../../components/organization-level/products/organization-product-filter.service'
 import {
-  LocationProductSearchService
-} from '../../location-level/location-product-search/location-product-search.service'
+  LocationProductPaginatedSearchService
+} from '../../location-level/location-product/location-product-paginated-search.service'
 import {
   OrganizationProductSearchService
-} from '../../organization-level/product-search/organization-product-search.service'
+} from '../../organization-level/product/organization-product-search.service'
 import {PaginatedBaseService} from '../../util/paginated-api/paginated-base.service'
 
 export const provideLocationServices = (): Provider[] => [
   {provide: ProductFilterService, useExisting: LocationProductFilterService},
-  {provide: PaginatedBaseService, useExisting: LocationProductSearchService}
+  {provide: PaginatedBaseService, useExisting: LocationProductPaginatedSearchService}
 ]
 
 export const provideOrganizationServices = (): Provider[] => [

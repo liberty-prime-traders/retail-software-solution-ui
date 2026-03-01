@@ -1,0 +1,113 @@
+<rts-loading-container [loading]="purchaseIsLoading()" loadingText="Saving...">
+  <form class="flex flex-column" id="purchaseForm" rtsAutoStretch="purchaseForm">
+    <div class="flex flex-wrap">
+      <div class="flex flex-column flex-1">
+        <rts-form-field [required]="true" label="Supplier" for="supplierId" [labelColumnSize]="labelColumnSize">
+          <p-select id="supplierId"
+                    class="flex-grow-1"
+                    [filter]="true"
+                    [options]="suppliers()"
+                    optionLabel="fullName"
+                    optionValue="id"
+                    [formField]="generalFieldsForm.supplierId"
+                    placeholder="Select a supplier">
+          </p-select>
+        </rts-form-field>
+
+        <rts-form-field label="Date Ordered" for="dateOrdered" [labelColumnSize]="labelColumnSize">
+          <p-date-picker id="dateOrdered"
+                         class="flex-1"
+                         [formField]="generalFieldsForm.dateOrdered"
+                         [showIcon]="true"
+                         placeholder="When was the order placed?">
+          </p-date-picker>
+        </rts-form-field>
+
+        <rts-form-field label="Ordered By" for="orderedBy" [labelColumnSize]="labelColumnSize">
+          <p-select id="orderedBy"
+                    class="flex-grow-1"
+                    [filter]="true"
+                    [options]="users()"
+                    optionLabel="name"
+                    optionValue="name"
+                    [formField]="generalFieldsForm.orderedById"
+                    placeholder="Who placed the order?">
+          </p-select>
+        </rts-form-field>
+
+        <rts-form-field label="Notes" for="notes" [labelColumnSize]="labelColumnSize">
+        <textarea id="notes"
+                  pInputText
+                  class="flex-grow-1"
+                  [formField]="generalFieldsForm.notes"
+                  rows="3"
+                  placeholder="Notes">
+        </textarea>
+        </rts-form-field>
+      </div>
+
+      <div class="flex flex-column flex-1">
+        <rts-form-field label="Status" [labelColumnSize]="labelColumnSize">
+          <p-tag class="w-fit" [value]="generalFieldsForm.status().value() | prettifyEnum"
+                 [severity]="generalFieldsForm.status().value() | purchaseStatusSeverity">
+          </p-tag>
+        </rts-form-field>
+
+        <rts-form-field label="Total Amount" [labelColumnSize]="labelColumnSize">
+          <span class="flex-grow-1">{{ generalFieldsForm.orderTotal().value() | currency }}</span>
+        </rts-form-field>
+
+        <rts-form-field label="Created By" [labelColumnSize]="labelColumnSize">
+          <span class="flex-grow-1">{{ generalFieldsForm.createdBy().value() }}</span>
+        </rts-form-field>
+
+        <rts-form-field label="Created On" [labelColumnSize]="labelColumnSize">
+          <span class="flex-grow-1">{{ generalFieldsForm.createdOn().value() | date: 'medium' }}</span>
+        </rts-form-field>
+      </div>
+
+      @if (purchaseForm().invalid()) {
+        <div class="col-3">
+          <p-card header="Errors" class="h-full" [ngStyle]="{'max-height.px': 300}">
+            <rts-error-summary [errors]="purchaseForm().errorSummary()" [fieldMap]="purchaseFormFields"/>
+          </p-card>
+        </div>
+      }
+
+    </div>
+
+    <p-tabs value="items">
+      <p-tablist>
+        <p-tab value="items">Items</p-tab>
+        <p-tab value="deliveries">Deliveries</p-tab>
+        <p-tab value="payments">Payments</p-tab>
+      </p-tablist>
+
+      <p-tabpanels>
+        <p-tabpanel value="items">
+          <rts-purchase-lines/>
+        </p-tabpanel>
+
+      </p-tabpanels>
+    </p-tabs>
+
+    <div style="height: 400px"></div>
+  </form>
+
+  <div class="floating flex gap-2">
+    <p-button label="Reset"
+              icon="pi pi-times"
+              severity="secondary"
+              (click)="resetForm()"
+              [disabled]="!purchaseForm().dirty()">
+    </p-button>
+
+    <p-button label="Create Draft"
+              icon="pi pi-check"
+              severity="primary"
+              (click)="savePurchase()"
+              [disabled]="purchaseForm().invalid()">
+    </p-button>
+  </div>
+</rts-loading-container>
+

@@ -5,7 +5,6 @@ import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
 import {SessionContextService} from '../../utils/services/session-context.service'
-import {AutoStretchDirective} from '../reusable/auto-stretch.directive'
 
 @Component({
   selector: 'rts-private',
@@ -13,8 +12,7 @@ import {AutoStretchDirective} from '../reusable/auto-stretch.directive'
     RouterOutlet,
     Button,
     Menu,
-    Card,
-    AutoStretchDirective
+    Card
   ],
   templateUrl: 'location-dashboard.component.html'
 })

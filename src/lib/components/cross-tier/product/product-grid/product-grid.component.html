@@ -1,4 +1,4 @@
-<div id="productLines" [rtsAutoStretch]="'productLines'">
+<div [id]="schemaLevel() + '-productLines'" [rtsAutoStretch]="schemaLevel() + '-productLines'" [useMinHeight]="false">
   <p-table [value]="products()"
            (onRowExpand)="onRowExpand()"
            (onRowCollapse)="onRowCollapse()"

@@ -1,15 +1,18 @@
-import {AfterViewInit, Directive, ElementRef, inject, Input, OnDestroy} from '@angular/core'
-import {Subscription} from 'rxjs'
+import {AfterViewInit, DestroyRef, Directive, ElementRef, inject, input, Input} from '@angular/core'
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
+import {tap} from 'rxjs/operators'
 import {stretchVisibleElement} from '../../utils/display-manips'
 import {AutoStretchService} from './auto-stretch.service'
 
 @Directive({selector: '[rtsAutoStretch]'})
-export class AutoStretchDirective implements AfterViewInit, OnDestroy {
+export class AutoStretchDirective implements AfterViewInit {
 
   @Input('rtsAutoStretch') elementId = ''
+  readonly useMinHeight = input(true)
+
   private readonly el = inject(ElementRef<HTMLElement>)
   private readonly autoStretchService = inject(AutoStretchService)
-  private readonly subscription = new Subscription()
+  private readonly destroyRef = inject(DestroyRef)
 
   private get targetId(): string {
     return this.elementId || this.el.nativeElement.id
@@ -17,14 +20,13 @@ export class AutoStretchDirective implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.stretch()
-    this.subscription.add(this.autoStretchService.stretch$.subscribe(() => this.stretch()))
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe()
+    this.autoStretchService.stretch$.pipe(
+      tap(() => this.stretch()),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe()
   }
 
   private stretch(): void {
-    stretchVisibleElement(this.targetId)
+    setTimeout(() => stretchVisibleElement(this.targetId, this.useMinHeight()), 0)
   }
 }
