@@ -1,4 +1,4 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core'
+import {Component, computed, effect, inject, OnInit, signal, untracked} from '@angular/core'
 import {Button} from 'primeng/button'
 import {Purchase} from '../../../api/location-level/purchase/purchase.model'
 import {PurchaseService} from '../../../api/location-level/purchase/purchase.service'
@@ -20,6 +20,21 @@ export class PurchaseComponent implements OnInit {
   readonly selectedPurchase = signal<Purchase | null>(null)
   readonly isCreating = signal(false)
   readonly formIsVisible = computed(() => this.selectedPurchase() !== null || this.isCreating())
+
+  constructor() {
+    effect(() => {
+      const saved = this.purchaseService.lastSavedResponse()
+      if (!saved) return
+      untracked(() => {
+        if (this.isCreating()) {
+          this.selectedPurchase.set(saved)
+          this.isCreating.set(false)
+        } else if (this.selectedPurchase()?.id === saved.id) {
+          this.selectedPurchase.set(saved)
+        }
+      })
+    })
+  }
 
   ngOnInit() {
     this.purchaseService.fetch()

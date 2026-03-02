@@ -29,7 +29,7 @@
         <td>{{ purchase.dateOrdered | date: 'mediumDate' | nullSafe }}</td>
         <td>{{ purchase.createdBy | nullSafe }}</td>
         <td>{{ purchase.orderedBy | nullSafe }}</td>
-        <td>{{ purchase.orderTotal | nullSafe }}</td>
+        <td>{{ purchase.orderTotal | currency }}</td>
         <td>
           <p-button icon="pi pi-pen-to-square"
                     rounded

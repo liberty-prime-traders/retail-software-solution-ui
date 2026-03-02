@@ -8,7 +8,7 @@
 </div>
 
 @if (formIsVisible()) {
-  <rts-purchase-form [purchase]="selectedPurchase()"/>
+  <rts-purchase-form [purchase]="selectedPurchase()" [isCreating]="isCreating()"/>
 } @else {
   <div class="pt-3">
     <rts-purchase-grid (editPurchase)="onEditPurchase($event)" />

@@ -8,7 +8,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     referenceNumber: string
     supplierId: string
     supplierName: string
-    dateOrdered: string
+    dateOrdered: Date | null
     orderedBy: string
     orderedById: string
     notes: string
@@ -30,7 +30,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     referenceNumber: '',
     supplierId: '',
     supplierName: '',
-    dateOrdered: '',
+    dateOrdered: null,
     orderedBy: '',
     orderedById: '',
     notes: '',
@@ -49,20 +49,20 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     referenceNumber: purchase?.referenceNumber ?? '',
     supplierId: purchase?.supplierId ?? '',
     supplierName: purchase?.supplierName ?? '',
-    dateOrdered: purchase?.dateOrdered ?? '',
+    dateOrdered: purchase?.dateOrdered ? new Date(purchase.dateOrdered) : null,
     orderedBy: purchase?.orderedBy ?? '',
     orderedById: purchase?.orderedById ?? '',
     notes: purchase?.notes ?? '',
     status: purchase?.status ?? PurchaseStatus.DRAFT,
     createdBy: purchase?.createdBy ?? '',
     createdOn: purchase?.createdOn ?? '',
-    orderTotal: purchase?.totalAmount ?? 0
+    orderTotal: purchase?.orderTotal ?? 0
   })
 
   export const convertToBackendModel = (formValue: PurchaseGeneralFieldsModel): Partial<Purchase> => ({
     id: formValue.id,
     supplierId: formValue.supplierId,
-    dateOrdered: formValue.dateOrdered,
+    dateOrdered: formValue.dateOrdered?.toDateString(),
     orderedById: formValue.orderedById,
     notes: formValue.notes
   })

@@ -13,7 +13,7 @@ export interface Purchase extends BaseModel {
   orderedById?: string
   createdBy?: string
   createdOn?: string
-  totalAmount?: number
+  orderTotal?: number
   lines: Partial<PurchaseLine>[]
 }
 

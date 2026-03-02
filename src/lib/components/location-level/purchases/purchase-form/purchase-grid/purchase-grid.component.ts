@@ -1,4 +1,4 @@
-import {DatePipe} from '@angular/common'
+import {CurrencyPipe, DatePipe} from '@angular/common'
 import {Component, inject, output} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
@@ -21,7 +21,8 @@ import {PurchaseStatusSeverityPipe} from '../../purchase-status-severity.pipe'
     PrettifyEnumPipe,
     PurchaseStatusSeverityPipe,
     DatePipe,
-    AutoStretchDirective
+    AutoStretchDirective,
+    CurrencyPipe
   ]
 })
 export class PurchaseGridComponent {
