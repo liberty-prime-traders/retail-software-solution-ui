@@ -16,6 +16,11 @@ form  {
   content: "* ";
 }
 
+.text-wrap {
+  text-wrap: wrap;
+  overflow-wrap: break-word;
+}
+
 .error-message {
   color: theme.$red;
 }

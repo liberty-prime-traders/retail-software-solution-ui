@@ -1,11 +1,13 @@
 import {CurrencyPipe, DatePipe, NgStyle} from '@angular/common'
 import {Component, inject, OnInit} from '@angular/core'
 import {FormField} from '@angular/forms/signals'
+import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {DatePicker} from 'primeng/datepicker'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
 import {Tag} from 'primeng/tag'
+import {PurchaseService} from '../../../../../api/location-level/purchase/purchase.service'
 import {ContactService} from '../../../../../api/organization-level/contact/contact.service'
 import {
   OrganizationUserService
@@ -33,7 +35,8 @@ import {PurchaseGeneralFieldsFormDefinition} from '../form-utils/purchase-genera
     CurrencyPipe,
     DatePipe,
     NgStyle,
-    InputText
+    InputText,
+    Button
 
   ]
 })
@@ -41,18 +44,29 @@ export class PurchaseFormGeneralFieldsComponent implements OnInit {
   private readonly purchaseFormContext = inject(PurchaseFormContext)
   private readonly contactService = inject(ContactService)
   private readonly organizationUserService = inject(OrganizationUserService)
-
-  readonly purchaseForm = this.purchaseFormContext.purchaseForm
+  private readonly purchaseService = inject(PurchaseService)
 
   readonly labelColumnSize = 3
-  readonly generalFieldsForm = this.purchaseForm.generalFields
 
+  readonly purchaseForm = this.purchaseFormContext.purchaseForm
+  readonly generalFieldsForm = this.purchaseForm.generalFields
   readonly purchaseFormFields = PurchaseGeneralFieldsFormDefinition.fieldMap
   readonly suppliers = this.contactService.suppliers
   readonly users = this.organizationUserService.selectAll
+  readonly isDraftOrNew = this.purchaseFormContext.isDraftOrNew
+  readonly isOrderedOrPartiallyDelivered = this.purchaseFormContext.isOrderedOrPartiallyDelivered
+  readonly apiErrors = this.purchaseService.selectFailureMessages
 
   ngOnInit() {
     this.contactService.fetch()
     this.organizationUserService.fetch()
+  }
+
+
+  saveNotes() {
+    const payload = this.purchaseFormContext.getSavableFormValue()
+    if (payload.id) {
+      this.purchaseService.updateNotes(payload.id, payload.notes ?? '')
+    }
   }
 }

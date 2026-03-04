@@ -1,4 +1,4 @@
-import {required, schema} from '@angular/forms/signals'
+import {disabled, required, schema} from '@angular/forms/signals'
 import {PurchaseStatus} from '../../../../../api/location-level/purchase/purchase-status.enum'
 import {Purchase} from '../../../../../api/location-level/purchase/purchase.model'
 
@@ -40,8 +40,17 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     orderTotal: 0
   })
 
+
   export const purchaseGeneralFieldsFormSchema = schema<PurchaseGeneralFieldsModel>((path) => {
     required(path.supplierId)
+
+    const isReadOnly = ({valueOf}: any) => {
+      const status = valueOf(path.status)
+      return status && status !== PurchaseStatus.DRAFT
+    }
+    disabled(path.supplierId, isReadOnly)
+    disabled(path.dateOrdered, isReadOnly)
+    disabled(path.orderedById, isReadOnly)
   })
 
   export const convertToFormModel = (purchase: Purchase | undefined): PurchaseGeneralFieldsModel => ({
@@ -62,7 +71,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
   export const convertToBackendModel = (formValue: PurchaseGeneralFieldsModel): Partial<Purchase> => ({
     id: formValue.id,
     supplierId: formValue.supplierId,
-    dateOrdered: formValue.dateOrdered?.toDateString(),
+    dateOrdered: formValue.dateOrdered?.toISOString(),
     orderedById: formValue.orderedById,
     notes: formValue.notes
   })

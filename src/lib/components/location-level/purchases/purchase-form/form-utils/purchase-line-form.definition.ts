@@ -1,4 +1,4 @@
-import {min, required, schema} from '@angular/forms/signals'
+import {SchemaFn, SchemaPathTree, validate} from '@angular/forms/signals'
 import {PurchaseLine} from '../../../../../api/location-level/purchase/purchase.model'
 
 export namespace PurchaseLineFormDefinition {
@@ -12,32 +12,39 @@ export namespace PurchaseLineFormDefinition {
     baseUnit: string
     quantityOrdered: number
     unitCost: number
-    lineTotal: number
+    lineTotal: number,
+    quantityExpected: number
+    quantityDelivered: number
+    quantityCanceled: number
   }
 
-  export const purchaseLinesSchema = schema<PurchaseLineModel>((path) => {
-    required(path.locationProductId)
-    min(
-      path.unitCost, 0,
-      {message: ({valueOf}) => `Unit cost for ${valueOf(path.productName)} cannot be negative`}
-    )
-    min(
-      path.quantityOrdered, 0,
-      {message: ({valueOf}) => `Quantity ordered for ${valueOf(path.productName)} cannot be negative`}
-    )
-  })
+  export const purchaseLinesSchema: SchemaFn<PurchaseLineModel> = (path: SchemaPathTree<PurchaseLineModel>) => {
+    validate(path.quantityCanceled, ({valueOf}) => {
+      const quantityEligibleForCancellation = valueOf(path.quantityOrdered) - valueOf(path.quantityDelivered)
+      if (valueOf(path.quantityCanceled) > quantityEligibleForCancellation) {
+        return {
+          kind: 'exceedsEligibleCancellation',
+          message: `${valueOf(path.productName)}: Quantity canceled cannot exceed ${quantityEligibleForCancellation}`
+        }
+      }
+      return null
+    })
+  }
 
   export const convertLinesToFormModel = (lines: Partial<PurchaseLine>[]): PurchaseLineModel[] =>
     lines.map(line => ({
       id: line.id as string ?? '',
-      referenceNumber: line.referenceNumber ?? '',
+      referenceNumber: line.locationProduct?.referenceNumber ?? '',
       locationProductId: line.locationProduct?.id as string ?? '',
       productGroupName: line.locationProduct?.productGroupName ?? '',
       productName: line.locationProduct?.productName ?? '',
       baseUnit: line.locationProduct?.baseUnit ?? '',
       quantityOrdered: line.quantityOrdered ?? 0,
       unitCost: line.unitCost ?? line.lastPurchasePrice ?? 0,
-      lineTotal: line.lineTotal ?? 0
+      lineTotal: line.lineTotal ?? 0,
+      quantityExpected: line.quantityExpected ?? 0,
+      quantityDelivered: line.quantityDelivered ?? 0,
+      quantityCanceled: line.quantityCanceled ?? 0
     }))
 
   export const convertLinesToBackendModel = (lines: PurchaseLineModel[]): Partial<PurchaseLine>[] =>

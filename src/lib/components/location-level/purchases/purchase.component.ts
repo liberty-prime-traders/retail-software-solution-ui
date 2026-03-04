@@ -3,7 +3,7 @@ import {Button} from 'primeng/button'
 import {Purchase} from '../../../api/location-level/purchase/purchase.model'
 import {PurchaseService} from '../../../api/location-level/purchase/purchase.service'
 import {PurchaseFormComponent} from './purchase-form/purchase-form.component'
-import {PurchaseGridComponent} from './purchase-form/purchase-grid/purchase-grid.component'
+import {PurchaseGridComponent} from './purchase-grid/purchase-grid.component'
 
 @Component({
   selector: 'rts-purchases',

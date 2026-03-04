@@ -24,4 +24,12 @@ export interface PurchaseLine extends BaseModel {
   unitCost: number
   lastPurchasePrice: number
   lineTotal: number
+  quantityExpected?: number
+  quantityDelivered?: number
+  quantityCanceled?: number
+}
+
+export interface PurchaseLineCancelDto {
+  locationProductId: string
+  quantityCanceled: number
 }

@@ -1,61 +1,92 @@
-<div class="flex flex-column gap-3">
-  <rts-form-field label="Search Products">
-    <p-auto-complete (completeMethod)="searchTerm$.next($event.query)"
-                     inputStyleClass="w-full"
-                     optionLabel="label"
-                     optionValue="value"
-                     dataKey="value"
-                     #autoComplete
-                     [showClear]="true"
-                     (onSelect)="addPurchaseLine($event.value); autoComplete.clear()"
-                     [suggestions]="productOptions()">
-    </p-auto-complete>
-  </rts-form-field>
+<div class="flex flex-column gap-4">
+  @if (isDraftOrNew()) {
+    <rts-form-field label="Search Products">
+      <p-select [options]="productOptions()"
+                [filter]="true"
+                (onFilter)="searchTerm$.next($event.filter)"
+                (onClick)="addPurchaseLine(productSelect.value); productSelect.clear()"
+                #productSelect
+                optionLabel="label"
+                optionValue="value"
+                class="w-full"
+                dataKey="value">
+      </p-select>
+    </rts-form-field>
+  }
 
   <p-table [value]="purchaseLinesArray()"
            [editingRowKeys]="editingRowKeys()"
            dataKey="locationProductId"
+           sortField="productGroupName"
            editMode="row"
            size="small">
     <ng-template pTemplate="header">
       <tr>
         <th>Product</th>
-        <th>Units</th>
-        <th>Quantity</th>
+        <th>Qty Ordered</th>
         <th>Unit Price</th>
+
+        @if (isOrderedOrPartiallyDelivered()) {
+          <th>Qty Delivered</th>
+          <th>Qty Canceled</th>
+          <th>Qty Expected</th>
+        }
+
+        <th>Units</th>
         <th>Total</th>
         <th style="width: 100px"></th>
       </tr>
     </ng-template>
 
     <ng-template pTemplate="body" let-purchaseLine let-editing="editing">
-      <tr [pEditableRow]="purchaseLine">
+      <tr [pEditableRow]="purchaseLine" [ngClass]="{'opacity-70': purchaseLine.quantityExpected === 0}">
         <td>{{ purchaseLine | productLabel }}</td>
+
+        @if (isOrderedOrPartiallyDelivered()) {
+          <td>{{ purchaseLine.quantityOrdered }}</td>
+          <td>{{ purchaseLine.unitCost }}</td>
+          <td>{{ purchaseLine.quantityDelivered }}</td>
+
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.quantityCanceled" />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ purchaseLine.quantityCanceled }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+
+          <td>{{ purchaseLine.quantityExpected }}</td>
+
+        } @else {
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.quantityOrdered" />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ purchaseLine.quantityOrdered }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.unitCost" />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ purchaseLine.unitCost | currency  }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+        }
+
         <td>{{ purchaseLine.baseUnit }}</td>
 
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.quantityOrdered" />
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{ purchaseLine.quantityOrdered }}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.unitCost" />
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{ purchaseLine.unitCost | currency  }}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-
-        <td>{{ purchaseLine.totalCost | currency }}</td>
+        <td>{{ purchaseLine.lineTotal | currency }}</td>
 
         <td>
           <div class="flex gap-1">
@@ -81,8 +112,8 @@
                         text
                         rounded
                         pInitEditableRow
-                        (keydown.enter)="initEditingLine(purchaseLine)"
-                        (onClick)="initEditingLine(purchaseLine)">
+                        (keydown.enter)="initializeEditingLine(purchaseLine)"
+                        (onClick)="initializeEditingLine(purchaseLine)">
               </p-button>
             }
           </div>
@@ -90,7 +121,19 @@
       </tr>
     </ng-template>
   </p-table>
+
+  @if (isOrderedOrPartiallyDelivered()) {
+    <p-button label="Update Canceled Lines"
+              icon="pi pi-ban"
+              severity="warn"
+              class="align-self-end"
+              (click)="cancelLines()"
+              [disabled]="isEditingLines() || purchaseLinesFieldTree().invalid()">
+    </p-button>
+  }
 </div>
+
+
 
 
 

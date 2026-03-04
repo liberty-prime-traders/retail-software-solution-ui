@@ -16,6 +16,6 @@ export namespace PurchaseFormDefinition {
 
   export const convertToBackendModel = (formValue: PurchaseFormModel): Partial<Purchase> => ({
     ...PurchaseGeneralFieldsFormDefinition.convertToBackendModel(formValue.generalFields),
-    lines: PurchaseLineFormDefinition.convertLinesToBackendModel(formValue.purchaseLines)
+    lines: PurchaseLineFormDefinition.convertLinesToBackendModel(Array.from(formValue.purchaseLines.values()))
   })
 }

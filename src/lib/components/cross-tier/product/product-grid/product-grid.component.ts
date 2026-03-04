@@ -1,4 +1,4 @@
-import {NgClass, NgTemplateOutlet} from '@angular/common'
+import {CurrencyPipe, NgClass, NgTemplateOutlet} from '@angular/common'
 import {Component, computed, inject, input, signal, viewChild} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
@@ -12,6 +12,7 @@ import {ProductStatus} from '../../../../api/cross-tier/product/product-status.e
 import {SchemaLevel} from '../../../../api/platform-level/table-registry/schema-level.enum'
 import {PaginatedBaseService} from '../../../../api/util/paginated-api/paginated-base.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
+import {NullishToZeroPipe} from '../../../../utils/pipes/nullish-to-zero.pipe'
 import {
   LocationProductFormComponent
 } from '../../../location-level/location-products/location-product-form/location-product-form.component'
@@ -35,7 +36,9 @@ import {ProductFilterService} from '../product-filter.service'
     OrganizationProductFormComponent,
     LocationProductFormComponent,
     Skeleton,
-    AutoStretchDirective
+    AutoStretchDirective,
+    CurrencyPipe,
+    NullishToZeroPipe
   ]
 })
 export class ProductGridComponent<PRODUCT extends BaseProduct> {

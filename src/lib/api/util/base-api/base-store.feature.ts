@@ -35,8 +35,9 @@ export const withBaseStore = <ENTITY extends BaseModel>(selectId: SelectEntityId
       patchState(store, upsertEntities(entities, {selectId}))
     },
 
-    upsert(entity: ENTITY) {
-      patchState(store, upsertEntity(entity, {selectId}))
+    upsert(entity: Partial<ENTITY>) {
+      const updated = {...entity} as ENTITY
+      patchState(store, upsertEntity(updated, {selectId}))
     },
 
     setProcessingStatus(processingStatus: ProcessingStatus) {
