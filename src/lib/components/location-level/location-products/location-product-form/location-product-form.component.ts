@@ -13,7 +13,6 @@ import {LocationProductFormDefinition} from './location-product-form.definition'
 @Component({
   selector: 'rts-location-product-form',
   templateUrl: 'location-product-form.component.html',
-  standalone: true,
   imports: [
     InputNumber,
     FormButtonsComponent,

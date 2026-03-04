@@ -21,7 +21,7 @@ import {TagService} from '../../../../api/organization-level/tag/tag.service'
 import {UnitGroupService} from '../../../../api/organization-level/unit-group/unitgroup.service'
 import {UnitValue} from '../../../../api/organization-level/unit-value/unitvalue.model'
 import {UnitValueService} from '../../../../api/organization-level/unit-value/unitvalue.service'
-import {SelectItemType, ToSelectItemOptions, toSelectItems} from '../../../../utils/types/select-item.type'
+import {SelectItem, ToSelectItemOptions, toSelectItems} from '../../../../utils/types/select-item.type'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
@@ -31,7 +31,6 @@ import {ProductFormTagDisplayComponent} from './tag-display.component'
 @Component({
   selector: 'rts-organization-product-form',
   templateUrl: 'organization-product-form.component.html',
-  standalone: true,
   imports: [
     InputText,
     FormButtonsComponent,
@@ -111,8 +110,8 @@ export class OrganizationProductFormComponent extends BaseFormComponent<Organiza
     return toSelectItems<ProductCategory, ProductGroup>(productGroups, this.productGroupDropdownConfig, productCategories)
   })
 
-  readonly unitValues: Signal<Array<SelectItemType<UnitValue>>> = computed(() => {
-    const result: Array<SelectItemType<UnitValue>> = []
+  readonly unitValues: Signal<Array<SelectItem<UnitValue>>> = computed(() => {
+    const result: Array<SelectItem<UnitValue>> = []
     this.unitValueService.selectAllAsMap().forEach((values, key) => {
       result.push({
         label: this.unitGroupService.selectForId(key)?.name ?? '',

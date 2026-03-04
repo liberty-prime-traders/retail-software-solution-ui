@@ -1,14 +1,12 @@
 import {Injectable} from '@angular/core'
 import {ProductService} from '../../cross-tier/product/product.service'
-import {LocationProductSearchStore} from '../location-product-search/location-product-search.store'
 import {LocationProduct} from './location-product.model'
+import {LocationProductStore} from './location-product.store'
 
 @Injectable({providedIn: 'root'})
 export class LocationProductService extends ProductService<LocationProduct> {
 
-  protected readonly basePath = '/secured/location-products'
-
-  constructor(protected override readonly store: LocationProductSearchStore) {
+  constructor(protected override readonly store: LocationProductStore) {
     super(store)
   }
 }

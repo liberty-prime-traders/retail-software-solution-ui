@@ -1,5 +1,5 @@
 export interface PaginatedState<PARAMETERS> {
-  currentCursor: number
+  currentCursor: string|number
   hasMore: boolean
   requireClientSideFilter: boolean
   lastSearchParams: PARAMETERS

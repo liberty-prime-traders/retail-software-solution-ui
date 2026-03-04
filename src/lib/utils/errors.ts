@@ -4,14 +4,19 @@ export const parseError = (errorObj: any): string[] => {
   if (isNil(errorObj) || isNil(errorObj.error)) {
     return ['Unknown Error, Contact Admin']
   }
-  let err = []
+  const err = new Set<string>()
   if (typeof errorObj.error === 'string') {
-    err = [errorObj.error]
-  } else if (errorObj.error instanceof Array) {
-    err = errorObj.error
-  } else if ('message' in errorObj.error) {
-    err = [errorObj.error['message']]
+    err.add(errorObj.error)
+  }
+  if (errorObj.error instanceof Array) {
+    errorObj.error.forEach((errMsg: string) => err.add(errMsg))
   }
 
-  return err
+  if ('message' in errorObj.error) {
+    err.add(errorObj.error['message'])
+  } else   if ('message' in errorObj) {
+    err.add(errorObj['message'])
+  }
+
+  return Array.from(err)
 }

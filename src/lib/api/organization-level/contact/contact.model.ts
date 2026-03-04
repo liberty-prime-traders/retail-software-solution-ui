@@ -1,7 +1,7 @@
+import {BaseModel} from '../../util/base-api/base.model'
 import {ContactStatus} from './contact-status.enum'
 import {ContactType} from './contact-type.enum'
 import {IdentityType} from './identity-type.enum'
-import {BaseModel} from '../../util/base-api/base.model'
 
 export interface Contact extends BaseModel {
   createdBy?: string
@@ -11,6 +11,7 @@ export interface Contact extends BaseModel {
   firstName?: string
   lastName?: string
   companyName?: string
+  fullName?: string
   email?: string
   phone?: string
   address?: string

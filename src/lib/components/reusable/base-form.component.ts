@@ -13,7 +13,6 @@ export abstract class BaseFormComponent<SERVICE extends BaseService<any, any>> i
   protected readonly processingStatus = computed(() => this.apiService.selectProcessingStatus())
   protected readonly failureMessages = computed(() => this.apiService.selectFailureMessages())
 
-
   constructor() {
     effect(() => {
       if (this.processingStatus() === ProcessingStatus.SUCCESS && this.savedAtLeastOnce()) {

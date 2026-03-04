@@ -7,8 +7,8 @@ import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {UnitGroup} from '../../../api/organization-level/unit-group/unitgroup.model'
 import {UnitGroupService} from '../../../api/organization-level/unit-group/unitgroup.service'
+import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
-import {AutoResizeConfig} from '../../welcome/auto-resize-config'
 import {UnitGroupFormComponent} from './unit-group-form/unit-group-form.component'
 import {UnitValueComponent} from './unit-value/unit-value.component'
 
@@ -28,7 +28,8 @@ import {UnitValueComponent} from './unit-value/unit-value.component'
     AccordionPanel,
     AccordionHeader,
     AccordionContent,
-    BlockUI
+    BlockUI,
+    AutoStretchDirective
   ]
 })
 export class UnitTreeComponent extends GridWithAddButtonComponent<UnitGroupService> implements OnInit {
@@ -36,7 +37,6 @@ export class UnitTreeComponent extends GridWithAddButtonComponent<UnitGroupServi
   override readonly apiService = this.unitGroupService
   readonly unitGroups = this.unitGroupService.selectAll
 
-  readonly unitsElementId = AutoResizeConfig.unitsId
   readonly searchTerm = signal('')
   private readonly selectedUnitGroupStash = signal<UnitGroup|undefined>(undefined)
   readonly selectedUnitGroup = model<UnitGroup| undefined>(undefined)

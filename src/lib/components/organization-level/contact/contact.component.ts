@@ -7,10 +7,10 @@ import {ContactService} from '../../../api/organization-level/contact/contact.se
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {ContactType} from '../../../api/organization-level/contact/contact-type.enum'
+import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
-import {AutoResizeConfig} from '../../welcome/auto-resize-config'
 import {ContactNamePipe} from './contact-name.pipe'
 import {ContactFormComponent} from './contact-form/contact-form.component'
 
@@ -28,14 +28,14 @@ import {ContactFormComponent} from './contact-form/contact-form.component'
     NgClass,
     NgTemplateOutlet,
     PrettifyEnumPipe,
-    ContactNamePipe
+    ContactNamePipe,
+    AutoStretchDirective
   ]
 })
 export class ContactComponent extends GridWithAddButtonComponent<ContactService> {
   private readonly contactService = inject(ContactService)
   readonly apiService = this.contactService
 
-  readonly contactsElementId = AutoResizeConfig.contactsId
   readonly selectedContactType = signal<ContactType | undefined>(ContactType.CUSTOMER)
   readonly selectedContactTypeStash = signal<ContactType | undefined>(undefined)
   readonly contacts = computed(() => this.contactService.selectAll().filter(

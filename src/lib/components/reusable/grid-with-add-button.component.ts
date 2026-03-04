@@ -10,9 +10,8 @@ export abstract class GridWithAddButtonComponent<SERVICE extends BaseService<any
   constructor() {
     super()
     effect(() => {
-      const processingStatus = this.apiService.selectProcessingStatus()
-      if (processingStatus === ProcessingStatus.SUCCESS) {
-        setTimeout(() => this.closeAddRow(), 500)
+      if (this.apiService.selectProcessingStatus() === ProcessingStatus.SUCCESS) {
+        setTimeout(() => this.successfulSave(), 500)
       }
     })
   }
@@ -26,7 +25,7 @@ export abstract class GridWithAddButtonComponent<SERVICE extends BaseService<any
   }
 
   successfulSave() {
-    this.setAddingActiveFalse()
+    this.closeAddRow()
   }
 
   closeAddRow() {

@@ -1,10 +1,6 @@
 <form class="flex flex-column gap-2">
-  @let labelSize = 3;
 
-  <rts-form-field [required]="true"
-                  label="Minimum Stock Level"
-                  for="minStockLevel"
-                  [labelColumnSize]="labelSize">
+  <rts-form-field [required]="true" label="Minimum Stock Level" for="minStockLevel">
     <p-input-number id="minStockLevel"
                    class="flex-grow-1"
                    [formField]="locationProductForm.minStockLevel"
@@ -14,10 +10,7 @@
     </p-input-number>
   </rts-form-field>
 
-  <rts-form-field [required]="true"
-                  label="Default Sale Price"
-                  for="defaultSalePrice"
-                  [labelColumnSize]="labelSize">
+  <rts-form-field [required]="true" label="Default Sale Price" for="defaultSalePrice">
     <p-input-number id="defaultSalePrice"
                    class="flex-grow-1"
                    [formField]="locationProductForm.defaultSalePrice"

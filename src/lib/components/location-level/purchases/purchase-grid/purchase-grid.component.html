@@ -1,0 +1,54 @@
+<div id="purchase-grid" rtsAutoStretch="purchase-grid" [useMinHeight]="false">
+  <p-table [value]="purchases()"
+           [loading]="loading()"
+           scrollHeight="flex"
+           dataKey="id">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Reference</th>
+        <th pSortableColumn="supplierName">Supplier
+          <p-sortIcon field="supplierName"/>
+        </th>
+        <th pSortableColumn="status">Status
+          <p-sortIcon field="status"/>
+        </th>
+        <th pSortableColumn="dateOrdered">Date Ordered
+          <p-sortIcon field="dateOrdered"/>
+        </th>
+        <th pSortableColumn="orderedBy">Ordered By
+          <p-sortIcon field="orderedBy"/>
+        </th>
+        <th pSortableColumn="orderTotal">Total
+          <p-sortIcon field="orderTotal"/>
+        </th>
+        <th style="width: 5rem"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-purchase>
+      <tr>
+        <td>{{ purchase.referenceNumber | nullSafe }}</td>
+        <td>{{ purchase.supplierName | nullSafe }}</td>
+        <td>
+          <p-tag [value]="purchase.status | prettifyEnum"
+                 [severity]="purchase.status | purchaseStatusSeverity">
+          </p-tag>
+        </td>
+        <td>{{ purchase.dateOrdered | date: 'mediumDate' | nullSafe }}</td>
+        <td>{{ purchase.orderedBy | nullSafe }}</td>
+        <td>{{ purchase.orderTotal | currency }}</td>
+        <td>
+          <p-button icon="pi pi-pen-to-square"
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading()"
+                    (onClick)="editPurchase.emit(purchase)">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+</div>
