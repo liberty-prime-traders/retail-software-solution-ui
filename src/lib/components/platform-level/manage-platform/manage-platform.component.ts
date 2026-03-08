@@ -16,7 +16,8 @@ import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 export class ManagePlatformComponent {
 
   private readonly homeMenuItems: MenuItem[] = [
-    {label: 'Organizations', icon: 'pi pi-home', routerLink: 'organizations'}
+    {label: 'Organizations', icon: 'pi pi-home', routerLink: 'organizations'},
+    {label: 'Passes', icon: 'pi pi-id-card', routerLink: 'authorization-passes'},
   ]
 
   private readonly databaseConfigs: MenuItem[] = [

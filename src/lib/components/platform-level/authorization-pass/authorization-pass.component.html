@@ -1,0 +1,119 @@
+<div class="flex flex-column gap-4 flex-grow-1" id="authorizationPasses" [rtsAutoStretch]="'authorizationPasses'">
+  @if (addingIsActive()) {
+    <p-button (click)="setAddingActiveFalse()"
+              label="Cancel"
+              icon="pi pi-times"
+              severity="info"
+              class="align-self-end mr-7">
+    </p-button>
+    <rts-authorization-pass-form (successfulSave)="successfulSave()"/>
+
+  } @else {
+    <p-table [loading]="loading() && !addingIsActive()"
+             rowExpandMode="single"
+             dataKey="id"
+             scrollHeight="flex"
+             scrollable="true"
+             sortField="createdOn"
+             [sortOrder]="-1"
+             #passesTable
+             [value]="passes()"
+             [globalFilterFields]="['referenceNumber', 'passType', 'passStatus', 'assignedTo', 'createdBy']"
+             (onRowExpand)="rowIsExpanded.set(true)"
+             (onRowCollapse)="rowIsExpanded.set(false)">
+
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between align-items-center">
+          <h3 class="font-bold">Authorization Passes</h3>
+
+          <rts-grid-filter [dataTable]="passesTable"/>
+
+          <p-button (click)="setAddingActiveTrue()"
+                    [disabled]="loading() || addingIsActive()"
+                    label="+ Add Pass"
+                    rounded
+                    severity="secondary">
+          </p-button>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="referenceNumber">
+            Reference Number
+            <p-sortIcon field="referenceNumber"></p-sortIcon>
+          </th>
+          <th pSortableColumn="createdOn">
+            Created On
+            <p-sortIcon field="createdOn"></p-sortIcon>
+          </th>
+          <th pSortableColumn="passType">
+            Pass Type
+            <p-sortIcon field="passType"></p-sortIcon>
+          </th>
+          <th pSortableColumn="passStatus">
+            Status
+            <p-sortIcon field="passStatus"></p-sortIcon>
+          </th>
+          <th pSortableColumn="maxUseCount">
+            Max Uses
+            <p-sortIcon field="maxUseCount"></p-sortIcon>
+          </th>
+          <th pSortableColumn="usedCount">
+            Used
+            <p-sortIcon field="usedCount"></p-sortIcon>
+          </th>
+          <th pSortableColumn="assignedTo">
+            Assigned To
+            <p-sortIcon field="assignedTo"></p-sortIcon>
+          </th>
+          <th pSortableColumn="expiresOn">
+            Expires On
+            <p-sortIcon field="expiresOn"></p-sortIcon>
+          </th>
+          <th pSortableColumn="createdBy">
+            Created By
+            <p-sortIcon field="createdBy"></p-sortIcon>
+          </th>
+          <th style="width: 5rem"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-pass let-expanded="expanded">
+        <tr [ngClass]="{ 'expanded-row': expanded }">
+          <td>{{ pass.referenceNumber | nullSafe }}</td>
+          <td>{{ pass.createdOn | date }}</td>
+          <td>{{ pass.passType | prettifyEnum }}</td>
+          <td>{{ pass.passStatus | prettifyEnum }}</td>
+          <td>{{ pass.maxUseCount | nullSafe }}</td>
+          <td>{{ pass.usedCount | nullishToZero }}</td>
+          <td>{{ pass.assignedTo | nullSafe }}</td>
+          <td>{{ pass.expiresOn | nullSafe }}</td>
+          <td>{{ pass.createdBy | nullSafe }}</td>
+          <td>
+            @if (pass.passStatus === PassStatus.ACTIVE || expanded) {
+              <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                        rounded
+                        severity="secondary"
+                        [disabled]="loading() || addingIsActive()"
+                        [pRowToggler]="pass">
+              </p-button>
+            }
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="expandedrow" let-pass>
+        <tr>
+          <td colspan="10" class="filled-background">
+            <rts-authorization-pass-form [pass]="pass"/>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr rts-empty-row [colspan]="10" message="No Authorization Passes Were Found"></tr>
+      </ng-template>
+    </p-table>
+  }
+</div>

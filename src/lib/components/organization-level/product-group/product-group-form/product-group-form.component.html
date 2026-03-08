@@ -19,8 +19,8 @@
     <input id="description" pInputText [formField]="productGroupForm.description" />
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!productGroupForm().dirty"
-                     [disableSave]="productGroupForm().invalid() || !productGroupForm().dirty"
+  <rts-forms-buttons [disableReset]="!productGroupForm().dirty()"
+                     [disableSave]="productGroupForm().invalid() || !productGroupForm().dirty()"
                      [hideDelete]="!originalProductGroup()?.id"
                      [signalForm]="productGroupForm()"
                      [fieldMap]="productGroupFormFields"

@@ -2,11 +2,12 @@ import {BaseModel} from '../../util/base-api/base.model'
 import {SysUserStatus} from './sys-user-status.enum'
 
 export interface SysUser extends BaseModel {
-	status: SysUserStatus;
-	oktaId: string;
-	firstName: string;
-	lastName: string;
-	mobilePhone?: string;
-	secondEmail?: string;
-	email: string;
+	status: SysUserStatus
+	oktaId: string
+	firstName: string
+	lastName: string
+  fullName: string
+	mobilePhone?: string
+	secondEmail?: string
+	email: string
 }

@@ -17,7 +17,7 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
   private readonly paginatedEntitiesVersion = signal(0)
 
   readonly requireClientSideFilter: Signal<boolean>
-  readonly paginatedEntities: Array<RESPONSE> = this.getPlaceholders(15)
+  private readonly paginatedEntities: Array<RESPONSE> = this.getPlaceholders(15)
 
   override readonly selectAll = computed(() => {
     this.paginatedEntitiesVersion()
@@ -121,4 +121,10 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
     this.paginatedEntitiesVersion.update(v => v + 1)
   }
 
+  pushToPaginatedEntities(newEntities: RESPONSE[]) {
+    const entities = this.paginatedEntities
+    const updatedEntities = [...newEntities, ...entities]
+    entities.splice(0, entities.length, ...updatedEntities)
+    this.paginatedEntitiesVersion.update(v => v + 1)
+  }
 }
