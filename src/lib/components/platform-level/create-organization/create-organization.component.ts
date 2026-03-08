@@ -1,13 +1,10 @@
-
-import {Component, effect, inject, OnInit, Signal, signal} from '@angular/core'
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
+import {Component, computed, effect, inject, OnInit, signal} from '@angular/core'
+import {form, FormField} from '@angular/forms/signals'
 import {ActivatedRoute, Router, RouterLink} from '@angular/router'
 import {BlockUI} from 'primeng/blockui'
 import {ButtonModule} from 'primeng/button'
 import {CardModule} from 'primeng/card'
 import {InputTextModule} from 'primeng/inputtext'
-import {distinctUntilChanged, filter, Subscription} from 'rxjs'
-import {tap} from 'rxjs/operators'
 import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
 import {ReservedSubdomainService} from '../../../api/platform-level/reserved-subdomain/reserved-subdomain.service'
 import {SessionContextService} from '../../../utils/services/session-context.service'
@@ -15,59 +12,60 @@ import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {FormButtonsComponent} from '../../reusable/form-buttons/form-buttons.component'
 import {FormFieldDirection} from '../../reusable/form-field/form-field-direction'
 import {FormFieldComponent} from '../../reusable/form-field/form-field.component'
-import {HasSubscriptionComponent} from '../../reusable/has-subscription.component'
+import {CreateOrganizationFormDefinition} from './create-organization-form.definition'
 
 @Component({
   selector: 'rts-create-organization',
   templateUrl: 'create-organization.component.html',
   imports: [
-    ReactiveFormsModule,
     ButtonModule,
     InputTextModule,
     CardModule,
     FormButtonsComponent,
     FormFieldComponent,
     RouterLink,
-    BlockUI
+    BlockUI,
+    FormField,
   ]
 })
-export class CreateOrganizationComponent extends HasSubscriptionComponent implements OnInit {
-  private readonly formBuilder = inject(FormBuilder)
+export class CreateOrganizationComponent implements OnInit {
   private readonly router = inject(Router)
   private readonly activatedRoute = inject(ActivatedRoute)
   private readonly reservedSubdomainService = inject(ReservedSubdomainService)
   private readonly organizationService = inject(OrganizationService)
   private readonly sessionContextService = inject(SessionContextService)
 
-  readonly ProcessingStatus = ProcessingStatus
   readonly FormFieldDirection = FormFieldDirection
+  readonly formFields = CreateOrganizationFormDefinition.fieldMap
 
-  readonly requestedSubdomain = signal<string|null>(null)
+  readonly requestedSubdomain = signal<string | null>(null)
 
-  readonly organizationForm = this.formBuilder.nonNullable.group({
-    name: ['', Validators.required],
-    description: [''],
-    subdomain: ['', [Validators.required]]
-  })
+  readonly formValue = signal<CreateOrganizationFormDefinition.CreateOrganizationFormModel>(
+    CreateOrganizationFormDefinition.defaultFormModel
+  )
 
-  get domainControl() {
-    return this.organizationForm.controls.subdomain
-  }
+  readonly organizationForm = form(this.formValue, CreateOrganizationFormDefinition.formSchema)
 
   readonly organizationProcessingStatus = this.organizationService.selectProcessingStatus
-  readonly organizationServiceFailureMessages = this.organizationService.selectFailureMessages
-  readonly organizationIsLoading: Signal<boolean> = this.organizationService.selectLoading
+  readonly organizationIsLoading = this.organizationService.selectLoading
+  readonly organizationFailureMessages = this.organizationService.selectFailureMessages
 
   readonly reservedSubdomainProcessingStatus = this.reservedSubdomainService.selectProcessingStatus
-  readonly reservedSubdomainIsLoading: Signal<boolean> = this.reservedSubdomainService.selectLoading
-  readonly reservedSubdomainFailureMessages: Signal<string[]> = this.reservedSubdomainService.selectFailureMessages
+  readonly reservedSubdomainIsLoading = this.reservedSubdomainService.selectLoading
+  readonly reservedSubdomainFailureMessages = this.reservedSubdomainService.selectFailureMessages
+
+  readonly domainVerified = computed(() => this.reservedSubdomainProcessingStatus() === ProcessingStatus.SUCCESS)
+  readonly domainVerificationFailed = computed(() => this.reservedSubdomainProcessingStatus() === ProcessingStatus.FAILURE)
+  readonly domainWasModifiedByBackend = computed(() =>
+    this.requestedSubdomain() !== null && this.requestedSubdomain() !== this.formValue().subdomain
+  )
+  readonly canVerifyDomain = computed(() => !this.reservedSubdomainIsLoading() && !!this.formValue().subdomain)
 
   constructor() {
-    super()
     effect(() => {
       if (this.reservedSubdomainProcessingStatus() === ProcessingStatus.SUCCESS) {
         const reservedDomain = this.reservedSubdomainService.selectFirst()
-        this.organizationForm.patchValue({subdomain: reservedDomain?.subdomain}, {emitEvent: false})
+        this.formValue.update(v => ({...v, subdomain: reservedDomain?.subdomain ?? v.subdomain}))
       }
 
       if (this.organizationProcessingStatus() === ProcessingStatus.SUCCESS) {
@@ -81,32 +79,28 @@ export class CreateOrganizationComponent extends HasSubscriptionComponent implem
   ngOnInit() {
     this.reservedSubdomainService.resetProcessingStatus()
     this.organizationService.resetProcessingStatus()
-    this.subscriptions.add(this.listenToDomainChanges())
   }
 
   resetForm() {
-    this.organizationForm.reset()
+    this.organizationForm().reset(CreateOrganizationFormDefinition.defaultFormModel)
   }
 
   verifyDomain() {
-    this.requestedSubdomain.set(this.domainControl.value)
-    this.reservedSubdomainService.refetch({suggestedSubdomain: this.domainControl.value, pathSuffix: 'verify'})
+    this.requestedSubdomain.set(this.formValue().subdomain)
+    this.reservedSubdomainService.verifySubdomainAvailability(this.formValue().subdomain)
     this.organizationService.resetProcessingStatus()
   }
 
   createOrganization() {
-    this.organizationService.post(this.organizationForm.getRawValue())
+    this.organizationService.post(CreateOrganizationFormDefinition.convertToBackendModel(this.formValue()))
   }
 
   cancel() {
     this.router.navigate(['/landing']).then()
   }
 
-  private listenToDomainChanges(): Subscription {
-    return this.domainControl.valueChanges.pipe(
-      filter(Boolean),
-      distinctUntilChanged(),
-      tap(() => this.reservedSubdomainService.resetProcessingStatus())
-    ).subscribe()
+  resetDomainVerification() {
+    this.requestedSubdomain.set(null)
+    this.reservedSubdomainService.resetProcessingStatus()
   }
 }

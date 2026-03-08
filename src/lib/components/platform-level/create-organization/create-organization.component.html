@@ -1,16 +1,16 @@
 <p-block-ui [blocked]="organizationIsLoading()" [target]="organizationFormContainer"/>
 
 <div class="flex h-full justify-content-center align-items-center">
-  <p-card class="col-11 md:col-6 lg:col-5 "#organizationFormContainer>
+  <p-card class="col-11 md:col-6 lg:col-5" #organizationFormContainer>
     <h1 class="text-xl text-center m-0 mt-3">Create New Organization</h1>
 
-    <form [formGroup]="organizationForm" class="py-4">
+    <form class="py-4">
       <rts-form-field for="name" label="Name" [required]="true" contentClass="col-11" [layout]="FormFieldDirection.VERTICAL">
-        <input id="name" pInputText formControlName="name"/>
+        <input id="name" pInputText [formField]="organizationForm.name"/>
       </rts-form-field>
 
       <rts-form-field for="description" label="Description" contentClass="col-11" [layout]="FormFieldDirection.VERTICAL">
-        <textarea id="description" pInputText formControlName="description" class="w-full"></textarea>
+        <textarea id="description" pInputText [formField]="organizationForm.description" class="w-full"></textarea>
       </rts-form-field>
 
       <div class="flex align-items-center gap-2">
@@ -20,7 +20,7 @@
                         class="col-9 p-0"
                         contentClass="col-11"
                         [layout]="FormFieldDirection.VERTICAL">
-          <input id="subdomain" pInputText formControlName="subdomain" />
+          <input id="subdomain" pInputText [formField]="organizationForm.subdomain" (keyup)="resetDomainVerification()"/>
         </rts-form-field>
 
         <p-button label="Verify"
@@ -29,16 +29,16 @@
                   severity="info"
                   (click)="verifyDomain()"
                   [loading]="reservedSubdomainIsLoading()"
-                  [disabled]="reservedSubdomainIsLoading() || domainControl.invalid">
+                  [disabled]="!canVerifyDomain()">
         </p-button>
       </div>
 
-      @if (reservedSubdomainProcessingStatus() === ProcessingStatus.SUCCESS) {
+      @if (domainVerified()) {
         <div class="px-4 mb-4">
-          @if (requestedSubdomain() !== domainControl.value) {
+          @if (domainWasModifiedByBackend()) {
             <div class="text-sm text-yellow-500 mt-1">
               <i class="pi pi-exclamation-circle"></i>
-              Domain updated from <b>{{requestedSubdomain()}}</b> to <b>{{domainControl.value}}</b>
+              Domain updated from <b>{{requestedSubdomain()}}</b> to <b>{{formValue().subdomain}}</b>
             </div>
           }
 
@@ -48,13 +48,17 @@
         </div>
       }
 
-      @if (reservedSubdomainProcessingStatus() === ProcessingStatus.FAILURE) {
+      @if (domainVerificationFailed()) {
         <div class="text-red-500 text-center px-4 mb-4">
           @for (message of reservedSubdomainFailureMessages(); track message) {
             <span>{{message}}</span>
           }
         </div>
       }
+
+      <rts-form-field for="passCode" label="Pass Code" [required]="true" contentClass="col-11" [layout]="FormFieldDirection.VERTICAL">
+        <input id="passCode" pInputText [formField]="organizationForm.passCode"/>
+      </rts-form-field>
 
       <div class="flex justify-content-between">
         <p-button label="Cancel"
@@ -64,13 +68,15 @@
                   (click)="cancel()">
         </p-button>
 
-        <rts-forms-buttons [disableReset]="!organizationForm.dirty"
-                           [disableSave]="!organizationForm.valid || !organizationForm.dirty"
+        <rts-forms-buttons [disableReset]="!organizationForm().dirty"
+                           [disableSave]="organizationForm().invalid() || !organizationForm().dirty"
                            [hideReset]="true"
                            [hideDelete]="true"
+                           [fieldMap]="formFields"
+                           [signalForm]="organizationForm()"
                            [processingStatus]="organizationProcessingStatus()"
-                           [failureMessages]="organizationServiceFailureMessages()"
-                           [saveLabel]="'Create'"
+                           [failureMessages]="organizationFailureMessages()"
+                           saveLabel="Create"
                            (save)="createOrganization()"
                            (resetAction)="resetForm()">
         </rts-forms-buttons>

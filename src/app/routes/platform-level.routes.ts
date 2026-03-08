@@ -1,4 +1,7 @@
 import {Routes} from '@angular/router'
+import {
+  AuthorizationPassComponent
+} from '../../lib/components/platform-level/authorization-pass/authorization-pass.component'
 import {DbMigrationComponent} from '../../lib/components/platform-level/db-migration/db-migration.component'
 import {
   MigrationHistoryComponent
@@ -20,6 +23,7 @@ export const platformManagementRoutes: Routes = [
   {path: 'organizations', component: OrganizationComponent},
   {path: 'db-versions', component: DbVersionComponent},
   {path: 'table-registry', component: TableRegistryComponent},
+  {path: 'authorization-passes', component: AuthorizationPassComponent},
   {
     path: 'db-migrations',
     component: DbMigrationComponent,

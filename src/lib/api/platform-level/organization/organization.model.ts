@@ -6,4 +6,5 @@ export interface Organization extends BaseModel{
 	name?: string
 	description?: string
 	subdomain?: string
+  passCode?: string
 }
