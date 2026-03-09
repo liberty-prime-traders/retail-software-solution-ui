@@ -9,7 +9,7 @@ import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
-import JobTitleFormComponent from './job-title-form/job-title-form.component'
+import {JobTitleFormComponent} from './job-title-form/job-title-form.component'
 
 @Component({
   selector: 'rts-job-title',
