@@ -3,6 +3,7 @@ import {inject} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {finalize, Subscription} from 'rxjs'
 import {catchError, first, tap} from 'rxjs/operators'
+import {ApiCallbacks} from './api-callbacks'
 import {BaseModel} from './base.model'
 import {BaseStore} from './base.store'
 import {FetchService} from './fetch-service'
@@ -15,34 +16,52 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
     super(store, inject(HttpClient))
   }
 
-  post(body?: PAYLOAD, id?: EntityId): Subscription {
+  post(body?: PAYLOAD, callbacks?: ApiCallbacks<RESPONSE>, id?: EntityId): Subscription {
     this.startApiRequest()
     return this.httpClient.post<RESPONSE>(this.getBasePath(id), body).pipe(
       first(),
-      tap((postResult: RESPONSE) => this.finishSavingWithSuccess(postResult)),
-      catchError((error: HttpErrorResponse) => this.setStoreError(error)),
+      tap((result: RESPONSE) => {
+        this.finishSavingWithSuccess(result)
+        callbacks?.onSuccess?.(result)
+      }),
+      catchError((error: HttpErrorResponse) => {
+        callbacks?.onFail?.(error)
+        return this.setStoreError(error)
+      }),
       finalize(() => this.finalizeApiRequest())
     )
       .subscribe()
   }
 
-  put(body: PAYLOAD): Subscription {
+  put(body: PAYLOAD, callbacks?: ApiCallbacks<RESPONSE>): Subscription {
     this.startApiRequest()
     return this.httpClient.put<RESPONSE>(this.getBasePath(), body).pipe(
       first(),
-      tap((putResult: RESPONSE) => this.finishSavingWithSuccess(putResult)),
-      catchError((error: HttpErrorResponse) => this.setStoreError(error)),
+      tap((result: RESPONSE) => {
+        this.finishSavingWithSuccess(result)
+        callbacks?.onSuccess?.(result)
+      }),
+      catchError((error: HttpErrorResponse) => {
+        callbacks?.onFail?.(error)
+        return this.setStoreError(error)
+      }),
       finalize(() => this.finalizeApiRequest())
     )
       .subscribe()
   }
 
-  putWithId(id: EntityId): Subscription {
+  putWithId(id: EntityId, callbacks?: ApiCallbacks<RESPONSE>): Subscription {
     this.startApiRequest()
     return this.httpClient.put<RESPONSE>(this.getBasePath(id), {}).pipe(
       first(),
-      tap((putResult: RESPONSE) => this.finishSavingWithSuccess(putResult)),
-      catchError((error: HttpErrorResponse) => this.setStoreError(error)),
+      tap((result: RESPONSE) => {
+        this.finishSavingWithSuccess(result)
+        callbacks?.onSuccess?.(result)
+      }),
+      catchError((error: HttpErrorResponse) => {
+        callbacks?.onFail?.(error)
+        return this.setStoreError(error)
+      }),
       finalize(() => this.finalizeApiRequest())
     )
       .subscribe()

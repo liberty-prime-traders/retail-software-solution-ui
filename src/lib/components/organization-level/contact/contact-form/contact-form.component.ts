@@ -1,4 +1,4 @@
-import {Component, computed, inject, Input, signal} from '@angular/core'
+import {Component, computed, inject, Input, output, signal} from '@angular/core'
 import {FormField, form} from '@angular/forms/signals'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
@@ -35,6 +35,8 @@ export class ContactFormComponent extends BaseFormComponent<ContactService> {
   private readonly contactService = inject(ContactService)
   protected override apiService: ContactService = this.contactService
 
+  readonly contactCreated = output<Contact>()
+
   @Input()
   set contact(contact: Contact|null) {
     if (contact) {
@@ -65,9 +67,8 @@ export class ContactFormComponent extends BaseFormComponent<ContactService> {
     if (updatedContact.id) {
       this.contactService.put(updatedContact)
     } else {
-      this.contactService.post(updatedContact)
+      this.contactService.post(updatedContact, {onSuccess: (saved) => this.contactCreated.emit(saved)})
     }
-    this.savedAtLeastOnce.set(true)
   }
 
   deleteContact() {

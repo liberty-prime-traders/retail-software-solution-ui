@@ -1,5 +1,5 @@
 import {HttpErrorResponse} from '@angular/common/http'
-import {computed, Signal, signal} from '@angular/core'
+import {computed, signal, Signal} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {isNil} from 'lodash-es'
 import {throwError} from 'rxjs'
@@ -18,7 +18,6 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
   readonly selectFailureMessages
   readonly processingIsUnderWay
   readonly selectCount: Signal<number>
-  readonly lastSavedResponse = signal<RESPONSE|undefined>(undefined)
   private readonly defaultApiRequestConfig: ApiRequestConfig = {
     upsertOnSuccess: false,
     urlSuffix: ''
@@ -79,6 +78,10 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     this.setProcessingStatus(ProcessingStatus.IDLE)
   }
 
+  applyResponse(entity: RESPONSE) {
+    this.store.upsert(entity)
+  }
+
   protected finishSavingWithSuccess(response: RtsDeclaredTypes.OrPaginated<RESPONSE>, idParam?: EntityId) {
     const result = this.prepareResponse(response, idParam)
     if (Array.isArray(result)) {
@@ -89,7 +92,6 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
       }
     } else if (!isNil(result)) {
       this.store.upsert(result)
-      this.lastSavedResponse.set(result)
     }
     this.store.setHasCache(true)
     this.setProcessingStatus(ProcessingStatus.SUCCESS)

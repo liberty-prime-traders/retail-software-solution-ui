@@ -3,6 +3,7 @@ import {Component, computed, inject, signal} from '@angular/core'
 import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
+import {Contact} from '../../../api/organization-level/contact/contact.model'
 import {ContactService} from '../../../api/organization-level/contact/contact.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
@@ -60,8 +61,8 @@ export class ContactComponent extends GridWithAddButtonComponent<ContactService>
     this.selectedContactType.set(this.selectedContactTypeStash())
   }
 
-  override successfulSave() {
+  contactCreated(saved: Contact) {
     this.setAddingActiveFalse()
-    this.selectedContactType.set(this.contactService.lastSavedResponse()?.contactType)
+    this.selectedContactType.set(saved.contactType)
   }
 }

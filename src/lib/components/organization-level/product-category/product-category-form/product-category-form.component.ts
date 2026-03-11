@@ -1,5 +1,5 @@
 import {NgClass} from '@angular/common'
-import {Component, computed, inject, input} from '@angular/core'
+import {Component, computed, inject, input, output} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
 import {isNil} from 'lodash-es'
 import {InputText} from 'primeng/inputtext'
@@ -29,6 +29,8 @@ export class ProductCategoryFormComponent extends BaseFormComponent<ProductCateg
   private readonly formBuilder = inject(FormBuilder)
   protected readonly apiService = this.productCategoryService
 
+  readonly productCategoryCreated = output<void>()
+
   readonly productCategoryForm = computed(() => this.formBuilder.nonNullable.group({
     id: this.productCategory()?.id,
     categoryName: [this.productCategory()?.categoryName, Validators.required],
@@ -44,9 +46,8 @@ export class ProductCategoryFormComponent extends BaseFormComponent<ProductCateg
     if (isNil(updatedProductCategory.id)) {
       this.productCategoryService.post(updatedProductCategory)
     } else {
-      this.productCategoryService.put(updatedProductCategory)
+      this.productCategoryService.put(updatedProductCategory, {onSuccess: () => this.productCategoryCreated.emit()})
     }
-    this.savedAtLeastOnce.set(true)
   }
 
   deleteProductCategory() {

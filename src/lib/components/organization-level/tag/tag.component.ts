@@ -4,6 +4,7 @@ import {ReactiveFormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
+import {Tag} from '../../../api/organization-level/tag/tag.model'
 import {TagService} from '../../../api/organization-level/tag/tag.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
@@ -58,8 +59,8 @@ export class TagComponent extends GridWithAddButtonComponent<TagService> {
     this.selectedCategory.set(this.selectedCategoryStash())
   }
 
-  override successfulSave() {
+  tagCreated(saved: Tag) {
     this.setAddingActiveFalse()
-    this.selectedCategory.set(this.tagService.lastSavedResponse()?.category)
+    this.selectedCategory.set(saved.category)
   }
 }

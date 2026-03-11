@@ -1,6 +1,8 @@
 <div id="purchase-grid" rtsAutoStretch="purchase-grid" [useMinHeight]="false">
   <p-table [value]="purchases()"
            [loading]="loading()"
+           sortField="referenceNumber"
+           [sortOrder]="-1"
            scrollHeight="flex"
            dataKey="id">
 
@@ -18,6 +20,9 @@
         </th>
         <th pSortableColumn="orderedBy">Ordered By
           <p-sortIcon field="orderedBy"/>
+        </th>
+        <th pSortableColumn="createdBy">Created By
+          <p-sortIcon field="createdBy"/>
         </th>
         <th pSortableColumn="orderTotal">Total
           <p-sortIcon field="orderTotal"/>
@@ -37,13 +42,14 @@
         </td>
         <td>{{ purchase.dateOrdered | date: 'mediumDate' | nullSafe }}</td>
         <td>{{ purchase.orderedBy | nullSafe }}</td>
+        <td>{{ purchase.createdBy | nullSafe }}</td>
         <td>{{ purchase.orderTotal | currency }}</td>
         <td>
           <p-button icon="pi pi-pen-to-square"
                     rounded
                     severity="secondary"
                     [disabled]="loading()"
-                    (onClick)="editPurchase.emit(purchase)">
+                    (onClick)="onEditPurchase(purchase)">
           </p-button>
         </td>
       </tr>

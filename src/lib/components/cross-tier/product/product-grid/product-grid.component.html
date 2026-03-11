@@ -78,11 +78,11 @@
     <ng-template pTemplate="expandedrow" let-product>
       <tr>
         @if (isOrganizationLevel()){
-          <td colspan="7" class="filled-background">
+          <td colspan="8" class="filled-background">
             <rts-organization-product-form [product]="product"/>
           </td>
         } @else if (isLocationLevel()) {
-          <td colspan="7" class="filled-background">
+          <td colspan="8" class="filled-background">
             <rts-location-product-form [locationProduct]="product"/>
           </td>
         }

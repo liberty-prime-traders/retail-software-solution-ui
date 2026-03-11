@@ -1,4 +1,4 @@
-import {Component, computed, inject, input} from '@angular/core'
+import {Component, computed, inject, input, output} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, ValidatorFn, Validators} from '@angular/forms'
 import {EntityId} from '@ngrx/signals/entities'
 import {isNil} from 'lodash-es'
@@ -32,6 +32,8 @@ export class UnitValueFormComponent extends BaseFormComponent<UnitValueService> 
   private readonly formBuilder = inject(FormBuilder)
   protected readonly apiService = this.unitValueService
 
+  readonly unitValueCreated = output<UnitValue>()
+
   readonly unitValueForm = computed(() => this.formBuilder.nonNullable.group({
     id: this.unitValue()?.id,
     name: [this.unitValue()?.name, Validators.required],
@@ -51,7 +53,7 @@ export class UnitValueFormComponent extends BaseFormComponent<UnitValueService> 
       unitGroupId: this.unitGroupId()
     }
     if (isNil(updatedUnitValue.id)) {
-      this.unitValueService.post(updatedUnitValue)
+      this.unitValueService.post(updatedUnitValue, {onSuccess: (saved) => this.unitValueCreated.emit(saved)})
     } else {
       this.unitValueService.put(updatedUnitValue)
     }

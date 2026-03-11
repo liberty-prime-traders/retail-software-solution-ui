@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core'
 import {BaseStore, createBaseStore} from '../../util/base-api/base.store'
-import {PurchaseDelivery} from './purchase-delivery.model'
+import {Purchase} from '../purchase/purchase.model'
 
 @Injectable({providedIn: 'root'})
-export class PurchaseDeliveryStore extends createBaseStore<PurchaseDelivery>()
-  implements BaseStore<PurchaseDelivery> {
+export class PurchaseDeliveryStore extends createBaseStore<Purchase>()
+  implements BaseStore<Purchase> {
   readonly basePath = 'deliveries'
 }

@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, Input, OnInit} from '@angular/core'
+import {Component, computed, inject} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
@@ -15,7 +15,6 @@ import {PurchaseLinesComponent} from './purchase-lines/purchase-lines.component'
   selector: 'rts-purchase-form',
   templateUrl: 'purchase-form.component.html',
   styleUrl: 'purchase-form.component.scss',
-  providers: [PurchaseFormContext],
   imports: [
     FormsModule,
     Tabs,
@@ -31,7 +30,7 @@ import {PurchaseLinesComponent} from './purchase-lines/purchase-lines.component'
     PurchaseFormGeneralFieldsComponent
   ]
 })
-export class PurchaseFormComponent implements OnInit {
+export class PurchaseFormComponent {
 
   private readonly purchaseService = inject(PurchaseService)
   private readonly purchaseFormContext = inject(PurchaseFormContext)
@@ -43,16 +42,6 @@ export class PurchaseFormComponent implements OnInit {
   readonly canPlaceOrder = computed(() =>
     this.purchaseFormContext.purchaseLinesArray().some((line) => line.quantityExpected > 0)
   )
-  readonly isCreating = input(false)
-
-  @Input()
-  set purchase(purchase: Purchase | null) {
-    this.purchaseFormContext.initializeForm(purchase)
-  }
-
-  ngOnInit() {
-    this.purchaseService.fetch()
-  }
 
   resetForm() {
     this.purchaseFormContext.resetForm()
@@ -61,18 +50,22 @@ export class PurchaseFormComponent implements OnInit {
   saveDraft() {
     const payload = this.purchaseFormContext.getSavableFormValue()
     if (payload.id) {
-      this.purchaseService.updateDraft(payload)
+      this.purchaseService.updateDraft(payload, {onSuccess: this.onSuccessfulSave})
     } else {
-      this.purchaseService.createDraft(payload)
+      this.purchaseService.createDraft(payload, {onSuccess: this.onSuccessfulSave})
     }
   }
 
   placeOrder() {
     const payload = this.purchaseFormContext.getSavableFormValue()
     if (payload.id) {
-      this.purchaseService.convertDraftToOrder(payload)
+      this.purchaseService.convertDraftToOrder(payload, {onSuccess: this.onSuccessfulSave})
     } else {
-      this.purchaseService.createOrder(payload)
+      this.purchaseService.createOrder(payload, {onSuccess: this.onSuccessfulSave})
     }
+  }
+
+  private readonly onSuccessfulSave = (saved: Purchase)=> {
+    this.purchaseFormContext.initializeForm(saved)
   }
 }

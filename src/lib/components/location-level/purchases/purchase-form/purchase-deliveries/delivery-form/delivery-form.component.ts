@@ -7,6 +7,7 @@ import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
 import {TableModule} from 'primeng/table'
 import {PurchaseDeliveryService} from '../../../../../../api/location-level/delivery/purchase-delivery.service'
+import {PurchaseService} from '../../../../../../api/location-level/purchase/purchase.service'
 import {ProductLabelPipe} from '../../../../../../utils/pipes/product-label.pipe'
 import {BaseFormComponent} from '../../../../../reusable/base-form.component'
 import {FormFieldDirection} from '../../../../../reusable/form-field/form-field-direction'
@@ -31,14 +32,15 @@ import {PurchaseFormContext} from '../../form-utils/purchase-form-context'
     ProductLabelPipe
   ]
 })
-export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliveryService>{
+export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliveryService> {
 
   private readonly purchaseFormContext = inject(PurchaseFormContext)
   private readonly deliveryService = inject(PurchaseDeliveryService)
+  private readonly purchaseService = inject(PurchaseService)
   protected readonly apiService = this.deliveryService
 
-  readonly saved = output()
   readonly cancelled = output()
+  readonly deliverySaved = output()
 
   readonly FormFieldDirection = FormFieldDirection
 
@@ -62,7 +64,12 @@ export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliverySer
   save() {
     const purchaseId = this.purchaseFormContext.purchaseId() ?? ''
     const dto = PurchaseDeliveryFormDefinition.toBackendModel(purchaseId, this.deliveryFormValue())
-    this.deliveryService.post(dto)
-    this.savedAtLeastOnce.set(true)
+    this.deliveryService.post(dto, {
+      onSuccess: (updatedPurchase) => {
+        this.purchaseService.applyResponse(updatedPurchase)
+        this.purchaseFormContext.initializeForm(updatedPurchase)
+        this.deliverySaved.emit()
+      }
+    })
   }
 }

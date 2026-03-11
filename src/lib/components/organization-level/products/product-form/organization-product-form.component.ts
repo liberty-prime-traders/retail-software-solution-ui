@@ -1,5 +1,5 @@
 import {NgClass} from '@angular/common'
-import {Component, computed, inject, Input, model, OnInit, Signal, signal} from '@angular/core'
+import {Component, computed, inject, Input, model, OnInit, output, Signal, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {form, FormField} from '@angular/forms/signals'
 import {PrimeTemplate} from 'primeng/api'
@@ -56,6 +56,8 @@ export class OrganizationProductFormComponent extends BaseFormComponent<Organiza
   private readonly unitGroupService = inject(UnitGroupService)
   private readonly tagService = inject(TagService)
   protected override apiService: OrganizationProductService =  this.productService
+
+  readonly productCreated = output<void>()
 
   @Input()
   set product(product: OrganizationProduct|null) {
@@ -149,9 +151,8 @@ export class OrganizationProductFormComponent extends BaseFormComponent<Organiza
     if (updatedProduct.id) {
       this.productService.put(updatedProduct)
     } else {
-      this.productService.post(updatedProduct)
+      this.productService.post(updatedProduct, {onSuccess: () => this.productCreated.emit()})
     }
-    this.savedAtLeastOnce.set(true)
   }
 
   deactivateProduct() {

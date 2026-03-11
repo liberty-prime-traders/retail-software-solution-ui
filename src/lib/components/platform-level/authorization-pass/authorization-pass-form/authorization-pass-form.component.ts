@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, OnInit, signal} from '@angular/core'
+import {Component, computed, inject, input, OnInit, output, signal} from '@angular/core'
 import {form, FormField} from '@angular/forms/signals'
 import {DatePicker} from 'primeng/datepicker'
 import {InputNumber} from 'primeng/inputnumber'
@@ -33,6 +33,8 @@ export class AuthorizationPassFormComponent extends BaseFormComponent<Authorizat
   private readonly sysUserService = inject(SysUserService)
   protected readonly apiService = this.authorizationPassService
 
+  readonly passCreated = output<void>()
+
   readonly formValue = signal<AuthorizationPassFormDefinition.AuthorizationPassFormModel>(
     AuthorizationPassFormDefinition.defaultFormModel
   )
@@ -64,16 +66,14 @@ export class AuthorizationPassFormComponent extends BaseFormComponent<Authorizat
     if (payload.id) {
       this.authorizationPassService.put(payload)
     } else {
-      this.authorizationPassService.issue(payload)
+      this.authorizationPassService.issue(payload, {onSuccess: () => this.passCreated.emit()})
     }
-    this.savedAtLeastOnce.set(true)
   }
 
   revoke() {
     const id = this.pass()?.id
     if (id) {
       this.authorizationPassService.revoke(id)
-      this.savedAtLeastOnce.set(true)
     }
   }
 

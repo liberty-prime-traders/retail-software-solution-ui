@@ -1,9 +1,10 @@
 import {HttpErrorResponse, HttpParams} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
-import {finalize, Subscription} from 'rxjs'
+import {finalize, Subscription, throwError} from 'rxjs'
 import {catchError, first, tap} from 'rxjs/operators'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
+import {ApiCallbacks} from '../../util/base-api/api-callbacks'
 import {BaseService} from '../../util/base-api/base.service'
 import {Purchase, PurchaseLineCancelDto} from './purchase.model'
 import {PurchaseStore} from './purchase.store'
@@ -21,32 +22,39 @@ export class PurchaseService extends BaseService<Purchase> {
     return new HttpParams().set('top', this.defaultLimit)
   }
 
-  createDraft(body: Partial<Purchase>): Subscription {
+  createDraft(body: Partial<Purchase>, callbacks?: ApiCallbacks<Purchase>): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'draft'})
-    return this.post(body)
+    return this.post(body, callbacks)
   }
 
-  updateDraft(body: Partial<Purchase>): Subscription {
+  updateDraft(body: Partial<Purchase>, callbacks?: ApiCallbacks<Purchase>): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'draft'})
-    return this.put(body)
+    return this.put(body, callbacks)
   }
 
-  createOrder(body: Partial<Purchase>): Subscription {
+  createOrder(body: Partial<Purchase>, callbacks?: ApiCallbacks<Purchase>): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'order'})
-    return this.post(body)
+    return this.post(body, callbacks)
   }
 
-  convertDraftToOrder(body: Partial<Purchase>): Subscription {
+  convertDraftToOrder(body: Partial<Purchase>, callbacks?: ApiCallbacks<Purchase>): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'order'})
-    return this.put(body)
+    return this.put(body, callbacks)
   }
 
-  cancelLines(id: EntityId, lines: PurchaseLineCancelDto[]): Subscription {
+  cancelLines(id: EntityId, lines: PurchaseLineCancelDto[], callbacks?: ApiCallbacks<Purchase>): Subscription {
     this.startApiRequest()
     return this.httpClient.put<Purchase>(`${this.getBasePath(id)}/line-cancel-quantities`, lines).pipe(
       first(),
-      tap((result) => this.finishSavingWithSuccess(result)),
-      catchError((error: HttpErrorResponse) => this.setStoreError(error)),
+      tap((result) => {
+        this.finishSavingWithSuccess(result)
+        callbacks?.onSuccess?.(result)
+      }),
+      catchError((error: HttpErrorResponse) => {
+        this.setStoreError(error)
+        callbacks?.onFail?.(error)
+        return throwError(() => error)
+      }),
       finalize(() => this.finalizeApiRequest())
     ).subscribe()
   }

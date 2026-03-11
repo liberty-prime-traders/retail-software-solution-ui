@@ -2,7 +2,7 @@
   @if (addingIsActive()) {
     <p-button (click)="addingIsActive.set(false)" label="Cancel" icon="pi pi-times" severity="info" class="align-self-end"/>
     <rts-unit-value-form [unitGroupId]="unitGroupId()"
-                         (successfulSave)="addingIsActive.set(false)"
+                         (unitValueCreated)="addingIsActive.set(false)"
                          [baseUnitOptions]="unitValues()">
     </rts-unit-value-form>
 

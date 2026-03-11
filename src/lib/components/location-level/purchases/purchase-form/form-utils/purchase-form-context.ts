@@ -4,17 +4,14 @@ import {PurchaseStatus} from '../../../../../api/location-level/purchase/purchas
 import {Purchase} from '../../../../../api/location-level/purchase/purchase.model'
 import {PurchaseFormDefinition} from './purchase-form.definition'
 import {PurchaseGeneralFieldsFormDefinition} from './purchase-general-fields-form.definition'
-import PurchaseFormModel = PurchaseFormDefinition.PurchaseFormModel
 
 @Injectable()
 export class PurchaseFormContext {
 
-  private readonly originalPurchase = signal<Purchase | undefined>(undefined)
+  private readonly originalPurchase = signal<Purchase | null>(null)
+  readonly formIsVisible = signal(false)
 
-  private readonly purchaseFormValue = signal<PurchaseFormModel>({
-    generalFields: PurchaseGeneralFieldsFormDefinition.createDefaultPurchaseGeneralFieldsFormModel(),
-    purchaseLines: []
-  })
+  private readonly purchaseFormValue = signal(PurchaseFormDefinition.createDefaultPurchaseFormModel())
 
   readonly purchaseForm = form(this.purchaseFormValue, s => {
     apply(s.generalFields, PurchaseGeneralFieldsFormDefinition.purchaseGeneralFieldsFormSchema)
@@ -49,9 +46,20 @@ export class PurchaseFormContext {
 
   initializeForm(purchase: Purchase | null) {
     if (purchase) {
+      this.formIsVisible.set(true)
       this.originalPurchase.set(purchase)
-      this.purchaseFormValue.set(PurchaseFormDefinition.convertToFormModel(purchase))
+      this.purchaseForm().reset(PurchaseFormDefinition.convertToFormModel(purchase))
     }
+  }
+
+  startNewPurchase() {
+    this.formIsVisible.set(true)
+    this.originalPurchase.set(null)
+    this.purchaseForm().reset(PurchaseFormDefinition.createDefaultPurchaseFormModel())
+  }
+
+  hideForm() {
+    this.formIsVisible.set(false)
   }
 
   resetForm() {

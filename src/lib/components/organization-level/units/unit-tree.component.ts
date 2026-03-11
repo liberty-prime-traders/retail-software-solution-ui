@@ -64,8 +64,8 @@ export class UnitTreeComponent extends GridWithAddButtonComponent<UnitGroupServi
     this.selectedUnitGroup.set(this.selectedUnitGroupStash())
   }
 
-  override successfulSave() {
+  unitGroupCreated(saved: UnitGroup) {
     this.setAddingActiveFalse()
-    this.selectedUnitGroup.set(this.unitGroupService.lastSavedResponse())
+    this.selectedUnitGroup.set(saved)
   }
 }

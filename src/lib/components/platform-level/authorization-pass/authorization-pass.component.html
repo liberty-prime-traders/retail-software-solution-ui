@@ -6,7 +6,7 @@
               severity="info"
               class="align-self-end mr-7">
     </p-button>
-    <rts-authorization-pass-form (successfulSave)="successfulSave()"/>
+    <rts-authorization-pass-form (passCreated)="closeAddRow()"/>
 
   } @else {
     <p-table [loading]="loading() && !addingIsActive()"

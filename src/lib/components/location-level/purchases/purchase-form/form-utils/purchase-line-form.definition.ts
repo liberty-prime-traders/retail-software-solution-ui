@@ -16,6 +16,7 @@ export namespace PurchaseLineFormDefinition {
     quantityDelivered: number
     quantityYetToBeDelivered: number
     quantityCanceled: number
+    canceledWithoutSingleDelivery: boolean
   }
 
   export const convertLinesToFormModel = (lines: Partial<PurchaseLine>[]): PurchaseLineModel[] =>
@@ -32,7 +33,8 @@ export namespace PurchaseLineFormDefinition {
       quantityExpected: line.quantityExpected ?? 0,
       quantityDelivered: line.quantityDelivered ?? 0,
       quantityCanceled: line.quantityCanceled ?? 0,
-      quantityYetToBeDelivered: line.quantityYetToBeDelivered ?? 0
+      quantityYetToBeDelivered: line.quantityYetToBeDelivered ?? 0,
+      canceledWithoutSingleDelivery: (line.quantityYetToBeDelivered ?? 0) + (line.quantityDelivered ?? 0) === 0
     }))
 
   export const convertLinesToBackendModel = (lines: PurchaseLineModel[]): Partial<PurchaseLine>[] =>

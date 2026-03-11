@@ -9,7 +9,12 @@ export namespace PurchaseFormDefinition {
     purchaseLines: PurchaseLineFormDefinition.PurchaseLineModel[]
   }
 
-  export const convertToFormModel = (purchase: Purchase | undefined): PurchaseFormModel => ({
+  export const createDefaultPurchaseFormModel = (): PurchaseFormModel => ({
+    generalFields: PurchaseGeneralFieldsFormDefinition.createDefaultPurchaseGeneralFieldsFormModel(),
+    purchaseLines: []
+  })
+
+  export const convertToFormModel = (purchase: Purchase | null): PurchaseFormModel => ({
     generalFields: PurchaseGeneralFieldsFormDefinition.convertToFormModel(purchase),
     purchaseLines: PurchaseLineFormDefinition.convertLinesToFormModel(purchase?.lines ?? [])
   })
