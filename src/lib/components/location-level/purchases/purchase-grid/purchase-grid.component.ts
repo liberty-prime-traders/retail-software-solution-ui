@@ -1,5 +1,5 @@
 import {CurrencyPipe, DatePipe} from '@angular/common'
-import {Component, inject, output} from '@angular/core'
+import {Component, inject} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
@@ -8,6 +8,7 @@ import {PurchaseService} from '../../../../api/location-level/purchase/purchase.
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
+import {PurchaseFormContext} from '../purchase-form/form-utils/purchase-form-context'
 import {PurchaseStatusSeverityPipe} from '../purchase-status-severity.pipe'
 
 @Component({
@@ -27,9 +28,12 @@ import {PurchaseStatusSeverityPipe} from '../purchase-status-severity.pipe'
 })
 export class PurchaseGridComponent {
   private readonly purchaseService = inject(PurchaseService)
-
-  readonly editPurchase = output<Purchase>()
+  protected readonly context = inject(PurchaseFormContext)
 
   readonly purchases = this.purchaseService.selectAll
   readonly loading = this.purchaseService.selectLoading
+
+  onEditPurchase(purchase: Purchase) {
+    this.context.initializeForm(purchase)
+  }
 }

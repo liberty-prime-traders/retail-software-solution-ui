@@ -42,7 +42,9 @@ export class LocationProductFormComponent extends BaseFormComponent<LocationProd
     !isNil(this.originalLocationProduct()) && this.originalLocationProduct()?.status !== ProductStatus.ACTIVE
   )
 
-  readonly locationProductForm = form(this.locationProductFormValue, LocationProductFormDefinition.locationProductFormSchema)
+  readonly locationProductForm = form(
+    this.locationProductFormValue, LocationProductFormDefinition.locationProductFormSchema
+  )
   readonly locationProductFormFields = LocationProductFormDefinition.fieldMap
 
   resetForm() {
@@ -54,7 +56,6 @@ export class LocationProductFormComponent extends BaseFormComponent<LocationProd
     if (updatedLocationProduct.id) {
       this.locationProductService.put(updatedLocationProduct)
     }
-    this.savedAtLeastOnce.set(true)
   }
 
   deactivateProduct() {

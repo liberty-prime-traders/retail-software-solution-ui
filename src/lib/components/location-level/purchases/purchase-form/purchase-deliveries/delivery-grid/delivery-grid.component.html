@@ -1,6 +1,5 @@
 @if (showNewDeliveryForm()) {
-  <rts-purchase-delivery-form (saved)="showNewDeliveryForm.set(false)"
-                              (successfulSave)="showNewDeliveryForm.set(false)"
+  <rts-purchase-delivery-form (deliverySaved)="showNewDeliveryForm.set(false)"
                               (cancelled)="showNewDeliveryForm.set(false)">
   </rts-purchase-delivery-form>
 

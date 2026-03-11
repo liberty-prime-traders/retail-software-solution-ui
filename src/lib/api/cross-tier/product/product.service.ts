@@ -1,4 +1,5 @@
 import {Subscription} from 'rxjs'
+import {ApiCallbacks} from '../../util/base-api/api-callbacks'
 import {BaseService} from '../../util/base-api/base.service'
 import {PaginatedBaseStore} from '../../util/paginated-api/paginated-base.store'
 import {BaseProduct} from './base-product.model'
@@ -11,13 +12,13 @@ export abstract class ProductService<PRODUCT extends BaseProduct> extends BaseSe
     super(store)
   }
 
-  deactivateProduct(productId: string): Subscription {
+  deactivateProduct(productId: string, callbacks?: ApiCallbacks<PRODUCT>): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'deactivate'})
-    return this.putWithId(productId)
+    return this.putWithId(productId, callbacks)
   }
 
-  reactivateProduct(productId: string): Subscription {
+  reactivateProduct(productId: string, callbacks?: ApiCallbacks<PRODUCT>): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'reactivate'})
-    return this.putWithId(productId)
+    return this.putWithId(productId, callbacks)
   }
 }

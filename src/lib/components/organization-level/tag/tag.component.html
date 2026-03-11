@@ -30,7 +30,7 @@
   <div class="flex flex-column gap-4 flex-grow-1">
     @if (addingIsActive()) {
       <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info"/>
-      <rts-tag-form (successfulSave)="successfulSave()"/>
+      <rts-tag-form (tagCreated)="tagCreated($event)"/>
     } @else if (selectedCategory()) {
       <ng-container *ngTemplateOutlet="tagGrid"/>
     } @else {

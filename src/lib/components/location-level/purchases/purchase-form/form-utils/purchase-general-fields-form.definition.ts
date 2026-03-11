@@ -53,7 +53,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     disabled(path.orderedById, isReadOnly)
   })
 
-  export const convertToFormModel = (purchase: Purchase | undefined): PurchaseGeneralFieldsModel => ({
+  export const convertToFormModel = (purchase: Purchase | null): PurchaseGeneralFieldsModel => ({
     id: purchase?.id as string ?? '',
     referenceNumber: purchase?.referenceNumber ?? '',
     supplierId: purchase?.supplierId ?? '',

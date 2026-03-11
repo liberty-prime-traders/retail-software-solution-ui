@@ -57,7 +57,6 @@ export class PurchaseLinesComponent extends HasSubscriptionComponent implements 
   readonly isOrderedOrPartiallyDelivered = this.purchaseFormContext.isOrderedOrPartiallyDelivered
   readonly isDraftOrNew = this.purchaseFormContext.isDraftOrNew
   readonly editingRowKeys = this.purchaseFormContext.keysForLinesBeingEdited
-  readonly isEditingLines = this.purchaseFormContext.isEditingLines
   private readonly linesBeingEdited = new Map<EntityId, PurchaseLineModel>()
 
   readonly searchTerm$ = new BehaviorSubject('')
@@ -79,8 +78,10 @@ export class PurchaseLinesComponent extends HasSubscriptionComponent implements 
   )
 
   ngOnInit() {
-    this.productQuickSearchService.fetchProducts('')
-    this.refetchProducts$.subscribe()
+    if (this.isDraftOrNew()) {
+      this.productQuickSearchService.fetchProducts('')
+      this.refetchProducts$.subscribe()
+    }
   }
 
   initializeEditingLine(line: PurchaseLineModel) {
@@ -104,10 +105,13 @@ export class PurchaseLinesComponent extends HasSubscriptionComponent implements 
 
     } else {
       const quantityExpected = line.quantityOrdered - (line.quantityCanceled ?? 0)
+      const quantityYetToBeDelivered = quantityExpected - (line.quantityDelivered ?? 0)
+      const canceledWithoutSingleDelivery = quantityYetToBeDelivered + (line.quantityDelivered ?? 0) === 0
       const updated: PurchaseLineModel = {
         ...line,
         quantityExpected,
-        quantityYetToBeDelivered: quantityExpected - (line.quantityDelivered ?? 0),
+        quantityYetToBeDelivered,
+        canceledWithoutSingleDelivery,
         lineTotal: quantityExpected * line.unitCost
       }
       this.purchaseLinesFieldTree().value.update(lines =>
@@ -145,7 +149,8 @@ export class PurchaseLinesComponent extends HasSubscriptionComponent implements 
         quantityExpected: 1,
         quantityDelivered: 0,
         quantityYetToBeDelivered: 1,
-        quantityCanceled: 0
+        quantityCanceled: 0,
+        canceledWithoutSingleDelivery: false
       }
       this.purchaseLinesFieldTree().value.update(lines => [...lines, newLine])
       this.purchaseLinesFieldTree().markAsDirty()
@@ -159,7 +164,11 @@ export class PurchaseLinesComponent extends HasSubscriptionComponent implements 
       ({purchaseLineId: line.id, quantityCanceled: line.quantityCanceled})
     )
     if (payload.id && lines.length > 0) {
-      this.purchaseService.cancelLines(payload.id as EntityId, lines)
+      this.purchaseService.cancelLines(
+        payload.id as EntityId,
+        lines,
+        {onSuccess: (updatedPurchase) => {this.purchaseFormContext.initializeForm(updatedPurchase)}}
+      )
     }
   }
 }

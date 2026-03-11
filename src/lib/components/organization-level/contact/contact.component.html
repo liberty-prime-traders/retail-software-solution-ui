@@ -28,7 +28,7 @@
     <div class="flex flex-column gap-4 flex-grow-1">
       @if (addingIsActive()) {
         <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info"/>
-        <rts-contact-form (successfulSave)="successfulSave()"/>
+        <rts-contact-form (contactCreated)="contactCreated($event)"/>
       } @else if (selectedContactType()) {
         <ng-container *ngTemplateOutlet="contactGrid"/>
       } @else {
@@ -99,7 +99,7 @@
     <ng-template pTemplate="expandedrow" let-contact>
       <tr>
         <td colspan="7" class="filled-background">
-          <rts-contact-form [contact]="contact"></rts-contact-form>
+          <rts-contact-form [contact]="contact"/>
         </td>
       </tr>
     </ng-template>

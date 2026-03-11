@@ -42,6 +42,6 @@ export class SyncService extends BaseService<SyncLog, SyncRequest> {
       this.store.upsert({...currentLog, status: SyncStatus.CANCELLATION_REQUESTED})
     }
     this.patchApiRequestConfig({urlSuffix: 'cancel'})
-    return this.post(undefined, syncLogId)
+    return this.post(undefined, undefined, syncLogId)
   }
 }
