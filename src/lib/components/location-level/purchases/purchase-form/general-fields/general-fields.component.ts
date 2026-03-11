@@ -1,12 +1,12 @@
 import {CurrencyPipe, DatePipe, NgStyle} from '@angular/common'
-import {Component, inject, OnInit} from '@angular/core'
+import {Component, computed, inject, OnInit} from '@angular/core'
 import {FormField} from '@angular/forms/signals'
-import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {DatePicker} from 'primeng/datepicker'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
 import {Tag} from 'primeng/tag'
+import {PurchaseDeliveryService} from '../../../../../api/location-level/delivery/purchase-delivery.service'
 import {PurchaseService} from '../../../../../api/location-level/purchase/purchase.service'
 import {ContactService} from '../../../../../api/organization-level/contact/contact.service'
 import {
@@ -35,9 +35,7 @@ import {PurchaseGeneralFieldsFormDefinition} from '../form-utils/purchase-genera
     CurrencyPipe,
     DatePipe,
     NgStyle,
-    InputText,
-    Button
-
+    InputText
   ]
 })
 export class PurchaseFormGeneralFieldsComponent implements OnInit {
@@ -45,6 +43,7 @@ export class PurchaseFormGeneralFieldsComponent implements OnInit {
   private readonly contactService = inject(ContactService)
   private readonly organizationUserService = inject(OrganizationUserService)
   private readonly purchaseService = inject(PurchaseService)
+  private readonly purchaseDeliveryService = inject(PurchaseDeliveryService)
 
   readonly labelColumnSize = 3
 
@@ -54,8 +53,13 @@ export class PurchaseFormGeneralFieldsComponent implements OnInit {
   readonly suppliers = this.contactService.suppliers
   readonly users = this.organizationUserService.selectAll
   readonly isDraftOrNew = this.purchaseFormContext.isDraftOrNew
-  readonly isOrderedOrPartiallyDelivered = this.purchaseFormContext.isOrderedOrPartiallyDelivered
-  readonly apiErrors = this.purchaseService.selectFailureMessages
+
+  readonly apiErrors = computed(() => {
+    const errors = new Set<string>()
+    this.purchaseService.selectFailureMessages().forEach(msg => errors.add(msg))
+    this.purchaseDeliveryService.selectFailureMessages().forEach(msg => errors.add(msg))
+    return Array.from(errors)
+  })
 
   ngOnInit() {
     this.contactService.fetch()
@@ -64,9 +68,11 @@ export class PurchaseFormGeneralFieldsComponent implements OnInit {
 
 
   saveNotes() {
-    const payload = this.purchaseFormContext.getSavableFormValue()
-    if (payload.id) {
-      this.purchaseService.updateNotes(payload.id, payload.notes ?? '')
+    if(!this.isDraftOrNew()) {
+      const payload = this.purchaseFormContext.getSavableFormValue()
+      if (payload.id) {
+        this.purchaseService.updateNotes(payload.id, payload.notes ?? '')
+      }
     }
   }
 }

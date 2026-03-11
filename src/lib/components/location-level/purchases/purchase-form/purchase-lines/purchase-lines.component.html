@@ -16,51 +16,44 @@
 
   <p-table [value]="purchaseLinesArray()"
            [editingRowKeys]="editingRowKeys()"
-           dataKey="locationProductId"
-           sortField="productGroupName"
-           editMode="row"
-           size="small">
+           dataKey="referenceNumber"
+           [multiSortMeta]="linesMultiSort"
+           editMode="row">
     <ng-template pTemplate="header">
       <tr>
         <th>Product</th>
-        <th>Qty Ordered</th>
         <th>Unit Price</th>
+        <th>Units</th>
+        <th>Qty Ordered</th>
 
-        @if (isOrderedOrPartiallyDelivered()) {
-          <th>Qty Delivered</th>
+        @if (!isDraftOrNew()) {
           <th>Qty Canceled</th>
-          <th>Qty Expected</th>
+          <th>Qty Delivered</th>
         }
 
-        <th>Units</th>
         <th>Total</th>
         <th style="width: 100px"></th>
       </tr>
     </ng-template>
 
     <ng-template pTemplate="body" let-purchaseLine let-editing="editing">
-      <tr [pEditableRow]="purchaseLine" [ngClass]="{'opacity-70': purchaseLine.quantityExpected === 0}">
+      <tr [pEditableRow]="purchaseLine" [ngClass]="{'opacity-70': purchaseLine.quantityToBeDelivered === 0}">
         <td>{{ purchaseLine | productLabel }}</td>
 
-        @if (isOrderedOrPartiallyDelivered()) {
-          <td>{{ purchaseLine.quantityOrdered }}</td>
-          <td>{{ purchaseLine.unitCost }}</td>
-          <td>{{ purchaseLine.quantityDelivered }}</td>
-
+        @if (isDraftOrNew()) {
           <td>
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.quantityCanceled" />
+                <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.unitCost" />
               </ng-template>
               <ng-template pTemplate="output">
-                {{ purchaseLine.quantityCanceled }}
+                {{ purchaseLine.unitCost | currency  }}
               </ng-template>
             </p-cellEditor>
           </td>
 
-          <td>{{ purchaseLine.quantityExpected }}</td>
+          <td>{{ purchaseLine.baseUnit }}</td>
 
-        } @else {
           <td>
             <p-cellEditor>
               <ng-template pTemplate="input">
@@ -72,19 +65,27 @@
             </p-cellEditor>
           </td>
 
+        } @else {
+          <td>{{ purchaseLine.unitCost | currency }}</td>
+          <td>{{ purchaseLine.baseUnit }}</td>
+          <td>{{ purchaseLine.quantityOrdered }}</td>
+
           <td>
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.unitCost" />
+                <p-inputNumber [min]="0"
+                               [max]="purchaseLine.quantityOrdered"
+                               [(ngModel)]="purchaseLine.quantityCanceled">
+                </p-inputNumber>
               </ng-template>
               <ng-template pTemplate="output">
-                {{ purchaseLine.unitCost | currency  }}
+                {{ purchaseLine.quantityCanceled }}
               </ng-template>
             </p-cellEditor>
           </td>
-        }
 
-        <td>{{ purchaseLine.baseUnit }}</td>
+          <td>{{ purchaseLine.quantityDelivered }}</td>
+        }
 
         <td>{{ purchaseLine.lineTotal | currency }}</td>
 
@@ -107,7 +108,7 @@
                         (onClick)="cancelEditingLine(purchaseLine)">
               </p-button>
 
-            } @else {
+            } @else if(purchaseLine.quantityYetToBeDelivered > 0) {
               <p-button icon="pi pi-pencil"
                         text
                         rounded
@@ -121,16 +122,6 @@
       </tr>
     </ng-template>
   </p-table>
-
-  @if (isOrderedOrPartiallyDelivered()) {
-    <p-button label="Update Canceled Lines"
-              icon="pi pi-ban"
-              severity="warn"
-              class="align-self-end"
-              (click)="cancelLines()"
-              [disabled]="isEditingLines() || purchaseLinesFieldTree().invalid()">
-    </p-button>
-  }
 </div>
 
 

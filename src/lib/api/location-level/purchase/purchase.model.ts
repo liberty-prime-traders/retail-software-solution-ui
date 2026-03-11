@@ -1,5 +1,6 @@
 import {EntityId} from '@ngrx/signals/entities'
 import {BaseModel} from '../../util/base-api/base.model'
+import {PurchaseDelivery} from '../delivery/purchase-delivery.model'
 import {LocationProduct} from '../location-product/location-product.model'
 import {PurchaseStatus} from './purchase-status.enum'
 
@@ -15,6 +16,7 @@ export interface Purchase extends BaseModel {
   createdOn?: string
   orderTotal?: number
   lines: Partial<PurchaseLine>[]
+  deliveries?: PurchaseDelivery[]
 }
 
 export interface PurchaseLine extends BaseModel {
@@ -26,10 +28,11 @@ export interface PurchaseLine extends BaseModel {
   lineTotal: number
   quantityExpected?: number
   quantityDelivered?: number
+  quantityYetToBeDelivered?: number
   quantityCanceled?: number
 }
 
 export interface PurchaseLineCancelDto {
-  locationProductId: string
+  purchaseLineId: string
   quantityCanceled: number
 }

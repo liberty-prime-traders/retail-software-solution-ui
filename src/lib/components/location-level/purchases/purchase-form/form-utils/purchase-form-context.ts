@@ -1,10 +1,9 @@
 import {computed, effect, Injectable, signal, untracked} from '@angular/core'
-import {apply, applyEach, form} from '@angular/forms/signals'
+import {apply, form} from '@angular/forms/signals'
 import {PurchaseStatus} from '../../../../../api/location-level/purchase/purchase-status.enum'
 import {Purchase} from '../../../../../api/location-level/purchase/purchase.model'
 import {PurchaseFormDefinition} from './purchase-form.definition'
 import {PurchaseGeneralFieldsFormDefinition} from './purchase-general-fields-form.definition'
-import {PurchaseLineFormDefinition} from './purchase-line-form.definition'
 import PurchaseFormModel = PurchaseFormDefinition.PurchaseFormModel
 
 @Injectable()
@@ -19,11 +18,12 @@ export class PurchaseFormContext {
 
   readonly purchaseForm = form(this.purchaseFormValue, s => {
     apply(s.generalFields, PurchaseGeneralFieldsFormDefinition.purchaseGeneralFieldsFormSchema)
-    applyEach(s.purchaseLines, PurchaseLineFormDefinition.purchaseLinesSchema)
   })
 
   readonly purchaseLinesArray = computed(() => this.purchaseForm.purchaseLines().value())
   readonly status = computed(() => this.originalPurchase()?.status)
+  readonly purchaseId = computed(() => this.originalPurchase()?.id)
+  readonly deliveries = computed(() => this.originalPurchase()?.deliveries ?? [])
 
   readonly keysForLinesBeingEdited = signal<Record<string, boolean>>({})
   readonly isEditingLines = computed(() => Object.keys(this.keysForLinesBeingEdited()).length > 0)
@@ -42,10 +42,7 @@ export class PurchaseFormContext {
     const lines = this.purchaseForm.purchaseLines().value()
 
     untracked(() => {
-      const total = lines.reduce(
-        (sum, l) => sum + l.lineTotal,
-        0
-      )
+      const total = lines.reduce((sum, l) => sum + l.lineTotal, 0)
       this.purchaseForm.generalFields.orderTotal().value.set(total)
     })
   })

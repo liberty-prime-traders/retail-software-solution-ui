@@ -26,8 +26,8 @@
                 class="flex-grow-1"
                 [filter]="true"
                 [options]="users()"
-                optionLabel="firstName"
-                optionValue="id"
+                optionLabel="user"
+                optionValue="userId"
                 [formField]="generalFieldsForm.orderedById"
                 placeholder="Who placed the order?">
       </p-select>
@@ -40,16 +40,9 @@
                   class="flex-grow-1"
                   [formField]="generalFieldsForm.notes"
                   rows="4"
+                  (blur)="saveNotes()"
                   placeholder="Notes">
         </textarea>
-
-        @if (isOrderedOrPartiallyDelivered()) {
-          <p-button size="small"
-                    icon="pi pi-check"
-                    [disabled]="!generalFieldsForm.notes().dirty()"
-                    (click)="saveNotes()">
-          </p-button>
-        }
       </div>
 
     </rts-form-field>

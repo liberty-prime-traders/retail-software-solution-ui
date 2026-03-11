@@ -1,14 +1,14 @@
 import {Component, computed, inject, input, Input, OnInit} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {EntityId} from '@ngrx/signals/entities'
 import {Button} from 'primeng/button'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
-import {Purchase, PurchaseLineCancelDto} from '../../../../api/location-level/purchase/purchase.model'
+import {Purchase} from '../../../../api/location-level/purchase/purchase.model'
 import {PurchaseService} from '../../../../api/location-level/purchase/purchase.service'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {PurchaseFormContext} from './form-utils/purchase-form-context'
 import {PurchaseFormGeneralFieldsComponent} from './general-fields/general-fields.component'
+import {DeliveryGridComponent} from './purchase-deliveries/delivery-grid/delivery-grid.component'
 import {PurchaseLinesComponent} from './purchase-lines/purchase-lines.component'
 
 @Component({
@@ -24,6 +24,7 @@ import {PurchaseLinesComponent} from './purchase-lines/purchase-lines.component'
     TabPanels,
     TabPanel,
     PurchaseLinesComponent,
+    DeliveryGridComponent,
     AutoStretchDirective,
     Button,
     LoadingContainerComponent,
@@ -72,16 +73,6 @@ export class PurchaseFormComponent implements OnInit {
       this.purchaseService.convertDraftToOrder(payload)
     } else {
       this.purchaseService.createOrder(payload)
-    }
-  }
-
-  cancelLines() {
-    const payload = this.purchaseFormContext.getSavableFormValue()
-    const lines: PurchaseLineCancelDto[] = this.purchaseFormContext.purchaseLinesArray().map(line =>
-      ({locationProductId: line.locationProductId, quantityCanceled: line.quantityCanceled})
-    )
-    if (payload.id && lines.length > 0) {
-      this.purchaseService.cancelLines(payload.id as EntityId, lines)
     }
   }
 }
