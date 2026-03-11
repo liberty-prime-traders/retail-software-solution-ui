@@ -123,7 +123,9 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
 
   pushToPaginatedEntities(newEntities: RESPONSE[]) {
     const entities = this.paginatedEntities
-    const updatedEntities = [...newEntities, ...entities]
+    const entitiesMap = new Map(entities.map(entity => [entity.id, entity]))
+    newEntities.forEach(newEntity => entitiesMap.set(newEntity.id, newEntity))
+    const updatedEntities = Array.from(entitiesMap.values())
     entities.splice(0, entities.length, ...updatedEntities)
     this.paginatedEntitiesVersion.update(v => v + 1)
   }

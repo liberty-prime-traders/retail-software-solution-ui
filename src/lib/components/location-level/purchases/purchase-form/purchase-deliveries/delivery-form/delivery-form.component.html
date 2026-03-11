@@ -1,0 +1,70 @@
+<rts-loading-container [loading]="isLoading()" loadingText="Saving...">
+  <div class="flex flex-column gap-4">
+
+    <div class="flex justify-content-between align-items-center">
+      <span class="text-lg font-semibold">Record New Delivery</span>
+    </div>
+
+    <div class="flex gap-4">
+      <rts-form-field label="Delivered At" contentClass="col-8" class="col-4" [layout]="FormFieldDirection.VERTICAL">
+        <p-date-picker [formField]="deliveryForm.deliveredAt" [showTime]="true" [showIcon]="true"/>
+      </rts-form-field>
+
+      <rts-form-field label="Notes" class="col-6" contentClass="col-8" [layout]="FormFieldDirection.VERTICAL">
+        <div class="flex">
+          <textarea pInputText
+                    rows="3"
+                    class="flex-grow-1"
+                    [formField]="deliveryForm.notes"
+                    placeholder="Delivery notes">
+          </textarea>
+        </div>
+      </rts-form-field>
+    </div>
+
+    <p-table [value]="deliveryLinesArray()" size="small">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Product</th>
+          <th>Qty Expected</th>
+          <th>Qty Delivered</th>
+          <th>Unit Cost</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-line>
+        <tr>
+          <td>{{ line | productLabel }}</td>
+          <td>{{ line.quantityYetToBeDelivered }}</td>
+          <td>
+            <p-inputNumber [min]="0"
+                           [max]="line.quantityYetToBeDelivered"
+                           [(ngModel)]="line.quantityDelivered">
+            </p-inputNumber>
+          </td>
+          <td>
+            <p-inputNumber [min]="0"
+                           mode="currency"
+                           currency="USD"
+                           [(ngModel)]="line.unitCost">
+            </p-inputNumber>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <div class="flex justify-content-end gap-2">
+      <p-button label="Cancel"
+                icon="pi pi-times"
+                severity="secondary"
+                (click)="cancel()">
+      </p-button>
+      <p-button label="Save Delivery"
+                icon="pi pi-check"
+                (click)="save()"
+                [disabled]="deliveryLinesArray().length === 0 || deliveryForm().invalid()">
+      </p-button>
+    </div>
+
+  </div>
+</rts-loading-container>

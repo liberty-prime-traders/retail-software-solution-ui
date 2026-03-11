@@ -1,0 +1,68 @@
+import {Component, computed, inject, output, signal} from '@angular/core'
+import {FormsModule} from '@angular/forms'
+import {form, FormField, required} from '@angular/forms/signals'
+import {Button} from 'primeng/button'
+import {DatePicker} from 'primeng/datepicker'
+import {InputNumber} from 'primeng/inputnumber'
+import {InputText} from 'primeng/inputtext'
+import {TableModule} from 'primeng/table'
+import {PurchaseDeliveryService} from '../../../../../../api/location-level/delivery/purchase-delivery.service'
+import {ProductLabelPipe} from '../../../../../../utils/pipes/product-label.pipe'
+import {BaseFormComponent} from '../../../../../reusable/base-form.component'
+import {FormFieldDirection} from '../../../../../reusable/form-field/form-field-direction'
+import {FormFieldComponent} from '../../../../../reusable/form-field/form-field.component'
+import {LoadingContainerComponent} from '../../../../../reusable/loading-container/loading-container.component'
+import {PurchaseDeliveryFormDefinition} from '../../form-utils/purchase-delivery-form.definition'
+import {PurchaseFormContext} from '../../form-utils/purchase-form-context'
+
+@Component({
+  selector: 'rts-purchase-delivery-form',
+  templateUrl: 'delivery-form.component.html',
+  imports: [
+    TableModule,
+    Button,
+    FormFieldComponent,
+    DatePicker,
+    FormField,
+    InputText,
+    FormsModule,
+    InputNumber,
+    LoadingContainerComponent,
+    ProductLabelPipe
+  ]
+})
+export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliveryService>{
+
+  private readonly purchaseFormContext = inject(PurchaseFormContext)
+  private readonly deliveryService = inject(PurchaseDeliveryService)
+  protected readonly apiService = this.deliveryService
+
+  readonly saved = output()
+  readonly cancelled = output()
+
+  readonly FormFieldDirection = FormFieldDirection
+
+  private readonly deliveryFormValue = signal<PurchaseDeliveryFormDefinition.DeliveryFormModel>(
+    PurchaseDeliveryFormDefinition.createDefault(
+      this.purchaseFormContext.purchaseLinesArray().filter(line => line.quantityExpected > 0)
+    )
+  )
+
+  readonly deliveryForm = form(this.deliveryFormValue, s => {
+    required(s.deliveredAt)
+  })
+
+  readonly deliveryLinesArray = computed(() => this.deliveryForm.lines().value())
+  readonly isLoading = this.deliveryService.selectLoading
+
+  cancel() {
+    this.cancelled.emit()
+  }
+
+  save() {
+    const purchaseId = this.purchaseFormContext.purchaseId() ?? ''
+    const dto = PurchaseDeliveryFormDefinition.toBackendModel(purchaseId, this.deliveryFormValue())
+    this.deliveryService.post(dto)
+    this.savedAtLeastOnce.set(true)
+  }
+}

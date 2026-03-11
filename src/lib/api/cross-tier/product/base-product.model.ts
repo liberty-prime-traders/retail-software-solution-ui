@@ -12,4 +12,5 @@ export interface BaseProduct extends PaginatedModel {
   baseUnitId?: string
   categoryId?: string
   productGroupId?: string
+  stockBalance?: number
 }

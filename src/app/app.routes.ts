@@ -12,7 +12,7 @@ import {SelectLocationComponent} from '../lib/components/platform-level/select-l
 import {PublicComponent} from '../lib/components/public/public.component'
 import {CanViewLocation} from './route-guards/can-view-location'
 import {CanViewOrganization} from './route-guards/can-view-organization'
-import {CanViewPlatformOrganization} from './route-guards/can-view-platform-organization.guard'
+import {CanViewPlatformOrganization} from './route-guards/can-view-platform.guard'
 import {locationRoutes} from './routes/location-level.routes'
 import {orgManagementRoutes} from './routes/org-level.routes'
 import {platformManagementRoutes} from './routes/platform-level.routes'

@@ -19,6 +19,8 @@ export class RtsOktaService {
     map((s: AuthState) => s.isAuthenticated ?? false)
   )
 
+  readonly $isLoggedIn = toSignal(this.loggedIn$, {initialValue: false})
+
   async signIn() : Promise<void> {
     await this.oktaAuth.signInWithRedirect().then(() => this.router.navigate(['']))
   }

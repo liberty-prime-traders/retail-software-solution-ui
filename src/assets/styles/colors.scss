@@ -1,5 +1,7 @@
+@use "sass:color";
+
 $red: rgb(204, 0, 0);
 $link: rgb(76, 143, 189);
 $successful: rgb(106, 187, 61);
 $globalBackground: rgb(47,79,79, 10%);
-$expandedRowBackground: rgb(47,79,79, 30%)
+$expandedRowBackground: color.adjust($globalBackground, $alpha: 0.3);

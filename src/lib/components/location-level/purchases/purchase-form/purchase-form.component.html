@@ -6,22 +6,28 @@
     <p-tabs value="items">
       <p-tablist>
         <p-tab value="items">Items</p-tab>
+
         @if (!isDraftOrNew()) {
           <p-tab value="deliveries">Deliveries</p-tab>
           <p-tab value="payments">Payments</p-tab>
-          <p-tab value="payments">Returns</p-tab>
+          <p-tab value="returns">Returns</p-tab>
         }
-
       </p-tablist>
 
       <p-tabpanels>
         <p-tabpanel value="items">
           <rts-purchase-lines/>
         </p-tabpanel>
+
+        @if (!isDraftOrNew()) {
+          <p-tabpanel value="deliveries">
+            <rts-purchase-deliveries/>
+          </p-tabpanel>
+        }
       </p-tabpanels>
     </p-tabs>
 
-    <div style="height: 400px"></div>
+    <div style="height: 100px"></div>
   </form>
 
   @if (isDraftOrNew()) {

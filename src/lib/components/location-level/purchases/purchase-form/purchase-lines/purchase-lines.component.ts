@@ -3,6 +3,7 @@ import {Component, inject, OnInit} from '@angular/core'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {FormsModule} from '@angular/forms'
 import {EntityId} from '@ngrx/signals/entities'
+import {SortMeta} from 'primeng/api'
 import {AutoCompleteModule} from 'primeng/autocomplete'
 import {Button} from 'primeng/button'
 import {InputNumber} from 'primeng/inputnumber'
@@ -61,6 +62,12 @@ export class PurchaseLinesComponent extends HasSubscriptionComponent implements 
 
   readonly searchTerm$ = new BehaviorSubject('')
 
+  readonly linesMultiSort: SortMeta[] = [
+    {field: 'productGroupName', order: 1},
+    {field: 'productName', order: 2},
+    {field: 'referenceNumber', order: 3}
+  ]
+
   private readonly refetchProducts$ = this.searchTerm$.pipe(
     filter(Boolean),
     debounceTime(500),
@@ -77,68 +84,79 @@ export class PurchaseLinesComponent extends HasSubscriptionComponent implements 
   }
 
   initializeEditingLine(line: PurchaseLineModel) {
-    this.editingRowKeys.update(keys => ({...keys, [line.locationProductId]: true}))
-    this.linesBeingEdited.set(line.locationProductId, {...line})
+    this.editingRowKeys.update(keys => ({...keys, [line.referenceNumber]: true}))
+    this.linesBeingEdited.set(line.referenceNumber, {...line})
   }
 
   cancelEditingLine(line: PurchaseLineModel) {
-    const original = this.linesBeingEdited.get(line.locationProductId)
+    const original = this.linesBeingEdited.get(line.referenceNumber)
     if (original) {
       this.purchaseLinesFieldTree().value.update(lines =>
-        lines.map(l => l.locationProductId === line.locationProductId ? original : l)
+        lines.map(l => l.referenceNumber === line.referenceNumber ? original : l)
       )
     }
     this.removeLineFromEditing(line)
   }
 
   completeEditingLine(line: PurchaseLineModel) {
-    const quantityExpected = line.quantityOrdered - (line.quantityCanceled ?? 0)
-    const updated: PurchaseLineModel = {...line, quantityExpected, lineTotal: quantityExpected * line.unitCost}
-    this.purchaseLinesFieldTree().value.update(lines =>
-      lines.map(l => l.locationProductId === line.locationProductId ? updated : l)
-    )
-    this.purchaseLinesFieldTree().markAsDirty()
-    this.removeLineFromEditing(line)
+    if(this.isOrderedOrPartiallyDelivered()) {
+      this.cancelLines()
+
+    } else {
+      const quantityExpected = line.quantityOrdered - (line.quantityCanceled ?? 0)
+      const updated: PurchaseLineModel = {
+        ...line,
+        quantityExpected,
+        quantityYetToBeDelivered: quantityExpected - (line.quantityDelivered ?? 0),
+        lineTotal: quantityExpected * line.unitCost
+      }
+      this.purchaseLinesFieldTree().value.update(lines =>
+        lines.map(l => l.referenceNumber === line.referenceNumber ? updated : l)
+      )
+      this.purchaseLinesFieldTree().markAsDirty()
+      this.removeLineFromEditing(line)
+    }
   }
 
   private removeLineFromEditing(line: PurchaseLineModel) {
     this.editingRowKeys.update(keys => {
-      const {[line.locationProductId]: _, ...rest} = keys
+      const {[line.referenceNumber]: _, ...rest} = keys
       return rest
     })
-    this.linesBeingEdited.delete(line.locationProductId)
+    this.linesBeingEdited.delete(line.referenceNumber)
   }
 
   addPurchaseLine(selectedProduct: EntityId) {
     if (!selectedProduct) return
 
     const product = this.productsMap().get(selectedProduct)
-    const productAlreadyAdded = this.purchaseLinesArray().some(line => line.locationProductId === selectedProduct)
+    const productAlreadyAdded = this.purchaseLinesArray().some(line => line.referenceNumber === product?.referenceNumber)
     if (product && !productAlreadyAdded) {
       const newLine: PurchaseLineModel = {
         id: '',
         referenceNumber: product.referenceNumber ?? '',
         locationProductId: product.id as string,
         quantityOrdered: 1,
-        unitCost: 0,
+        unitCost: product.lastPurchasePrice ?? 0,
         productGroupName: product.productGroupName ?? '',
         productName: product.productName ?? '',
         baseUnit: product.baseUnit ?? '',
         lineTotal: 0,
         quantityExpected: 1,
         quantityDelivered: 0,
+        quantityYetToBeDelivered: 1,
         quantityCanceled: 0
       }
       this.purchaseLinesFieldTree().value.update(lines => [...lines, newLine])
       this.purchaseLinesFieldTree().markAsDirty()
-      this.editingRowKeys.update(keys => ({...keys, [newLine.locationProductId]: true}))
+      this.editingRowKeys.update(keys => ({...keys, [newLine.referenceNumber]: true}))
     }
   }
 
   cancelLines() {
     const payload = this.purchaseFormContext.getSavableFormValue()
     const lines: PurchaseLineCancelDto[] = this.purchaseFormContext.purchaseLinesArray().map(line =>
-      ({locationProductId: line.locationProductId, quantityCanceled: line.quantityCanceled})
+      ({purchaseLineId: line.id, quantityCanceled: line.quantityCanceled})
     )
     if (payload.id && lines.length > 0) {
       this.purchaseService.cancelLines(payload.id as EntityId, lines)

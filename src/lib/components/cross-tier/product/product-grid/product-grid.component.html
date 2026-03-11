@@ -18,6 +18,7 @@
         <th>Product Name</th>
         <th>Product Group</th>
         <th>Base Unit</th>
+        <th>Stock Balance</th>
 
         @if (isLocationLevel()) {
           <th>Last Purchase Price</th>
@@ -50,6 +51,7 @@
           <td>{{ product?.productName | nullSafe }}</td>
           <td>{{ product?.productGroupName | nullSafe }}</td>
           <td>{{ product?.baseUnit | nullSafe }}</td>
+          <td>{{ product?.stockBalance | nullishToZero }}</td>
 
           @if (isLocationLevel()) {
             <td>{{ product?.lastPurchasePrice | nullishToZero | currency }}</td>
