@@ -1,0 +1,21 @@
+<form class="flex flex-column gap-2" [ngClass]="{'filled-background': isCreatingNewJurisdictionType()}">
+  <rts-form-field [required]="true" label="Name" for="name">
+    <input id="name" class="flex-grow-1" pInputText [formField]="jurisdictionTypeForm.name"/>
+  </rts-form-field>
+
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText [formField]="jurisdictionTypeForm.description"/>
+  </rts-form-field>
+
+  <rts-forms-buttons [disableReset]="!jurisdictionTypeForm().dirty()"
+                     [disableSave]="jurisdictionTypeForm().invalid() || !jurisdictionTypeForm().dirty()"
+                     [hideDelete]="!originalJurisdictionType()?.id"
+                     [signalForm]="jurisdictionTypeForm()"
+                     [fieldMap]="jurisdictionTypeFormFields"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (delete)="deleteJurisdictionType()"
+                     (save)="upsertJurisdictionType()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</form>

@@ -1,0 +1,32 @@
+<form class="flex flex-column gap-2" [ngClass]="{'filled-background': isCreatingNewTaxType()}">
+  <rts-form-field [required]="true" label="Name" for="name">
+    <input id="name" class="flex-grow-1" pInputText [formField]="taxTypeForm.name"/>
+  </rts-form-field>
+
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText [formField]="taxTypeForm.description"/>
+  </rts-form-field>
+
+  @if (isCreatingNewTaxType()) {
+    <rts-form-field [required]="true" label="Calculation Method" for="calculationMethod">
+      <p-select id="calculationMethod"
+                class="flex-grow-1"
+                [options]="CalculationMethod | enumToDropdown"
+                [formField]="taxTypeForm.calculationMethod"
+                placeholder="Select a Calculation Method">
+      </p-select>
+    </rts-form-field>
+  }
+
+  <rts-forms-buttons [disableReset]="!taxTypeForm().dirty()"
+                     [disableSave]="taxTypeForm().invalid() || !taxTypeForm().dirty()"
+                     [hideDelete]="!originalTaxType()?.id"
+                     [signalForm]="taxTypeForm()"
+                     [fieldMap]="taxTypeFormFields"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (delete)="deleteTaxType()"
+                     (save)="upsertTaxType()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</form>

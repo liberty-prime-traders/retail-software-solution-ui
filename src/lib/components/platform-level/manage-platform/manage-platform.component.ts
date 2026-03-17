@@ -20,6 +20,11 @@ export class ManagePlatformComponent {
     {label: 'Passes', icon: 'pi pi-id-card', routerLink: 'authorization-passes'},
   ]
 
+  private readonly legalMenuItems: MenuItem[] = [
+    {label: 'Jurisdiction Types', icon: 'pi pi-map', routerLink: 'jurisdiction-types'},
+    {label: 'Tax Types', icon: 'pi pi-percentage', routerLink: 'tax-types'},
+  ]
+
   private readonly databaseConfigs: MenuItem[] = [
     {label: 'DB Versions', icon: 'pi pi-database', routerLink: 'db-versions'},
     {label: 'DB Migrations', icon: 'pi pi-sync', routerLink: 'db-migrations'},
@@ -28,6 +33,7 @@ export class ManagePlatformComponent {
 
   readonly menuItems: MenuItem[] = [
     {label: 'Home', items: this.homeMenuItems},
+    {label: 'Legal', items: this.legalMenuItems},
     {label: 'DB Config', items: this.databaseConfigs}
   ]
 }
