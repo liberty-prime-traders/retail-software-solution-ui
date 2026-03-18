@@ -6,6 +6,7 @@ import {TableModule} from 'primeng/table'
 import {TableRegistryService} from '../../../api/platform-level/table-registry/table-registry.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
+import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {ExpandableGridComponent} from '../../reusable/expandable-grid.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
@@ -23,7 +24,8 @@ import {TableRegistryFormComponent} from './table-registry-form/table-registry-f
     GridFilterComponent,
     TableRegistryFormComponent,
     Card,
-    NgClass
+    NgClass,
+    AutoStretchDirective
   ]
 })
 export class TableRegistryComponent extends ExpandableGridComponent<TableRegistryService> {

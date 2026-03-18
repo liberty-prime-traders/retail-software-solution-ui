@@ -3,10 +3,6 @@
     <input id="name" class="flex-grow-1" pInputText [formField]="taxTypeForm.name"/>
   </rts-form-field>
 
-  <rts-form-field label="Description" for="description">
-    <input id="description" pInputText [formField]="taxTypeForm.description"/>
-  </rts-form-field>
-
   @if (isCreatingNewTaxType()) {
     <rts-form-field [required]="true" label="Calculation Method" for="calculationMethod">
       <p-select id="calculationMethod"
@@ -17,6 +13,10 @@
       </p-select>
     </rts-form-field>
   }
+
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText [formField]="taxTypeForm.description"/>
+  </rts-form-field>
 
   <rts-forms-buttons [disableReset]="!taxTypeForm().dirty()"
                      [disableSave]="taxTypeForm().invalid() || !taxTypeForm().dirty()"

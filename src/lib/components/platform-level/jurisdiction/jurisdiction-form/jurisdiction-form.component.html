@@ -1,0 +1,59 @@
+<rts-loading-container [loading]="dependenciesLoading()">
+  <div class="flex flex-column gap-2 form-container" [ngClass]="{'filled-background': isCreatingNewJurisdiction()}">
+    <rts-form-field [required]="true" label="Name" for="name">
+      <input id="name" class="flex-grow-1" pInputText [formField]="jurisdictionForm.name"/>
+    </rts-form-field>
+
+    <rts-form-field [required]="true" label="Jurisdiction Type" for="jurisdictionTypeId">
+      <p-select id="jurisdictionTypeId"
+                class="flex-grow-1"
+                [options]="jurisdictionTypes()"
+                optionValue="id"
+                optionLabel="name"
+                [formField]="jurisdictionForm.jurisdictionTypeId"
+                placeholder="Select a Jurisdiction Type">
+      </p-select>
+    </rts-form-field>
+
+    <rts-form-field label="Parent Jurisdiction" for="parentJurisdictionId">
+      <p-select id="parentJurisdictionId"
+                class="flex-grow-1"
+                [options]="parentJurisdictionOptions()"
+                optionValue="id"
+                optionLabel="name"
+                [formField]="jurisdictionForm.parentJurisdictionId"
+                [showClear]="true"
+                placeholder="Select a Parent Jurisdiction">
+      </p-select>
+    </rts-form-field>
+
+    <rts-form-field label="Supported Taxes" labelClass="align-self-start">
+      <div class="flex flex-column gap-2">
+        @for (taxType of taxTypes(); track taxType.id) {
+          <div class="flex gap-2">
+            <p-check-box [id]="taxType.id"
+                         [value]="taxType.id"
+                         (onChange)="onTaxTypeChecked()"
+                         [(ngModel)]="selectedTaxTypes">
+            </p-check-box>
+            <label [for]="taxType.id">{{ taxType.name }}</label>
+          </div>
+        }
+      </div>
+
+    </rts-form-field>
+
+    <rts-forms-buttons [disableReset]="!jurisdictionForm().dirty()"
+                       [disableSave]="jurisdictionForm().invalid() || !jurisdictionForm().dirty()"
+                       [hideDelete]="!originalJurisdiction()?.id"
+                       [signalForm]="jurisdictionForm()"
+                       [fieldMap]="jurisdictionFormFields"
+                       [processingStatus]="processingStatus()"
+                       [failureMessages]="failureMessages()"
+                       (delete)="deleteJurisdiction()"
+                       (save)="upsertJurisdiction()"
+                       (resetAction)="resetForm()">
+    </rts-forms-buttons>
+  </div>
+</rts-loading-container>
+

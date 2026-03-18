@@ -36,7 +36,11 @@ export class OrganizationDashboardComponent {
     {label: 'Job Titles', icon: 'pi pi-gauge', routerLink: 'job-title'},
     {label: 'Units', icon: 'pi pi-percentage', routerLink: 'units'},
     {label: 'Payment Options', icon: 'pi pi-dollar', routerLink: 'payment-options'},
-    {label: 'Tags', icon: 'pi pi-tags', routerLink: 'tags'}
+    {label: 'Tags', icon: 'pi pi-tags', routerLink: 'tags'},
+  ]
+
+  private readonly legalSettingsMenuItems: MenuItem[] = [
+    {label: 'Tax Types', icon: 'pi pi-receipt', routerLink: 'tax-types'}
   ]
 
   private readonly productSettingsMenuItems: MenuItem[] = [
@@ -49,6 +53,7 @@ export class OrganizationDashboardComponent {
     {label: 'Home', items: this.organizationHomeMenuItems},
     {label: 'Products', items: this.productSettingsMenuItems},
     {label: 'Business Settings', items: this.businessSettingsMenuItems},
+    {label: 'Legal Settings', items: this.legalSettingsMenuItems},
     {
       label: 'Admin Settings',
       items: this.orgAdminSettings,

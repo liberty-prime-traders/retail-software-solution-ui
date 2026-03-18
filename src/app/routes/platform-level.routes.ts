@@ -11,6 +11,9 @@ import {
 } from '../../lib/components/platform-level/db-migration/run-migration/run-migration.component'
 import {DbVersionComponent} from '../../lib/components/platform-level/db-version/db-version.component'
 import {
+  JurisdictionComponent
+} from '../../lib/components/platform-level/jurisdiction/jurisdiction.component'
+import {
   JurisdictionTypeComponent
 } from '../../lib/components/platform-level/jurisdiction-type/jurisdiction-type.component'
 import {OrganizationComponent} from '../../lib/components/platform-level/organization/organization.component'
@@ -29,6 +32,7 @@ export const platformManagementRoutes: Routes = [
   {path: 'table-registry', component: TableRegistryComponent},
   {path: 'authorization-passes', component: AuthorizationPassComponent},
   {path: 'jurisdiction-types', component: JurisdictionTypeComponent},
+  {path: 'jurisdictions', component: JurisdictionComponent},
   {path: 'tax-types', component: TaxTypeComponent},
   {
     path: 'db-migrations',

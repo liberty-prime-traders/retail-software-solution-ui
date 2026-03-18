@@ -19,13 +19,14 @@ export class FormFieldComponent {
   readonly labelColumnSize = input(2)
   readonly contentClass = input('col-5')
   readonly containerClass = input('')
+  readonly labelClass = input('')
 
   readonly formFieldDirection = FormFieldDirection
 
-  readonly labelClass = computed(() => {
+  readonly effectiveLabelClass = computed(() => {
     const widthClass = this.layout() === FormFieldDirection.HORIZONTAL ? `col-${this.labelColumnSize()}` : ''
     const requiredClass = this.required() ? 'required-label' : ''
-    return `${widthClass} ${requiredClass}`
+    return `${this.labelClass()} ${widthClass} ${requiredClass}`
   })
 
   readonly rightPadding = computed(() => {

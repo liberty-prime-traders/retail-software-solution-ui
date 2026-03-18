@@ -23,6 +23,7 @@ export class ManagePlatformComponent {
   private readonly legalMenuItems: MenuItem[] = [
     {label: 'Jurisdiction Types', icon: 'pi pi-map', routerLink: 'jurisdiction-types'},
     {label: 'Tax Types', icon: 'pi pi-percentage', routerLink: 'tax-types'},
+    {label: 'Jurisdictions', icon: 'pi pi-hammer', routerLink: 'jurisdictions'},
   ]
 
   private readonly databaseConfigs: MenuItem[] = [

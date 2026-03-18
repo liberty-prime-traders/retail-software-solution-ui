@@ -1,85 +1,87 @@
 <p-card>
-  <p-table [loading]="loading()"
-           rowExpandMode="single"
-           dataKey="id"
-           scrollHeight="flex"
-           scrollable="true"
-           sortField="displayName"
-           #registryTable
-           [globalFilterFields]="['displayName','tableName','schemaLevel','defaultPrefix','description']"
-           (onRowExpand)="rowIsExpanded.set(true)"
-           (onRowCollapse)="rowIsExpanded.set(false)"
-           [value]="registries()">
+  <div id="tableRegistry" rtsAutoStretch="tableRegistry">
+    <p-table [loading]="loading()"
+             rowExpandMode="single"
+             dataKey="id"
+             scrollHeight="flex"
+             [scrollable]="true"
+             sortField="displayName"
+             #registryTable
+             [globalFilterFields]="['displayName','tableName','schemaLevel','defaultPrefix','description']"
+             (onRowExpand)="rowIsExpanded.set(true)"
+             (onRowCollapse)="rowIsExpanded.set(false)"
+             [value]="registries()">
 
-    <ng-template pTemplate="caption">
-      <div class="flex justify-content-between align-items-center">
-        <h3>Table Registry</h3>
-        <rts-grid-filter [dataTable]="registryTable"/>
-      </div>
-    </ng-template>
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between align-items-center">
+          <h3>Table Registry</h3>
+          <rts-grid-filter [dataTable]="registryTable"/>
+        </div>
+      </ng-template>
 
-    <ng-template pTemplate="header">
-      <tr>
-        <th pSortableColumn="displayName">Display Name
-          <p-sortIcon field="displayName"></p-sortIcon>
-        </th>
-        <th>Table Name</th>
-        <th pSortableColumn="schemaLevel">Schema Level
-          <p-sortIcon field="schemaLevel"></p-sortIcon>
-        </th>
-        <th pSortableColumn="defaultPrefix">Default Prefix
-          <p-sortIcon field="defaultPrefix"></p-sortIcon>
-        </th>
-        <th>User Facing</th>
-        <th pSortableColumn="minimumVersion">Minimum Version
-          <p-sortIcon field="minimumVersion"></p-sortIcon>
-        </th>
-        <th>Validated</th>
-        <th style="width: 5rem"></th>
-      </tr>
-    </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="displayName">Display Name
+            <p-sortIcon field="displayName"></p-sortIcon>
+          </th>
+          <th>Table Name</th>
+          <th pSortableColumn="schemaLevel">Schema Level
+            <p-sortIcon field="schemaLevel"></p-sortIcon>
+          </th>
+          <th pSortableColumn="defaultPrefix">Default Prefix
+            <p-sortIcon field="defaultPrefix"></p-sortIcon>
+          </th>
+          <th>User Facing</th>
+          <th pSortableColumn="minimumVersion">Minimum Version
+            <p-sortIcon field="minimumVersion"></p-sortIcon>
+          </th>
+          <th>Validated</th>
+          <th style="width: 5rem"></th>
+        </tr>
+      </ng-template>
 
-    <ng-template pTemplate="body" let-registry let-expanded="expanded">
-      <tr [ngClass]="{ 'expanded-row': expanded }">
-        <td>{{ registry?.displayName | nullSafe }}</td>
-        <td>{{ registry?.tableName | nullSafe }}</td>
-        <td>{{ registry?.schemaLevel | prettifyEnum }}</td>
-        <td>{{ registry?.defaultPrefix | nullSafe }}</td>
-        <td>{{ registry?.userFacing ? 'Yes' : 'No' }}</td>
-        <td>{{ registry?.minimumVersion | nullSafe }}</td>
-        <td>{{ registry?.validated ? 'Yes' : 'No' }}</td>
-        <td>
-          @if (registry?.validated) {
-            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                      rounded
-                      severity="secondary"
-                      [disabled]="loading()"
-                      [pRowToggler]="registry">
-            </p-button>
-          } @else {
-            <p-button label="Validate"
-                      icon="pi pi-check"
-                      rounded
-                      severity="info"
-                      [disabled]="loading()"
-                      (onClick)="validateTable(registry?.id)">
-            </p-button>
-          }
-        </td>
-      </tr>
-    </ng-template>
+      <ng-template pTemplate="body" let-registry let-expanded="expanded">
+        <tr [ngClass]="{ 'expanded-row': expanded }">
+          <td>{{ registry?.displayName | nullSafe }}</td>
+          <td>{{ registry?.tableName | nullSafe }}</td>
+          <td>{{ registry?.schemaLevel | prettifyEnum }}</td>
+          <td>{{ registry?.defaultPrefix | nullSafe }}</td>
+          <td>{{ registry?.userFacing ? 'Yes' : 'No' }}</td>
+          <td>{{ registry?.minimumVersion | nullSafe }}</td>
+          <td>{{ registry?.validated ? 'Yes' : 'No' }}</td>
+          <td>
+            @if (registry?.validated) {
+              <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                        rounded
+                        severity="secondary"
+                        [disabled]="loading()"
+                        [pRowToggler]="registry">
+              </p-button>
+            } @else {
+              <p-button label="Validate"
+                        icon="pi pi-check"
+                        rounded
+                        severity="info"
+                        [disabled]="loading()"
+                        (onClick)="validateTable(registry?.id)">
+              </p-button>
+            }
+          </td>
+        </tr>
+      </ng-template>
 
-    <ng-template pTemplate="expandedrow" let-registry>
-      <tr>
-        <td colspan="9" class="filled-background">
-          <rts-table-registry-form [registry]="registry"/>
-        </td>
-      </tr>
-    </ng-template>
+      <ng-template pTemplate="expandedrow" let-registry>
+        <tr>
+          <td colspan="9" class="filled-background">
+            <rts-table-registry-form [registry]="registry"/>
+          </td>
+        </tr>
+      </ng-template>
 
-    <ng-template pTemplate="emptymessage">
-      <tr rts-empty-row [colspan]="9" message="No Tables Were Found"></tr>
-    </ng-template>
-  </p-table>
+      <ng-template pTemplate="emptymessage">
+        <tr rts-empty-row [colspan]="9" message="No Tables Were Found"></tr>
+      </ng-template>
+    </p-table>
+  </div>
 </p-card>
 

@@ -1,0 +1,18 @@
+<div class="flex flex-column gap-2 form-container">
+  <rts-form-field label="End Date" for="stopDate">
+    <p-date-picker id="stopDate"
+                   [showIcon]="true"
+                   [formField]="editForm.endDate">
+    </p-date-picker>
+  </rts-form-field>
+
+  <rts-forms-buttons [disableSave]="editForm().invalid() || !editForm().dirty()"
+                     [hideDelete]="true"
+                     [signalForm]="editForm()"
+                     [fieldMap]="fieldMap"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (save)="save()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</div>

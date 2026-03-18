@@ -8,7 +8,7 @@ import {AutoStretchService} from './auto-stretch.service'
 export class AutoStretchDirective implements AfterViewInit {
 
   readonly elementId = input('', {alias: 'rtsAutoStretch'})
-  readonly useMinHeight = input(true)
+  readonly useMinHeight = input(false)
 
   private readonly el = inject(ElementRef<HTMLElement>)
   private readonly autoStretchService = inject(AutoStretchService)
