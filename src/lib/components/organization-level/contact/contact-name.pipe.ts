@@ -1,6 +1,6 @@
 import {Pipe, PipeTransform} from '@angular/core'
 import {Contact} from '../../../api/organization-level/contact/contact.model'
-import {IdentityType} from '../../../utils/types/identity-type.enum'
+import {IdentityType} from '../../../api/organization-level/contact/identity-type.enum'
 
 @Pipe({name: 'contactName', standalone: true})
 export class ContactNamePipe implements PipeTransform {

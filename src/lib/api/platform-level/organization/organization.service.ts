@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http'
 import {inject, Injectable} from '@angular/core'
-import {Observable} from 'rxjs'
+import {Observable, throwError} from 'rxjs'
 import {catchError, first} from 'rxjs/operators'
 import {BaseService} from '../../util/base-api/base.service'
 import {OrganizationLaunchResponse} from './organization-launch-response.model'
@@ -21,9 +21,7 @@ export class OrganizationService extends BaseService<Organization> {
       {}
     ).pipe(
       first(),
-      catchError(error => {
-        throw error
-      })
+      catchError(error => throwError(() => error))
     )
   }
 }

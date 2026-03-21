@@ -22,7 +22,6 @@ import {ProductGridComponent} from '../product-grid/product-grid.component'
 @Component({
   selector: 'rts-product',
   templateUrl: 'product-general.component.html',
-  standalone: true,
   imports: [
     TableModule,
     Divider,

@@ -1,4 +1,5 @@
-import {Component, inject, Input, OnInit, signal} from '@angular/core'
+import {NgClass} from '@angular/common'
+import {Component, inject, Input, OnInit, output, signal} from '@angular/core'
 import {FormField, form} from '@angular/forms/signals'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
@@ -19,7 +20,8 @@ import {ProductGroupFormDefinition} from './product-group-form.definition'
     InputText,
     FormFieldComponent,
     Select,
-    FormField
+    FormField,
+    NgClass
   ]
 })
 export class ProductGroupFormComponent extends BaseFormComponent<ProductGroupService> implements OnInit {
@@ -27,6 +29,8 @@ export class ProductGroupFormComponent extends BaseFormComponent<ProductGroupSer
   private readonly productGroupService = inject(ProductGroupService)
   private readonly productCategoryService = inject(ProductCategoryService)
   protected override apiService: ProductGroupService = this.productGroupService
+
+  readonly productGroupCreated = output<void>()
 
   @Input()
   set productGroup(productGroup: ProductGroup|null) {
@@ -60,9 +64,8 @@ export class ProductGroupFormComponent extends BaseFormComponent<ProductGroupSer
     if (updatedProductGroup.id) {
       this.productGroupService.put(updatedProductGroup)
     } else {
-      this.productGroupService.post(updatedProductGroup)
+      this.productGroupService.post(updatedProductGroup, {onSuccess: () => this.productGroupCreated.emit()})
     }
-    this.savedAtLeastOnce.set(true)
   }
 
   deleteProductGroup() {

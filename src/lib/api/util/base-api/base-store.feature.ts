@@ -5,6 +5,7 @@ import {
   removeAllEntities,
   removeEntity,
   SelectEntityId,
+  setAllEntities,
   upsertEntities,
   upsertEntity,
   withEntities
@@ -27,15 +28,16 @@ export const withBaseStore = <ENTITY extends BaseModel>(selectId: SelectEntityId
     },
 
     setAll(entities: ENTITY[]) {
-      patchState(store, upsertEntities(entities, {selectId}))
+      patchState(store, setAllEntities(entities, {selectId}))
     },
 
     upsertMany(entities: ENTITY[]) {
       patchState(store, upsertEntities(entities, {selectId}))
     },
 
-    upsert(entity: ENTITY) {
-      patchState(store, upsertEntity(entity, {selectId}))
+    upsert(entity: Partial<ENTITY>) {
+      const updated = {...entity} as ENTITY
+      patchState(store, upsertEntity(updated, {selectId}))
     },
 
     setProcessingStatus(processingStatus: ProcessingStatus) {

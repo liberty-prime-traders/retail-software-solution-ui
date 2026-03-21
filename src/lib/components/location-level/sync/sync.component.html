@@ -1,0 +1,26 @@
+<div class="flex flex-column gap-4">
+
+  <div class="flex align-items-center gap-4 flex-wrap">
+    <p-select [(ngModel)]="selectedTable" [options]="TableName | enumToDropdown" placeholder="Select table"/>
+
+    <p-select-button [(ngModel)]="selectedMode" [options]="SyncMode | enumToDropdown"/>
+
+    <p-button label="Sync"
+              icon="pi pi-sync"
+              [loading]="loading()"
+              [disabled]="syncInProgress()"
+              (onClick)="initiateSync()">
+    </p-button>
+  </div>
+
+  @if (errorMessages().length) {
+    <div class="flex flex-column gap-2">
+      @for (msg of errorMessages(); track msg) {
+        <p-message severity="error">{{ msg }}</p-message>
+      }
+    </div>
+  }
+
+  <rts-active-sync/>
+  <rts-sync-grid/>
+</div>

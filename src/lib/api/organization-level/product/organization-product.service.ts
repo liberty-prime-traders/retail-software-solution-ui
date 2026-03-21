@@ -1,14 +1,20 @@
-import {Injectable} from '@angular/core'
+import {inject, Injectable} from '@angular/core'
 import {ProductService} from '../../cross-tier/product/product.service'
-import {OrganizationProductSearchStore} from '../product-search/organization-product-search.store'
+import {OrganizationProductSearchService} from './organization-product-search.service'
 import {OrganizationProduct} from './organization-product.model'
+import {OrganizationProductStore} from './organization-product.store'
 
 @Injectable({providedIn: 'root'})
 export class OrganizationProductService extends ProductService<OrganizationProduct> {
 
-  protected readonly basePath = '/secured/products'
+  private readonly organizationProductSearchService = inject(OrganizationProductSearchService)
 
-  constructor(protected override readonly store: OrganizationProductSearchStore) {
+  constructor(protected override readonly store: OrganizationProductStore) {
     super(store)
+  }
+
+  override finishSavingWithSuccess(savedProduct: OrganizationProduct): void {
+    super.finishSavingWithSuccess(savedProduct)
+    this.organizationProductSearchService.pushToPaginatedEntities([savedProduct])
   }
 }

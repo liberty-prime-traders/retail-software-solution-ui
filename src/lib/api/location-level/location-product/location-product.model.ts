@@ -6,4 +6,5 @@ export interface LocationProduct extends BaseProduct {
   defaultSalePrice?: number
   minStockLevel?: number
   lastSyncedAt?: number
+  lastPurchasePrice?: number
 }

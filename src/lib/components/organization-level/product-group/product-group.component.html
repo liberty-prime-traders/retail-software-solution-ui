@@ -1,84 +1,91 @@
-<div [id]="productGroupTableId">
-  <p-table  [loading]="loading() && !addingIsActive()"
-            rowExpandMode="single"
-            dataKey="id"
-            scrollHeight="flex"
-            scrollable="true"
-            sortField="groupName"
-            #productGroupsTable
-            [value]="productGroups()"
-            [globalFilterFields]="['groupName', 'description', 'categoryName', 'referenceNumber']"
-            (onRowExpand)="rowIsExpanded.set(true)"
-            (onRowCollapse)="rowIsExpanded.set(false)">
-
-    <ng-template pTemplate="caption">
-      <div class="flex justify-content-between align-items-center">
-        <h3>Product Groups</h3>
-        <rts-grid-filter [dataTable]="productGroupsTable"/>
-      </div>
-    </ng-template>
-
-    <ng-template pTemplate="header">
-      <tr>
-        <th pSortableColumn="referenceNumber">
-          Reference Number
-          <p-sortIcon field="referenceNumber"></p-sortIcon>
-        </th>
-        <th pSortableColumn="groupName">
-          Group Name
-          <p-sortIcon field="groupName"></p-sortIcon>
-        </th>
-        <th pSortableColumn="categoryName">
-          Product Category
-          <p-sortIcon field="categoryName"></p-sortIcon>
-        </th>
-        <th pSortableColumn="description">
-          Description
-          <p-sortIcon field="description"></p-sortIcon>
-        </th>
-        <th pSortableColumn="createdBy">
-          Created By
-          <p-sortIcon field="createdBy"></p-sortIcon>
-        </th>
-        <th style="width: 5rem"></th>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="body" let-productGroup let-expanded="expanded">
-      <tr [ngClass]="{ 'expanded-row': expanded }">
-        <td>{{ productGroup?.referenceNumber | nullSafe }}</td>
-        <td>{{ productGroup?.groupName | nullSafe }}</td>
-        <td>{{ productGroup?.categoryName | nullSafe }}</td>
-        <td>{{ productGroup?.description | nullSafe }}</td>
-        <td>{{ productGroup?.createdBy | nullSafe }}</td>
-        <td>
-          <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                    rounded
-                    severity="secondary"
-                    [disabled]="loading() || addingIsActive()"
-                    [pRowToggler]="productGroup" >
-          </p-button>
-        </td>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="expandedrow" let-productGroup>
-      <tr>
-        <td colspan="6" class="filled-background">
-          <rts-product-group-form [productGroup]="productGroup" />
-        </td>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="emptymessage">
-      <tr rts-empty-row [colspan]="6" message="No Product Groups Were Found"></tr>
-    </ng-template>
-  </p-table>
-
-</div>
-
-<rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
+<div class="flex flex-column gap-4 flex-grow-1" id="productGroups" [rtsAutoStretch]="'productGroups'">
   @if (addingIsActive()) {
-    <rts-product-group-form/>
+    <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info" class="align-self-end"/>
+    <rts-product-group-form (productGroupCreated)="closeAddRow()"/>
+
+  } @else {
+    <p-table  [loading]="loading() && !addingIsActive()"
+              rowExpandMode="single"
+              dataKey="id"
+              scrollHeight="flex"
+              scrollable="true"
+              sortField="groupName"
+              #productGroupsTable
+              [value]="productGroups()"
+              [globalFilterFields]="['groupName', 'description', 'categoryName', 'referenceNumber']"
+              (onRowExpand)="rowIsExpanded.set(true)"
+              (onRowCollapse)="rowIsExpanded.set(false)">
+
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between align-items-center">
+          <h3 class="font-bold">Product Groups</h3>
+
+          <rts-grid-filter [dataTable]="productGroupsTable"/>
+
+          <p-button (click)="addingIsActive.set(true)"
+                    [disabled]="loading() || addingIsActive()"
+                    label="+ Add Product Group"
+                    rounded
+                    severity="secondary">
+          </p-button>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="referenceNumber">
+            Reference Number
+            <p-sortIcon field="referenceNumber"></p-sortIcon>
+          </th>
+          <th pSortableColumn="groupName">
+            Group Name
+            <p-sortIcon field="groupName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="categoryName">
+            Product Category
+            <p-sortIcon field="categoryName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="description">
+            Description
+            <p-sortIcon field="description"></p-sortIcon>
+          </th>
+          <th pSortableColumn="createdBy">
+            Created By
+            <p-sortIcon field="createdBy"></p-sortIcon>
+          </th>
+          <th style="width: 5rem"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-productGroup let-expanded="expanded">
+        <tr [ngClass]="{ 'expanded-row': expanded }">
+          <td>{{ productGroup?.referenceNumber | nullSafe }}</td>
+          <td>{{ productGroup?.groupName | nullSafe }}</td>
+          <td>{{ productGroup?.categoryName | nullSafe }}</td>
+          <td>{{ productGroup?.description | nullSafe }}</td>
+          <td>{{ productGroup?.createdBy | nullSafe }}</td>
+          <td>
+            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                      rounded
+                      severity="secondary"
+                      [disabled]="loading() || addingIsActive()"
+                      [pRowToggler]="productGroup" >
+            </p-button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="expandedrow" let-productGroup>
+        <tr>
+          <td colspan="6" class="filled-background">
+            <rts-product-group-form [productGroup]="productGroup" />
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr rts-empty-row [colspan]="6" message="No Product Groups Were Found"></tr>
+      </ng-template>
+    </p-table>
   }
-</rts-add-row>
+</div>

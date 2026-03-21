@@ -1,7 +1,7 @@
-<div class="flex flex-column gap-4 flex-grow-1" [id]="productCategoryTableId">
+<div class="flex flex-column gap-4 flex-grow-1">
   @if (addingIsActive()) {
     <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info" class="align-self-end"/>
-    <rts-product-category-form (successfulSave)="successfulSave()"/>
+    <rts-product-category-form (productCategoryCreated)="closeAddRow()"/>
 
   } @else {
     <p-table [loading]="loading() && !addingIsActive()"
@@ -23,7 +23,7 @@
           <rts-grid-filter [dataTable]="productCategoriesTable"/>
 
           <p-button (click)="setAddingActiveTrue()"
-                    [disabled]="loading()"
+                    [disabled]="loading() || addingIsActive()"
                     label="+ Add Product Category"
                     rounded
                     severity="secondary">

@@ -1,4 +1,4 @@
-import {CategoryType} from '../../../utils/types/category-type.enum'
+import {CategoryType} from './category-type.enum'
 import {BaseModel} from '../../util/base-api/base.model'
 
 export interface Tag extends BaseModel{

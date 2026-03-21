@@ -4,10 +4,11 @@ import {ReactiveFormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
+import {Tag} from '../../../api/organization-level/tag/tag.model'
 import {TagService} from '../../../api/organization-level/tag/tag.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
-import {CategoryType} from '../../../utils/types/category-type.enum'
+import {CategoryType} from '../../../api/organization-level/tag/category-type.enum'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
@@ -47,19 +48,19 @@ export class TagComponent extends GridWithAddButtonComponent<TagService> {
     this.addingIsActive.set(false)
   }
 
-  setAddingActiveTrue() {
+  override setAddingActiveTrue() {
     this.addingIsActive.set(true)
     this.selectedCategoryStash.set(this.selectedCategory())
     this.selectedCategory.set(undefined)
   }
 
-  setAddingActiveFalse() {
+  override setAddingActiveFalse() {
     this.addingIsActive.set(false)
     this.selectedCategory.set(this.selectedCategoryStash())
   }
 
-  successfulSave() {
+  tagCreated(saved: Tag) {
     this.setAddingActiveFalse()
-    this.selectedCategory.set(this.tagService.lastSavedResponse()?.category)
+    this.selectedCategory.set(saved.category)
   }
 }

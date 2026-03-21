@@ -10,7 +10,12 @@ export class ReservedSubdomainService extends BaseService<ReservedSubdomain> {
     super(store)
   }
 
-  override getHttpParams(params: {suggestedSubdomain: string, pathSuffix: string}): HttpParams {
+  override getHttpParams(params: {suggestedSubdomain: string}): HttpParams {
     return new HttpParams().setNonNull('suggestedSubdomain', params?.suggestedSubdomain)
+  }
+
+  verifySubdomainAvailability(suggestedSubdomain: string) {
+    this.patchApiRequestConfig({urlSuffix: 'verify'})
+    return this.refetch({suggestedSubdomain})
   }
 }

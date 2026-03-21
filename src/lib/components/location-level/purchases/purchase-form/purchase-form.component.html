@@ -1,0 +1,56 @@
+<rts-loading-container [loading]="purchaseIsLoading()" loadingText="Saving...">
+  <form class="flex flex-column" id="purchaseForm" rtsAutoStretch="purchaseForm">
+
+    <rts-purchase-form-general-fields/>
+
+    <p-tabs value="items">
+      <p-tablist>
+        <p-tab value="items">Items</p-tab>
+
+        @if (!isDraftOrNew()) {
+          <p-tab value="deliveries">Deliveries</p-tab>
+          <p-tab value="payments">Payments</p-tab>
+          <p-tab value="returns">Returns</p-tab>
+        }
+      </p-tablist>
+
+      <p-tabpanels>
+        <p-tabpanel value="items">
+          <rts-purchase-lines/>
+        </p-tabpanel>
+
+        @if (!isDraftOrNew()) {
+          <p-tabpanel value="deliveries">
+            <rts-purchase-deliveries/>
+          </p-tabpanel>
+        }
+      </p-tabpanels>
+    </p-tabs>
+
+    <div style="height: 100px"></div>
+  </form>
+
+  @if (isDraftOrNew()) {
+    <div class="floating flex gap-2">
+      <p-button label="Reset"
+                icon="pi pi-times"
+                severity="secondary"
+                (click)="resetForm()"
+                [disabled]="!purchaseForm().dirty()">
+      </p-button>
+
+      <p-button label="Place Order"
+                icon="pi pi-send"
+                severity="secondary"
+                (click)="placeOrder()"
+                [disabled]="purchaseForm().invalid() || !canPlaceOrder() || isEditingLines()">
+      </p-button>
+
+      <p-button label="Save Draft"
+                icon="pi pi-save"
+                (click)="saveDraft()"
+                [disabled]="purchaseForm().invalid() || isEditingLines()">
+      </p-button>
+    </div>
+    }
+</rts-loading-container>

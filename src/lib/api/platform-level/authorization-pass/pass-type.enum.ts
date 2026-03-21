@@ -1,0 +1,3 @@
+export enum PassType {
+  CREATE_ORGANIZATION = 'CREATE_ORGANIZATION'
+}

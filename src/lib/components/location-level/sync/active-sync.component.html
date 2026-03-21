@@ -1,0 +1,64 @@
+@if (activeSyncLog(); as log) {
+  <div class="flex flex-column gap-3 p-3 border-1 surface-border border-round">
+
+    <div class="flex align-items-center justify-content-between flex-wrap gap-2">
+      <div class="flex align-items-center gap-2">
+        <span class="font-medium">{{ log.syncMode | prettifyEnum }} Sync</span>
+        <p-tag [value]="log.status | prettifyEnum"
+               [severity]="log.status | syncStatusSeverity"/>
+      </div>
+      @if (syncInProgress() && log.status !== SyncStatus.CANCELLATION_REQUESTED) {
+        <p-button label="Cancel"
+                  icon="pi pi-times"
+                  severity="secondary"
+                  [outlined]="true"
+                  size="small"
+                  [disabled]="loading()"
+                  (onClick)="cancelSync()">
+        </p-button>
+      }
+    </div>
+
+    @if (log.percentComplete !== undefined && log.percentComplete !== null) {
+      <p-progress-bar [value]="log.percentComplete" [showValue]="true"/>
+    }
+
+    <div class="flex gap-4 flex-wrap">
+      <div class="flex flex-column justify-content-center">
+        <span class="text-sm ">Processed</span>
+        <span class="font-semibold">{{ log.processedRecords }}</span>
+      </div>
+      <div class="flex flex-column">
+        <span class="text-sm">Skipped</span>
+        <span class="font-semibold">{{ log.skippedRecords }}</span>
+      </div>
+      <div class="flex flex-column">
+        <span class="text-sm">Failed</span>
+        <span class="font-semibold">{{ log.failedRecords }}</span>
+      </div>
+      @if (log.totalRecords !== undefined && log.totalRecords !== null) {
+        <div class="flex flex-column">
+          <span class="text-sm">Total</span>
+          <span class="font-semibold">{{ log.totalRecords }}</span>
+        </div>
+      }
+    </div>
+
+    @if (log.errorMessage) {
+      <p-message severity="error">{{ log.errorMessage }}</p-message>
+    }
+
+    <div class="flex gap-3 text-sm flex-wrap">
+      @if (log.createdOn) {
+        <span>Initiated: {{ log.createdOn | date: 'medium' }}</span>
+      }
+      @if (log.completedAt) {
+        <span>Completed: {{ log.completedAt | date: 'medium' }}</span>
+      }
+      @if (log.canceledAt) {
+        <span>Canceled: {{ log.canceledAt | date: 'medium' }}</span>
+      }
+    </div>
+
+  </div>
+}

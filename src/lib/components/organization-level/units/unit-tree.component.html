@@ -1,11 +1,11 @@
 <p-block-ui [blocked]="loading()"/>
 
-<div [id]="unitsElementId">
+<div id="unitTree" [rtsAutoStretch]="'unitTree'">
   <div class="flex align-items-center justify-content-between mb-3">
     <h3 class="font-bold">Units</h3>
 
     <p-button (click)="setAddingActiveTrue()"
-              [disabled]="loading()"
+              [disabled]="loading() || addingIsActive()"
               label="+ Add Unit Group"
               rounded severity="secondary">
     </p-button>
@@ -54,7 +54,7 @@
 
         @if (addingIsActive()) {
           <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info"/>
-          <rts-unit-group-form (successfulSave)="successfulSave()"/>
+          <rts-unit-group-form (unitGroupCreated)="unitGroupCreated($event)"/>
         } @else if (selectedUnitGroup()) {
           <p-accordion>
             <p-accordion-panel value="0">

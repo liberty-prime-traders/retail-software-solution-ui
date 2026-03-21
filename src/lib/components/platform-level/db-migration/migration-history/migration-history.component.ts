@@ -1,4 +1,4 @@
-import {DatePipe} from '@angular/common'
+import {DatePipe, NgClass} from '@angular/common'
 import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
@@ -7,11 +7,11 @@ import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
 import {Tooltip} from 'primeng/tooltip'
 import {DbMigrationService} from '../../../../api/platform-level/db-migration/db-migration.service'
-import {MigrationStatusSeverityPipe} from '../../../../utils/pipes/migration-status-severity.pipe'
 import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
-import {AutoStretchComponent} from '../../../reusable/auto-stretch.component'
+import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
-import {AutoResizeConfig} from '../../../welcome/auto-resize-config'
+import {LocationMigrationGridComponent} from './location-migration-grid/location-migration-grid.component'
+import {MigrationStatusSeverityPipe} from './migration-status-severity.pipe'
 
 @Component({
   selector: 'rts-migration-history',
@@ -25,11 +25,14 @@ import {AutoResizeConfig} from '../../../welcome/auto-resize-config'
     DatePicker,
     EmptyRowComponent,
     PrettifyEnumPipe,
-    Tooltip
+    Tooltip,
+    NgClass,
+    LocationMigrationGridComponent,
+    AutoStretchDirective
   ],
   templateUrl: './migration-history.component.html'
 })
-export class MigrationHistoryComponent extends AutoStretchComponent implements OnInit {
+export class MigrationHistoryComponent implements OnInit {
   private readonly dbMigrationService = inject(DbMigrationService)
 
   readonly dateRange = model([this.getStartDate(), new Date()])
@@ -37,8 +40,6 @@ export class MigrationHistoryComponent extends AutoStretchComponent implements O
 
   readonly migrations = this.dbMigrationService.selectAll
   readonly loading = this.dbMigrationService.selectLoading
-
-  readonly dbMigrationElementId = AutoResizeConfig.dbMigrationsId
 
   ngOnInit() {
     this.reloadMigrationHistory()

@@ -1,4 +1,4 @@
-import {Component, computed, inject, input} from '@angular/core'
+import {Component, computed, inject, input, output} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {isNil} from 'lodash-es'
 import {InputText} from 'primeng/inputtext'
@@ -25,6 +25,8 @@ export class UnitGroupFormComponent extends BaseFormComponent<UnitGroupService> 
   private readonly formBuilder = inject(FormBuilder)
   protected readonly apiService = this.unitGroupService
 
+  readonly unitGroupCreated = output<UnitGroup>()
+
   readonly unitGroupForm = computed(() => this.formBuilder.nonNullable.group({
     id: this.unitGroup()?.id,
     name: [this.unitGroup()?.name, Validators.required],
@@ -38,11 +40,10 @@ export class UnitGroupFormComponent extends BaseFormComponent<UnitGroupService> 
   upsertUnitGroup() {
     const updatedUnitGroup: Partial<UnitGroup> = this.unitGroupForm().getRawValue()
     if (isNil(updatedUnitGroup.id)) {
-      this.unitGroupService.post(updatedUnitGroup)
+      this.unitGroupService.post(updatedUnitGroup, {onSuccess: (saved) => this.unitGroupCreated.emit(saved)})
     } else {
       this.unitGroupService.put(updatedUnitGroup)
     }
-    this.savedAtLeastOnce.set(true)
   }
 
   deleteUnitGroup() {

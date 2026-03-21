@@ -1,0 +1,136 @@
+<div class="flex flex-column gap-4">
+  @if (isDraftOrNew()) {
+    <rts-form-field label="Search Products">
+      <p-select [options]="productOptions()"
+                [filter]="true"
+                (onFilter)="searchTerm$.next($event.filter)"
+                (onClick)="addPurchaseLine(productSelect.value); productSelect.clear()"
+                #productSelect
+                optionLabel="label"
+                optionValue="value"
+                class="w-full"
+                dataKey="value">
+      </p-select>
+    </rts-form-field>
+  }
+
+  <p-table [value]="purchaseLinesArray()"
+           [editingRowKeys]="editingRowKeys()"
+           dataKey="referenceNumber"
+           [multiSortMeta]="linesMultiSort"
+           editMode="row">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Product</th>
+        <th>Unit Price</th>
+        <th>Units</th>
+        <th>Qty Ordered</th>
+
+        @if (!isDraftOrNew()) {
+          <th>Qty Canceled</th>
+          <th>Qty Delivered</th>
+        }
+
+        <th>Total</th>
+        <th style="width: 100px"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-purchaseLine let-editing="editing">
+      <tr [pEditableRow]="purchaseLine"
+          [ngClass]="{'opacity-70': purchaseLine.canceledWithoutSingleDelivery}">
+        <td>{{ purchaseLine | productLabel }}</td>
+
+        @if (isDraftOrNew()) {
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.unitCost" />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ purchaseLine.unitCost | currency  }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+
+          <td>{{ purchaseLine.baseUnit }}</td>
+
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.quantityOrdered" />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ purchaseLine.quantityOrdered }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+
+        } @else {
+          <td>{{ purchaseLine.unitCost | currency }}</td>
+          <td>{{ purchaseLine.baseUnit }}</td>
+          <td>{{ purchaseLine.quantityOrdered }}</td>
+
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber [min]="0"
+                               [max]="purchaseLine.quantityYetToBeDelivered"
+                               [(ngModel)]="purchaseLine.quantityCanceled">
+                </p-inputNumber>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ purchaseLine.quantityCanceled }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+
+          <td>{{ purchaseLine.quantityDelivered }}</td>
+        }
+
+        <td>{{ purchaseLine.lineTotal | currency }}</td>
+
+        <td>
+          <div class="flex gap-1">
+            @if (editing) {
+              <p-button icon="pi pi-check"
+                        text
+                        rounded
+                        pSaveEditableRow
+                        (keydown.enter)="completeEditingLine(purchaseLine)"
+                        (onClick)="completeEditingLine(purchaseLine)">
+              </p-button>
+
+              <p-button icon="pi pi-times"
+                        text
+                        rounded
+                        pCancelEditableRow
+                        (keydown.enter)="cancelEditingLine(purchaseLine)"
+                        (onClick)="cancelEditingLine(purchaseLine)">
+              </p-button>
+
+            } @else if(purchaseLine.quantityYetToBeDelivered > 0) {
+              <p-button icon="pi pi-pencil"
+                        text
+                        rounded
+                        pInitEditableRow
+                        (keydown.enter)="initializeEditingLine(purchaseLine)"
+                        (onClick)="initializeEditingLine(purchaseLine)">
+              </p-button>
+            }
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+
+
+
+
+
+
+
+
+

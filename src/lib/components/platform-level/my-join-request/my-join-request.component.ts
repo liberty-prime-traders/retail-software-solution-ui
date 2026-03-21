@@ -6,7 +6,7 @@ import {Card} from 'primeng/card'
 import {TableModule} from 'primeng/table'
 import {TagModule} from 'primeng/tag'
 import {MyJoinRequestService} from '../../../api/platform-level/my-join-request/my-join-request.service'
-import {ActivityStatusSeverityPipe} from '../../../utils/pipes/activity-status-severity.pipe'
+import {JoinRequestStatusSeverityPipe} from '../../../utils/pipes/join-request-status-severity.pipe'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
@@ -19,7 +19,7 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
   templateUrl: 'my-join-request.component.html',
   imports: [
     DatePipe,
-    ActivityStatusSeverityPipe,
+    JoinRequestStatusSeverityPipe,
     TableModule,
     NullSafePipe,
     GridFilterComponent,

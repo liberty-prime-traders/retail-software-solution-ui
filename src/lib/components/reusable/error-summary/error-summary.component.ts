@@ -4,11 +4,19 @@ import {toErrorMessages} from '../../../utils/form-validation'
 
 @Component({
   selector: 'rts-error-summary',
+  styles: `
+    ul {
+      padding-inline-start: 20px;
+    }
+  `,
   template: `
     @if (errorMessages().length > 0) {
-      @for(message of errorMessages(); track message) {
-        <div class="error-message">{{ message }}</div>
-      }
+      <ul>
+        @for(message of errorMessages(); track message) {
+          <li class="error-message pl-0">{{ message }}</li>
+        }
+      </ul>
+
     }
   `,
   imports: []

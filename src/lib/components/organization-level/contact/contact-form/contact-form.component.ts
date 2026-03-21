@@ -1,4 +1,4 @@
-import {Component, computed, inject, Input, signal} from '@angular/core'
+import {Component, computed, inject, Input, output, signal} from '@angular/core'
 import {FormField, form} from '@angular/forms/signals'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
@@ -7,9 +7,9 @@ import {Select} from 'primeng/select'
 import {Contact} from '../../../../api/organization-level/contact/contact.model'
 import {ContactService} from '../../../../api/organization-level/contact/contact.service'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
-import {ContactStatus} from '../../../../utils/types/contact-status.enum'
-import {ContactType} from '../../../../utils/types/contact-type.enum'
-import {IdentityType} from '../../../../utils/types/identity-type.enum'
+import {ContactStatus} from '../../../../api/organization-level/contact/contact-status.enum'
+import {ContactType} from '../../../../api/organization-level/contact/contact-type.enum'
+import {IdentityType} from '../../../../api/organization-level/contact/identity-type.enum'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
@@ -34,6 +34,8 @@ export class ContactFormComponent extends BaseFormComponent<ContactService> {
 
   private readonly contactService = inject(ContactService)
   protected override apiService: ContactService = this.contactService
+
+  readonly contactCreated = output<Contact>()
 
   @Input()
   set contact(contact: Contact|null) {
@@ -65,9 +67,8 @@ export class ContactFormComponent extends BaseFormComponent<ContactService> {
     if (updatedContact.id) {
       this.contactService.put(updatedContact)
     } else {
-      this.contactService.post(updatedContact)
+      this.contactService.post(updatedContact, {onSuccess: (saved) => this.contactCreated.emit(saved)})
     }
-    this.savedAtLeastOnce.set(true)
   }
 
   deleteContact() {
