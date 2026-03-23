@@ -81,9 +81,7 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
           this.errorMessages.set(parseError(error) ?? ['Failed to process organization launch'])
           return of(null)
         }),
-        finalize(() => {
-          this.launchingInProgress.set(false)
-        })
+        finalize(() => this.launchingInProgress.set(false))
       )
         .subscribe()
     )

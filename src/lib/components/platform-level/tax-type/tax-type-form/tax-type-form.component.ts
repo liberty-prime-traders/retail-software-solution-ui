@@ -1,9 +1,14 @@
 import {NgClass} from '@angular/common'
-import {Component, computed, inject, Input, output, signal} from '@angular/core'
-import {FormField, form} from '@angular/forms/signals'
+import {Component, computed, inject, Input, model, output, signal} from '@angular/core'
+import {FormsModule} from '@angular/forms'
+import {form, FormField} from '@angular/forms/signals'
+import {Checkbox} from 'primeng/checkbox'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
 import {CalculationMethod} from '../../../../api/platform-level/tax-type/calculation-method.enum'
+import {TaxApplicationLevel} from '../../../../api/platform-level/tax-type/tax-application-level.enum'
+import {TaxRecoveryType} from '../../../../api/platform-level/tax-type/tax-recovery-type.enum'
+import {TaxTrigger} from '../../../../api/platform-level/tax-type/tax-trigger.enum'
 import {TaxType} from '../../../../api/platform-level/tax-type/tax-type.model'
 import {TaxTypeService} from '../../../../api/platform-level/tax-type/tax-type.service'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
@@ -23,7 +28,9 @@ import {TaxTypeFormDefinition} from './tax-type-form.definition'
     FormField,
     Select,
     EnumToDropdownPipe,
-    NgClass
+    NgClass,
+    Checkbox,
+    FormsModule
   ]
 })
 export class TaxTypeFormComponent extends BaseFormComponent<TaxTypeService> {
@@ -38,6 +45,7 @@ export class TaxTypeFormComponent extends BaseFormComponent<TaxTypeService> {
     if (taxType) {
       this.originalTaxType.set(taxType)
       this.taxTypeFormValue.set(TaxTypeFormDefinition.convertToFormModel(taxType))
+      this.selectedTriggers.set(taxType.taxTriggers ?? [])
     }
   }
 
@@ -51,9 +59,22 @@ export class TaxTypeFormComponent extends BaseFormComponent<TaxTypeService> {
   readonly taxTypeForm = form(this.taxTypeFormValue, TaxTypeFormDefinition.taxTypeFormSchema)
   readonly taxTypeFormFields = TaxTypeFormDefinition.fieldMap
   readonly CalculationMethod = CalculationMethod
+  readonly TaxRecoveryType = TaxRecoveryType
+  readonly TaxApplicationLevel = TaxApplicationLevel
+  readonly TaxTrigger = TaxTrigger
+  readonly selectedTriggers = model<TaxTrigger[]>([])
 
   resetForm() {
     this.taxTypeForm().reset(TaxTypeFormDefinition.convertToFormModel(this.originalTaxType()))
+    this.selectedTriggers.set(this.originalTaxType()?.taxTriggers ?? [])
+  }
+
+  onTriggerChecked() {
+    this.taxTypeFormValue.update(formValue => ({
+      ...formValue,
+      taxTriggers: this.selectedTriggers()
+    }))
+    this.taxTypeForm().markAsDirty()
   }
 
   upsertTaxType() {

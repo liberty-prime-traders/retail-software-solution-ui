@@ -1,4 +1,4 @@
-<div class="flex flex-column gap-4 flex-grow-1" id="jurisdictions" [rtsAutoStretch]="'jurisdictions'">
+<div class="flex flex-column gap-4 flex-grow-1" id="jurisdictions" rtsAutoStretch="jurisdictions">
   @if (addingIsActive()) {
     <rts-new-form-cancel-button (onCancel)="setAddingActiveFalse()"/>
     <rts-jurisdiction-form (jurisdictionCreated)="closeAddRow()"/>
