@@ -1,0 +1,77 @@
+<div class="flex flex-column gap-2 form-container filled-background">
+
+  <rts-form-field [required]="true" label="Tax Type" for="orgJurisdictionTaxTypeId">
+    <p-select id="orgJurisdictionTaxTypeId"
+              class="flex-grow-1"
+              [options]="orgJurisdictionTaxTypes()"
+              optionLabel="taxLabel"
+              optionValue="id"
+              [formField]="taxRateForm.orgJurisdictionTaxTypeId"
+              (onChange)="onOrgTaxTypeChange($event.value)"
+              placeholder="Select tax type">
+    </p-select>
+  </rts-form-field>
+
+  <rts-form-field [required]="true" label="Name" for="name">
+    <input id="name" class="flex-grow-1" pInputText [formField]="taxRateForm.name"/>
+  </rts-form-field>
+
+  <rts-form-field [required]="true" label="Start Date" for="startDate">
+    <p-date-picker id="startDate"
+                   class="flex-grow-1"
+                   [showIcon]="true"
+                   [minDate]="startDateMin"
+                   [formField]="taxRateForm.startDate"
+                   placeholder="When does this tax rate become effective?">
+    </p-date-picker>
+  </rts-form-field>
+
+  <rts-form-field label="End Date" for="endDate">
+    <p-date-picker id="endDate"
+                   class="flex-grow-1"
+                   [showIcon]="true"
+                   [minDate]="endDateMin()"
+                   [formField]="taxRateForm.endDate"
+                   placeholder="Stop applying this tax rate after this date">
+    </p-date-picker>
+  </rts-form-field>
+
+  @if (isPercentage()) {
+    <rts-form-field [required]="true" label="Rate Percentage" for="ratePercentage">
+      <p-input-number id="ratePercentage"
+                      class="flex-grow-1"
+                      [formField]="taxRateForm.ratePercentage"
+                      [minFractionDigits]="2"
+                      [maxFractionDigits]="4"
+                      [min]="0"
+                      suffix="%"
+                      placeholder="e.g. 15.00">
+      </p-input-number>
+    </rts-form-field>
+  }
+
+  @if (isFlatPerUnit()) {
+    <rts-form-field [required]="true" label="Flat Rate Amount" for="rateFlatAmount">
+      <p-input-number id="rateFlatAmount"
+                      class="flex-grow-1"
+                      [formField]="taxRateForm.rateFlatAmount"
+                      [minFractionDigits]="2"
+                      [maxFractionDigits]="4"
+                      [min]="0"
+                      placeholder="e.g. 5.00">
+      </p-input-number>
+    </rts-form-field>
+  }
+
+  <rts-forms-buttons [disableReset]="!taxRateForm().dirty()"
+                     [disableSave]="taxRateForm().invalid() || !taxRateForm().dirty()"
+                     [hideDelete]="true"
+                     [signalForm]="taxRateForm()"
+                     [fieldMap]="fieldMap"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (save)="save()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+
+</div>

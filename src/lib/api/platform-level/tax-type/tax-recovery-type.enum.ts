@@ -1,0 +1,4 @@
+export enum TaxRecoveryType {
+  RECOVERABLE = 'RECOVERABLE',
+  NON_RECOVERABLE = 'NON_RECOVERABLE'
+}

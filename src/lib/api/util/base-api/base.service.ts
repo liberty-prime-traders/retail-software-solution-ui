@@ -16,7 +16,7 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
     super(store, inject(HttpClient))
   }
 
-  post(body?: PAYLOAD, callbacks?: ApiCallbacks<RESPONSE>, id?: EntityId): Subscription {
+  post(body?: PAYLOAD | PAYLOAD[], callbacks?: ApiCallbacks<RESPONSE>, id?: EntityId): Subscription {
     this.startApiRequest()
     return this.httpClient.post<RESPONSE>(this.getBasePath(id), body).pipe(
       first(),

@@ -1,0 +1,65 @@
+<div class="flex flex-column gap-2 form-container" [ngClass]="{'filled-background': isCreatingNewTaxType()}">
+  <rts-form-field [required]="true" label="Name" for="name">
+    <input id="name" class="flex-grow-1" pInputText [formField]="taxTypeForm.name"/>
+  </rts-form-field>
+
+  @if (isCreatingNewTaxType()) {
+    <rts-form-field [required]="true" label="Calculation Method" for="calculationMethod">
+      <p-select id="calculationMethod"
+                class="flex-grow-1"
+                [options]="CalculationMethod | enumToDropdown"
+                [formField]="taxTypeForm.calculationMethod"
+                placeholder="How is this tax calculated?">
+      </p-select>
+    </rts-form-field>
+  }
+
+  <rts-form-field [required]="true" label="Tax Recovery Type" for="taxRecoveryType">
+    <p-select id="taxRecoveryType"
+              class="flex-grow-1"
+              [options]="TaxRecoveryType | enumToDropdown"
+              [formField]="taxTypeForm.taxRecoveryType"
+              placeholder="Is this tax recoverable?">
+    </p-select>
+  </rts-form-field>
+
+  <rts-form-field [required]="true" label="Tax Application Level" for="taxApplicationLevel">
+    <p-select id="taxApplicationLevel"
+              class="flex-grow-1"
+              [options]="TaxApplicationLevel | enumToDropdown"
+              [formField]="taxTypeForm.taxApplicationLevel"
+              placeholder="At what level is this tax applied?">
+    </p-select>
+  </rts-form-field>
+
+  <rts-form-field label="Tax Triggers" labelClass="align-self-start">
+    <div class="flex flex-column gap-2">
+      @for (trigger of (TaxTrigger | enumToDropdown); track trigger) {
+        <div class="flex gap-2">
+          <p-check-box [id]="trigger.value"
+                       [value]="trigger.value"
+                       (onChange)="onTriggerChecked()"
+                       [(ngModel)]="selectedTriggers">
+          </p-check-box>
+          <label [for]="trigger">{{ trigger.label }}</label>
+        </div>
+      }
+    </div>
+  </rts-form-field>
+
+  <rts-form-field label="Description" for="description">
+    <input id="description" pInputText [formField]="taxTypeForm.description"/>
+  </rts-form-field>
+
+  <rts-forms-buttons [disableReset]="!taxTypeForm().dirty()"
+                     [disableSave]="taxTypeForm().invalid() || !taxTypeForm().dirty()"
+                     [hideDelete]="!originalTaxType()?.id"
+                     [signalForm]="taxTypeForm()"
+                     [fieldMap]="taxTypeFormFields"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (delete)="deleteTaxType()"
+                     (save)="upsertTaxType()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</div>

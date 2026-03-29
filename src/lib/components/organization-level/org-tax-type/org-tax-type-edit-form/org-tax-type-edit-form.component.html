@@ -1,0 +1,19 @@
+<div class="flex flex-column gap-2 form-container">
+  <rts-form-field [required]="true" label="Status" for="status">
+    <p-select id="status"
+              class="flex-grow-1"
+              [options]="statusOptions | enumToDropdown"
+              [formField]="editForm.status">
+    </p-select>
+  </rts-form-field>
+
+  <rts-forms-buttons [disableSave]="editForm().invalid() || !editForm().dirty()"
+                     [hideDelete]="true"
+                     [signalForm]="editForm()"
+                     [fieldMap]="fieldMap"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (save)="save()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</div>

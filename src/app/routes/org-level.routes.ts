@@ -25,6 +25,10 @@ import {
 } from '../../lib/components/organization-level/products/organization-product.component'
 import {TagComponent} from '../../lib/components/organization-level/tag/tag.component'
 import {UnitTreeComponent} from '../../lib/components/organization-level/units/unit-tree.component'
+import {
+  OrgTaxTypeComponent
+} from '../../lib/components/organization-level/org-tax-type/org-tax-type.component'
+import {TaxRateComponent} from '../../lib/components/organization-level/tax-rate/tax-rate.component'
 
 export const orgManagementRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
@@ -42,5 +46,7 @@ export const orgManagementRoutes: Routes = [
   {path: 'admins', component: OrganizationAdminComponent},
   {path: 'join-requests', component: EndUserJoinRequestComponent},
   {path: 'users', component: OrganizationUserComponent},
+  {path: 'tax-types', component: OrgTaxTypeComponent},
+  {path: 'tax-rates', component: TaxRateComponent},
   {path: '', redirectTo: 'summary', pathMatch: 'full'}
 ]

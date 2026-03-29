@@ -1,0 +1,57 @@
+<rts-loading-container [loading]="orgTaxTypesLoading()">
+  <div class="flex gap-4">
+    <div class="flex col-6  flex-column gap-3">
+      <div class="flex gap-5 align-items-center">
+        <p-tree-select [options]="availableTaxTypes()"
+                       [metaKeySelection]="false"
+                       [loading]="taxTypeTreeIsLoading()"
+                       selectionMode="multiple"
+                       placeholder="Select taxes that affect your organization"
+                       [(ngModel)]="selectedTaxNodes"
+                       class="col-9">
+        </p-tree-select>
+
+        <p-button label="Confirm Selection"
+                  severity="secondary"
+                  rounded
+                  [disabled]="selectedTaxNodes().length < 1"
+                  (click)="confirmSelection()">
+        </p-button>
+      </div>
+
+      <div class="flex flex-column">
+        @for (row of taxTypesToAdd(); track $index) {
+          <div class="flex p-0 col-12 gap-2 align-items-center">
+            <span class="flex-grow-1">{{ row.label }}</span>
+
+            <p-button icon="pi pi-times"
+                      severity="danger"
+                      rounded
+                      text
+                      (click)="removeRow(row.jurisdictionTaxTypeId)">
+            </p-button>
+          </div>
+        }
+      </div>
+
+      @if (taxTypesToAdd().length > 0) {
+        <div class="flex justify-content-end">
+          <p-button label="Save All"
+                    [disabled]="!canSave()"
+                    (click)="saveAll()">
+          </p-button>
+        </div>
+      }
+
+    </div>
+
+    @if (failureMessages().length > 0) {
+      <div class="col-6">
+        @for (error of failureMessages(); track error) {
+          <span class="mb-2 error-message text-wrap">{{ error }}</span>
+        }
+      </div>
+    }
+
+  </div>
+</rts-loading-container>
