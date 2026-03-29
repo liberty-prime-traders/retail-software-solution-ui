@@ -1,9 +1,10 @@
 <div class="flex flex-column gap-2 form-container">
-  <rts-form-field label="End Date" for="stopDate">
-    <p-date-picker id="stopDate"
-                   [showIcon]="true"
-                   [formField]="editForm.endDate">
-    </p-date-picker>
+  <rts-form-field [required]="true" label="Status" for="status">
+    <p-select id="status"
+              class="flex-grow-1"
+              [options]="statusOptions | enumToDropdown"
+              [formField]="editForm.status">
+    </p-select>
   </rts-form-field>
 
   <rts-forms-buttons [disableSave]="editForm().invalid() || !editForm().dirty()"

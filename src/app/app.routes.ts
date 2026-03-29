@@ -44,7 +44,12 @@ const secureRoutes: Routes = [
 
 const appChildRoutes: Routes = [
   {path: 'login/callback', component: OktaCallbackComponent},
-  {path: 'secure', canActivate: [OktaAuthGuard], children: secureRoutes},
+  {
+    path: 'secure',
+    canActivate: [OktaAuthGuard],
+    canActivateChild: [OktaAuthGuard],
+    children: secureRoutes
+  },
   {path: '', component: PublicComponent, pathMatch: 'full'}
 ]
 

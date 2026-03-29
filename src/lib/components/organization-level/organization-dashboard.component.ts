@@ -40,7 +40,8 @@ export class OrganizationDashboardComponent {
   ]
 
   private readonly legalSettingsMenuItems: MenuItem[] = [
-    {label: 'Tax Types', icon: 'pi pi-receipt', routerLink: 'tax-types'}
+    {label: 'Tax Types', icon: 'pi pi-receipt', routerLink: 'tax-types'},
+    {label: 'Tax Rates', icon: 'pi pi-calculator', routerLink: 'tax-rates'},
   ]
 
   private readonly productSettingsMenuItems: MenuItem[] = [

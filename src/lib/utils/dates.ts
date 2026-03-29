@@ -1,3 +1,9 @@
+export const getToday = (): Date => {
+  const dateObj = new Date()
+  dateObj.setHours(0, 0, 0, 0)
+  return dateObj
+}
+
 export const toLocaleDateString = (date: string | Date | null): string => {
   if (!date) {
     return ''
@@ -9,9 +15,19 @@ export const toLocaleDateString = (date: string | Date | null): string => {
   return `${year}-${month}-${day}`
 }
 
-export const toLocaleDate = (date: string | null): Date | null => {
+export const minDateFrom = (startDate: Date | string | null | undefined): Date => {
+  const today = getToday()
+  const start = toLocaleDate(startDate)
+  if (!start) return today
+  return start > today ? start : today
+}
+
+export const toLocaleDate = (date: Date | string | null | undefined): Date | null => {
   if (!date) {
     return null
+  }
+  if (date instanceof Date) {
+    return date
   }
   const regex = /^(\d{4})-(\d{2})-(\d{2})$/
   const match = date.match(regex)

@@ -1,12 +1,11 @@
 import {Component, computed, inject, model, OnInit, output, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {applyEach, form, FormField} from '@angular/forms/signals'
+import {applyEach, form} from '@angular/forms/signals'
 import {Button} from 'primeng/button'
-import {DatePicker} from 'primeng/datepicker'
 import {TreeSelect} from 'primeng/treeselect'
 import {
-  OrgJurisdictionTaxTypeService
-} from '../../../../api/organization-level/org-jurisdiction-tax-type/org-jurisdiction-tax-type.service'
+  OrgTaxTypeService
+} from '../../../../api/organization-level/org-tax-type/org-tax-type.service'
 import {
   AvailableTaxTypesService
 } from '../../../../api/organization-level/available-tax-types/available-tax-types.service'
@@ -14,23 +13,21 @@ import {
   AvailableTaxTypesNode
 } from '../../../../api/organization-level/available-tax-types/available-tax-types.node'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
-import {OrgJurisdictionTaxTypeAddFormDefinition} from './org-jurisdiction-tax-type-add-form.definition'
+import {OrgTaxTypeAddFormDefinition} from './org-tax-type-add-form.definition'
 
 @Component({
-  selector: 'rts-org-jurisdiction-tax-type-add-form',
-  templateUrl: 'org-jurisdiction-tax-type-add-form.component.html',
+  selector: 'rts-org-tax-type-add-form',
+  templateUrl: 'org-tax-type-add-form.component.html',
   imports: [
     Button,
     TreeSelect,
     FormsModule,
-    DatePicker,
-    FormField,
     LoadingContainerComponent
   ]
 })
-export class OrgJurisdictionTaxTypeAddFormComponent implements OnInit {
+export class OrgTaxTypeAddFormComponent implements OnInit {
 
-  private readonly orgJurisdictionTaxTypeService = inject(OrgJurisdictionTaxTypeService)
+  private readonly orgJurisdictionTaxTypeService = inject(OrgTaxTypeService)
   private readonly availableTaxTypesService = inject(AvailableTaxTypesService)
 
   readonly allSaved = output<void>()
@@ -41,7 +38,7 @@ export class OrgJurisdictionTaxTypeAddFormComponent implements OnInit {
   readonly processingStatus = this.orgJurisdictionTaxTypeService.selectProcessingStatus
   readonly failureMessages = this.orgJurisdictionTaxTypeService.selectFailureMessages
   readonly orgTaxTypesLoading = this.orgJurisdictionTaxTypeService.selectLoading
-  readonly taxTypesToAdd = signal<OrgJurisdictionTaxTypeAddFormDefinition.AddRowModel[]>([])
+  readonly taxTypesToAdd = signal<OrgTaxTypeAddFormDefinition.AddRowModel[]>([])
 
   readonly canSave = computed(() =>
     this.taxTypesToAdd().length > 0
@@ -51,7 +48,7 @@ export class OrgJurisdictionTaxTypeAddFormComponent implements OnInit {
 
   readonly taxTypesToAddForm = form(
     this.taxTypesToAdd,
-    (path) => applyEach(path, OrgJurisdictionTaxTypeAddFormDefinition.rowFormSchema)
+    (path) => applyEach(path, OrgTaxTypeAddFormDefinition.rowFormSchema)
   )
 
   ngOnInit() {
@@ -65,8 +62,7 @@ export class OrgJurisdictionTaxTypeAddFormComponent implements OnInit {
       .filter(node => !alreadyAddedNodeIds.has(node.key!))
       .map(node => ({
         jurisdictionTaxTypeId: node.key!,
-        label: node.label!,
-        startDate: new Date()
+        label: node.label!
       }))
 
     this.taxTypesToAdd.update(current => [...current, ...newTaxTypes])
@@ -78,7 +74,7 @@ export class OrgJurisdictionTaxTypeAddFormComponent implements OnInit {
   }
 
   saveAll() {
-    const payload = this.taxTypesToAdd().map(OrgJurisdictionTaxTypeAddFormDefinition.convertToBackendModel)
+    const payload = this.taxTypesToAdd().map(OrgTaxTypeAddFormDefinition.convertToBackendModel)
     this.orgJurisdictionTaxTypeService.post(payload, {onSuccess: () => this.allSaved.emit()})
   }
 }

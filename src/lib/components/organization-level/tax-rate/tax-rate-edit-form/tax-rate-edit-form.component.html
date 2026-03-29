@@ -1,0 +1,28 @@
+<div class="flex flex-column gap-2 form-container">
+
+  <rts-form-field [required]="true" label="Name" for="name">
+    <input id="name" class="flex-grow-1" pInputText [formField]="editForm.name"/>
+  </rts-form-field>
+
+  <rts-form-field label="End Date" for="endDate">
+    <p-date-picker id="endDate"
+                   class="flex-grow-1"
+                   [showIcon]="true"
+                   [minDate]="endDateMin()"
+                   [formField]="editForm.endDate"
+                   placeholder="Stop applying this tax rate after this date">
+    </p-date-picker>
+  </rts-form-field>
+
+  <rts-forms-buttons [disableReset]="!editForm().dirty()"
+                     [disableSave]="editForm().invalid() || !editForm().dirty()"
+                     [hideDelete]="true"
+                     [signalForm]="editForm()"
+                     [fieldMap]="fieldMap"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (save)="save()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+
+</div>

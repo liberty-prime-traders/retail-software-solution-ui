@@ -1,7 +1,7 @@
-<div class="flex flex-column gap-4" id="org-jurisdiction-tax-types" rtsAutoStretch="org-jurisdiction-tax-types">
+<div class="flex flex-column gap-4" id="org-tax-types" rtsAutoStretch="org-tax-types">
   @if (addingIsActive()) {
     <rts-new-form-cancel-button (onCancel)="setAddingActiveFalse()"/>
-    <rts-org-jurisdiction-tax-type-add-form (allSaved)="closeAddRow()"/>
+    <rts-org-tax-type-add-form (allSaved)="closeAddRow()"/>
 
   } @else {
     <p-table [loading]="loading() && !addingIsActive()"
@@ -9,9 +9,9 @@
              dataKey="id"
              scrollHeight="flex"
              [scrollable]="true"
-             sortField="jurisdictionTaxType"
-             #orgJurisdictionTaxTypesTable
-             [globalFilterFields]="['jurisdictionTaxType']"
+             sortField="taxLabel"
+             #orgTaxTypesTable
+             [globalFilterFields]="['taxLabel']"
              (onRowExpand)="rowIsExpanded.set(true)"
              (onRowCollapse)="rowIsExpanded.set(false)"
              [value]="entities()">
@@ -20,7 +20,7 @@
         <div class="flex justify-content-between align-items-center">
           <h3 class="font-bold">Tax Types</h3>
 
-          <rts-grid-filter [dataTable]="orgJurisdictionTaxTypesTable"/>
+          <rts-grid-filter [dataTable]="orgTaxTypesTable"/>
 
           <p-button (click)="setAddingActiveTrue()"
                     [disabled]="loading() || addingIsActive()"
@@ -33,17 +33,13 @@
 
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="jurisdictionTaxType">
+          <th pSortableColumn="taxLabel">
             Tax Type
-            <p-sortIcon field="jurisdictionTaxType"/>
+            <p-sortIcon field="taxLabel"/>
           </th>
-          <th pSortableColumn="startDate">
-            Start Date
-            <p-sortIcon field="startDate"/>
-          </th>
-          <th pSortableColumn="endDate">
-            End Date
-            <p-sortIcon field="endDate"/>
+          <th pSortableColumn="status">
+            Status
+            <p-sortIcon field="status"/>
           </th>
           <th style="width: 5rem"></th>
         </tr>
@@ -51,9 +47,8 @@
 
       <ng-template pTemplate="body" let-entity let-expanded="expanded">
         <tr [ngClass]="{ 'expanded-row': expanded }">
-          <td>{{ entity?.jurisdictionTaxType | nullSafe }}</td>
-          <td>{{ entity?.startDate | nullSafe }}</td>
-          <td>{{ entity?.endDate | nullSafe }}</td>
+          <td>{{ entity?.taxLabel | nullSafe }}</td>
+          <td>{{ entity?.status | prettifyEnum }}</td>
           <td>
             <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                       rounded
@@ -67,14 +62,14 @@
 
       <ng-template pTemplate="expandedrow" let-entity>
         <tr>
-          <td colspan="4" class="filled-background">
-            <rts-org-jurisdiction-tax-type-edit-form [orgJurisdictionTaxType]="entity"/>
+          <td colspan="3" class="filled-background">
+            <rts-org-tax-type-edit-form [orgJurisdictionTaxType]="entity"/>
           </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
-        <tr rts-empty-row [colspan]="4" message="No Jurisdiction Tax Types Were Found"></tr>
+        <tr rts-empty-row [colspan]="3" message="No Jurisdiction Tax Types Were Found"></tr>
       </ng-template>
     </p-table>
   }
