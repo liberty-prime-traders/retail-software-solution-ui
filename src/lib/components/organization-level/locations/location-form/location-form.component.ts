@@ -1,68 +1,76 @@
-import {Component, computed, inject, input, OnInit} from '@angular/core'
-import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
+import {Component, effect, inject, input, OnInit, signal, untracked} from '@angular/core'
+import {FormField, form} from '@angular/forms/signals'
 import {EntityId} from '@ngrx/signals/entities'
 import {isNil} from 'lodash-es'
 import {InputText} from 'primeng/inputtext'
-import {Select} from 'primeng/select'
-import {LocationType} from '../../../../api/organization-level/location/location-type.enum'
-import {Location} from '../../../../api/organization-level/location/location.model'
-import {LocationService} from '../../../../api/organization-level/location/location.service'
-import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
-import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
-import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {Location} from 'lib/api/organization-level/location/location.model'
+import {LocationService} from 'lib/api/organization-level/location/location.service'
+import {FormButtonsComponent} from 'lib/components/reusable/form-buttons/form-buttons.component'
+import {FormFieldComponent} from 'lib/components/reusable/form-field/form-field.component'
+import {LocationFormDefinition} from 'lib/components/organization-level/locations/location-form.definition'
 
 @Component({
+  standalone: true,
   selector: 'rts-location-form',
-  templateUrl: 'location-form.component.html',
+  templateUrl: './location-form.component.html',
   imports: [
     FormButtonsComponent,
-    FormsModule,
     InputText,
-    ReactiveFormsModule,
-    EnumToDropdownPipe,
-    Select,
-    FormFieldComponent
+    FormFieldComponent,
+    FormField
   ]
 })
 export class LocationFormComponent implements OnInit {
-  readonly location = input<Location>()
-  readonly organizationId = input<EntityId>()
-
   private readonly locationService = inject(LocationService)
-  private readonly formBuilder = inject(FormBuilder)
 
-  readonly locationForm = computed(() => this.formBuilder.nonNullable.group({
-    id: this.location()?.id,
-    name: [this.location()?.name, Validators.required],
-    description: this.location()?.description,
-    locationType: [this.location()?.locationType, Validators.required]
-  }))
+  readonly location = input<Location>()
+  readonly organizationId = input<EntityId | undefined>()
 
-  readonly locationType = LocationType
   readonly processingStatus = this.locationService.selectProcessingStatus
   readonly failureMessages = this.locationService.selectFailureMessages
 
-  ngOnInit() {
-    this.locationService.resetProcessingStatus()
+  readonly locationFormModel = signal<LocationFormDefinition.LocationFormModel>(
+    LocationFormDefinition.defaultLocationFormModel
+  )
+
+  readonly locationForm = form(
+    this.locationFormModel,
+    LocationFormDefinition.locationFormSchema
+  )
+
+  readonly locationFieldMap = LocationFormDefinition.fieldMap
+
+  constructor() {
+    effect(() => {
+      const current = this.location()
+      untracked(() => {
+        this.locationFormModel.set(
+          LocationFormDefinition.convertToFormModel(current)
+        )
+      })
+    })
   }
 
+  ngOnInit() { this.locationService.resetProcessingStatus() }
+
   resetForm() {
-    this.locationForm().reset(this.location())
+    this.locationFormModel.set(
+      LocationFormDefinition.convertToFormModel(this.location())
+    )
   }
 
   upsertLocation() {
     const updatedLocation: Partial<Location> = {
-      ...this.locationForm().getRawValue(),
+      ...LocationFormDefinition.convertToBackendModel(this.locationFormModel()),
       organizationId: this.organizationId()
     }
-    if (isNil(updatedLocation.id)) {
+
+    if (isNil(updatedLocation.id) || updatedLocation.id === '') {
       this.locationService.post(updatedLocation)
     } else {
       this.locationService.put(updatedLocation)
     }
   }
 
-  deleteLocation() {
-    this.locationService.delete(this.location()?.id)
-  }
+  deleteLocation() { this.locationService.delete(this.location()?.id) }
 }

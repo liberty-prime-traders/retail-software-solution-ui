@@ -62,7 +62,7 @@ export class JobTitleFormComponent implements OnInit {
   upsertJobTitle() {
     const updatedJobTitle = JobTitleFormDefinition.convertToBackendModel(this.jobTitleFormModel())
 
-    if (isNil(updatedJobTitle.id))  {
+    if (isNil(updatedJobTitle.id)) {
       this.jobTitleService.post(updatedJobTitle)
     } else {
       this.jobTitleService.put(updatedJobTitle)
