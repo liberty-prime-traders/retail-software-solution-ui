@@ -1,15 +1,17 @@
-<form [formGroup]="unitGroupForm()" class="flex flex-column gap-2 filled-background">
+<form class="flex flex-column gap-2 filled-background">
   <rts-form-field [required]="true" label="Name" for="name">
-    <input id="name" pInputText formControlName="name">
+    <input id="name" pInputText [formField]="unitGroupForm.name">
   </rts-form-field>
 
   <rts-form-field label="Description" for="description">
-    <input id="description" pInputText formControlName="description">
+    <input id="description" pInputText [formField]="unitGroupForm.description">
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!unitGroupForm().dirty"
-                     [disableSave]="!unitGroupForm().valid || !unitGroupForm().dirty"
+  <rts-forms-buttons [disableReset]="!unitGroupForm().dirty()"
+                     [disableSave]="unitGroupForm().invalid() || !unitGroupForm().dirty()"
                      [hideDelete]="!unitGroup()?.id"
+                     [signalForm]="unitGroupForm()"
+                     [fieldMap]="unitGroupFieldMap"
                      [processingStatus]="processingStatus()"
                      [failureMessages]="failureMessages()"
                      (delete)="deleteUnitGroup()"
