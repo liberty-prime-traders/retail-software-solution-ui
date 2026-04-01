@@ -1,17 +1,15 @@
-import {Component, effect, inject, input, OnInit, signal, untracked} from '@angular/core'
+import {Component, effect, inject, input, signal, untracked} from '@angular/core'
 import {FormField, form} from '@angular/forms/signals'
 import {PaymentOption} from '../../../../api/organization-level/payment-option/payment-option.model.'
 import {PaymentOptionService} from '../../../../api/organization-level/payment-option/payment-option.service'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
-import {isNil} from 'lodash-es'
 import {InputText} from 'primeng/inputtext'
 import {PaymentOptionFormDefinition} from './payment-option-form.definition'
 
 @Component({
-  standalone: true,
   selector: 'rts-payment-option-form',
-  templateUrl: './payment-option-form.component.html',
+  templateUrl: 'payment-option-form.component.html',
   imports: [
     InputText,
     FormButtonsComponent,
@@ -19,7 +17,7 @@ import {PaymentOptionFormDefinition} from './payment-option-form.definition'
     FormField
   ]
 })
-export class PaymentOptionFormComponent implements OnInit {
+export class PaymentOptionFormComponent {
   readonly paymentOption = input<PaymentOption>()
 
   private readonly paymentOptionService = inject(PaymentOptionService)
@@ -45,9 +43,6 @@ export class PaymentOptionFormComponent implements OnInit {
         )
       })
     })
-  }
-
-  ngOnInit() {
     this.paymentOptionService.resetProcessingStatus()
   }
 
@@ -61,7 +56,7 @@ export class PaymentOptionFormComponent implements OnInit {
     const updatedPaymentOption = PaymentOptionFormDefinition.convertToBackendModel(
       this.paymentOptionFormModel()
     )
-    if (isNil(updatedPaymentOption.id) || updatedPaymentOption.id === '') {
+    if (!updatedPaymentOption.id) {
       this.paymentOptionService.post(updatedPaymentOption)
     } else {
       this.paymentOptionService.put(updatedPaymentOption)

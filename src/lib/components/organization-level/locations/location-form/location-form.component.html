@@ -3,8 +3,13 @@
     <input id="name" pInputText [formField]="locationForm.name">
   </rts-form-field>
 
-  <rts-form-field label="Location Type" for="locationType">
-    <input id="locationType" pInputText [formField]="locationForm.locationType">
+  <rts-form-field [required]="true" label="Location Type" for="locationType">
+    <p-select id="locationType"
+              class="flex-grow-1"
+              [options]="locationType | enumToDropdown"
+              [formField]="locationForm.locationType"
+              placeholder="Select location type">
+    </p-select>
   </rts-form-field>
 
   <rts-form-field label="Description" for="description">
@@ -12,15 +17,15 @@
   </rts-form-field>
 
   <rts-forms-buttons
-    [disableReset]="!locationForm().dirty()"
-    [disableSave]="locationForm().invalid() || !locationForm().dirty()"
-    [hideDelete]="!location()?.id"
-    [processingStatus]="processingStatus()"
-    [failureMessages]="failureMessages()"
-    [signalForm]="locationForm()"
-    [fieldMap]="locationFieldMap"
-    (delete)="deleteLocation()"
-    (save)="upsertLocation()"
-    (resetAction)="resetForm()">
+      [disableReset]="!locationForm().dirty()"
+      [disableSave]="locationForm().invalid() || !locationForm().dirty()"
+      [hideDelete]="!location()?.id"
+      [processingStatus]="processingStatus()"
+      [failureMessages]="failureMessages()"
+      [signalForm]="locationForm()"
+      [fieldMap]="locationFieldMap"
+      (delete)="deleteLocation()"
+      (save)="upsertLocation()"
+      (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>

@@ -39,9 +39,9 @@ export namespace LocationFormDefinition {
   })
 
   export const convertToBackendModel = (formValue: LocationFormModel): Partial<Location> => ({
-    id: formValue.id === '' ? undefined : formValue.id,
+    id: formValue.id || undefined,
     name: formValue.name,
-    locationType: formValue.locationType === '' ? undefined : formValue.locationType,
+    locationType: formValue.locationType || undefined,
     description: formValue.description
   })
 }

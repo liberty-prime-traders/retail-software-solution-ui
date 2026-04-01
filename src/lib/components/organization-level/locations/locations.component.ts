@@ -1,10 +1,11 @@
 import {NgClass} from '@angular/common'
-import {Component, computed, inject, model, OnInit} from '@angular/core'
+import {Component, computed, inject, model} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Location} from '../../../api/organization-level/location/location.model'
 import {LocationService} from '../../../api/organization-level/location/location.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
+import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {SessionContextService} from '../../../utils/services/session-context.service'
 import {AddRowComponent} from '../../reusable/add-row/add-row.component'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
@@ -14,10 +15,11 @@ import {LocationFormComponent} from './location-form/location-form.component'
 
 @Component({
   selector: 'rts-locations',
-  templateUrl: './locations.component.html',
+  templateUrl: 'locations.component.html',
   imports: [
     TableModule,
     NullSafePipe,
+    PrettifyEnumPipe,
     Button,
     LocationFormComponent,
     AddRowComponent,
@@ -26,7 +28,7 @@ import {LocationFormComponent} from './location-form/location-form.component'
     NgClass
   ]
 })
-export class LocationsComponent extends GridWithAddButtonComponent<LocationService> implements OnInit {
+export class LocationsComponent extends GridWithAddButtonComponent<LocationService> {
   private readonly locationService = inject(LocationService)
   private readonly sessionContext = inject(SessionContextService)
 
