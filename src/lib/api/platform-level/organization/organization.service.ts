@@ -10,17 +10,14 @@ import {OrganizationStore} from './organization.store'
 @Injectable({providedIn: 'root'})
 export class OrganizationService extends BaseService<Organization> {
   private readonly localHttpClient = inject(HttpClient)
-  private readonly organizationStore: OrganizationStore
-
-  constructor() {
-    const store = inject(OrganizationStore)
+ 
+  constructor(protected override readonly store: OrganizationStore) {
     super(store)
-    this.organizationStore = store
   }
 
   attemptLaunch$(domainId: string): Observable<OrganizationLaunchResponse> {
     return this.localHttpClient.post<OrganizationLaunchResponse>(
-      `/secured/${this.organizationStore.basePath}/launch/${domainId}`,
+      `/secured/${this.store.basePath}/launch/${domainId}`,
       {}
     ).pipe(
       first(),
