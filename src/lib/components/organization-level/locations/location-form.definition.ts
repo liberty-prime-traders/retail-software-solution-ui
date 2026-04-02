@@ -1,7 +1,7 @@
 import {required, schema} from '@angular/forms/signals'
 import {EntityId} from '@ngrx/signals/entities'
-import {Location} from 'lib/api/organization-level/location/location.model'
-import {LocationType} from 'lib/api/organization-level/location/location-type.enum'
+import {Location} from '../../../api/organization-level/location/location.model'
+import {LocationType} from '../../../api/organization-level/location/location-type.enum'
 
 export namespace LocationFormDefinition {
   export interface LocationFormModel {

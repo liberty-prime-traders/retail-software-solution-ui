@@ -3,15 +3,16 @@
     <input id="value" pInputText [formField]="jobTitleForm.value">
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!jobTitleForm().dirty()"
-                     [disableSave]="jobTitleForm().invalid() || !jobTitleForm().dirty()"
-                     [hideDelete]="!jobTitle()?.id"
-                     [processingStatus]="processingStatus()"
-                     [failureMessages]="failureMessages()"
-                     (delete)="deleteJobTitle()"
-                     [signalForm]="jobTitleForm()"
-                     [fieldMap]="jobTitleFieldMap"
-                     (save)="upsertJobTitle()"
-                     (resetAction)="resetForm()">
+  <rts-forms-buttons
+      [disableReset]="!jobTitleForm().dirty()"
+      [disableSave]="jobTitleForm().invalid() || !jobTitleForm().dirty()"
+      [hideDelete]="!jobTitle()?.id"
+      [processingStatus]="processingStatus()"
+      [failureMessages]="failureMessages()"
+      [signalForm]="jobTitleForm()"
+      [fieldMap]="jobTitleFieldMap"
+      (delete)="deleteJobTitle()"
+      (save)="upsertJobTitle()"
+      (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>

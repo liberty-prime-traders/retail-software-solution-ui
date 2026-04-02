@@ -7,15 +7,16 @@
     <input id="description" pInputText [formField]="productCategoryForm.description">
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!productCategoryForm().dirty()"
-                     [disableSave]="productCategoryForm().invalid() || !productCategoryForm().dirty()"
-                     [hideDelete]="!productCategory()?.id"
-                     [signalForm]="productCategoryForm()"
-                     [fieldMap]="productCategoryFieldMap"
-                     [processingStatus]="processingStatus()"
-                     [failureMessages]="failureMessages()"
-                     (delete)="deleteProductCategory()"
-                     (save)="upsertProductCategory()"
-                     (resetAction)="resetForm()">
+  <rts-forms-buttons
+      [disableReset]="!productCategoryForm().dirty()"
+      [disableSave]="productCategoryForm().invalid() || !productCategoryForm().dirty()"
+      [hideDelete]="!productCategory()?.id"
+      [signalForm]="productCategoryForm()"
+      [fieldMap]="productCategoryFieldMap"
+      [processingStatus]="processingStatus()"
+      [failureMessages]="failureMessages()"
+      (delete)="deleteProductCategory()"
+      (save)="upsertProductCategory()"
+      (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>

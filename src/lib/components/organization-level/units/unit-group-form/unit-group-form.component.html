@@ -7,15 +7,16 @@
     <input id="description" pInputText [formField]="unitGroupForm.description">
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!unitGroupForm().dirty()"
-                     [disableSave]="unitGroupForm().invalid() || !unitGroupForm().dirty()"
-                     [hideDelete]="!unitGroup()?.id"
-                     [signalForm]="unitGroupForm()"
-                     [fieldMap]="unitGroupFieldMap"
-                     [processingStatus]="processingStatus()"
-                     [failureMessages]="failureMessages()"
-                     (delete)="deleteUnitGroup()"
-                     (save)="upsertUnitGroup()"
-                     (resetAction)="resetForm()">
+  <rts-forms-buttons
+      [disableReset]="!unitGroupForm().dirty()"
+      [disableSave]="unitGroupForm().invalid() || !unitGroupForm().dirty()"
+      [hideDelete]="!unitGroup()?.id"
+      [signalForm]="unitGroupForm()"
+      [fieldMap]="unitGroupFieldMap"
+      [processingStatus]="processingStatus()"
+      [failureMessages]="failureMessages()"
+      (delete)="deleteUnitGroup()"
+      (save)="upsertUnitGroup()"
+      (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>

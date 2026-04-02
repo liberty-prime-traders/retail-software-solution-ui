@@ -10,9 +10,9 @@ import {OrganizationStore} from './organization.store'
 @Injectable({providedIn: 'root'})
 export class OrganizationService extends BaseService<Organization> {
   private readonly localHttpClient = inject(HttpClient)
- 
-  constructor(protected override readonly store: OrganizationStore) {
-    super(store)
+
+  constructor() {
+    super(inject(OrganizationStore))
   }
 
   attemptLaunch$(domainId: string): Observable<OrganizationLaunchResponse> {

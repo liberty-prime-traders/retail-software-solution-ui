@@ -48,7 +48,6 @@ export class ProductCategoryFormComponent extends BaseFormComponent<ProductCateg
         )
       })
     })
-    this.productCategoryService.resetProcessingStatus()
   }
 
   resetForm() {

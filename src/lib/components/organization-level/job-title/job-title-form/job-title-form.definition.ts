@@ -28,7 +28,7 @@ export namespace JobTitleFormDefinition {
   })
 
   export const convertToBackendModel = (formValue: JobTitleFormModel): Partial<JobTitle> => ({
-    id: formValue.id,
+    id: formValue.id || undefined,
     value: formValue.value
   })
 }

@@ -1,5 +1,4 @@
-import {Component, effect, inject, input, OnInit, signal, untracked} from '@angular/core'
-import {isNil} from 'lodash-es'
+import {Component, effect, inject, input, signal, untracked} from '@angular/core'
 import {InputText} from 'primeng/inputtext'
 import {JobTitle} from '../../../../api/organization-level/jobtitle/jobtitle.model'
 import {JobTitleService} from '../../../../api/organization-level/jobtitle/jobtitle.service'
@@ -9,7 +8,6 @@ import {FormField, form} from '@angular/forms/signals'
 import {JobTitleFormDefinition} from './job-title-form.definition'
 
 @Component({
-  standalone: true,
   selector: 'rts-job-title-form',
   templateUrl: 'job-title-form.component.html',
   imports: [
@@ -19,7 +17,7 @@ import {JobTitleFormDefinition} from './job-title-form.definition'
     FormField
   ]
 })
-export class JobTitleFormComponent implements OnInit {
+export class JobTitleFormComponent {
   private readonly jobTitleService = inject(JobTitleService)
 
   readonly jobTitle = input<JobTitle>()
@@ -47,9 +45,6 @@ export class JobTitleFormComponent implements OnInit {
         )
       })
     })
-  }
-
-  ngOnInit() {
     this.jobTitleService.resetProcessingStatus()
   }
 
@@ -62,7 +57,7 @@ export class JobTitleFormComponent implements OnInit {
   upsertJobTitle() {
     const updatedJobTitle = JobTitleFormDefinition.convertToBackendModel(this.jobTitleFormModel())
 
-    if (isNil(updatedJobTitle.id)) {
+    if (!updatedJobTitle.id) {
       this.jobTitleService.post(updatedJobTitle)
     } else {
       this.jobTitleService.put(updatedJobTitle)

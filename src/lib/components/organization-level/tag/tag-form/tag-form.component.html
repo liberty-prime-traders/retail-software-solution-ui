@@ -15,15 +15,16 @@
     <input id="description" pInputText [formField]="tagForm.description">
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!tagForm().dirty()"
-                     [disableSave]="tagForm().invalid() || !tagForm().dirty()"
-                     [hideDelete]="!tag()?.id"
-                     [signalForm]="tagForm()"
-                     [fieldMap]="tagFieldMap"
-                     [processingStatus]="processingStatus()"
-                     [failureMessages]="failureMessages()"
-                     (delete)="deleteTag()"
-                     (save)="upsertTag()"
-                     (resetAction)="resetForm()">
+  <rts-forms-buttons
+      [disableReset]="!tagForm().dirty()"
+      [disableSave]="tagForm().invalid() || !tagForm().dirty()"
+      [hideDelete]="!tag()?.id"
+      [signalForm]="tagForm()"
+      [fieldMap]="tagFieldMap"
+      [processingStatus]="processingStatus()"
+      [failureMessages]="failureMessages()"
+      (delete)="deleteTag()"
+      (save)="upsertTag()"
+      (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>
