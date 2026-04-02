@@ -1,10 +1,10 @@
 import {Component, computed, effect, inject, OnInit, signal} from '@angular/core'
-import {form, FormField} from '@angular/forms/signals'
+import {FormField, form} from '@angular/forms/signals'
 import {ActivatedRoute, Router, RouterLink} from '@angular/router'
 import {BlockUI} from 'primeng/blockui'
-import {ButtonModule} from 'primeng/button'
-import {CardModule} from 'primeng/card'
-import {InputTextModule} from 'primeng/inputtext'
+import {Button} from 'primeng/button'
+import {Card} from 'primeng/card'
+import {InputText} from 'primeng/inputtext'
 import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
 import {ReservedSubdomainService} from '../../../api/platform-level/reserved-subdomain/reserved-subdomain.service'
 import {SessionContextService} from '../../../utils/services/session-context.service'
@@ -18,14 +18,14 @@ import {CreateOrganizationFormDefinition} from './create-organization-form.defin
   selector: 'rts-create-organization',
   templateUrl: 'create-organization.component.html',
   imports: [
-    ButtonModule,
-    InputTextModule,
-    CardModule,
+    Button,
+    InputText,
+    Card,
     FormButtonsComponent,
     FormFieldComponent,
     RouterLink,
     BlockUI,
-    FormField,
+    FormField
   ]
 })
 export class CreateOrganizationComponent implements OnInit {
@@ -36,15 +36,18 @@ export class CreateOrganizationComponent implements OnInit {
   private readonly sessionContextService = inject(SessionContextService)
 
   readonly FormFieldDirection = FormFieldDirection
-  readonly formFields = CreateOrganizationFormDefinition.fieldMap
+  readonly organizationFieldMap = CreateOrganizationFormDefinition.fieldMap
 
   readonly requestedSubdomain = signal<string | null>(null)
 
-  readonly formValue = signal<CreateOrganizationFormDefinition.CreateOrganizationFormModel>(
+  readonly organizationFormModel = signal<CreateOrganizationFormDefinition.CreateOrganizationFormModel>(
     CreateOrganizationFormDefinition.defaultFormModel
   )
 
-  readonly organizationForm = form(this.formValue, CreateOrganizationFormDefinition.formSchema)
+  readonly organizationForm = form(
+    this.organizationFormModel,
+    CreateOrganizationFormDefinition.formSchema
+  )
 
   readonly organizationProcessingStatus = this.organizationService.selectProcessingStatus
   readonly organizationIsLoading = this.organizationService.selectLoading
@@ -54,18 +57,30 @@ export class CreateOrganizationComponent implements OnInit {
   readonly reservedSubdomainIsLoading = this.reservedSubdomainService.selectLoading
   readonly reservedSubdomainFailureMessages = this.reservedSubdomainService.selectFailureMessages
 
-  readonly domainVerified = computed(() => this.reservedSubdomainProcessingStatus() === ProcessingStatus.SUCCESS)
-  readonly domainVerificationFailed = computed(() => this.reservedSubdomainProcessingStatus() === ProcessingStatus.FAILURE)
-  readonly domainWasModifiedByBackend = computed(() =>
-    this.requestedSubdomain() !== null && this.requestedSubdomain() !== this.formValue().subdomain
+  readonly domainVerified = computed(
+    () => this.reservedSubdomainProcessingStatus() === ProcessingStatus.SUCCESS
   )
-  readonly canVerifyDomain = computed(() => !this.reservedSubdomainIsLoading() && !!this.formValue().subdomain)
+  readonly domainVerificationFailed = computed(
+    () => this.reservedSubdomainProcessingStatus() === ProcessingStatus.FAILURE
+  )
+  readonly domainWasModifiedByBackend = computed(() =>
+    this.requestedSubdomain() !== null
+    && this.requestedSubdomain() !== this.organizationFormModel().subdomain
+  )
+  readonly canVerifyDomain = computed(
+    () =>
+      !this.reservedSubdomainIsLoading()
+      && Boolean(this.organizationFormModel().subdomain)
+  )
 
   constructor() {
     effect(() => {
       if (this.reservedSubdomainProcessingStatus() === ProcessingStatus.SUCCESS) {
         const reservedDomain = this.reservedSubdomainService.selectFirst()
-        this.formValue.update(v => ({...v, subdomain: reservedDomain?.subdomain ?? v.subdomain}))
+        this.organizationFormModel.update(v => ({
+          ...v,
+          subdomain: reservedDomain?.subdomain ?? v.subdomain
+        }))
       }
 
       if (this.organizationProcessingStatus() === ProcessingStatus.SUCCESS) {
@@ -82,17 +97,20 @@ export class CreateOrganizationComponent implements OnInit {
   }
 
   resetForm() {
-    this.organizationForm().reset(CreateOrganizationFormDefinition.defaultFormModel)
+    this.organizationFormModel.set(CreateOrganizationFormDefinition.defaultFormModel)
+    this.resetDomainVerification()
   }
 
   verifyDomain() {
-    this.requestedSubdomain.set(this.formValue().subdomain)
-    this.reservedSubdomainService.verifySubdomainAvailability(this.formValue().subdomain)
+    this.requestedSubdomain.set(this.organizationFormModel().subdomain)
+    this.reservedSubdomainService.verifySubdomainAvailability(this.organizationFormModel().subdomain)
     this.organizationService.resetProcessingStatus()
   }
 
   createOrganization() {
-    this.organizationService.post(CreateOrganizationFormDefinition.convertToBackendModel(this.formValue()))
+    this.organizationService.post(
+      CreateOrganizationFormDefinition.convertToBackendModel(this.organizationFormModel())
+    )
   }
 
   cancel() {
