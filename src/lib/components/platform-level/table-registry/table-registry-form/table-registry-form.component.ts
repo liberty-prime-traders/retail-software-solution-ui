@@ -1,54 +1,70 @@
-import {Component, computed, inject, input} from '@angular/core'
-import {NonNullableFormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
-import {InputTextModule} from 'primeng/inputtext'
+import {Component, effect, inject, input, signal, untracked} from '@angular/core'
+import {FormField, form} from '@angular/forms/signals'
+import {InputText} from 'primeng/inputtext'
 import {ToggleSwitch} from 'primeng/toggleswitch'
 import {TableRegistry} from '../../../../api/platform-level/table-registry/table-registry.model'
 import {TableRegistryService} from '../../../../api/platform-level/table-registry/table-registry.service'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {TableRegistryFormDefinition} from './table-registry-form.definition'
 
 @Component({
   selector: 'rts-table-registry-form',
   templateUrl: 'table-registry-form.component.html',
   imports: [
-    ReactiveFormsModule,
-    InputTextModule,
-    FormFieldComponent,
     FormButtonsComponent,
+    FormFieldComponent,
+    FormField,
+    InputText,
     ToggleSwitch
-  ],
-  standalone: true
+  ]
 })
-export class TableRegistryFormComponent extends BaseFormComponent<TableRegistryService>{
+export class TableRegistryFormComponent extends BaseFormComponent<TableRegistryService> {
   readonly registry = input.required<TableRegistry>()
+
   private readonly tableRegistryService = inject(TableRegistryService)
-  private readonly formBuilder = inject(NonNullableFormBuilder)
   protected readonly apiService = this.tableRegistryService
 
-  readonly form = computed(() => this.formBuilder.group({
-    id: [this.registry().id],
-    displayName: [this.registry().displayName, Validators.required],
-    defaultPrefix: [this.registry().defaultPrefix ?? '', Validators.required],
-    description: [this.registry().description ?? '', Validators.required],
-    userFacing: [this.registry().userFacing]
-  }))
+  readonly tableRegistryFormModel = signal<TableRegistryFormDefinition.TableRegistryFormModel>(
+    TableRegistryFormDefinition.defaultTableRegistryFormModel
+  )
+  readonly tableRegistryForm = form(
+    this.tableRegistryFormModel,
+    TableRegistryFormDefinition.tableRegistryFormSchema
+  )
+  readonly tableRegistryFieldMap = TableRegistryFormDefinition.fieldMap
 
-  upsert() {
-    const value = this.form().getRawValue()
-    if (value.id) {
-      this.tableRegistryService.put(value as any)
+  constructor() {
+    super()
+    effect(() => {
+      const current = this.registry()
+      untracked(() => {
+        this.tableRegistryFormModel.set(
+          TableRegistryFormDefinition.convertToFormModel(current)
+        )
+      })
+    })
+  }
+
+  resetForm() {
+    this.tableRegistryFormModel.set(
+      TableRegistryFormDefinition.convertToFormModel(this.registry())
+    )
+  }
+
+  upsertRegistry() {
+    const updated = TableRegistryFormDefinition.convertToBackendModel(
+      this.tableRegistryFormModel()
+    )
+    if (!updated.id) {
+      this.tableRegistryService.post(updated)
     } else {
-      this.tableRegistryService.post(value as any)
+      this.tableRegistryService.put(updated)
     }
   }
 
-  delete() {
-    const id = this.registry().id
-    this.tableRegistryService.delete(id)
-  }
-
-  reset() {
-    this.form().reset()
+  deleteRegistry() {
+    this.tableRegistryService.delete(this.registry().id)
   }
 }

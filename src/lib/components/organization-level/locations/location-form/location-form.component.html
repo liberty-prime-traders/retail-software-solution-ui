@@ -1,23 +1,31 @@
-<form [formGroup]="locationForm()" class="flex flex-column gap-2">
-  <rts-form-field label="Name" for="name">
-    <input id="name" pInputText formControlName="name">
+<form class="flex flex-column gap-2">
+  <rts-form-field [required]="true" label="Name" for="name">
+    <input id="name" pInputText [formField]="locationForm.name">
   </rts-form-field>
 
-  <rts-form-field label="Location Type" for="locationType">
-    <p-select id="locationType" formControlName="locationType" [options]="locationType | enumToDropdown"/>
+  <rts-form-field [required]="true" label="Location Type" for="locationType">
+    <p-select id="locationType"
+              class="flex-grow-1"
+              [options]="locationType | enumToDropdown"
+              [formField]="locationForm.locationType"
+              placeholder="Select location type">
+    </p-select>
   </rts-form-field>
 
   <rts-form-field label="Description" for="description">
-    <input id="description" pInputText formControlName="description">
+    <input id="description" pInputText [formField]="locationForm.description">
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!locationForm().dirty"
-                     [disableSave]="!locationForm().valid || !locationForm().dirty"
-                     [hideDelete]="!location()?.id"
-                     [processingStatus]="processingStatus()"
-                     [failureMessages]="failureMessages()"
-                     (delete)="deleteLocation()"
-                     (save)="upsertLocation()"
-                     (resetAction)="resetForm()">
+  <rts-forms-buttons
+      [disableReset]="!locationForm().dirty()"
+      [disableSave]="locationForm().invalid() || !locationForm().dirty()"
+      [hideDelete]="!location()?.id"
+      [processingStatus]="processingStatus()"
+      [failureMessages]="failureMessages()"
+      [signalForm]="locationForm()"
+      [fieldMap]="locationFieldMap"
+      (delete)="deleteLocation()"
+      (save)="upsertLocation()"
+      (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>

@@ -38,7 +38,7 @@
           @if (domainWasModifiedByBackend()) {
             <div class="text-sm text-yellow-500 mt-1">
               <i class="pi pi-exclamation-circle"></i>
-              Domain updated from <b>{{requestedSubdomain()}}</b> to <b>{{formValue().subdomain}}</b>
+              Domain updated from <b>{{requestedSubdomain()}}</b> to <b>{{organizationFormModel().subdomain}}</b>
             </div>
           }
 
@@ -68,11 +68,11 @@
                   (click)="cancel()">
         </p-button>
 
-        <rts-forms-buttons [disableReset]="!organizationForm().dirty"
-                           [disableSave]="organizationForm().invalid() || !organizationForm().dirty"
+        <rts-forms-buttons [disableReset]="!organizationForm().dirty()"
+                           [disableSave]="organizationForm().invalid() || !organizationForm().dirty()"
                            [hideReset]="true"
                            [hideDelete]="true"
-                           [fieldMap]="formFields"
+                           [fieldMap]="organizationFieldMap"
                            [signalForm]="organizationForm()"
                            [processingStatus]="organizationProcessingStatus()"
                            [failureMessages]="organizationFailureMessages()"

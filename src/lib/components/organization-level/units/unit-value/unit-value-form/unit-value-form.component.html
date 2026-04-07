@@ -1,37 +1,43 @@
-<form [formGroup]="unitValueForm()" class="flex flex-column gap-2">
+<form class="flex flex-column gap-2">
   <rts-form-field [required]="true" label="Name" for="name">
-    <input id="name" pInputText formControlName="name">
+    <input id="name" pInputText [formField]="unitValueForm.name">
   </rts-form-field>
 
   <rts-form-field [required]="true" label="Code" for="code">
-    <input id="code" pInputText formControlName="code">
+    <input id="code" pInputText [formField]="unitValueForm.code">
   </rts-form-field>
 
   <rts-form-field label="Description" for="description">
-    <input id="description" pInputText formControlName="description">
+    <input id="description" pInputText [formField]="unitValueForm.description">
   </rts-form-field>
 
-  <rts-form-field label="Base Unit" [required]="conversionFactor.value !== null" for="baseUnit">
+  <rts-form-field label="Base Unit" [required]="baseUnitFieldRequired()" for="baseUnit">
     <p-select id="baseUnit"
-              formControlName="baseUnit"
-              #baseUnit
               showClear="true"
               optionValue="id"
               optionLabel="name"
-              [options]="baseUnitOptions()"/>
+              [options]="baseUnitOptions()"
+              [formField]="unitValueForm.baseUnit">
+    </p-select>
   </rts-form-field>
 
-  <rts-form-field label="Multiplier" [required]="baseUnit.selectedOption" for="conversionFactor">
-    <p-inputNumber id="conversionFactor" #conversionFactor formControlName="conversionFactor" [maxFractionDigits]="3"/>
+  <rts-form-field label="Multiplier" [required]="conversionFieldRequired()" for="conversionFactor">
+    <p-inputNumber id="conversionFactor"
+                   [maxFractionDigits]="3"
+                   [formField]="unitValueForm.conversionFactor">
+    </p-inputNumber>
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!unitValueForm().dirty"
-                     [disableSave]="!unitValueForm().valid || !unitValueForm().dirty"
-                     [hideDelete]="!unitValue()?.id"
-                     [processingStatus]="processingStatus()"
-                     [failureMessages]="failureMessages()"
-                     (delete)="deleteUnitValue()"
-                     (save)="upsertUnitValue()"
-                     (resetAction)="resetForm()">
+  <rts-forms-buttons
+      [disableReset]="!unitValueForm().dirty()"
+      [disableSave]="unitValueForm().invalid() || !baseUnitConversionValid() || !unitValueForm().dirty()"
+      [hideDelete]="!unitValue()?.id"
+      [signalForm]="unitValueForm()"
+      [fieldMap]="unitValueFieldMap"
+      [processingStatus]="processingStatus()"
+      [failureMessages]="failureMessages()"
+      (delete)="deleteUnitValue()"
+      (save)="upsertUnitValue()"
+      (resetAction)="resetForm()">
   </rts-forms-buttons>
 </form>

@@ -1,27 +1,30 @@
-<form [formGroup]="form()" class="flex flex-column gap-2">
+<form class="flex flex-column gap-2">
   <rts-form-field [required]="true" label="Display Name" for="displayName">
-    <input id="displayName" pInputText formControlName="displayName">
+    <input id="displayName" pInputText [formField]="tableRegistryForm.displayName">
   </rts-form-field>
 
   <rts-form-field label="Default Prefix" for="defaultPrefix" [required]="true">
-    <input id="defaultPrefix" pInputText formControlName="defaultPrefix">
+    <input id="defaultPrefix" pInputText [formField]="tableRegistryForm.defaultPrefix">
   </rts-form-field>
 
   <rts-form-field label="User Facing" for="userFacing">
-    <p-toggle-switch id="userFacing" formControlName="userFacing" style="width: 40px"/>
+    <p-toggle-switch id="userFacing" [formField]="tableRegistryForm.userFacing" style="width: 40px"/>
   </rts-form-field>
 
   <rts-form-field label="Description" for="description" [required]="true">
-    <textarea id="description" class="w-full" pInputText formControlName="description"></textarea>
+    <textarea id="description" class="w-full" pInputText [formField]="tableRegistryForm.description"></textarea>
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!form().dirty"
-                     [disableSave]="!form().valid || !form().dirty"
-                     [hideDelete]="!registry().id"
-                     [processingStatus]="processingStatus()"
-                     [failureMessages]="failureMessages()"
-                     (resetAction)="reset()"
-                     (save)="upsert()"
-                     (delete)="delete()">
+  <rts-forms-buttons
+      [disableReset]="!tableRegistryForm().dirty()"
+      [disableSave]="tableRegistryForm().invalid() || !tableRegistryForm().dirty()"
+      [hideDelete]="!registry().id"
+      [signalForm]="tableRegistryForm()"
+      [fieldMap]="tableRegistryFieldMap"
+      [processingStatus]="processingStatus()"
+      [failureMessages]="failureMessages()"
+      (resetAction)="resetForm()"
+      (save)="upsertRegistry()"
+      (delete)="deleteRegistry()">
   </rts-forms-buttons>
 </form>

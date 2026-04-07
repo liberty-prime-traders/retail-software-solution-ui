@@ -13,14 +13,14 @@ export namespace CreateOrganizationFormDefinition {
     ['name', 'Name'],
     ['description', 'Description'],
     ['subdomain', 'Domain'],
-    ['passCode', 'Pass Code'],
+    ['passCode', 'Pass Code']
   ])
 
   export const defaultFormModel: CreateOrganizationFormModel = {
     name: '',
     description: '',
     subdomain: '',
-    passCode: '',
+    passCode: ''
   }
 
   export const formSchema = schema<CreateOrganizationFormModel>((path) => {
@@ -30,8 +30,8 @@ export namespace CreateOrganizationFormDefinition {
 
     const uuidSegment = '[0-9a-fA-F]'
     pattern(path.passCode, new RegExp(
-        `^${uuidSegment}{8}-${uuidSegment}{4}-${uuidSegment}{4}-${uuidSegment}{4}-${uuidSegment}{12}$`),
-      {message: 'Pass Code must be a valid UUID'}
+      // eslint-disable-next-line max-len
+      `^${uuidSegment}{8}-${uuidSegment}{4}-${uuidSegment}{4}-${uuidSegment}{4}-${uuidSegment}{12}$`), {message: 'Pass Code must be a valid UUID'}
     )
   })
 
@@ -39,6 +39,6 @@ export namespace CreateOrganizationFormDefinition {
     name: formValue.name,
     description: formValue.description,
     subdomain: formValue.subdomain,
-    passCode: formValue.passCode,
+    passCode: formValue.passCode
   })
 }
