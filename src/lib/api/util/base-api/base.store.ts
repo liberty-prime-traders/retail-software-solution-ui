@@ -26,6 +26,6 @@ export interface BaseStore<ENTITY extends BaseModel> {
 	remove(id: EntityId): void
 }
 
-export function createBaseStore<ENTITY extends BaseModel>() {
-  return signalStore(withBaseStore<ENTITY>(entity => entity.id))
+export function createBaseStore<ENTITY extends BaseModel>(idSelector = (entity: ENTITY) => entity.id) {
+  return signalStore(withBaseStore<ENTITY>(idSelector))
 }

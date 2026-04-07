@@ -1,5 +1,5 @@
 import {NgClass, NgTemplateOutlet} from '@angular/common'
-import {Component, computed, inject, model, OnInit, signal} from '@angular/core'
+import {Component, computed, effect, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion'
 import {BlockUI} from 'primeng/blockui'
@@ -40,6 +40,15 @@ export class UnitTreeComponent extends GridWithAddButtonComponent<UnitGroupServi
   readonly searchTerm = signal('')
   private readonly selectedUnitGroupStash = signal<UnitGroup|undefined>(undefined)
   readonly selectedUnitGroup = model<UnitGroup| undefined>(undefined)
+  private readonly canMakeInitialSelection = signal(true)
+
+  private readonly makeInitialSelection = effect(() => {
+    const firstUnitGroup = this.unitGroups().at(0)
+    if (this.canMakeInitialSelection() && firstUnitGroup) {
+      this.selectedUnitGroup.set(firstUnitGroup)
+      this.canMakeInitialSelection.set(false)
+    }
+  })
 
   readonly filteredUnits = computed(() => {
     const term = this.searchTerm().toLowerCase()

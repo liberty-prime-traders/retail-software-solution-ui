@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core'
+import {RtsTreeNode} from '../../../utils/types/rts-tree-node'
 import {BaseStore, createBaseStore} from '../../util/base-api/base.store'
-import {AvailableTaxTypesNode} from './available-tax-types.node'
 
 @Injectable({providedIn: 'root'})
-export class AvailableTaxTypesStore extends createBaseStore<AvailableTaxTypesNode>()
-  implements BaseStore<AvailableTaxTypesNode> {
+export class AvailableTaxTypesStore extends createBaseStore<RtsTreeNode.EntityTreeNode>(RtsTreeNode.TREE_NODE_ID_SELECTOR)
+  implements BaseStore<RtsTreeNode.EntityTreeNode> {
 
-  readonly basePath = 'org-jurisdiction-tax-types/available'
+  readonly basePath = 'org-tax-types/available'
+
 }

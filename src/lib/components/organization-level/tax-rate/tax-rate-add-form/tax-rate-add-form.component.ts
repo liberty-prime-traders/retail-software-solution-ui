@@ -43,7 +43,6 @@ export class TaxRateAddFormComponent extends BaseFormComponent<TaxRateService> i
   readonly fieldMap = TaxRateAddFormDefinition.fieldMap
 
   readonly orgJurisdictionTaxTypes = this.orgTaxTypeService.activeTaxTypes
-
   readonly isPercentage = computed(() => this.formValue().calculationMethod === CalculationMethod.PERCENTAGE)
   readonly isFlatPerUnit = computed(() => this.formValue().calculationMethod === CalculationMethod.FLAT_PER_UNIT)
 

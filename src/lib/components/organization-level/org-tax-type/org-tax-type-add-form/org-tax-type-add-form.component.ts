@@ -4,14 +4,10 @@ import {applyEach, form} from '@angular/forms/signals'
 import {Button} from 'primeng/button'
 import {TreeSelect} from 'primeng/treeselect'
 import {
-  OrgTaxTypeService
-} from '../../../../api/organization-level/org-tax-type/org-tax-type.service'
-import {
   AvailableTaxTypesService
 } from '../../../../api/organization-level/available-tax-types/available-tax-types.service'
-import {
-  AvailableTaxTypesNode
-} from '../../../../api/organization-level/available-tax-types/available-tax-types.node'
+import {OrgTaxTypeService} from '../../../../api/organization-level/org-tax-type/org-tax-type.service'
+import {RtsTreeNode} from '../../../../utils/types/rts-tree-node'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {OrgTaxTypeAddFormDefinition} from './org-tax-type-add-form.definition'
 
@@ -34,7 +30,7 @@ export class OrgTaxTypeAddFormComponent implements OnInit {
 
   readonly availableTaxTypes = this.availableTaxTypesService.selectAll
   readonly taxTypeTreeIsLoading = this.availableTaxTypesService.selectLoading
-  readonly selectedTaxNodes = model<AvailableTaxTypesNode[]>([])
+  readonly selectedTaxNodes = model<RtsTreeNode.EntityTreeNode[]>([])
   readonly processingStatus = this.orgJurisdictionTaxTypeService.selectProcessingStatus
   readonly failureMessages = this.orgJurisdictionTaxTypeService.selectFailureMessages
   readonly orgTaxTypesLoading = this.orgJurisdictionTaxTypeService.selectLoading

@@ -5,6 +5,7 @@ import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {ProductCategoryService} from '../../../api/organization-level/product-category/product-category.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
+import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
@@ -21,7 +22,8 @@ import {ProductCategoryFormComponent} from './product-category-form/product-cate
     GridFilterComponent,
     EmptyRowComponent,
     ReactiveFormsModule,
-    NgClass
+    NgClass,
+    AutoStretchDirective
   ]
 })
 export class ProductCategoryComponent extends GridWithAddButtonComponent<ProductCategoryService> {
