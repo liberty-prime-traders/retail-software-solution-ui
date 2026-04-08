@@ -26,15 +26,20 @@ export class ManagePlatformComponent {
     {label: 'Jurisdictions', icon: 'pi pi-hammer', routerLink: 'jurisdictions'},
   ]
 
+  private readonly configMenuItems: MenuItem[] = [
+    {label: 'Platform Features', icon: 'pi pi-sliders-h', routerLink: 'platform-features'},
+    {label: 'Table Registry', icon: 'pi pi-table', routerLink: 'table-registry'}
+  ]
+
   private readonly databaseConfigs: MenuItem[] = [
     {label: 'DB Versions', icon: 'pi pi-database', routerLink: 'db-versions'},
-    {label: 'DB Migrations', icon: 'pi pi-sync', routerLink: 'db-migrations'},
-    {label: 'Table Registry', icon: 'pi pi-table', routerLink: 'table-registry'}
+    {label: 'DB Migrations', icon: 'pi pi-sync', routerLink: 'db-migrations'}
   ]
 
   readonly menuItems: MenuItem[] = [
     {label: 'Home', items: this.homeMenuItems},
     {label: 'Legal', items: this.legalMenuItems},
-    {label: 'DB Config', items: this.databaseConfigs}
+    {label: 'Config', items: this.configMenuItems},
+    {label: 'Database', items: this.databaseConfigs}
   ]
 }

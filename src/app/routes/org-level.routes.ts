@@ -29,6 +29,7 @@ import {
   OrgTaxTypeComponent
 } from '../../lib/components/organization-level/org-tax-type/org-tax-type.component'
 import {TaxRateComponent} from '../../lib/components/organization-level/tax-rate/tax-rate.component'
+import {OrgFeatureComponent} from '../../lib/components/organization-level/org-feature/org-feature.component'
 
 export const orgManagementRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
@@ -48,5 +49,6 @@ export const orgManagementRoutes: Routes = [
   {path: 'users', component: OrganizationUserComponent},
   {path: 'tax-types', component: OrgTaxTypeComponent},
   {path: 'tax-rates', component: TaxRateComponent},
+  {path: 'features', component: OrgFeatureComponent},
   {path: '', redirectTo: 'summary', pathMatch: 'full'}
 ]

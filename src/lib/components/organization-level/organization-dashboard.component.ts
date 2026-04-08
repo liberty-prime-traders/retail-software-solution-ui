@@ -1,9 +1,10 @@
-import {Component, computed, inject, signal, Signal} from '@angular/core'
+import {Component, computed, inject, OnInit, signal, Signal} from '@angular/core'
 import {RouterOutlet} from '@angular/router'
 import {MenuItem} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
+import {OrgFeatureService} from '../../api/organization-level/org-feature/org-feature.service'
 import {SessionContextService} from '../../utils/services/session-context.service'
 
 @Component({
@@ -16,8 +17,9 @@ import {SessionContextService} from '../../utils/services/session-context.servic
     Button
   ]
 })
-export class OrganizationDashboardComponent {
+export class OrganizationDashboardComponent implements OnInit {
   private readonly sessionContextService = inject(SessionContextService)
+  private readonly orgFeatureService = inject(OrgFeatureService)
 
   private readonly organizationHomeMenuItems: MenuItem[] = [
     {label: 'Summary', icon: 'pi pi-home', routerLink: 'summary'}
@@ -28,7 +30,8 @@ export class OrganizationDashboardComponent {
     {label: 'Users', icon: 'pi pi-users', routerLink: 'users'},
     {label: 'Join Requests', icon: 'pi pi-users', routerLink: 'join-requests'},
     {label: 'Admins', icon: 'pi pi-lock', routerLink: 'admins'},
-    {label: 'Org Profile', icon: 'pi pi-cog', routerLink: 'profile'}
+    {label: 'Org Profile', icon: 'pi pi-cog', routerLink: 'profile'},
+    {label: 'Features', icon: 'pi pi-sliders-h', routerLink: 'features'}
   ]
 
   private readonly businessSettingsMenuItems: MenuItem[] = [
@@ -39,10 +42,29 @@ export class OrganizationDashboardComponent {
     {label: 'Tags', icon: 'pi pi-tags', routerLink: 'tags'},
   ]
 
-  private readonly legalSettingsMenuItems: MenuItem[] = [
-    {label: 'Tax Types', icon: 'pi pi-receipt', routerLink: 'tax-types'},
-    {label: 'Tax Rates', icon: 'pi pi-calculator', routerLink: 'tax-rates'},
-  ]
+  private readonly financialSettingsMenuItems: Signal<MenuItem[]> = computed(() => {
+    const showTaxes = this.orgFeatureService.isTaxEnabled()
+    return [
+      {
+        label: 'Chart of Accounts',
+        icon: 'pi pi-book',
+        routerLink: 'chart-of-accounts',
+        visible: this.orgFeatureService.isChartOfAccountsEnabled()
+      },
+      {
+        label: 'Tax Types',
+        icon: 'pi pi-receipt',
+        routerLink: 'tax-types',
+        visible: showTaxes
+      },
+      {
+        label: 'Tax Rates',
+        icon: 'pi pi-calculator',
+        routerLink: 'tax-rates',
+        visible: showTaxes
+      },
+    ]
+  })
 
   private readonly productSettingsMenuItems: MenuItem[] = [
     {label: 'Product Categories', icon: 'pi pi-palette', routerLink: 'product-category'},
@@ -50,17 +72,29 @@ export class OrganizationDashboardComponent {
     {label: 'Product Lines', icon: 'pi pi-objects-column', routerLink: 'products'}
   ]
 
-  readonly menuItems: Signal<MenuItem[]> = computed(() => [
-    {label: 'Home', items: this.organizationHomeMenuItems},
-    {label: 'Products', items: this.productSettingsMenuItems},
-    {label: 'Business Settings', items: this.businessSettingsMenuItems},
-    {label: 'Legal Settings', items: this.legalSettingsMenuItems},
-    {
-      label: 'Admin Settings',
-      items: this.orgAdminSettings,
-      visible: this.sessionContextService.loggedInUserIsOrganizationAdmin()
+  readonly menuItems: Signal<MenuItem[]> = computed(() => {
+    const menuItems = [
+      {label: 'Home', items: this.organizationHomeMenuItems},
+      {label: 'Products', items: this.productSettingsMenuItems},
+      {label: 'Business Settings', items: this.businessSettingsMenuItems},
+    ]
+
+    const financeItems = this.financialSettingsMenuItems()
+    const showFinance = financeItems.some(item => item.visible !== false)
+    if (showFinance) {
+      menuItems.push({label: 'Finance', items:financeItems})
     }
-  ])
+
+    if (this.sessionContextService.loggedInUserIsOrganizationAdmin()) {
+      menuItems.push({label: 'Admin Settings', items: this.orgAdminSettings})
+    }
+
+    return menuItems
+  })
 
   readonly showMenu = signal(true)
+
+  ngOnInit() {
+    this.orgFeatureService.fetch()
+  }
 }
