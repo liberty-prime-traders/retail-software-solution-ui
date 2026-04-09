@@ -1,7 +1,6 @@
 import {Component, inject, Input, signal} from '@angular/core'
 import {form, FormField} from '@angular/forms/signals'
 import {InputText} from 'primeng/inputtext'
-import {Textarea} from 'primeng/textarea'
 import {PlatformFeature} from '../../../../api/platform-level/platform-feature/platform-feature.model'
 import {PlatformFeatureService} from '../../../../api/platform-level/platform-feature/platform-feature.service'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
