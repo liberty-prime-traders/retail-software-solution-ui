@@ -1,363 +1,429 @@
 # Account Reference Guide
 
-## Introduction
-
 Most accounts in the chart of accounts behave intuitively — Cash goes up when money comes in, Accounts Payable goes up when you owe a supplier. However, a handful of accounts have less obvious behavior, either because they work against their parent type (contra accounts), represent abstract concepts, or serve as system-managed parent containers.
 
 This document explains those accounts, why they exist, and how they behave with examples.
 
----
+<details>
+<summary>Numbering System</summary>
 
-## Numbering System
-
-Account codes follow a structured pattern:
+Account codes use dot-notation with zero-padded 3-digit segments:
 
 ```
-X-1000   root       (type container, system managed)
-X-1100   category   (grouping, usually not postable)
-X-1110   leaf       (postable, receives entries)
+001             root
+001.001         category
+001.001.001     leaf
 ```
 
-The letter prefix denotes the account type:
+Displayed without leading zeros: `1.1.1`
 
-| Prefix | Type                         |
-|--------|------------------------------|
-| A      | Asset / Asset Contra         |
-| L      | Liability / Liability Contra |
-| E      | Equity / Equity Contra       |
-| R      | Revenue / Revenue Contra     |
-| X      | Expense                      |
+The numeric position encodes the hierarchy — `1.2.1` is the first child of `1.2`, which is the second child of `1`. There is no depth limit. Each parent can have up to 999 children.
 
-The numeric part encodes the hierarchy — a child's numeric part always starts with its parent's numeric part. `A-1210` is a child of `A-1200`, which is a child of `A-1000`.
+Entries can only be posted to accounts with no children. Parent accounts exist solely for grouping.
 
-Each parent can have a maximum of **9 direct children**, incrementing by 10 at each level:
-- Root children: `X-1000` → `X-1100`, `X-1200` ... `X-1900`
-- Category children: `X-1100` → `X-1110`, `X-1120` ... `X-1190`
+System roots are reserved from `001` to `099`. Organisation-created roots start from `100` onwards.
 
-A maximum of **3 levels** are supported. If a category exhausts its 9 children, a sibling category is created to continue the grouping.
+</details>
 
----
+<details>
+<summary>Account Type</summary>
 
-## Account Flags
+Account type is a separate field — not encoded in the code. It determines the side of the accounting equation and the normal balance direction.
 
-Each account carries three structural flags:
+| Type             | Normal Balance | Meaning                  |
+|------------------|----------------|--------------------------|
+| Asset            | Debit          | Things the business owns |
+| Asset Contra     | Credit         | Reduces asset value      |
+| Liability        | Credit         | Things the business owes |
+| Liability Contra | Debit          | Reduces liability value  |
+| Equity           | Credit         | Owner's stake            |
+| Equity Contra    | Debit          | Reduces equity           |
+| Revenue          | Credit         | Income earned            |
+| Revenue Contra   | Debit          | Reduces revenue          |
+| Expense          | Debit          | Costs incurred           |
 
-**`account_type`**
-Determines the side of the accounting equation and the normal balance — the direction that increases the account.
 
-| Type             | Normal Balance |
-|------------------|----------------|
-| Asset            | Debit          |
-| Asset Contra     | Credit         |
-| Liability        | Credit         |
-| Liability Contra | Debit          |
-| Equity           | Credit         |
-| Equity Contra    | Debit          |
-| Revenue          | Credit         |
-| Revenue Contra   | Debit          |
-| Expense          | Debit          |
+</details>
 
-**`is_postable`**
-Whether ledger entries can be posted directly to this account. Parent/grouping accounts are not postable — entries go to their children. When the first child is created under an account, it flips to `is_postable = false`.
+<details>
+<summary>Seeded Account Structure</summary>
 
-**`is_system`**
-All seeded accounts are system accounts. System accounts cannot be deactivated or renamed. They form the structural backbone the accounting consumer depends on.
+All seeded accounts are system-maintained and cannot be renamed or deactivated. Three system accounts are extensible — organisations create children under them:
 
----
+- `1.1.4 Tax Recoverable`
+- `1.1.5 Digital Payments`
+- `2.2 Tax Payable`
 
-## Contra Accounts
+Organization-created root accounts (from `100` onwards) and their children are fully managed by the org admin.
 
-A contra account reduces the net value of a related account rather than increasing it. Its normal balance is the **opposite** of its parent type. Contra accounts share the same letter prefix as their parent type — `A-` for asset contras, `R-` for revenue contras, etc.
+```
+001                 Assets
+001.001             Current Assets
+001.001.001         Cash
+001.001.002         Accounts Receivable
+001.001.002.001     Trade Receivables
+001.001.002.002     Allowance for Doubtful Accounts
+001.001.003         Inventory
+001.001.004         Tax Recoverable         ← extensible
+001.001.005         Digital Payments        ← extensible
+001.001.005.001     Bank
 
----
+001.002             Fixed Assets
+001.002.001         Furniture & Fixtures
+001.002.002         Equipment
+001.002.003         Vehicles
+001.002.004         Buildings
+001.002.005         Land
+001.002.006         Accumulated Depreciation
 
-### A-1220 Allowance for Doubtful Accounts
+002                 Liabilities
+002.001             Accounts Payable
+002.001.001         Trade Payables
+002.001.002         Purchase Discounts
+002.002             Tax Payable             ← extensible
+002.003             Wages Payable
+
+003                 Equity
+003.001             Owner's Capital
+003.002             Retained Earnings
+003.003             Owner's Draws
+
+004                 Revenue
+004.001             Sales Revenue
+004.001.001         Gross Sales
+004.001.002         Sales Returns
+004.001.003         Sales Allowances
+004.001.004         Sales Discounts
+004.002             Other Income
+
+005                 Expenses
+005.001             Cost of Goods Sold
+005.002             Wages Expense
+005.003             Rent Expense
+005.004             Utilities Expense
+005.005             Inbound Shipping
+005.005.001         Supplier Delivery Charges
+005.005.002         Third-Party Freight/Haulage
+005.006             Outbound Shipping
+005.007             Office Supplies
+005.008             Staff Welfare
+005.009             Equipment & Electronics
+005.010             Repairs & Maintenance
+005.011             Shrinkage & Losses
+005.012             Bad Debt Expense
+005.013             Other Operating Expenses
+```
+
+</details>
+
+<details>
+<summary>Contra Accounts</summary>
+
+A contra account reduces the net value of a related account rather than increasing it. Its normal balance is the opposite of its parent type.
+
+<details>
+<summary>1.1.2.2 Allowance for Doubtful Accounts</summary>
 
 **Type:** Asset Contra
 **Normal balance:** Credit
-**Parent:** A-1200 Accounts Receivable
+**Parent:** 1.1.2 Accounts Receivable
 
 When credit sales are made, some customers may not pay. Rather than waiting for the debt to go bad, the org estimates uncollectable amounts and records them here. This reduces the net receivable balance without removing the original invoice.
 
 **Example: Estimate $200 in uncollectable receivables**
 ```
-Debit:  X-2200 Bad Debt Expense                  $200
-Credit: A-1220 Allowance for Doubtful Accounts   $200
+Debit:  5.12 Bad Debt Expense                    $200
+Credit: 1.1.2.2 Allowance for Doubtful Accounts  $200
 ```
 
 **Reporting:**
 ```
-A-1210 Trade Receivables                  $5,000
-A-1220 Allowance for Doubtful Accounts     ($200)
+1.1.2.1 Trade Receivables                  $5,000
+1.1.2.2 Allowance for Doubtful Accounts     ($200)
 ──────────────────────────────────────────────────
-Net Receivables                           $4,800
+Net Receivables                            $4,800
 ```
 
 **If the customer pays up:**
 ```
-// Reverse the allowance
-Debit:  A-1220 Allowance for Doubtful Accounts   $200
-Credit: X-2200 Bad Debt Expense                  $200
+Debit:  1.1.2.2 Allowance for Doubtful Accounts  $200
+Credit: 5.12 Bad Debt Expense                     $200
 
-// Record the payment
-Debit:  A-1100 Cash                  $200
-Credit: A-1210 Trade Receivables     $200
+Debit:  1.1.1 Cash                   $200
+Credit: 1.1.2.1 Trade Receivables    $200
 ```
 
----
+</details>
 
-### A-2600 Accumulated Depreciation
+<details>
+<summary>1.2.6 Accumulated Depreciation</summary>
 
 **Type:** Asset Contra
 **Normal balance:** Credit
-**Parent:** A-2000 Fixed Assets
+**Parent:** 1.2 Fixed Assets
 
 Fixed assets lose value over time. Rather than reducing the asset account directly, depreciation is recorded here. This preserves the original cost on the asset account while showing the total reduction separately.
 
 **Example: Record monthly depreciation on a vehicle ($500/month)**
 ```
-Debit:  X-2000 Repairs & Maintenance     $500
-Credit: A-2600 Accumulated Depreciation  $500
+Debit:  5.10 Repairs & Maintenance      $500
+Credit: 1.2.6 Accumulated Depreciation  $500
 ```
 
 **Reporting:**
 ```
-A-2300 Vehicles                   $50,000
-A-2600 Accumulated Depreciation   ($6,000)
+1.2.3 Vehicles                    $50,000
+1.2.6 Accumulated Depreciation    ($6,000)
 ────────────────────────────────────────────
 Net Book Value                    $44,000
 ```
 
----
+</details>
 
-### L-1120 Purchase Discounts
+<details>
+<summary>2.1.2 Purchase Discounts</summary>
 
 **Type:** Liability Contra
 **Normal balance:** Debit
-**Parent:** L-1100 Accounts Payable
+**Parent:** 2.1 Accounts Payable
 
-When a supplier offers an early payment discount (e.g. "pay within 10 days, get 2% off"), the full invoice is recorded to Trade Payables. When payment is made early and the discount is taken, the saving is recorded here rather than reducing the original payable.
+When a supplier offers an early payment discount, the full invoice is recorded to Trade Payables. When payment is made early and the discount is taken, the saving is recorded here.
 
 **Example: $100 invoice, 2% early payment discount taken**
 ```
-// Original invoice
-Debit:  A-1300 Inventory          $100
-Credit: L-1110 Trade Payables     $100
+Debit:  1.1.3 Inventory          $100
+Credit: 2.1.1 Trade Payables     $100
 
-// Early payment
-Debit:  L-1110 Trade Payables     $100
-Credit: A-1100 Cash                $98
-Credit: L-1120 Purchase Discounts   $2
+Debit:  2.1.1 Trade Payables     $100
+Credit: 1.1.1 Cash                $98
+Credit: 2.1.2 Purchase Discounts   $2
 ```
 
 **Reporting:**
 ```
-L-1110 Trade Payables        $10,000
-L-1120 Purchase Discounts      ($200)
+2.1.1 Trade Payables        $10,000
+2.1.2 Purchase Discounts      ($200)
 ──────────────────────────────────────
 Net Payables                  $9,800
 ```
 
----
+</details>
 
-### E-1300 Owner's Draws
+<details>
+<summary>3.3 Owner's Draws</summary>
 
 **Type:** Equity Contra
 **Normal balance:** Debit
-**Parent:** E-1000 Equity
+**Parent:** 3 Equity
 
-When an owner takes money out of the business for personal use, it is not an expense — it is a reduction in the owner's stake. Recording it as an expense would distort profit figures.
+When an owner takes money out of the business for personal use, it is not an expense — it is a reduction in the owner's stake.
 
 **Example: Owner withdraws $2,000**
 ```
-Debit:  E-1300 Owner's Draws  $2,000
-Credit: A-1100 Cash           $2,000
+Debit:  3.3 Owner's Draws  $2,000
+Credit: 1.1.1 Cash         $2,000
 ```
 
 **Reporting:**
 ```
-E-1100 Owner's Capital    $50,000
-E-1200 Retained Earnings  $12,000
-E-1300 Owner's Draws      ($2,000)
-───────────────────────────────────
-Total Equity              $60,000
+3.1 Owner's Capital    $50,000
+3.2 Retained Earnings  $12,000
+3.3 Owner's Draws      ($2,000)
+───────────────────────────────
+Total Equity           $60,000
 ```
 
-At year end, Owner's Draws is closed into Owner's Capital, resetting it to zero for the new period.
+</details>
 
----
-
-### R-1120 Sales Returns
+<details>
+<summary>4.1.2 Sales Returns</summary>
 
 **Type:** Revenue Contra
 **Normal balance:** Debit
-**Parent:** R-1100 Sales Revenue
+**Parent:** 4.1 Sales Revenue
 
-When a customer returns goods, the original sale is not reversed. Instead, the return is recorded here, reducing net revenue while preserving the original transaction for audit purposes.
+When a customer returns goods, the original sale is not reversed. The return is recorded here, reducing net revenue while preserving the original transaction.
 
 **Example: Customer returns $50 goods, refund issued**
 ```
-Debit:  R-1120 Sales Returns  $50
-Credit: A-1100 Cash           $50
+Debit:  4.1.2 Sales Returns  $50
+Credit: 1.1.1 Cash           $50
 
-// Inventory reinstated at cost ($30)
-Debit:  A-1300 Inventory           $30
-Credit: X-1100 Cost of Goods Sold  $30
+Debit:  1.1.3 Inventory          $30
+Credit: 5.1 Cost of Goods Sold   $30
 ```
 
----
+</details>
 
-### R-1130 Sales Allowances
+<details>
+<summary>4.1.3 Sales Allowances</summary>
 
 **Type:** Revenue Contra
 **Normal balance:** Debit
-**Parent:** R-1100 Sales Revenue
+**Parent:** 4.1 Sales Revenue
 
-When a customer keeps goods but receives a partial refund due to damage or quality issues, the adjustment is recorded here rather than as a return.
+When a customer keeps goods but receives a partial refund due to damage or quality issues.
 
-**Example: $20 allowance granted on damaged goods, customer keeps them**
+**Example: $20 allowance granted on damaged goods**
 ```
-Debit:  R-1130 Sales Allowances  $20
-Credit: A-1100 Cash              $20
+Debit:  4.1.3 Sales Allowances  $20
+Credit: 1.1.1 Cash              $20
 ```
 
-No inventory entry — the goods were not returned.
+</details>
 
----
-
-### R-1140 Sales Discounts
+<details>
+<summary>4.1.4 Sales Discounts</summary>
 
 **Type:** Revenue Contra
 **Normal balance:** Debit
-**Parent:** R-1100 Sales Revenue
+**Parent:** 4.1 Sales Revenue
 
-Discounts given at point of sale are recorded here. Revenue is posted at full price to `R-1110 Gross Sales`, and the discount is captured separately — giving the org visibility into how much revenue was sacrificed through promotions and markdowns.
+Discounts given at point of sale. Revenue is posted at full price to `4.1.1 Gross Sales` and the discount captured separately.
 
 **Example: $100 item sold with 10% discount**
 ```
-Debit:  A-1100 Cash              $90
-Debit:  R-1140 Sales Discounts   $10
-Credit: R-1110 Gross Sales      $100
+Debit:  1.1.1 Cash             $90
+Debit:  4.1.4 Sales Discounts  $10
+Credit: 4.1.1 Gross Sales     $100
 ```
 
 **Reporting:**
 ```
-R-1110 Gross Sales         $100,000
-R-1120 Sales Returns        ($2,000)
-R-1130 Sales Allowances       ($500)
-R-1140 Sales Discounts      ($3,000)
+4.1.1 Gross Sales         $100,000
+4.1.2 Sales Returns        ($2,000)
+4.1.3 Sales Allowances       ($500)
+4.1.4 Sales Discounts      ($3,000)
 ────────────────────────────────────
 Net Revenue                 $94,500
 ```
 
----
+</details>
 
-## Abstract Accounts
+</details>
 
----
+<details>
+<summary>Abstract Accounts</summary>
 
-### E-1200 Retained Earnings
+<details>
+<summary>3.2 Retained Earnings</summary>
 
 **Type:** Equity
 **Normal balance:** Credit
-**Parent:** E-1000 Equity
+**Parent:** 3 Equity
 
-Retained Earnings represents the accumulated profit the business has kept since it was founded — all revenue minus all expenses minus owner draws, across all time. It is not posted to during normal operations. At year end, a closing entry moves net income into Retained Earnings and zeros out revenue and expense accounts.
+Accumulated profit the business has kept since founding. Not posted to during normal operations — updated at year-end via closing entries.
 
 **Example: Year-end close with $15,000 net profit**
 ```
-Debit:  R-1110 Gross Sales          $80,000
-Credit: X-1100 Cost of Goods Sold   $45,000
-Credit: X-1200 Wages Expense        $20,000
-Credit: E-1200 Retained Earnings    $15,000
+Debit:  4.1.1 Gross Sales          $80,000
+Credit: 5.1 Cost of Goods Sold     $45,000
+Credit: 5.2 Wages Expense          $20,000
+Credit: 3.2 Retained Earnings      $15,000
 ```
 
 **Example: Year-end close with $5,000 net loss**
 ```
-Debit:  R-1110 Gross Sales          $60,000
-Debit:  E-1200 Retained Earnings     $5,000
-Credit: X-1100 Cost of Goods Sold   $45,000
-Credit: X-1200 Wages Expense        $20,000
+Debit:  4.1.1 Gross Sales          $60,000
+Debit:  3.2 Retained Earnings       $5,000
+Credit: 5.1 Cost of Goods Sold     $45,000
+Credit: 5.2 Wages Expense          $20,000
 ```
 
----
+</details>
 
-### X-2200 Bad Debt Expense
+<details>
+<summary>5.12 Bad Debt Expense</summary>
 
 **Type:** Expense
 **Normal balance:** Debit
-**Parent:** X-1000 Expenses
+**Parent:** 5 Expenses
 
-The expense recognized when a receivable is estimated to be uncollectable. Works in tandem with `A-1220 Allowance for Doubtful Accounts`. See that account for full examples.
+The expense recognized when a receivable is estimated to be uncollectable. Works in tandem with `1.1.2.2 Allowance for Doubtful Accounts`. See that account for full examples.
 
----
+</details>
 
-## System-Managed Parent Containers
+</details>
 
-These accounts exist solely to group related accounts. They are not postable — entries go to their children. The system protects them from deactivation or renaming.
+<details>
+<summary>System-managed Parent Containers</summary>
 
----
+These accounts exist solely to group related accounts. They cannot receive entries directly. The system protects them from deactivation or renaming.
 
-### A-1400 Tax Recoverable
-
-**Type:** Asset
-**Normal balance:** Debit
-**`is_postable`:** false
-
-Groups all taxes the org has paid to suppliers and is entitled to reclaim from the government. The org admin creates child accounts here for each recoverable tax type they configure (e.g. A-1410 VAT Recoverable).
-
----
-
-### A-1500 Bank Accounts
+<details>
+<summary>1.1.4 Tax Recoverable</summary>
 
 **Type:** Asset
 **Normal balance:** Debit
-**`is_postable`:** false
+**Extensible:** Yes
 
-Groups all bank and mobile money accounts the org operates. The admin creates a child account for each payment method (e.g. A-1510 KCB Current Account, A-1520 M-Pesa Float). Each payment method maps to its corresponding child account for ledger routing.
+Groups all taxes the org has paid to suppliers and is entitled to reclaim from the government. The org admin creates child accounts here for each recoverable tax type they configure.
 
----
+</details>
 
-### L-1200 Tax Payable
+<details>
+<summary>1.1.5 Digital Payments</summary>
+
+**Type:** Asset
+**Normal balance:** Debit
+**Extensible:** Yes
+
+Groups all bank and mobile money accounts the org operates. The admin creates a child account for each payment channel. Each payment method maps to its corresponding child account for ledger routing.
+
+```
+1.1.5     Digital Payments
+1.1.5.1   Bank              ← system seeded
+1.1.5.2   Mpesa Float       ← admin created
+1.1.5.3   Airtel Float      ← admin created
+```
+
+</details>
+
+<details>
+<summary>2.2 Tax Payable</summary>
 
 **Type:** Liability
 **Normal balance:** Credit
-**`is_postable`:** false
+**Extensible:** Yes
 
-Groups all taxes collected on behalf of the government that have not yet been remitted. The org admin creates child accounts here for each tax type they configure (e.g. L-1210 TOT Payable).
+Groups all taxes collected on behalf of the government that have not yet been remitted. The org admin creates child accounts here for each tax type they configure.
 
 **Example: Sale generates TOT at 2%**
 ```
-Debit:  A-1100 Cash              $100.00
-Credit: R-1110 Gross Sales        $98.04
-Credit: L-1210 TOT Payable         $1.96
+Debit:  1.1.1 Cash           $100.00
+Credit: 4.1.1 Gross Sales     $98.04
+Credit: 2.2.1 TOT Payable      $1.96
 ```
 
 **Remitting to government:**
 ```
-Debit:  L-1210 TOT Payable   $1.96
-Credit: A-1100 Cash          $1.96
+Debit:  2.2.1 TOT Payable   $1.96
+Credit: 1.1.1 Cash          $1.96
 ```
 
----
+</details>
 
-### X-1500 Inbound Shipping
+<details>
+<summary>5.5 Inbound Shipping</summary>
 
 **Type:** Expense
 **Normal balance:** Debit
-**`is_postable`:** false
 
-Groups costs incurred bringing goods into the business. Split into two children:
+Groups costs incurred bringing goods into the business:
 
-- **X-1510 Supplier Delivery Charges** — delivery fee on the supplier invoice
-- **X-1520 Third-Party Freight/Haulage** — separate invoices from logistics providers
+- `5.5.1 Supplier Delivery Charges` — delivery fee on the supplier invoice
+- `5.5.2 Third-Party Freight/Haulage` — separate invoices from logistics providers
 
-**Example: Supplier charges $10 delivery, separate freight invoice for $25**
+**Example:**
 ```
-Debit:  A-1300 Inventory                     $100
-Debit:  X-1510 Supplier Delivery Charges      $10
-Credit: L-1110 Trade Payables                $110
+Debit:  1.1.3 Inventory                    $100
+Debit:  5.5.1 Supplier Delivery Charges     $10
+Credit: 2.1.1 Trade Payables               $110
 
-Debit:  X-1520 Third-Party Freight/Haulage    $25
-Credit: L-1110 Trade Payables                 $25
+Debit:  5.5.2 Third-Party Freight/Haulage   $25
+Credit: 2.1.1 Trade Payables                $25
 ```
+
+</details>
+
+</details>

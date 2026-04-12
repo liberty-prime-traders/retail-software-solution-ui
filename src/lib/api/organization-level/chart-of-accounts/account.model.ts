@@ -1,19 +1,50 @@
+import {EntityId} from '@ngrx/signals/entities'
+import {TreeNode} from 'primeng/api'
 import {BaseModel} from '../../util/base-api/base.model'
-import {AccountClassification} from './account-classification.enum'
 import {AccountType} from './account-type.enum'
 
 export interface Account extends BaseModel {
   code: string
   name: string
+  displayName: string
   accountType: AccountType
-  classification: AccountClassification
-  currencyCode: string
-  accountIsPostable: boolean
   accountIsActive: boolean
   accountIsSystemMaintained: boolean
+  accountIsExtensible: boolean
   currentBalance: number
   balanceUpdatedAt?: string
-  parentAccountId?: string
+  parentAccountCode?: string
   parentAccount?: string
 }
 
+export const toAccountTreeNodes = (accounts: Account[]): TreeNode<Account>[] => {
+  const accountNodes = new Map<EntityId, TreeNode>()
+  const roots: TreeNode[] = []
+
+  accounts.forEach(account => {
+    accountNodes.set(
+      account.code,
+      {
+        label: account.displayName,
+        data: account,
+        key: account.code,
+        children: []
+      })
+  })
+
+  accounts.forEach(account => {
+    const node = accountNodes.get(account.code)!
+    if (account.parentAccountCode) {
+      const parent = accountNodes.get(account.parentAccountCode)
+      if (parent) {
+        parent.children!.push(node)
+      } else {
+        roots.push(node)
+      }
+    } else {
+      roots.push(node)
+    }
+  })
+
+  return roots
+}

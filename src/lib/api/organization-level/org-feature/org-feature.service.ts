@@ -1,6 +1,7 @@
 import {HttpErrorResponse} from '@angular/common/http'
 import {computed, Injectable, signal} from '@angular/core'
 import {Subscription} from 'rxjs'
+import {parseError} from '../../../utils/errors'
 import {Feature} from '../../platform-level/platform-feature/feature.enum'
 import {ApiCallbacks} from '../../util/base-api/api-callbacks'
 import {BaseService} from '../../util/base-api/base.service'
@@ -32,7 +33,7 @@ export class OrgFeatureService extends BaseService<OrganizationFeature, Feature[
 
   private onActivationError = (error: HttpErrorResponse) => {
     const errorBody = error?.error?.body as Array<string>
-    this.activationFailures.set(errorBody ?? [])
+    this.activationFailures.set(errorBody ?? parseError(error))
   }
 
   activate(features: Feature[], callbacks?: ApiCallbacks<OrganizationFeature>): Subscription {
