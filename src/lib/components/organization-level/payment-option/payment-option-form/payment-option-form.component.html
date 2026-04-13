@@ -1,19 +1,34 @@
-<form [formGroup]="paymentOptionForm()" class="flex flex-column gap-2">
-  <rts-form-field label="Name" for="name">
-    <input id="name" pInputText formControlName="name">
+<div class="form-container flex flex-column gap-2" [ngClass]="formValue().id ? '' : 'filled-background'">
+  <rts-form-field [required]="true" label="Name" for="name">
+    <input id="name" class="flex-grow-1" pInputText [formField]="paymentOptionForm.name"/>
   </rts-form-field>
 
   <rts-form-field label="Description" for="description">
-    <input id="description" pInputText formControlName="description">
+    <input id="description" class="flex-grow-1" pInputText [formField]="paymentOptionForm.description"/>
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!paymentOptionForm().dirty"
-                     [disableSave]="!paymentOptionForm().valid || !paymentOptionForm().dirty"
-                     [hideDelete]="!paymentOption()?.id"
+  @if (isChartOfAccountsEnabled()) {
+    <rts-form-field label="Linked Account" for="accountCode">
+      <p-tree-select id="accountCode"
+                     [options]="paymentMethodTrees()"
+                     [loading]="accountTreesLoading()"
+                     [(ngModel)]="linkedAccount"
+                     (click)="onAccountChange()"
+                     placeholder="Select an Account"
+                     class="flex-grow-1">
+      </p-tree-select>
+    </rts-form-field>
+  }
+
+  <rts-forms-buttons [disableReset]="!paymentOptionForm().dirty()"
+                     [disableSave]="paymentOptionForm().invalid() || !paymentOptionForm().dirty()"
+                     [hideDelete]="!originalPaymentOption()?.id"
+                     [signalForm]="paymentOptionForm()"
+                     [fieldMap]="fieldMap"
                      [processingStatus]="processingStatus()"
                      [failureMessages]="failureMessages()"
                      (delete)="deletePaymentOption()"
                      (save)="upsertPaymentOption()"
                      (resetAction)="resetForm()">
   </rts-forms-buttons>
-</form>
+</div>

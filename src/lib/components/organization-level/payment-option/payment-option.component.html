@@ -1,77 +1,84 @@
-<p-table [loading]="loading() && !addingIsActive()"
-         rowExpandMode="single"
-         size="small"
-         dataKey="id"
-         sortField="name"
-         #paymentOptionsTable
-         scrollHeight="600px"
-         scrollable="true"
-         [globalFilterFields]="['name', 'description', 'createdBy']"
-         (onRowExpand)="rowIsExpanded.set(true)"
-         (onRowCollapse)="rowIsExpanded.set(false)"
-         [value]="paymentOptions()">
-
-  <ng-template pTemplate="caption">
-    <div class="flex justify-content-between align-items-center">
-      <h3>Payment Options</h3>
-      <rts-grid-filter [dataTable]="paymentOptionsTable"/>
-    </div>
-  </ng-template>
-
-  <ng-template pTemplate="header">
-    <tr class="line-height-4">
-      <th pSortableColumn="name">
-        Name
-        <p-sortIcon field="name"/>
-      </th>
-      <th pSortableColumn="description">
-        Description
-        <p-sortIcon field="description"/>
-      </th>
-      <th pSortableColumn="createdBy">
-        Created By
-        <p-sortIcon field="createdBy"/>
-      </th>
-      <th pSortableColumn="usageCount">
-        Usage Count
-        <p-sortIcon field="usageCount"/>
-      </th>
-      <th style="width: 5rem"></th>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="body" let-paymentOption let-expanded="expanded">
-    <tr [ngClass]="{ 'expanded-row': expanded }">
-      <td>{{paymentOption?.name | nullSafe}}</td>
-      <td>{{paymentOption?.description | nullSafe}}</td>
-      <td>{{paymentOption?.createdBy | nullSafe}}</td>
-      <td>{{paymentOption?.usageCount | nullishToZero}}</td>
-      <td>
-        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                  rounded
-                  severity="secondary"
-                  [disabled]="loading() || addingIsActive()"
-                  [pRowToggler]="paymentOption">
-        </p-button>
-      </td>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="expandedrow" let-paymentOption>
-    <tr>
-      <td colspan="5" class="filled-background">
-        <rts-payment-option-form [paymentOption]="paymentOption" />
-      </td>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="emptymessage">
-    <tr rts-empty-row [colspan]="5" message="No Payment Options Were Found"></tr>
-  </ng-template>
-</p-table>
-
-<rts-add-row [(addingIsActive)]="addingIsActive" [disabled]="rowIsExpanded() || loading()">
+<div class="flex flex-column gap-4" id="payment-options" rtsAutoStretch="payment-options">
   @if (addingIsActive()) {
-    <rts-payment-option-form></rts-payment-option-form>
+    <rts-new-form-cancel-button (onCancel)="setAddingActiveFalse()"/>
+    <rts-payment-option-form (paymentOptionCreated)="closeAddRow()"/>
+
+  } @else {
+    <p-table [loading]="loading() && !addingIsActive()"
+             rowExpandMode="single"
+             size="small"
+             dataKey="id"
+             sortField="name"
+             #paymentOptionsTable
+             scrollHeight="flex"
+             scrollable="true"
+             [globalFilterFields]="['name', 'description', 'createdBy']"
+             (onRowExpand)="rowIsExpanded.set(true)"
+             (onRowCollapse)="rowIsExpanded.set(false)"
+             [value]="paymentOptions()">
+
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between align-items-center">
+          <h3>Payment Options</h3>
+
+          <rts-grid-filter [dataTable]="paymentOptionsTable"/>
+
+          <p-button (click)="setAddingActiveTrue()"
+                    [disabled]="loading() || addingIsActive()"
+                    label="+ Add Payment Option"
+                    rounded
+                    severity="secondary">
+          </p-button>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr class="line-height-4">
+          <th pSortableColumn="name">
+            Name
+            <p-sortIcon field="name"/>
+          </th>
+          <th pSortableColumn="description">
+            Description
+            <p-sortIcon field="description"/>
+          </th>
+          <th pSortableColumn="createdBy">
+            Created By
+            <p-sortIcon field="createdBy"/>
+          </th>
+          <th>Linked Account</th>
+          <th style="width: 5rem"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-paymentOption let-expanded="expanded">
+        <tr [ngClass]="{ 'expanded-row': expanded }">
+          <td>{{paymentOption?.name | nullSafe}}</td>
+          <td>{{paymentOption?.description | nullSafe}}</td>
+          <td>{{paymentOption?.createdBy | nullSafe}}</td>
+          <td>{{paymentOption?.linkedAccount | nullSafe}}</td>
+          <td>
+            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                      rounded
+                      severity="secondary"
+                      [disabled]="loading() || addingIsActive()"
+                      [pRowToggler]="paymentOption">
+            </p-button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="expandedrow" let-paymentOption>
+        <tr>
+          <td colspan="5" class="filled-background">
+            <rts-payment-option-form [paymentOption]="paymentOption"/>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr rts-empty-row [colspan]="5" message="No Payment Options Were Found"></tr>
+      </ng-template>
+    </p-table>
   }
-</rts-add-row>
+</div>
