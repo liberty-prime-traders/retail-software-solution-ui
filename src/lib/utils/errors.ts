@@ -14,7 +14,7 @@ export const parseError = (errorObj: any): string[] => {
 
   if ('message' in errorObj.error) {
     err.add(errorObj.error['message'])
-  } else   if ('message' in errorObj) {
+  } else if ('message' in errorObj) {
     err.add(errorObj['message'])
   }
 

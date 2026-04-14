@@ -1,0 +1,131 @@
+<p-tabs value="0">
+  <p-tablist >
+    <p-tab value="0">Summary</p-tab>
+    <p-tab value="1">Detailed View</p-tab>
+    <p-tab value="2">Documentation</p-tab>
+  </p-tablist>
+
+  <p-tabpanels class="p-0">
+    <p-tabpanel value="0">
+      <ng-container *ngTemplateOutlet="accountsTree"/>
+    </p-tabpanel>
+
+    <p-tabpanel value="1">
+      <ng-container *ngTemplateOutlet="accountsGrid"/>
+    </p-tabpanel>
+
+    <p-tabpanel value="2">
+      <div id="accounting-guideline" rtsAutoStretch="accounting-guideline">
+        <markdown style="height: inherit; overflow-y: scroll" class="block md-content"  src="/assets/md/accounting-guideline.md"/>
+      </div>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
+
+<ng-template #accountsTree>
+  <div id="coaTree" rtsAutoStretch="coaTree">
+    <p-tree-table [loading]="loading()"
+                  [value]="accountsChart()"
+                  sortField="code"
+                  scrollHeight="flex"
+                  [scrollable]="true">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Account</th>
+          <th>Balance</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-node let-rowData="rowData">
+        <tr [ttRow]="node">
+          <td>
+            <div class="flex align-items-center gap-2">
+              <p-treetable-toggler [rowNode]="node" />
+              <span>{{ rowData.displayName }}</span>
+            </div>
+          </td>
+          <td>{{ rowData.currentBalance | currency }}</td>
+        </tr>
+      </ng-template>
+    </p-tree-table>
+  </div>
+</ng-template>
+
+<ng-template #accountsGrid>
+  <div class="flex flex-column gap-4" id="chart-of-accounts" rtsAutoStretch="chart-of-accounts">
+
+    @if (addingIsActive()) {
+      <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info" class="align-self-end"/>
+      <rts-account-form (accountCreated)="closeAddRow()"/>
+
+    } @else {
+      <p-table [loading]="loading()"
+               dataKey="id"
+               rowExpandMode="single"
+               scrollHeight="flex"
+               [scrollable]="true"
+               sortField="code"
+               #accountsTable
+               [globalFilterFields]="['displayName', 'accountType']"
+               (onRowExpand)="rowIsExpanded.set(true)"
+               (onRowCollapse)="rowIsExpanded.set(false)"
+               [value]="accounts()">
+
+        <ng-template pTemplate="caption">
+          <div class="flex justify-content-between align-items-center">
+            <h3 class="font-bold">Chart of Accounts</h3>
+            <rts-grid-filter [dataTable]="accountsTable"/>
+            <p-button (click)="addingIsActive.set(true)"
+                      [disabled]="loading() || addingIsActive()"
+                      label="+ Add Account"
+                      rounded
+                      severity="secondary">
+            </p-button>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="displayName">Name <p-sortIcon field="displayName"/></th>
+            <th pSortableColumn="accountType">Type <p-sortIcon field="accountType"/></th>
+            <th pSortableColumn="currentBalance">Balance <p-sortIcon field="currentBalance"/></th>
+            <th pSortableColumn="parentAccount">Parent Account <p-sortIcon field="parentAccount"/></th>
+            <th style="width: 5rem"></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-account let-expanded="expanded">
+          <tr [ngClass]="{ 'expanded-row': expanded }">
+            <td>{{ account.displayName }}</td>
+            <td>{{ account.accountType | prettifyEnum }}</td>
+            <td>{{ account.currentBalance | currency }}</td>
+            <td>{{ account.parentAccount | nullSafe }}</td>
+            <td>
+              @if (!account.accountIsSystemMaintained) {
+                <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                          rounded
+                          severity="secondary"
+                          [disabled]="loading() || addingIsActive()"
+                          [pRowToggler]="account">
+                </p-button>
+              }
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="expandedrow" let-account>
+          <tr>
+            <td colspan="9" class="filled-background">
+              <rts-account-form [account]="account"/>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr rts-empty-row [colspan]="9" message="No Accounts Found"></tr>
+        </ng-template>
+      </p-table>
+    }
+  </div>
+</ng-template>

@@ -2,12 +2,39 @@
   <rts-form-field [required]="true" label="Status" for="status">
     <p-select id="status"
               class="flex-grow-1"
-              [options]="statusOptions | enumToDropdown"
+              [options]="OrgTaxTypeStatus | enumToDropdown"
               [formField]="editForm.status">
     </p-select>
   </rts-form-field>
 
+  @if (isCoaEnabled()) {
+    <rts-form-field [required]="true" label="Payable Account" for="payableAccount">
+      <p-tree-select id="payableAccount"
+                     [options]="payableAccounts()"
+                     [loading]="accountTreesLoading()"
+                     [(ngModel)]="selectedPayableNode"
+                     (ngModelChange)="onPayableChange()"
+                     placeholder="Select a Payable Account"
+                     class="flex-grow-1">
+      </p-tree-select>
+    </rts-form-field>
+
+    @if (formValue().taxRecoveryType === TaxRecoveryType.RECOVERABLE) {
+      <rts-form-field label="Recoverable Account" [required]="true" for="recoverableAccount">
+        <p-tree-select id="recoverableAccount"
+                       [options]="recoverableAccounts()"
+                       [loading]="accountTreesLoading()"
+                       [(ngModel)]="selectedRecoverableNode"
+                       (ngModelChange)="onRecoverableChange()"
+                       placeholder="Select a Recoverable Account"
+                       class="flex-grow-1">
+        </p-tree-select>
+      </rts-form-field>
+    }
+  }
+
   <rts-forms-buttons [disableSave]="editForm().invalid() || !editForm().dirty()"
+                     [disableReset]="!editForm().dirty()"
                      [hideDelete]="true"
                      [signalForm]="editForm()"
                      [fieldMap]="fieldMap"

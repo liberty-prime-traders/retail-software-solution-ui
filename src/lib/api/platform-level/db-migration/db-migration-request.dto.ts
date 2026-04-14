@@ -1,5 +1,5 @@
 export interface DbMigrationRequestDto {
-  organizationId: string;
-  locationIdsToMigrate: Array<string>;
-  targetDbVersionId: string;
+  organizationId: string
+  locationIdsToMigrate: Array<string>
+  targetDbVersionId: string
 }

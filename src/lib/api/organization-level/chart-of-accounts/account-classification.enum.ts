@@ -1,0 +1,8 @@
+export enum AccountClassification {
+  CASH = 'CASH',
+  BANK = 'BANK',
+  MOBILE_MONEY = 'MOBILE_MONEY',
+  TAX_PAYABLE = 'TAX_PAYABLE',
+  TAX_RECOVERABLE = 'TAX_RECOVERABLE',
+  GENERAL = 'GENERAL',
+}

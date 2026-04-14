@@ -1,0 +1,24 @@
+<div class="flex flex-column gap-2 form-container">
+
+  <rts-form-field [required]="true" label="Description" for="description">
+    <div class="flex">
+      <textarea id="description"
+                class="flex-grow-1"
+                pInputText
+                [formField]="platformFeatureForm.description"
+                rows="5">
+      </textarea>
+    </div>
+  </rts-form-field>
+
+  <rts-forms-buttons [hideDelete]="true"
+                     [disableReset]="!platformFeatureForm().dirty()"
+                     [disableSave]="platformFeatureForm().invalid() || !platformFeatureForm().dirty()"
+                     [signalForm]="platformFeatureForm()"
+                     [fieldMap]="platformFeatureFormFields"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (save)="savePlatformFeature()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</div>

@@ -19,6 +19,9 @@ import {
 import {OrganizationComponent} from '../../lib/components/platform-level/organization/organization.component'
 import {TaxTypeComponent} from '../../lib/components/platform-level/tax-type/tax-type.component'
 import {TableRegistryComponent} from '../../lib/components/platform-level/table-registry/table-registry.component'
+import {
+  PlatformFeatureComponent
+} from '../../lib/components/platform-level/platform-feature/platform-feature.component'
 
 const dbMigrationsRoutes: Routes = [
   {path: 'history', component: MigrationHistoryComponent},
@@ -34,6 +37,7 @@ export const platformManagementRoutes: Routes = [
   {path: 'jurisdiction-types', component: JurisdictionTypeComponent},
   {path: 'jurisdictions', component: JurisdictionComponent},
   {path: 'tax-types', component: TaxTypeComponent},
+  {path: 'platform-features', component: PlatformFeatureComponent},
   {
     path: 'db-migrations',
     component: DbMigrationComponent,

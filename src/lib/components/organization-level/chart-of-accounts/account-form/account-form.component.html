@@ -1,0 +1,54 @@
+<div class="flex flex-column gap-2 form-container" [ngClass]="isEditMode() ? '' : 'filled-background'">
+
+  <rts-form-field [required]="true" label="Name" for="name">
+    <input id="name" class="flex-grow-1" pInputText [formField]="accountForm.name" />
+  </rts-form-field>
+
+  @if (!isEditMode()) {
+    <rts-form-field label="Root Account" for="isRoot">
+      <p-checkbox inputId="isRoot"
+                  [binary]="true"
+                  [formField]="accountForm.isRoot"
+                  (onChange)="onIsRootChange()">
+      </p-checkbox>
+    </rts-form-field>
+
+    @if (accountFormValue().isRoot) {
+      <rts-form-field label="Account Type" for="accountType" [required]="true">
+        <p-select inputId="accountType"
+                  [formField]="accountForm.accountType"
+                  [options]="AccountType | enumToDropdown">
+        </p-select>
+      </rts-form-field>
+    }
+
+    <rts-form-field [required]="!accountFormValue().isRoot" label="Parent Account" for="parentAccountId">
+      <p-tree-select id="parentAccountId"
+                     [options]="extensibleAccounts()"
+                     [(ngModel)]="selectedParentAccount"
+                     [disabled]="accountFormValue().isRoot"
+                     (click)="onParentChange()"
+                     placeholder="Select a Parent Account">
+      </p-tree-select>
+    </rts-form-field>
+  }
+
+  @if (originalAccount() && !originalAccount()?.accountIsActive) {
+    <p-button label="Reactivate" (onClick)="toggleActive()" severity="success"/>
+
+  } @else {
+    <rts-forms-buttons [disableReset]="!accountForm().dirty()"
+                       [disableSave]="accountForm().invalid() || !accountForm().dirty()"
+                       [hideDelete]="!isEditMode()"
+                       deleteLabel="Deactivate"
+                       deleteWarning="Confirm deactivation of this account?"
+                       [signalForm]="accountForm()"
+                       [fieldMap]="accountFormFields"
+                       [processingStatus]="processingStatus()"
+                       [failureMessages]="failureMessages()"
+                       (delete)="toggleActive()"
+                       (save)="saveAccount()"
+                       (resetAction)="resetForm()">
+    </rts-forms-buttons>
+  }
+</div>

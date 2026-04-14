@@ -4,9 +4,9 @@ import {
   importProvidersFrom,
   provideZoneChangeDetection
 } from '@angular/core'
-import {provideAnimationsAsync} from '@angular/platform-browser/animations/async'
 import {provideRouter} from '@angular/router'
 import {OktaAuthModule} from '@okta/okta-angular'
+import {provideMarkdown} from 'ngx-markdown'
 import {RtsHttpInterceptor} from '../lib/api/util/rts-http.interceptor'
 import {AppPreset, darkModeSelector} from './app.preset'
 import {appRoutes} from './app.routes'
@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(OktaAuthModule.forRoot(oktaModuleConfig)),
     provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(appRoutes),
-    provideAnimationsAsync(),
+    provideMarkdown(),
     provideHttpClient(withInterceptorsFromDi()),
     providePrimeNG({
       theme: {

@@ -1,4 +1,4 @@
 export interface DbVersionInsertModel {
-  versionNumber: string;
-  prevVersionId?: string;
+  versionNumber: string
+  prevVersionId?: string
 }

@@ -1,0 +1,64 @@
+<rts-loading-container [loading]="loading()">
+  <div class="flex gap-4">
+    <div class="flex col-6 flex-column gap-3">
+      <div class="flex gap-5 align-items-center">
+        <p-multi-select [options]="availableFeatures()"
+                        optionLabel="label"
+                        optionValue="value"
+                        [(ngModel)]="selectedFeatures"
+                        placeholder="Select features to activate"
+                        class="col-9">
+        </p-multi-select>
+
+        <p-button label="Confirm Selection"
+                  severity="secondary"
+                  rounded
+                  [disabled]="selectedFeatures().length < 1"
+                  (click)="confirmSelection()">
+        </p-button>
+      </div>
+
+      <div class="flex flex-column">
+        @for (feature of featuresToActivate(); track feature) {
+          <div class="flex p-0 col-12 gap-2 align-items-center">
+            <span class="flex-grow-1">{{ feature | prettifyEnum }}</span>
+
+            <p-button icon="pi pi-times"
+                      severity="danger"
+                      rounded
+                      text
+                      (click)="removeFeature(feature)">
+            </p-button>
+          </div>
+        }
+      </div>
+
+      @if (featuresToActivate().length > 0) {
+        <div class="flex justify-content-end">
+          <p-button label="Activate All"
+                    (click)="activate()">
+          </p-button>
+        </div>
+      }
+    </div>
+    <div class="col-6 flex flex-column gap-2">
+      @if (failureMessages().length > 0) {
+          <span>Errors</span>
+          <div class="flex flex-column">
+            @for (error of failureMessages(); track error) {
+              <span class="mb-2 error-message text-wrap">{{ error }}</span>
+            }
+          </div>
+      }
+
+      @if (activationFailureMessages().length > 0) {
+        <span>Reasons</span>
+        <div class="flex flex-column">
+          @for (message of activationFailureMessages(); track message) {
+            <span class="mb-2 error-message text-wrap">{{ message }}</span>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</rts-loading-container>

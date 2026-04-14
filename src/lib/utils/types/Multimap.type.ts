@@ -11,34 +11,34 @@ export class Multimap<V extends BaseModel> {
 
   constructor(initial?: object, deduplicated = false) {
     if (!initial) {
-      this.map.set(new Map());
+      this.map.set(new Map())
     } else if (!Multimap.isAssignableFrom(initial)) {
-      throw new Error('Invalid initial value for Multimap: must be object with array values');
+      throw new Error('Invalid initial value for Multimap: must be object with array values')
     } else {
-      this.map.set(Multimap.createFromObject(initial, deduplicated));
+      this.map.set(Multimap.createFromObject(initial, deduplicated))
     }
   }
 
   static createFromObject<T extends BaseModel>(obj: unknown, deduplicated = false): Map<string, T[]> {
-    const objRecord = obj as Record<string, T>;
-    const result = new Map<string, T[]>();
+    const objRecord = obj as Record<string, T>
+    const result = new Map<string, T[]>()
     for (const [key, value] of Object.entries(objRecord)) {
       if (Array.isArray(value)) {
         const effectiveValue = deduplicated ? LibertyCollections.deduplicateArray(value as T[]) : [...(value as T[])]
-        result.set(key, effectiveValue);
+        result.set(key, effectiveValue)
       } else {
-        result.set(key, [value]);
+        result.set(key, [value])
       }
     }
-    return result;
+    return result
   }
 
   static isAssignableFrom<T extends BaseModel>(obj: object): obj is Multimap<T> {
-    if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return false;
-    const record = obj as Record<string, unknown>;
+    if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return false
+    const record = obj as Record<string, unknown>
     return Object.values(record).every(v =>
       Array.isArray(v) || (v && typeof v === 'object' && !Array.isArray(v))
-    );
+    )
   }
 
   asMap(): Map<string, V[]> {
@@ -116,10 +116,10 @@ export class Multimap<V extends BaseModel> {
   }
 
   private updateMap(mutator: (map: Map<string, V[]>) => void): Multimap<V> {
-    const newMap = new Map(this.map());
-    mutator(newMap);
-    this.map.set(newMap);
-    return this;
+    const newMap = new Map(this.map())
+    mutator(newMap)
+    this.map.set(newMap)
+    return this
   }
 
 }

@@ -11,6 +11,9 @@ export class RtsHttpInterceptor implements HttpInterceptor {
   private readonly sessionContextService = inject(SessionContextService)
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!req.url.startsWith('/secured')) {
+      return next.handle(req)
+    }
     const organization = this.sessionContextService.selectedOrganization()
     const location = this.sessionContextService.selectedLocation()
 

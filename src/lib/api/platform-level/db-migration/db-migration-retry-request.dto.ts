@@ -1,4 +1,4 @@
 export interface DbMigrationRetryRequestDto {
-  orgMigrationId: string;
-  locationIdsToMigrate: Set<string>;
+  orgMigrationId: string
+  locationIdsToMigrate: Set<string>
 }
