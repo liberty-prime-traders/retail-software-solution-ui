@@ -1,4 +1,4 @@
-import {disabled, hidden, required, schema} from '@angular/forms/signals'
+import {required, schema} from '@angular/forms/signals'
 import {OrgTaxType} from '../../../../api/organization-level/org-tax-type/org-tax-type.model'
 import {TaxRecoveryType} from '../../../../api/platform-level/tax-type/tax-recovery-type.enum'
 
@@ -15,8 +15,9 @@ export namespace OrgTaxTypeAddFormDefinition {
   export const rowFormSchema = schema<AddRowModel>((path) => {
     required(path.jurisdictionTaxTypeId)
     required(path.payableAccountCode)
-    disabled(path.taxRecoveryType)
-    hidden(path.taxRecoveryType, () => true)
+    required(path.recoverableAccountCode, {
+      when: ({valueOf}) => valueOf(path.taxRecoveryType) === TaxRecoveryType.RECOVERABLE
+    })
   })
 
   export const convertToBackendModel = (row: AddRowModel): Partial<OrgTaxType> => ({

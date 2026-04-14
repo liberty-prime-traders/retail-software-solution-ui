@@ -41,6 +41,8 @@
             Status
             <p-sortIcon field="status"/>
           </th>
+          <th>Payable Account</th>
+          <th>Recoverable Account</th>
           <th style="width: 5rem"></th>
         </tr>
       </ng-template>
@@ -49,6 +51,8 @@
         <tr [ngClass]="{ 'expanded-row': expanded }">
           <td>{{ entity?.taxLabel | nullSafe }}</td>
           <td>{{ entity?.status | prettifyEnum }}</td>
+          <td>{{ entity?.payableAccount | nullSafe }}</td>
+          <td>{{ entity?.recoverableAccount | nullSafe }}</td>
           <td>
             <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
                       rounded
@@ -62,14 +66,14 @@
 
       <ng-template pTemplate="expandedrow" let-entity>
         <tr>
-          <td colspan="3" class="filled-background">
+          <td colspan="5" class="filled-background">
             <rts-org-tax-type-edit-form [orgJurisdictionTaxType]="entity"/>
           </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
-        <tr rts-empty-row [colspan]="3" message="No Jurisdiction Tax Types Were Found"></tr>
+        <tr rts-empty-row [colspan]="5" message="No Jurisdiction Tax Types Were Found"></tr>
       </ng-template>
     </p-table>
   }

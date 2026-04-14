@@ -86,18 +86,18 @@ export class OrgTaxTypeAddFormComponent implements OnInit {
     this.taxTypesToAdd.update(rows => rows.filter(row => row.jurisdictionTaxTypeId !== jurisdictionTaxTypeId))
   }
 
-  onPayableChange(jurisdictionTaxTypeId?: string, node?: TreeNode<string>) {
+  onPayableChange(jurisdictionTaxTypeId: string, node?: TreeNode<string>) {
     this.taxTypesToAdd.update(rows =>
       rows.map((row) =>
-        row.jurisdictionTaxTypeId === jurisdictionTaxTypeId ? {...row, payableAccountCode: node?.key!} : row
+        row.jurisdictionTaxTypeId === jurisdictionTaxTypeId ? {...row, payableAccountCode: node?.key ?? ''} : row
       )
     )
   }
 
-  onRecoverableChange(jurisdictionTaxTypeId?: string, node?: TreeNode<string>) {
+  onRecoverableChange(jurisdictionTaxTypeId: string, node?: TreeNode<string>) {
     this.taxTypesToAdd.update(rows =>
       rows.map((row) =>
-        row.jurisdictionTaxTypeId === jurisdictionTaxTypeId ? {...row, recoverableAccountCode: node?.key!} : row
+        row.jurisdictionTaxTypeId === jurisdictionTaxTypeId ? {...row, recoverableAccountCode: node?.key ?? ''} : row
       )
     )
   }

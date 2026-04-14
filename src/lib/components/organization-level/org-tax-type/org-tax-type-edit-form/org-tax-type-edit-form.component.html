@@ -12,20 +12,20 @@
       <p-tree-select id="payableAccount"
                      [options]="payableAccounts()"
                      [loading]="accountTreesLoading()"
-                     [ngModel]="selectedPayableNode()"
-                     (ngModelChange)="onPayableChange($event)"
+                     [(ngModel)]="selectedPayableNode"
+                     (ngModelChange)="onPayableChange()"
                      placeholder="Select a Payable Account"
                      class="flex-grow-1">
       </p-tree-select>
     </rts-form-field>
 
     @if (formValue().taxRecoveryType === TaxRecoveryType.RECOVERABLE) {
-      <rts-form-field label="Recoverable Account" for="recoverableAccount">
+      <rts-form-field label="Recoverable Account" [required]="true" for="recoverableAccount">
         <p-tree-select id="recoverableAccount"
                        [options]="recoverableAccounts()"
                        [loading]="accountTreesLoading()"
-                       [ngModel]="selectedRecoverableNode()"
-                       (ngModelChange)="onRecoverableChange($event)"
+                       [(ngModel)]="selectedRecoverableNode"
+                       (ngModelChange)="onRecoverableChange()"
                        placeholder="Select a Recoverable Account"
                        class="flex-grow-1">
         </p-tree-select>
@@ -34,6 +34,7 @@
   }
 
   <rts-forms-buttons [disableSave]="editForm().invalid() || !editForm().dirty()"
+                     [disableReset]="!editForm().dirty()"
                      [hideDelete]="true"
                      [signalForm]="editForm()"
                      [fieldMap]="fieldMap"

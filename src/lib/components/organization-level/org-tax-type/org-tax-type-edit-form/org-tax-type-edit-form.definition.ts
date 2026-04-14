@@ -30,9 +30,14 @@ export namespace OrgTaxTypeEditFormDefinition {
   export const formSchema = schema<EditFormModel>((path) => {
     required(path.status)
     required(path.payableAccountCode)
+    required(
+      path.recoverableAccountCode, {
+        when: ({valueOf}) => valueOf(path.taxRecoveryType) === TaxRecoveryType.RECOVERABLE
+      }
+    )
   })
 
-  export const convertToFormModel = (entity?: OrgTaxType): EditFormModel => ({
+  export const convertToFormModel = (entity: OrgTaxType | null): EditFormModel => ({
     id: entity?.id as string ?? '',
     status: entity?.status ?? OrgTaxTypeStatus.ACTIVE,
     taxRecoveryType: entity?.taxRecoveryType ?? '',
@@ -44,6 +49,6 @@ export namespace OrgTaxTypeEditFormDefinition {
     id: formValue.id,
     status: formValue.status,
     payableAccountCode: formValue.payableAccountCode,
-    recoverableAccountCode: formValue.recoverableAccountCode || undefined
+    recoverableAccountCode: formValue.recoverableAccountCode
   })
 }

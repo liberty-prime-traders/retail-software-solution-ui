@@ -28,6 +28,7 @@
               <p-tree-select [options]="payableAccounts()"
                              [loading]="accountTreesLoading()"
                              #payableTreeSelect
+                             [invalid]="!payableTreeSelect.value"
                              (click)="onPayableChange(row.jurisdictionTaxTypeId, payableTreeSelect.value)"
                              placeholder="Payable Account"
                              class="col-4 p-0">
@@ -37,6 +38,7 @@
                 @if (row.taxRecoveryType === TaxRecoveryType.RECOVERABLE) {
                   <p-tree-select [options]="recoverableAccounts()"
                                  [loading]="accountTreesLoading()"
+                                 [invalid]="!payableTreeSelect.value"
                                  #recoverableTreeSelect
                                  (click)="onRecoverableChange(row.jurisdictionTaxTypeId, recoverableTreeSelect.value)"
                                  placeholder="Recoverable Account"
@@ -58,10 +60,7 @@
 
       @if (taxTypesToAdd().length > 0) {
         <div class="flex justify-content-end">
-          <p-button label="Save All"
-                    [disabled]="!canSave()"
-                    (click)="saveAll()">
-          </p-button>
+          <p-button label="Save All" [disabled]="!canSave()" (click)="saveAll()"/>
         </div>
       }
 

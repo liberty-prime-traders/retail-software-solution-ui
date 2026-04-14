@@ -11,4 +11,6 @@ export interface OrgTaxType extends BaseModel {
   status?: OrgTaxTypeStatus
   payableAccountCode?: string
   recoverableAccountCode?: string
+  payableAccount?: string
+  recoverableAccount?: string
 }
