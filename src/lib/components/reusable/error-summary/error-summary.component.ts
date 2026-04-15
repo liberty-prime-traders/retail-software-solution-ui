@@ -22,11 +22,15 @@ import {toErrorMessages} from '../../../utils/form-validation'
   imports: []
 })
 export class ErrorSummaryComponent<T> {
-  errors = input<ValidationError.WithField[]>()
-  fieldMap = input.required<Map<keyof T, string>>()
+  readonly signalFormErrors = input<ValidationError.WithField[]>()
+  readonly fieldMap = input<Map<keyof T, string>>()
+  readonly regularErrorMessages = input<string[]>([])
 
-  errorMessages = computed(() =>
-    toErrorMessages(this.fieldMap(), this.errors())
-  )
+  readonly errorMessages = computed(() => {
+    if (this.fieldMap()) {
+      return toErrorMessages(this.fieldMap()!, this.signalFormErrors())
+    }
+    return this.regularErrorMessages()
+  })
 
 }

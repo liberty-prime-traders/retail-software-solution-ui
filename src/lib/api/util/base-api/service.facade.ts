@@ -76,6 +76,7 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
 
   resetProcessingStatus() {
     this.setProcessingStatus(ProcessingStatus.IDLE)
+    this.store.clearError()
   }
 
   applyResponse(entity: RESPONSE) {

@@ -44,12 +44,19 @@ export class OrganizationDashboardComponent implements OnInit {
 
   private readonly financialSettingsMenuItems: Signal<MenuItem[]> = computed(() => {
     const showTaxes = this.orgFeatureService.isTaxEnabled()
+    const isChartOfAccountsEnabled = this.orgFeatureService.isChartOfAccountsEnabled()
     return [
       {
         label: 'Chart of Accounts',
         icon: 'pi pi-book',
         routerLink: 'chart-of-accounts',
-        visible: this.orgFeatureService.isChartOfAccountsEnabled()
+        visible: isChartOfAccountsEnabled
+      },
+      {
+        label: 'Fiscal Periods',
+        icon: 'pi pi-calendar',
+        routerLink: 'fiscal-periods',
+        visible: isChartOfAccountsEnabled
       },
       {
         label: 'Tax Types',

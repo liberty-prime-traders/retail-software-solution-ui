@@ -1,0 +1,52 @@
+<div class="flex flex-column gap-4">
+  <p-message severity="secondary" styleClass="w-full">
+    Warning: This period has ended. Consider closing it to prevent accidental entries.
+    Once closed, no new journal entries will be allowed for this period.
+
+    @if (fiscalPeriod().yearEnd) {
+      <br> <br>
+      Note: This is the year-end period. It should only be closed after all other periods for the year are closed and all financial data has been finalized.
+      <br>
+      Closing the year-end period will lock all financial data for the year — this action cannot be undone.
+    }
+  </p-message>
+
+  @if (pendingClose()) {
+    <div class="flex gap-3 justify-content-end">
+      <p-message severity="warn">
+        @if (fiscalPeriod().yearEnd) {
+          This will lock all financial data for the year. Are you sure you want to close this year-end period?
+        } @else {
+          Once closed, no new entries will be allowed for this period. Are you sure?
+        }
+      </p-message>
+
+      <p-button label="Yes, Close"
+                severity="danger"
+                rounded
+                [disabled]="closeInProgress()"
+                (click)="confirmClose()">
+      </p-button>
+
+      <p-button label="Cancel"
+                severity="secondary"
+                rounded
+                (click)="cancelClose()">
+      </p-button>
+    </div>
+
+  } @else {
+    <div class="flex justify-content-end gap-2">
+      <rts-error-summary [regularErrorMessages]="failureMessages()"/>
+
+      <p-button label="Close Period"
+                icon="pi pi-lock"
+                severity="warn"
+                rounded
+                [disabled]="closeInProgress()"
+                (click)="initiateClose()">
+      </p-button>
+    </div>
+  }
+</div>
+

@@ -31,6 +31,7 @@ import {
 import {TaxRateComponent} from '../../lib/components/organization-level/tax-rate/tax-rate.component'
 import {OrgFeatureComponent} from '../../lib/components/organization-level/org-feature/org-feature.component'
 import {ChartOfAccountsComponent} from '../../lib/components/organization-level/chart-of-accounts/chart-of-accounts.component'
+import {FiscalPeriodsComponent} from '../../lib/components/organization-level/fiscal-periods/fiscal-periods.component'
 
 export const orgManagementRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
@@ -52,5 +53,6 @@ export const orgManagementRoutes: Routes = [
   {path: 'tax-rates', component: TaxRateComponent},
   {path: 'features', component: OrgFeatureComponent},
   {path: 'chart-of-accounts', component: ChartOfAccountsComponent},
+  {path: 'fiscal-periods', component: FiscalPeriodsComponent},
   {path: '', redirectTo: 'summary', pathMatch: 'full'}
 ]
