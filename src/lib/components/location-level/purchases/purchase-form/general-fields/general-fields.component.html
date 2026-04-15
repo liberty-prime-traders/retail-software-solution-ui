@@ -79,7 +79,7 @@
           <span class="mb-2 error-message text-wrap">{{ error }}</span>
         }
 
-        <rts-error-summary [errors]="purchaseForm().errorSummary()" [fieldMap]="purchaseFormFields"/>
+        <rts-error-summary [signalFormErrors]="purchaseForm().errorSummary()" [fieldMap]="purchaseFormFields"/>
       </p-card>
     </div>
   }

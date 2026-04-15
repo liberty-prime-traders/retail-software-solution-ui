@@ -1,0 +1,114 @@
+<p-tabs value="0">
+  <p-tablist>
+    <p-tab value="0">Periods</p-tab>
+    <p-tab value="1">Configuration</p-tab>
+  </p-tablist>
+
+  <p-tabpanels class="p-0">
+    <p-tabpanel value="0">
+      <ng-container *ngTemplateOutlet="periodsGrid"/>
+    </p-tabpanel>
+
+    <p-tabpanel value="1">
+      <div class="p-4">
+        <p class="text-color-secondary">Configuration options will be available here.</p>
+      </div>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
+
+<ng-template #periodsGrid>
+  <div class="flex flex-column gap-4" id="fiscal-periods" rtsAutoStretch="fiscal-periods">
+    <p-table [loading]="loading()"
+             dataKey="id"
+             rowExpandMode="single"
+             scrollHeight="flex"
+             [scrollable]="true"
+             sortField="startDate"
+             #periodsTable
+             [globalFilterFields]="['name']"
+             [value]="periods()">
+
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between align-items-center">
+          <h3 class="font-bold">Fiscal Periods</h3>
+
+          <div class="flex gap-3 align-items-center">
+            <rts-grid-filter [dataTable]="periodsTable"/>
+
+            <p-button label="Nudge"
+                      icon="pi pi-refresh"
+                      rounded
+                      severity="secondary"
+                      [disabled]="loading()"
+                      (click)="nudge()">
+            </p-button>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="name">Name <p-sortIcon field="name"/></th>
+          <th></th>
+          <th pSortableColumn="fiscalYear">Fiscal Year <p-sortIcon field="fiscalYear"/></th>
+          <th pSortableColumn="startDate">Start Date <p-sortIcon field="startDate"/></th>
+          <th pSortableColumn="endDate">End Date <p-sortIcon field="endDate"/></th>
+          <th>Closed At</th>
+          <th>Closed By</th>
+          <th style="width: 4rem"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-period let-expanded="expanded">
+        <tr [pSelectableRow]="period" [class.expanded-row]="expanded">
+          <td>{{ period.name }}</td>
+
+          <td>
+            <div class="flex align-items-center gap-2">
+              @if (period.stub) {
+                <p-badge value="stub" severity="info"/>
+              }
+              @if (period.closable) {
+                <p-badge value="past-due" severity="warn"/>
+              }
+              @if (period.yearEnd) {
+                <p-badge value="year-end" severity="contrast"/>
+              }
+            </div>
+          </td>
+
+          <td>{{ period.fiscalYear | nullSafe }}</td>
+          <td>{{ period.startDate | date: 'mediumDate' }}</td>
+          <td>{{ period.endDate | date: 'mediumDate' }}</td>
+          <td>{{ period.closedAt | date: 'medium' | nullSafe }}</td>
+          <td>{{ period.closedBy | nullSafe }}</td>
+          <td>
+            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                      rounded
+                      severity="secondary"
+                      [disabled]="loading()"
+                      [pRowToggler]="period">
+            </p-button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="expandedrow" let-period>
+        <tr>
+          <td colspan="8" class="filled-background">
+            @if (period.closable) {
+              <rts-fiscal-period-close [fiscalPeriod]="period"/>
+            } @else {
+              <rts-fiscal-period-form [period]="period"/>
+            }
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr rts-empty-row [colspan]="8" message="No Fiscal Periods Found"></tr>
+      </ng-template>
+    </p-table>
+  </div>
+</ng-template>

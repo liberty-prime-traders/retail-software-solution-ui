@@ -1,3 +1,6 @@
+
+export const getTodayStr = () => toLocaleDateString(getToday())
+
 export const getToday = (): Date => {
   const dateObj = new Date()
   dateObj.setHours(0, 0, 0, 0)
