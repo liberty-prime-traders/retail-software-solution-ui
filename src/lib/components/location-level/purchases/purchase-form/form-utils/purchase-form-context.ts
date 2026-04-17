@@ -18,7 +18,7 @@ export class PurchaseFormContext {
   })
 
   readonly purchaseLinesArray = computed(() => this.purchaseForm.purchaseLines().value())
-  readonly status = computed(() => this.originalPurchase()?.status)
+  readonly purchaseStatus = computed(() => this.originalPurchase()?.purchaseStatus)
   readonly purchaseId = computed(() => this.originalPurchase()?.id)
   readonly deliveries = computed(() => this.originalPurchase()?.deliveries ?? [])
 
@@ -26,13 +26,13 @@ export class PurchaseFormContext {
   readonly isEditingLines = computed(() => Object.keys(this.keysForLinesBeingEdited()).length > 0)
 
   readonly isDraftOrNew = computed(() => {
-    const status = this.status()
-    return !status || status === PurchaseStatus.DRAFT
+    const purchaseStatus = this.purchaseStatus()
+    return !purchaseStatus || purchaseStatus === PurchaseStatus.DRAFT
   })
 
   readonly isOrderedOrPartiallyDelivered = computed(() => {
-    const status = this.status()
-    return status === PurchaseStatus.ORDERED || status === PurchaseStatus.PARTIALLY_DELIVERED
+    const purchaseStatus = this.purchaseStatus()
+    return purchaseStatus === PurchaseStatus.ORDERED || purchaseStatus === PurchaseStatus.PARTIALLY_DELIVERED
   })
 
   private readonly totalEffect = effect(() => {

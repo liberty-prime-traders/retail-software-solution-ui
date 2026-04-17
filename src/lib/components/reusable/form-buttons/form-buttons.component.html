@@ -38,8 +38,7 @@
           <p-tag severity="success" [value]="successMessage()" icon="pi pi-check"/>
 
         } @else if (processingStatus() === ProcessingStatus.FAILURE) {
-          <rts-tooltip [messages]="failureMessages() ?? []"/>
-          <p-tag severity="danger" value="Failed" icon="pi pi-exclamation-triangle"/>
+          <rts-error-summary [regularErrorMessages]="failureMessages()"/>
         }
 
         @if (!hideReset()) {

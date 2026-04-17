@@ -12,7 +12,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     orderedBy: string
     orderedById: string
     notes: string
-    status: PurchaseStatus
+    purchaseStatus: PurchaseStatus
     createdBy: string
     createdOn: string
     orderTotal: number
@@ -34,7 +34,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     orderedBy: '',
     orderedById: '',
     notes: '',
-    status: PurchaseStatus.DRAFT,
+    purchaseStatus: PurchaseStatus.DRAFT,
     createdBy: '',
     createdOn: '',
     orderTotal: 0
@@ -45,8 +45,8 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     required(path.supplierId)
 
     const isReadOnly = ({valueOf}: any) => {
-      const status = valueOf(path.status)
-      return status && status !== PurchaseStatus.DRAFT
+      const purchaseStatus = valueOf(path.purchaseStatus)
+      return purchaseStatus && purchaseStatus !== PurchaseStatus.DRAFT
     }
     disabled(path.supplierId, isReadOnly)
     disabled(path.dateOrdered, isReadOnly)
@@ -62,7 +62,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     orderedBy: purchase?.orderedBy ?? '',
     orderedById: purchase?.orderedById ?? '',
     notes: purchase?.notes ?? '',
-    status: purchase?.status ?? PurchaseStatus.DRAFT,
+    purchaseStatus: purchase?.purchaseStatus ?? PurchaseStatus.DRAFT,
     createdBy: purchase?.createdBy ?? '',
     createdOn: purchase?.createdOn ?? '',
     orderTotal: purchase?.orderTotal ?? 0

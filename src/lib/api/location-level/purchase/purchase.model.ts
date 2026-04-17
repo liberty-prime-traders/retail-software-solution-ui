@@ -7,7 +7,7 @@ import {PurchaseStatus} from './purchase-status.enum'
 export interface Purchase extends BaseModel {
   supplierId: string
   supplierName?: string
-  status: PurchaseStatus
+  purchaseStatus: PurchaseStatus
   notes?: string
   dateOrdered?: string
   orderedBy?: string
@@ -16,7 +16,7 @@ export interface Purchase extends BaseModel {
   createdOn?: string
   orderTotal?: number
   lines: Partial<PurchaseLine>[]
-  deliveries?: PurchaseDelivery[]
+  deliveries: PurchaseDelivery[]
 }
 
 export interface PurchaseLine extends BaseModel {

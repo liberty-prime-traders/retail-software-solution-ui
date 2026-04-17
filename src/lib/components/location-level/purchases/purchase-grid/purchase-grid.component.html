@@ -12,8 +12,8 @@
         <th pSortableColumn="supplierName">Supplier
           <p-sortIcon field="supplierName"/>
         </th>
-        <th pSortableColumn="status">Status
-          <p-sortIcon field="status"/>
+        <th pSortableColumn="purchaseStatus">Status
+          <p-sortIcon field="purchaseStatus"/>
         </th>
         <th pSortableColumn="dateOrdered">Date Ordered
           <p-sortIcon field="dateOrdered"/>
@@ -36,8 +36,8 @@
         <td>{{ purchase.referenceNumber | nullSafe }}</td>
         <td>{{ purchase.supplierName | nullSafe }}</td>
         <td>
-          <p-tag [value]="purchase.status | prettifyEnum"
-                 [severity]="purchase.status | purchaseStatusSeverity">
+          <p-tag [value]="purchase.purchaseStatus | prettifyEnum"
+                 [severity]="purchase.purchaseStatus | purchaseStatusSeverity">
           </p-tag>
         </td>
         <td>{{ purchase.dateOrdered | date: 'mediumDate' | nullSafe }}</td>

@@ -54,8 +54,8 @@
     </rts-form-field>
 
     <rts-form-field label="Status" [labelColumnSize]="labelColumnSize">
-      <p-tag class="w-fit" [value]="generalFieldsForm.status().value() | prettifyEnum"
-             [severity]="generalFieldsForm.status().value() | purchaseStatusSeverity">
+      <p-tag class="w-fit" [value]="generalFieldsForm.purchaseStatus().value() | prettifyEnum"
+             [severity]="generalFieldsForm.purchaseStatus().value() | purchaseStatusSeverity">
       </p-tag>
     </rts-form-field>
 
