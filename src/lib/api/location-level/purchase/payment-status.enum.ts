@@ -1,0 +1,5 @@
+export enum PaymentStatus {
+  UNPAID = 'UNPAID',
+  PARTIALLY_SETTLED = 'PARTIALLY_SETTLED',
+  FULLY_SETTLED = 'FULLY_SETTLED'
+}

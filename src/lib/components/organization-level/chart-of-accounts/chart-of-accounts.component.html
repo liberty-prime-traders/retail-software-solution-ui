@@ -45,7 +45,9 @@
               <span>{{ rowData.displayName }}</span>
             </div>
           </td>
-          <td>{{ rowData.currentBalance | currency }}</td>
+          <td>
+            <rts-money [amount]="rowData.currentBalance" [balanceSignal]="rowData.balanceSignal"/>
+          </td>
         </tr>
       </ng-template>
     </p-tree-table>
@@ -99,7 +101,9 @@
           <tr [ngClass]="{ 'expanded-row': expanded }">
             <td>{{ account.displayName }}</td>
             <td>{{ account.accountType | prettifyEnum }}</td>
-            <td>{{ account.currentBalance | currency }}</td>
+            <td>
+              <rts-money [amount]="account.currentBalance" [balanceSignal]="account.balanceSignal"/>
+            </td>
             <td>{{ account.parentAccount | nullSafe }}</td>
             <td>
               @if (!account.accountIsSystemMaintained) {

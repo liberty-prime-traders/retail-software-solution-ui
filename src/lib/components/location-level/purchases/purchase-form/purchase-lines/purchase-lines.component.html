@@ -39,6 +39,7 @@
     <ng-template pTemplate="body" let-purchaseLine let-editing="editing">
       <tr [pEditableRow]="purchaseLine"
           [ngClass]="{'opacity-70': purchaseLine.canceledWithoutSingleDelivery}">
+
         <td>{{ purchaseLine | productLabel }}</td>
 
         @if (isDraftOrNew()) {

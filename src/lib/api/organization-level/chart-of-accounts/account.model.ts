@@ -2,6 +2,7 @@ import {EntityId} from '@ngrx/signals/entities'
 import {TreeNode} from 'primeng/api'
 import {BaseModel} from '../../util/base-api/base.model'
 import {AccountType} from './account-type.enum'
+import {BalanceSignal} from './balance-signal.enum'
 
 export interface Account extends BaseModel {
   code: string
@@ -12,9 +13,9 @@ export interface Account extends BaseModel {
   accountIsSystemMaintained: boolean
   accountIsExtensible: boolean
   currentBalance: number
-  balanceUpdatedAt?: string
   parentAccountCode?: string
-  parentAccount?: string
+  parentAccount?: string,
+  balanceSignal: BalanceSignal
 }
 
 export const toAccountTreeNodes = (accounts: Account[]): TreeNode<Account>[] => {

@@ -1,4 +1,5 @@
 import {disabled, required, schema} from '@angular/forms/signals'
+import {PaymentStatus} from '../../../../../api/location-level/purchase/payment-status.enum'
 import {PurchaseStatus} from '../../../../../api/location-level/purchase/purchase-status.enum'
 import {Purchase} from '../../../../../api/location-level/purchase/purchase.model'
 
@@ -14,7 +15,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     notes: string
     purchaseStatus: PurchaseStatus
     createdBy: string
-    createdOn: string
+    paymentStatus: PaymentStatus
     orderTotal: number
   }
 
@@ -36,7 +37,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     notes: '',
     purchaseStatus: PurchaseStatus.DRAFT,
     createdBy: '',
-    createdOn: '',
+    paymentStatus: PaymentStatus.UNPAID,
     orderTotal: 0
   })
 
@@ -64,7 +65,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     notes: purchase?.notes ?? '',
     purchaseStatus: purchase?.purchaseStatus ?? PurchaseStatus.DRAFT,
     createdBy: purchase?.createdBy ?? '',
-    createdOn: purchase?.createdOn ?? '',
+    paymentStatus: purchase?.paymentStatus ?? PaymentStatus.UNPAID,
     orderTotal: purchase?.orderTotal ?? 0
   })
 

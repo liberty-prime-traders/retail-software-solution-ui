@@ -4,10 +4,10 @@ import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {PurchaseDelivery} from '../../../../../../api/location-level/delivery/purchase-delivery.model'
 import {PurchaseStatus} from '../../../../../../api/location-level/purchase/purchase-status.enum'
-import {ProductLabelPipe} from '../../../../../../utils/pipes/product-label.pipe'
 import {EmptyRowComponent} from '../../../../../reusable/empty-row/empty-row.component'
 import {PurchaseFormContext} from '../../form-utils/purchase-form-context'
 import {DeliveryFormComponent} from '../delivery-form/delivery-form.component'
+import {DeliverySubgridComponent} from '../delivery-subgrid/delivery-subgrid.component'
 
 @Component({
   selector: 'rts-purchase-deliveries',
@@ -18,8 +18,8 @@ import {DeliveryFormComponent} from '../delivery-form/delivery-form.component'
     CurrencyPipe,
     DatePipe,
     EmptyRowComponent,
-    ProductLabelPipe,
     DeliveryFormComponent,
+    DeliverySubgridComponent,
     NgClass
   ]
 })

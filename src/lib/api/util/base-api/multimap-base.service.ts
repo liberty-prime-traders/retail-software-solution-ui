@@ -40,6 +40,12 @@ export abstract class MultimapBaseService<RESPONSE extends BaseModel> extends Ba
     return super.refetch(key)
   }
 
+  forceRefetch(key: EntityId): Subscription | undefined {
+    this.cache.delete(String(key))
+    this.fetchedAll.set(false)
+    return super.refetch(key)
+  }
+
   override finishSavingWithSuccess(result: RESPONSE | RESPONSE[]) {
     if (result) {
       if (Array.isArray(result)) {

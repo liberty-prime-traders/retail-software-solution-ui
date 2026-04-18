@@ -1,4 +1,4 @@
-import {CurrencyPipe, DatePipe, NgStyle} from '@angular/common'
+import {CurrencyPipe, NgStyle} from '@angular/common'
 import {Component, computed, inject, OnInit} from '@angular/core'
 import {FormField} from '@angular/forms/signals'
 import {Card} from 'primeng/card'
@@ -15,6 +15,7 @@ import {
 import {PrettifyEnumPipe} from '../../../../../utils/pipes/prettify-enum.pipe'
 import {ErrorSummaryComponent} from '../../../../reusable/error-summary/error-summary.component'
 import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
+import {PaymentStatusSeverityPipe} from '../../payment-status-severity.pipe'
 import {PurchaseStatusSeverityPipe} from '../../purchase-status-severity.pipe'
 import {PurchaseFormContext} from '../form-utils/purchase-form-context'
 import {PurchaseGeneralFieldsFormDefinition} from '../form-utils/purchase-general-fields-form.definition'
@@ -33,9 +34,9 @@ import {PurchaseGeneralFieldsFormDefinition} from '../form-utils/purchase-genera
     PurchaseStatusSeverityPipe,
     PrettifyEnumPipe,
     CurrencyPipe,
-    DatePipe,
     NgStyle,
-    InputText
+    InputText,
+    PaymentStatusSeverityPipe
   ]
 })
 export class PurchaseFormGeneralFieldsComponent implements OnInit {

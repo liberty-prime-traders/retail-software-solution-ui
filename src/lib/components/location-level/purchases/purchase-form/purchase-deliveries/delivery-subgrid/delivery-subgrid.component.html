@@ -1,0 +1,31 @@
+<p-tabs value="lines">
+  <p-tablist>
+    <p-tab value="lines">Delivery Lines</p-tab>
+    <p-tab value="events">Events</p-tab>
+  </p-tablist>
+
+  <p-tabpanels>
+    <p-tabpanel value="lines">
+      <p-table [value]="delivery().lines">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Product</th>
+            <th>Qty Delivered</th>
+            <th>Unit Cost</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-line>
+          <tr>
+            <td>{{ line.locationProduct | productLabel }}</td>
+            <td>{{ line.quantityDelivered }}</td>
+            <td>{{ line.unitCost | currency }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-tabpanel>
+
+    <p-tabpanel value="events">
+      <rts-kafka-event-log [sourceDocumentId]="delivery().id"/>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
