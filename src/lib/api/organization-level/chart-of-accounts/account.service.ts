@@ -23,11 +23,11 @@ export class AccountService extends BaseService<Account> {
 
   deactivate(id: EntityId) {
     this.patchApiRequestConfig({urlSuffix: 'deactivate'})
-    this.putWithId(id)
+    this.putRequest({id})
   }
 
   activate(id: EntityId) {
     this.patchApiRequestConfig({urlSuffix: 'activate'})
-    this.putWithId(id)
+    this.putRequest({id})
   }
 }

@@ -29,20 +29,8 @@ export class DeliveryGridComponent {
 
   readonly deliveries = this.purchaseFormContext.deliveries
   readonly showNewDeliveryForm = signal(false)
-  readonly expandedRowKeys = signal<Record<string, boolean>>({})
 
   readonly canAddDeliveries = computed(() =>
     this.purchaseFormContext.purchaseForm.generalFields().value().purchaseStatus !== PurchaseStatus.FULLY_DELIVERED
   )
-
-  onRowExpand(event: {data: PurchaseDelivery}) {
-    this.expandedRowKeys.update(keys => ({...keys, [event.data.id as string]: true}))
-  }
-
-  onRowCollapse(event: {data: PurchaseDelivery}) {
-    this.expandedRowKeys.update(keys => {
-      const {[event.data.id as string]: _, ...rest} = keys
-      return rest
-    })
-  }
 }

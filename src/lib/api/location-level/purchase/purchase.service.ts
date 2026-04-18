@@ -1,9 +1,7 @@
-import {HttpErrorResponse, HttpParams} from '@angular/common/http'
+import {HttpParams} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
-import {finalize, Subscription, throwError} from 'rxjs'
-import {catchError, first, tap} from 'rxjs/operators'
-import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
+import {Subscription} from 'rxjs'
 import {ApiCallbacks} from '../../util/base-api/api-callbacks'
 import {BaseService} from '../../util/base-api/base.service'
 import {Purchase, PurchaseLineCancelDto} from './purchase.model'
@@ -43,32 +41,12 @@ export class PurchaseService extends BaseService<Purchase> {
   }
 
   cancelLines(id: EntityId, lines: PurchaseLineCancelDto[], callbacks?: ApiCallbacks<Purchase>): Subscription {
-    this.startApiRequest()
-    return this.httpClient.put<Purchase>(`${this.getBasePath(id)}/line-cancel-quantities`, lines).pipe(
-      first(),
-      tap((result) => {
-        this.finishSavingWithSuccess(result)
-        callbacks?.onSuccess?.(result)
-      }),
-      catchError((error: HttpErrorResponse) => {
-        this.setStoreError(error)
-        callbacks?.onFail?.(error)
-        return throwError(() => error)
-      }),
-      finalize(() => this.finalizeApiRequest())
-    ).subscribe()
+    this.patchApiRequestConfig({urlSuffix: 'line-cancel-quantities'})
+    return this.putRequest({body: lines as any, callbacks, id})
   }
 
   updateNotes(id: EntityId, notes: string): Subscription {
-    this.startApiRequest()
-    return this.httpClient.put<void>(`${this.getBasePath(id)}/notes`, {notes}).pipe(
-      first(),
-      tap(() => {
-        this.setProcessingStatus(ProcessingStatus.SUCCESS)
-        this.store.upsert({id, notes})
-      }),
-      catchError((error: HttpErrorResponse) => this.setStoreError(error)),
-      finalize(() => this.finalizeApiRequest())
-    ).subscribe()
+    this.patchApiRequestConfig({urlSuffix: 'notes'})
+    return this.putRequest({body: {notes} as any, id})
   }
 }
