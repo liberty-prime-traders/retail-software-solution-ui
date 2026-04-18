@@ -54,8 +54,8 @@
     </rts-form-field>
 
     <rts-form-field label="Status" [labelColumnSize]="labelColumnSize">
-      <p-tag class="w-fit" [value]="generalFieldsForm.status().value() | prettifyEnum"
-             [severity]="generalFieldsForm.status().value() | purchaseStatusSeverity">
+      <p-tag class="w-fit" [value]="generalFieldsForm.purchaseStatus().value() | prettifyEnum"
+             [severity]="generalFieldsForm.purchaseStatus().value() | purchaseStatusSeverity">
       </p-tag>
     </rts-form-field>
 
@@ -63,13 +63,16 @@
       <span class="flex-grow-1">{{ generalFieldsForm.orderTotal().value() | currency }}</span>
     </rts-form-field>
 
+    <rts-form-field label="Payment Status" [labelColumnSize]="labelColumnSize">
+      <p-tag class="w-fit" [value]="generalFieldsForm.paymentStatus().value() | prettifyEnum"
+             [severity]="generalFieldsForm.paymentStatus().value() | paymentStatusSeverity">
+      </p-tag>
+    </rts-form-field>
+
     <rts-form-field label="Created By" [labelColumnSize]="labelColumnSize">
       <span class="flex-grow-1">{{ generalFieldsForm.createdBy().value() }}</span>
     </rts-form-field>
 
-    <rts-form-field label="Created On" [labelColumnSize]="labelColumnSize">
-      <span class="flex-grow-1">{{ generalFieldsForm.createdOn().value() | date: 'medium' }}</span>
-    </rts-form-field>
   </div>
 
   @if (purchaseForm().invalid() || apiErrors().length > 0) {

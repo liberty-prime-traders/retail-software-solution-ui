@@ -1,21 +1,19 @@
-import {CurrencyPipe, NgClass, NgTemplateOutlet} from '@angular/common'
+import {NgClass, NgTemplateOutlet} from '@angular/common'
 import {Component, computed, inject} from '@angular/core'
-import {EntityId} from '@ngrx/signals/entities'
 import {MarkdownComponent} from 'ngx-markdown'
-import {TreeNode} from 'primeng/api'
 import {ButtonModule} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
 import {TreeTableModule} from 'primeng/treetable'
-import {Account, toAccountTreeNodes} from '../../../api/organization-level/chart-of-accounts/account.model'
+import {toAccountTreeNodes} from '../../../api/organization-level/chart-of-accounts/account.model'
 import {AccountService} from '../../../api/organization-level/chart-of-accounts/account.service'
-import {BooleanToTextPipe} from '../../../utils/pipes/boolean-to-text.pipe'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
+import {MoneyComponent} from '../../reusable/money.component'
 import {AccountFormComponent} from './account-form/account-form.component'
 
 @Component({
@@ -25,7 +23,6 @@ import {AccountFormComponent} from './account-form/account-form.component'
     TableModule,
     PrettifyEnumPipe,
     NullSafePipe,
-    CurrencyPipe,
     GridFilterComponent,
     EmptyRowComponent,
     AutoStretchDirective,
@@ -39,7 +36,8 @@ import {AccountFormComponent} from './account-form/account-form.component'
     TreeTableModule,
     ButtonModule,
     AccountFormComponent,
-    NgClass
+    NgClass,
+    MoneyComponent
   ]
 })
 export class ChartOfAccountsComponent extends GridWithAddButtonComponent<AccountService> {

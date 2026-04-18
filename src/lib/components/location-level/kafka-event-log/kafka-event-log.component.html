@@ -1,0 +1,53 @@
+<p-table [value]="kafkaLogs()"
+         sortField="referenceNumber"
+         [loading]="loading()"
+         dataKey="id">
+
+  <ng-template pTemplate="caption">
+    <div class="flex justify-content-between align-items-center">
+      <h3 class="font-bold">Event Log</h3>
+      <p-button label="Refresh All"
+                icon="pi pi-refresh"
+                rounded
+                severity="secondary"
+                [disabled]="loading()"
+                (click)="refreshAll()">
+      </p-button>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Reference Number</th>
+      <th>Processor</th>
+      <th>Status</th>
+      <th>Processed On</th>
+      <th>Failure Reason</th>
+      <th style="width: 4rem"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-log>
+    <tr>
+      <td>{{ log.referenceNumber | nullSafe }}</td>
+      <td>{{ log.processor | nullSafe }}</td>
+      <td>{{ log.status | prettifyEnum }}</td>
+      <td>{{ log.processedOn | date: 'medium' | nullSafe }}</td>
+      <td>{{ log.failureReason | nullSafe }}</td>
+      <td>
+        <p-button icon="pi pi-replay"
+                  rounded
+                  text
+                  severity="secondary"
+                  [disabled]="loading()"
+                  (click)="retry(log.id)">
+        </p-button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr rts-empty-row [colspan]="6" message="No events found"></tr>
+  </ng-template>
+
+</p-table>

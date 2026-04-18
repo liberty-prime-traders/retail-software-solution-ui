@@ -3,8 +3,8 @@ import {PurchaseStatus} from '../../../api/location-level/purchase/purchase-stat
 
 @Pipe({name: 'purchaseStatusSeverity', standalone: true})
 export class PurchaseStatusSeverityPipe implements PipeTransform {
-  transform(status?: PurchaseStatus) {
-    switch (status) {
+  transform(purchaseStatus?: PurchaseStatus) {
+    switch (purchaseStatus) {
     case PurchaseStatus.DRAFT:
       return 'secondary'
     case PurchaseStatus.ORDERED:

@@ -9,24 +9,12 @@
     <ng-template pTemplate="header">
       <tr>
         <th>Reference</th>
-        <th pSortableColumn="supplierName">Supplier
-          <p-sortIcon field="supplierName"/>
-        </th>
-        <th pSortableColumn="status">Status
-          <p-sortIcon field="status"/>
-        </th>
-        <th pSortableColumn="dateOrdered">Date Ordered
-          <p-sortIcon field="dateOrdered"/>
-        </th>
-        <th pSortableColumn="orderedBy">Ordered By
-          <p-sortIcon field="orderedBy"/>
-        </th>
-        <th pSortableColumn="createdBy">Created By
-          <p-sortIcon field="createdBy"/>
-        </th>
-        <th pSortableColumn="orderTotal">Total
-          <p-sortIcon field="orderTotal"/>
-        </th>
+        <th>Supplier</th>
+        <th>Status</th>
+        <th>Date Ordered</th>
+        <th>Ordered By</th>
+        <th>Total</th>
+        <th>Payment Status</th>
         <th style="width: 5rem"></th>
       </tr>
     </ng-template>
@@ -36,14 +24,18 @@
         <td>{{ purchase.referenceNumber | nullSafe }}</td>
         <td>{{ purchase.supplierName | nullSafe }}</td>
         <td>
-          <p-tag [value]="purchase.status | prettifyEnum"
-                 [severity]="purchase.status | purchaseStatusSeverity">
+          <p-tag [value]="purchase.purchaseStatus | prettifyEnum"
+                 [severity]="purchase.purchaseStatus | purchaseStatusSeverity">
           </p-tag>
         </td>
         <td>{{ purchase.dateOrdered | date: 'mediumDate' | nullSafe }}</td>
         <td>{{ purchase.orderedBy | nullSafe }}</td>
-        <td>{{ purchase.createdBy | nullSafe }}</td>
         <td>{{ purchase.orderTotal | currency }}</td>
+        <td>
+          <p-tag [value]="purchase.paymentStatus | prettifyEnum"
+                 [severity]="purchase.paymentStatus | paymentStatusSeverity">
+          </p-tag>
+        </td>
         <td>
           <p-button icon="pi pi-pen-to-square"
                     rounded

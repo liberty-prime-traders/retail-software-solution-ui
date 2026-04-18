@@ -13,14 +13,18 @@ import {LocationProductStore} from './location-product.store'
 export class LocationProductQuickSearchService extends BaseService<LocationProduct, PageRequest<ProductSearchParameters>> {
   private static readonly PAGE_SIZE = 10
 
+  private readonly activeProducts = computed(() =>
+    this.selectAll().filter(product => product.status === ProductStatus.ACTIVE)
+  )
+
   readonly productsMap = computed(() => {
     const map = new Map<EntityId, LocationProduct>()
-    this.selectAll().forEach(product => map.set(product.id, product))
+    this.activeProducts().forEach(product => map.set(product.id, product))
     return map
   })
 
   readonly productOptions = computed(() => {
-    return toSelectItems(this.selectAll(), {
+    return toSelectItems(this.activeProducts(), {
       itemValueBy: this.extractValueFromProduct,
       itemLabelBy: this.extractLabelFromProduct
     })

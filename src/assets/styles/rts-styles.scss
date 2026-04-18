@@ -41,3 +41,19 @@ $positions: left right center top bottom;
     }
   }
 }
+
+.money-in {
+  color: theme.$moneyIn;
+}
+
+.money-out {
+  color: theme.$moneyOut
+}
+
+.zero-balance {
+  color: theme.$zeroBalance;
+}
+
+.irregular-balance {
+  color: theme.$irregularBalance
+}

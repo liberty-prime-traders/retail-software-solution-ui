@@ -9,7 +9,6 @@ import {Tag} from 'primeng/tag'
 import {FormAction} from '../../../utils/types/form-action.enum'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {ErrorSummaryComponent} from '../error-summary/error-summary.component'
-import {TooltipComponent} from '../tooltip/tooltip.component'
 
 @Component({
   selector: 'rts-forms-buttons',
@@ -20,7 +19,6 @@ import {TooltipComponent} from '../tooltip/tooltip.component'
     ConfirmDialogModule,
     ProgressSpinner,
     Tag,
-    TooltipComponent,
     ErrorSummaryComponent,
     Message
   ]
@@ -53,7 +51,7 @@ export class FormButtonsComponent<T> {
   readonly deleteInProgressMessage = input('Deleting...')
   readonly saveInProgressMessage = input('Saving...')
   readonly successMessage = input('Success')
-  readonly failureMessages = input<string[] | undefined | null>()
+  readonly failureMessages = input<string[]>()
 
   readonly ProcessingStatus = ProcessingStatus
 

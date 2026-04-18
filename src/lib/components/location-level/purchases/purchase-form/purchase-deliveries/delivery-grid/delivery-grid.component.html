@@ -17,7 +17,7 @@
 
     <p-table [value]="deliveries()"
              dataKey="id"
-             sortField="deliveredAt"
+             sortField="referenceNumber"
              [expandedRowKeys]="expandedRowKeys()"
              (onRowExpand)="onRowExpand($event)"
              (onRowCollapse)="onRowCollapse($event)">
@@ -26,10 +26,8 @@
         <tr>
           <th style="width: 3rem"></th>
           <th>Reference Number</th>
-          <th>Processing Status</th>
-          <th pSortableColumn="deliveredAt">Delivered At
-            <p-sortIcon field="deliveredAt"/>
-          </th>
+          <th>Delivered At</th>
+          <th>Delivery Total</th>
           <th>Notes</th>
         </tr>
       </ng-template>
@@ -45,49 +43,22 @@
             </p-button>
           </td>
           <td>{{ delivery.referenceNumber }}</td>
-          <td>
-            <p-tag [value]="delivery.status | prettifyEnum"
-                   [severity]="delivery.status  | deliveryStatusSeverity">
-            </p-tag>
-          </td>
           <td>{{ delivery.deliveredAt | date: 'medium' }}</td>
+          <td>{{ delivery.deliveryTotal | currency }}</td>
           <td>{{ delivery.notes }}</td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="expandedrow" let-delivery>
         <tr>
-          <td colspan="5" class="filled-background p-4">
-            @if (delivery.status === PurchaseDeliveryStatus.FAILED) {
-              <div class="mb-2 error-message">
-                Delivery failed to process.
-                This means stock levels were not updated and the delivery is not reflected in inventory reports.
-                Contact system administrator before recording another delivery.
-              </div>
-            }
-
-            <p-table [value]="delivery.lines">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Product</th>
-                  <th>Qty Delivered</th>
-                  <th>Unit Cost</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-line>
-                <tr>
-                  <td>{{ line.locationProduct | productLabel }}</td>
-                  <td>{{ line.quantityDelivered }}</td>
-                  <td>{{ line.unitCost | currency }}</td>
-                </tr>
-              </ng-template>
-            </p-table>
+          <td colspan="6" class="filled-background p-4">
+            <rts-delivery-subgrid [delivery]="delivery"/>
           </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
-        <tr [colspan]="5" rts-empty-row message="No deliveries recorded yet"></tr>
+        <tr [colspan]="6" rts-empty-row message="No deliveries recorded yet"></tr>
       </ng-template>
 
     </p-table>
