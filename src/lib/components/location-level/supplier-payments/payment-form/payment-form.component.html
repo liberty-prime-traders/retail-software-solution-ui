@@ -1,0 +1,81 @@
+<rts-loading-container [loading]="isLoading()" loadingText="Saving...">
+  <div class="text-lg font-semibold">Record New Payment</div>
+
+  <div class="flex flex flex-wrap mt-5">
+    <div class="flex flex-column col-4 p-0">
+      <rts-form-field label="Payment Date"
+                      class="flex-grow-1"
+                      contentClass="col-8"
+                      [required]="true"
+                      [layout]="FormFieldDirection.VERTICAL">
+        <p-date-picker [formField]="paymentForm.paymentDate" [showIcon]="true" class="w-full"/>
+      </rts-form-field>
+
+      <rts-form-field label="Amount"
+                      class="flex-grow-1"
+                      contentClass="col-8"
+                      [required]="true"
+                      [layout]="FormFieldDirection.VERTICAL">
+        <p-inputNumber [formField]="paymentForm.amount"
+                       mode="currency"
+                       currency="USD"
+                       [min]="0"
+                       class="w-full">
+        </p-inputNumber>
+        <small>Balance: {{remainingAmount() | currency}}</small>
+      </rts-form-field>
+    </div>
+
+    <div class="flex flex-column col-4 p-0">
+      <rts-form-field label="Payment Method"
+                      class="flex-grow-1"
+                      contentClass="col-8"
+                      [required]="true"
+                      [layout]="FormFieldDirection.VERTICAL">
+        <p-select [options]="paymentOptions()"
+                  [formField]="paymentForm.paymentMethodId"
+                  optionLabel="name"
+                  optionValue="id"
+                  placeholder="Select method..."
+                  class="w-full">
+        </p-select>
+      </rts-form-field>
+
+      <rts-form-field label="Delivery"
+                      class="flex-grow-1"
+                      contentClass="col-8"
+                      [layout]="FormFieldDirection.VERTICAL">
+        <p-select [options]="deliveryOptions()"
+                  [formField]="paymentForm.deliveryId"
+                  placeholder="None (not tied to a delivery)"
+                  [showClear]="true"
+                  class="w-full">
+        </p-select>
+      </rts-form-field>
+    </div>
+
+    <rts-form-field label="Notes"
+                    class="flex-grow-1"
+                    contentClass="col-8"
+                    [layout]="FormFieldDirection.VERTICAL">
+      <textarea pInputText
+                rows="3"
+                class="w-full"
+                [formField]="paymentForm.notes"
+                placeholder="Optional notes">
+      </textarea>
+    </rts-form-field>
+  </div>
+
+  <rts-forms-buttons saveLabel="Record Payment"
+                     resetLabel="Cancel"
+                     [hideDelete]="true"
+                     [disableSave]="paymentForm().invalid()"
+                     [signalForm]="paymentForm()"
+                     [fieldMap]="paymentFormFields"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (save)="save()"
+                     (resetAction)="cancel()">
+  </rts-forms-buttons>
+</rts-loading-container>

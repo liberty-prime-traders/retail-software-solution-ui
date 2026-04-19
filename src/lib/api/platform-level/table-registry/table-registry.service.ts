@@ -11,6 +11,6 @@ export class TableRegistryService extends BaseService<TableRegistry> {
 
   validateRegistry(registryId: string) {
     this.patchApiRequestConfig({urlSuffix: `validate`})
-    return this.putWithId(registryId)
+    return this.putRequest({id: registryId})
   }
 }

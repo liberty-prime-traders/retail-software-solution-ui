@@ -14,11 +14,11 @@ export abstract class ProductService<PRODUCT extends BaseProduct> extends BaseSe
 
   deactivateProduct(productId: string, callbacks?: ApiCallbacks<PRODUCT>): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'deactivate'})
-    return this.putWithId(productId, callbacks)
+    return this.putRequest({callbacks, id: productId})
   }
 
   reactivateProduct(productId: string, callbacks?: ApiCallbacks<PRODUCT>): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'reactivate'})
-    return this.putWithId(productId, callbacks)
+    return this.putRequest({callbacks, id: productId})
   }
 }

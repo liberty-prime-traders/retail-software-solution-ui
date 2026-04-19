@@ -1,0 +1,70 @@
+@if (showAddForm()) {
+  <rts-supplier-payment-form [purchaseId]="purchaseId()"
+                             (paymentSaved)="onPaymentChange()"
+                             (cancelled)="showAddForm.set(false)">
+  </rts-supplier-payment-form>
+} @else {
+  <div class="flex flex-column gap-3">
+
+    <div class="flex justify-content-end">
+      <p-button label="Record Payment" icon="pi pi-plus" (click)="showAddForm.set(true)"/>
+    </div>
+
+    <p-table [value]="payments()" dataKey="id" sortField="referenceNumber">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem"></th>
+          <th>Reference Number</th>
+          <th>Payment Method</th>
+          <th>Amount</th>
+          <th>Payment Date</th>
+          <th>Delivery Reference</th>
+          <th>Created By</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-payment let-expanded="expanded">
+        @let paymentIsVoided = !!payment.voidedReason;
+        <tr [ngClass]="{'expanded-row': expanded, 'strike-through': paymentIsVoided}">
+          <td>
+            <p-button type="button"
+                      text
+                      rounded
+                      [pRowToggler]="payment"
+                      [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
+            </p-button>
+          </td>
+          <td>
+            <div class="flex gap-2">
+              {{ payment.referenceNumber }}
+              @if (paymentIsVoided) {
+                <rts-tooltip [messages]="[payment.voidedReason]"/>
+              }
+            </div>
+          </td>
+          <td>{{ payment.paymentMethod }}</td>
+          <td>{{ payment.amount | currency }}</td>
+          <td>{{ payment.paymentDate | date }}</td>
+          <td>{{ payment.deliveryReferenceNumber }}</td>
+          <td>{{ payment.createdBy }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="expandedrow" let-payment>
+        <tr>
+          <td colspan="7" class="filled-background p-4">
+            <rts-supplier-payment-expanded-row [payment]="payment"
+                                               (paymentVoided)="onPaymentChange()"
+                                               [purchaseId]="purchaseId()">
+            </rts-supplier-payment-expanded-row>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr [colspan]="7" rts-empty-row message="No payments recorded yet"></tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+}

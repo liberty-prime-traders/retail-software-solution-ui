@@ -1,4 +1,4 @@
-import {MinValidationError, ValidationError} from '@angular/forms/signals'
+import {MaxValidationError, MinValidationError, ValidationError} from '@angular/forms/signals'
 
 export const toErrorMessages = <T> (
   fieldMap: Map<keyof T, string>,
@@ -25,6 +25,9 @@ export const toMessage = (error: ValidationError): string => {
     case 'min':
       const minError = error as MinValidationError
       return `Minimum amount: ${minError.min}`
+    case 'max':
+      const maxError = error as MaxValidationError
+      return `Cannot exceed: ${maxError.max}`
     default:
       return error.kind ?? 'Validation Error'
   }

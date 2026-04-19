@@ -1,8 +1,20 @@
-<p-tabs value="0">
-  <p-tablist >
-    <p-tab value="0">Summary</p-tab>
-    <p-tab value="1">Detailed View</p-tab>
-    <p-tab value="2">Documentation</p-tab>
+<p-tabs value="0" class="relative">
+
+  <p-tablist>
+    <div class="flex justify-content-between w-full">
+      <div class="flex-grow-1">
+        <p-tab value="0">Summary</p-tab>
+        <p-tab value="1">Detailed View</p-tab>
+        <p-tab value="2">Documentation</p-tab>
+      </div>
+
+      <p-button label="Refresh"
+                icon="pi pi-refresh"
+                text
+                class="align-self-center"
+                (click)="refresh()">
+      </p-button>
+    </div>
   </p-tablist>
 
   <p-tabpanels class="p-0">

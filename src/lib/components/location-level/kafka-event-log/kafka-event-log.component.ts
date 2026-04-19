@@ -1,11 +1,11 @@
 import {DatePipe} from '@angular/common'
-import {Component, effect, inject, input, OnDestroy, OnInit, signal, untracked} from '@angular/core'
+import {Component, effect, inject, input, OnDestroy, signal, untracked} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {MessageService} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
-import {KafkaEventLogService} from '../../../api/location-level/kafka-event-log/kafka-event-log.service'
 import {EventProcessingLogStatus} from '../../../api/location-level/kafka-event-log/kafka-event-log.model'
+import {KafkaEventLogService} from '../../../api/location-level/kafka-event-log/kafka-event-log.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
@@ -22,7 +22,7 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
     PrettifyEnumPipe
   ]
 })
-export class KafkaEventLogComponent implements OnInit, OnDestroy {
+export class KafkaEventLogComponent implements OnDestroy {
   readonly sourceDocumentId = input.required<EntityId>()
 
   private readonly kafkaEventLogService = inject(KafkaEventLogService)
@@ -44,9 +44,10 @@ export class KafkaEventLogComponent implements OnInit, OnDestroy {
 
   })
 
-  ngOnInit() {
-    this.kafkaEventLogService.refetch(this.sourceDocumentId())
-  }
+  private readonly refetchOnSourceDocumentChange = effect(() => {
+    this.sourceDocumentId()
+    untracked(() => this.kafkaEventLogService.refetch(this.sourceDocumentId()))
+  })
 
   ngOnDestroy() {
     this.clearPolling()

@@ -42,6 +42,23 @@ $positions: left right center top bottom;
   }
 }
 
+.floating {
+  position: fixed;
+  z-index: 5;
+
+  &.bottom {
+    bottom: 1.5rem;
+  }
+
+  &.right {
+    right: 2rem;
+  }
+
+  &.top {
+    top: 1.5rem;
+  }
+}
+
 .money-in {
   color: theme.$moneyIn;
 }
@@ -56,4 +73,8 @@ $positions: left right center top bottom;
 
 .irregular-balance {
   color: theme.$irregularBalance
+}
+
+.strike-through {
+  text-decoration: line-through;
 }

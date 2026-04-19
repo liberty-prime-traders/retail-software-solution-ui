@@ -1,18 +1,16 @@
 import {HttpParams} from '@angular/common/http'
-import {computed, Signal, signal} from '@angular/core'
+import {computed, Signal} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {get, groupBy} from 'lodash-es'
 import {Subscription} from 'rxjs'
 import {Multimap} from '../../../utils/types/multimap.type'
 import {BaseModel} from './base.model'
 import {BaseService} from './base.service'
-import {PARAMS} from './fetch-service'
 
 export abstract class MultimapBaseService<RESPONSE extends BaseModel> extends BaseService<RESPONSE> {
 
   protected abstract keyPath: keyof RESPONSE
   private readonly cache = new Multimap<RESPONSE>()
-  private readonly fetchedAll = signal(false)
 
   readonly selectAllAsMap = computed(() =>
     this.cache.asMap()
@@ -20,14 +18,6 @@ export abstract class MultimapBaseService<RESPONSE extends BaseModel> extends Ba
 
   readonly selectForGroup =  (key: Signal<EntityId>) =>
     computed(() => this.cache.get(String(key())) ?? [])
-
-  override fetch(params?: PARAMS): Subscription | undefined {
-    if (this.fetchedAll()) {
-      return undefined
-    }
-    this.fetchedAll.set(true)
-    return super.fetch(params)
-  }
 
   override getHttpParams(key: string): HttpParams {
     return new HttpParams().setNonNull(String(this.keyPath), key)
@@ -42,7 +32,6 @@ export abstract class MultimapBaseService<RESPONSE extends BaseModel> extends Ba
 
   forceRefetch(key: EntityId): Subscription | undefined {
     this.cache.delete(String(key))
-    this.fetchedAll.set(false)
     return super.refetch(key)
   }
 

@@ -1,18 +1,19 @@
 import {Pipe, PipeTransform} from '@angular/core'
 import {PaymentStatus} from '../../../api/location-level/purchase/payment-status.enum'
+import {RtsSeverity} from '../../../utils/types/severity'
 
 @Pipe({name: 'paymentStatusSeverity', standalone: true})
 export class PaymentStatusSeverityPipe implements PipeTransform {
-  transform(paymentStatus?: PaymentStatus) {
+  transform(paymentStatus?: PaymentStatus): RtsSeverity {
     switch (paymentStatus) {
     case PaymentStatus.UNPAID:
-      return 'warn'
+      return RtsSeverity.WARN
     case PaymentStatus.PARTIALLY_SETTLED:
-      return 'info'
+      return RtsSeverity.INFO
     case PaymentStatus.FULLY_SETTLED:
-      return 'success'
+      return RtsSeverity.SUCCESS
     default:
-      return 'secondary'
+      return RtsSeverity.SECONDARY
     }
   }
 }

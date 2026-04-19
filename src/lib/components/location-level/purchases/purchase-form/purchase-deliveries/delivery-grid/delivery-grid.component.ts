@@ -2,7 +2,6 @@ import {CurrencyPipe, DatePipe, NgClass} from '@angular/common'
 import {Component, computed, inject, signal} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
-import {PurchaseDelivery} from '../../../../../../api/location-level/delivery/purchase-delivery.model'
 import {PurchaseStatus} from '../../../../../../api/location-level/purchase/purchase-status.enum'
 import {EmptyRowComponent} from '../../../../../reusable/empty-row/empty-row.component'
 import {PurchaseFormContext} from '../../form-utils/purchase-form-context'
@@ -29,20 +28,8 @@ export class DeliveryGridComponent {
 
   readonly deliveries = this.purchaseFormContext.deliveries
   readonly showNewDeliveryForm = signal(false)
-  readonly expandedRowKeys = signal<Record<string, boolean>>({})
 
   readonly canAddDeliveries = computed(() =>
     this.purchaseFormContext.purchaseForm.generalFields().value().purchaseStatus !== PurchaseStatus.FULLY_DELIVERED
   )
-
-  onRowExpand(event: {data: PurchaseDelivery}) {
-    this.expandedRowKeys.update(keys => ({...keys, [event.data.id as string]: true}))
-  }
-
-  onRowCollapse(event: {data: PurchaseDelivery}) {
-    this.expandedRowKeys.update(keys => {
-      const {[event.data.id as string]: _, ...rest} = keys
-      return rest
-    })
-  }
 }

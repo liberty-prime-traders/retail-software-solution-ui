@@ -1,0 +1,67 @@
+<p-tabs value="details">
+  <p-tablist>
+    <p-tab value="details">Payment Details</p-tab>
+    <p-tab value="events">Events</p-tab>
+  </p-tablist>
+
+  <p-tabpanels>
+    <p-tabpanel value="details">
+      <ng-container *ngTemplateOutlet="paymentDetails"/>
+    </p-tabpanel>
+
+    <p-tabpanel value="events">
+      <rts-kafka-event-log [sourceDocumentId]="payment().id"/>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
+
+<ng-template #paymentDetails>
+  <div class="flex flex-column gap-3">
+
+    @if (payment().notes) {
+      <div class="flex flex-column gap-1">
+        <span class="font-semibold text-sm">Notes</span>
+        <span>{{ payment().notes }}</span>
+      </div>
+    }
+
+    @if (isVoided()) {
+      <div>
+        <span class="font-semibold error-message">Voided reason: </span>
+        <span>{{ payment().voidedReason }}</span>
+      </div>
+
+    } @else {
+      <div class="flex flex-column gap-3">
+        <p-button label="Was this payment is recorded by mistake?"
+                  [text]="true"
+                  severity="warn"
+                  (click)="voidIsActive.set(true)"
+                  [disabled]="voidIsActive()">
+        </p-button>
+
+        @if (voidIsActive()) {
+          <rts-form-field label="Void Reason"
+                          [required]="true"
+                          [layout]="FormFieldDirection.VERTICAL"
+                          class="col-5"
+                          contentClass="col-12">
+            <textarea pInputText class="w-full" rows="3" [formField]="voidForm.reason"></textarea>
+          </rts-form-field>
+
+          <rts-forms-buttons deleteLabel="Void Payment"
+                             deleteWarning="This action cannot be undone."
+                             deleteInProgressMessage="Voiding payment..."
+                             deleteIcon="pi pi-ban"
+                             [hideSave]="true"
+                             [disableDelete]="voidForm().invalid()"
+                             [processingStatus]="processingStatus()"
+                             [failureMessages]="failureMessages()"
+                             (resetAction)="voidIsActive.set(false)"
+                             (delete)="confirmVoid()">
+          </rts-forms-buttons>
+        }
+      </div>
+    }
+  </div>
+</ng-template>

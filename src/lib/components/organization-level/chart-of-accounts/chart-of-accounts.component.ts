@@ -47,4 +47,8 @@ export class ChartOfAccountsComponent extends GridWithAddButtonComponent<Account
   readonly accounts = this.accountService.selectAll
 
   readonly accountsChart = computed(() => toAccountTreeNodes(this.accounts()))
+
+  refresh() {
+    this.accountService.refetch()
+  }
 }

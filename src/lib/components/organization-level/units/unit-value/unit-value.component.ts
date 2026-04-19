@@ -1,5 +1,5 @@
 import {NgClass} from '@angular/common'
-import {Component, inject, input, OnInit} from '@angular/core'
+import {Component, effect, inject, input, untracked} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {Button} from 'primeng/button'
 import {Ripple} from 'primeng/ripple'
@@ -26,7 +26,7 @@ import {UnitValueFormComponent} from './unit-value-form/unit-value-form.componen
     NgClass
   ]
 })
-export class UnitValueComponent extends GridWithAddButtonComponent<UnitValueService> implements OnInit {
+export class UnitValueComponent extends GridWithAddButtonComponent<UnitValueService>{
   readonly unitGroupId = input.required<EntityId>()
 
   private readonly unitValueService = inject(UnitValueService)
@@ -34,8 +34,8 @@ export class UnitValueComponent extends GridWithAddButtonComponent<UnitValueServ
 
   readonly unitValues = this.unitValueService.selectForGroup(this.unitGroupId)
 
-
-  override ngOnInit() {
-    this.unitValueService.refetch(this.unitGroupId())
-  }
+  private refetchUnitsForGroup = effect(() => {
+    const unitGroupId = this.unitGroupId()
+    untracked(() => this.unitValueService.refetch(unitGroupId))
+  })
 }
