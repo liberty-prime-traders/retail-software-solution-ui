@@ -1,22 +1,23 @@
 import {Pipe, PipeTransform} from '@angular/core'
 import {PurchaseStatus} from '../../../api/location-level/purchase/purchase-status.enum'
+import {RtsSeverity} from '../../../utils/types/severity'
 
 @Pipe({name: 'purchaseStatusSeverity', standalone: true})
 export class PurchaseStatusSeverityPipe implements PipeTransform {
-  transform(purchaseStatus?: PurchaseStatus) {
+  transform(purchaseStatus?: PurchaseStatus): RtsSeverity {
     switch (purchaseStatus) {
     case PurchaseStatus.DRAFT:
-      return 'secondary'
+      return RtsSeverity.WARN
     case PurchaseStatus.ORDERED:
-      return 'info'
+      return RtsSeverity.SECONDARY
     case PurchaseStatus.PARTIALLY_DELIVERED:
-      return 'warn'
+      return RtsSeverity.INFO
     case PurchaseStatus.FULLY_DELIVERED:
-      return 'success'
+      return RtsSeverity.SUCCESS
     case PurchaseStatus.CANCELED:
-      return 'danger'
+      return RtsSeverity.DANGER
     default:
-      return 'secondary'
+      return RtsSeverity.SECONDARY
     }
   }
 }

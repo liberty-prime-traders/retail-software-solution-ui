@@ -9,7 +9,7 @@ import {ProductGeneralComponent} from '../../cross-tier/product/general-screen/p
     ProductGeneralComponent
   ],
   providers: provideLocationServices(),
-  template: `<rts-product [schemaLevel]="SchemaLevel.LOCATION"></rts-product>`
+  template: `<rts-product [schemaLevel]="SchemaLevel.LOCATION"/>`
 })
 export class LocationProductComponent {
 

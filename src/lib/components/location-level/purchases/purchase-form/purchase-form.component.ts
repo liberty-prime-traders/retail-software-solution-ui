@@ -8,13 +8,13 @@ import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {PurchaseFormContext} from './form-utils/purchase-form-context'
 import {PurchaseFormGeneralFieldsComponent} from './general-fields/general-fields.component'
+import {PaymentGridComponent} from '../../supplier-payments/payment-grid/payment-grid.component'
 import {DeliveryGridComponent} from './purchase-deliveries/delivery-grid/delivery-grid.component'
 import {PurchaseLinesComponent} from './purchase-lines/purchase-lines.component'
 
 @Component({
   selector: 'rts-purchase-form',
   templateUrl: 'purchase-form.component.html',
-  styleUrl: 'purchase-form.component.scss',
   imports: [
     FormsModule,
     Tabs,
@@ -24,6 +24,7 @@ import {PurchaseLinesComponent} from './purchase-lines/purchase-lines.component'
     TabPanel,
     PurchaseLinesComponent,
     DeliveryGridComponent,
+    PaymentGridComponent,
     AutoStretchDirective,
     Button,
     LoadingContainerComponent,
@@ -39,6 +40,7 @@ export class PurchaseFormComponent {
   readonly purchaseForm = this.purchaseFormContext.purchaseForm
   readonly isDraftOrNew = this.purchaseFormContext.isDraftOrNew
   readonly isEditingLines = this.purchaseFormContext.isEditingLines
+  readonly purchaseId = computed(() => String(this.purchaseFormContext.purchaseId() ?? ''))
   readonly canPlaceOrder = computed(() =>
     this.purchaseFormContext.purchaseLinesArray().some((line) => line.quantityExpected > 0)
   )
@@ -62,6 +64,13 @@ export class PurchaseFormComponent {
       this.purchaseService.convertDraftToOrder(payload, {onSuccess: this.onSuccessfulSave})
     } else {
       this.purchaseService.createOrder(payload, {onSuccess: this.onSuccessfulSave})
+    }
+  }
+
+  reloadFormFromStore() {
+    const purchaseRecord = this.purchaseService.selectForId(this.purchaseId())
+    if (purchaseRecord) {
+      this.purchaseFormContext.initializeForm(purchaseRecord)
     }
   }
 

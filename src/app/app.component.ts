@@ -1,3 +1,4 @@
+import {CurrencyPipe} from '@angular/common'
 import {Component} from '@angular/core'
 import {MessageService} from 'primeng/api'
 import {ToastModule} from 'primeng/toast'
@@ -12,7 +13,8 @@ import {WelcomeComponent} from '../lib/components/welcome/welcome.component'
     WelcomeComponent
   ],
   providers: [
-    MessageService
+    MessageService,
+    CurrencyPipe
   ]
 })
 export class AppComponent {
