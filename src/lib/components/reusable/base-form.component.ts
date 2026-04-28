@@ -1,7 +1,7 @@
 import {Component, computed, OnInit} from '@angular/core'
 import {BaseService} from '../../api/util/base-api/base.service'
 
-@Component({template: ''})
+@Component({selector: 'rts-base-form', template: ''})
 export abstract class BaseFormComponent<SERVICE extends BaseService<any, any>> implements OnInit {
 
   protected abstract readonly apiService: SERVICE

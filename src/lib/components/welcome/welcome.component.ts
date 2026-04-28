@@ -1,20 +1,24 @@
-import {AsyncPipe, NgClass} from '@angular/common'
-import {Component, computed, effect, inject, model, OnInit, signal, Signal} from '@angular/core'
+import {AsyncPipe, NgOptimizedImage} from '@angular/common'
+import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {Router, RouterLink, RouterOutlet} from '@angular/router'
+import {RouterLink, RouterOutlet} from '@angular/router'
 import {NgxResizeObserverModule} from 'ngx-resize-observer'
-import {MenuItem} from 'primeng/api'
-import {Avatar} from 'primeng/avatar'
+import {PrimeTemplate} from 'primeng/api'
 import {Button} from 'primeng/button'
-import {Divider} from 'primeng/divider'
-import {Menubar} from 'primeng/menubar'
-import {ToggleSwitch} from 'primeng/toggleswitch'
+import {Splitter} from 'primeng/splitter'
 import {Tooltip} from 'primeng/tooltip'
-import {darkModeSelector} from '../../../app/app.preset'
-import {SysUserService} from '../../api/platform-level/sys-user/sys-user.service'
 import {RtsOktaService} from '../../utils/services/rts-okta.service'
 import {SessionContextService} from '../../utils/services/session-context.service'
 import {AutoStretchService} from '../reusable/auto-stretch.service'
+import {LocationNavContentComponent} from './top-navigation/location-nav-content/location-nav-content.component'
+import {LocationPillConfig, OrganizationPillConfig, PlatformPillConfig} from './top-navigation/navigation-scope.model'
+import {
+  OrganizationNavContentComponent
+} from './top-navigation/organization-nav-content/organization-nav-content.component'
+import {ScopePillComponent} from './top-navigation/scope-pill/scope-pill.component'
+import {
+  UserAccountNavContentComponent
+} from './top-navigation/user-account-nav-content/user-account-nav-content.component'
 
 @Component({
   selector: 'rts-welcome',
@@ -23,84 +27,39 @@ import {AutoStretchService} from '../reusable/auto-stretch.service'
   providers: [NgxResizeObserverModule],
   imports: [
     RouterOutlet,
-    Divider,
     Button,
     RouterLink,
     AsyncPipe,
-    Avatar,
-    Menubar,
-    NgClass,
-    ToggleSwitch,
     FormsModule,
     Tooltip,
-    NgxResizeObserverModule
+    NgxResizeObserverModule,
+    NgOptimizedImage,
+    Splitter,
+    PrimeTemplate,
+    ScopePillComponent,
+    OrganizationNavContentComponent,
+    LocationNavContentComponent,
+    UserAccountNavContentComponent
   ]
 })
 export class WelcomeComponent implements OnInit {
   private readonly rtsOktaService = inject(RtsOktaService)
-  private readonly router = inject(Router)
   readonly sessionContextService = inject(SessionContextService)
-  private readonly userService = inject(SysUserService)
   private readonly autoStretchService = inject(AutoStretchService)
 
-  private readonly loggedInUser = this.userService.selectFirst
   readonly darkMode = model(false)
   readonly fullScreen = signal(false)
 
-  readonly userInitials = computed(() => {
-    const user = this.loggedInUser()
-    return user ? `${user?.firstName.charAt(0)}${user?.lastName.charAt(0)}` : ''
-  })
-
-  readonly quickActionsMenu: Signal<MenuItem[]> = computed(() => [
-    {
-      label: 'My Location',
-      routerLink: '/secure/location-dashboard',
-      visible: this.sessionContextService.locationIsSelected()
-    },
-    {
-      label: this.sessionContextService.locationIsSelected() ? 'Switch Location' : 'Select Location',
-      visible: this.sessionContextService.organizationIsSelected(),
-      command: () => this.switchLocation()
-    },
-    {
-      label: 'Switch Org',
-      visible: this.sessionContextService.organizationIsSelected(),
-      command: () => this.switchOrganization()
-    },
-    {
-      label: 'Manage Org',
-      visible: this.sessionContextService.loggedInUserIsOrganizationAdmin(),
-      routerLink: '/secure/manage-organization'
-    },
-    {
-      label: 'Manage Platform',
-      visible: this.rtsOktaService.isPlatformAdmin() && this.sessionContextService.organizationIsSelected(),
-      routerLink: '/secure/manage-platform'
-    }
-  ])
-
-  readonly quickActionsMenuVisible = computed(() => this.quickActionsMenu().some(item => item.visible === true))
-
   readonly isLoggedIn$ = this.rtsOktaService.loggedIn$
+  readonly PlatformPillConfig = PlatformPillConfig
+  readonly OrganizationPillConfig = OrganizationPillConfig
+  readonly LocationPillConfig = LocationPillConfig
 
-  constructor() {
-    effect(() => {
-      if (this.darkMode()) {
-        document.documentElement.classList.add(darkModeSelector)
-      } else {
-        document.documentElement.classList.remove(darkModeSelector)
-      }
-    })
-  }
 
   ngOnInit() {
     this.onResize()
   }
 
-  logout() {
-    this.router.navigateByUrl('/').then(() => this.rtsOktaService.signOut())
-  }
 
   setFullScreen(isFullScreen: boolean): void {
     this.fullScreen.set(isFullScreen)
@@ -111,14 +70,4 @@ export class WelcomeComponent implements OnInit {
     this.autoStretchService.triggerStretch()
   }
 
-  private switchOrganization() {
-    this.sessionContextService.clearSelectedOrganization()
-    this.sessionContextService.clearSelectedLocation()
-    this.router.navigate(['/secure']).then()
-  }
-
-  private switchLocation() {
-    this.sessionContextService.clearSelectedLocation()
-    this.router.navigate(['/secure/select-location']).then()
-  }
 }

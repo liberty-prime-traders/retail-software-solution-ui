@@ -1,10 +1,12 @@
 
 import {Component, effect, inject, OnInit} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
+import {MessageService} from 'primeng/api'
 import {ButtonModule} from 'primeng/button'
 import {CardModule} from 'primeng/card'
 import {Divider} from 'primeng/divider'
 import {InputTextModule} from 'primeng/inputtext'
+import {SeedDataApplierService} from '../../../api/organization-level/org-profile/seed-data-applier.service'
 import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
 import {SessionContextService} from '../../../utils/services/session-context.service'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
@@ -29,7 +31,10 @@ export class OrganizationProfileComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder)
   private readonly organizationService = inject(OrganizationService)
   private readonly sessionContextService = inject(SessionContextService)
+  private readonly seedDataApplierService = inject(SeedDataApplierService)
+  private readonly messageService = inject(MessageService)
 
+  readonly reloadInitialDataInProgress = this.seedDataApplierService.isLoading
   readonly ProcessingStatus = ProcessingStatus
 
   readonly organizationForm = this.formBuilder.nonNullable.group({
@@ -44,7 +49,7 @@ export class OrganizationProfileComponent implements OnInit {
     effect(() => {
       if (this.organizationProcessingStatus() === ProcessingStatus.SUCCESS) {
         const updatedOrganization = this.organizationService.selectFirst()
-        this.sessionContextService.updateSelectedOrganization(updatedOrganization!)
+        this.sessionContextService.selectOrganization(updatedOrganization!, false)
         this.organizationService.resetProcessingStatus()
       }
     })
@@ -67,5 +72,20 @@ export class OrganizationProfileComponent implements OnInit {
 
   updateOrganization() {
     this.organizationService.put(this.organizationForm.getRawValue())
+  }
+
+  applySeedData() {
+    this.seedDataApplierService.applySeedData({
+      onSuccess: () => this.messageService.add({
+        summary: 'Success',
+        detail: 'Request completed with success',
+        severity: 'success'
+      }),
+      onFail: (_) => this.messageService.add({
+        summary: 'Error',
+        detail: 'Request failed',
+        severity: 'error'
+      })
+    })
   }
 }

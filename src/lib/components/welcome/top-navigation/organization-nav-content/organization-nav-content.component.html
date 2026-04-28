@@ -1,0 +1,35 @@
+<rts-loading-container [loading]="launchingInProgress()">
+  <div class="flex flex-column gap-3">
+    <span class="text-lg font-semibold">Select Organization</span>
+
+    <div class="flex flex-column gap-1">
+      @for (org of knownOrganizations(); track org.id) {
+
+        @if (org.id === selectedOrgId()) {
+          <div class="flex justify-content-between text-green-400" >
+            <a> {{ org.name }} </a>
+            <i class="pi pi-check"></i>
+          </div>
+
+        } @else {
+          <a class="p-button p-button-secondary p-button-text justify-content-start"
+             (click)="launchOrganization(org.subdomain)">
+            {{ org.name }}
+          </a>
+        }
+      }
+    </div>
+
+    <div>
+      <p-divider class=""/>
+      <a (click)="navigateToManualOrgSelection()"
+         class="w-full flex justify-content-between p-button p-button-label p-button-text">
+        <i class="pi pi-question-circle"></i>
+        <span>Other</span>
+      </a>
+    </div>
+  </div>
+
+  <rts-error-summary [regularErrorMessages]="errorMessages()"/>
+
+</rts-loading-container>

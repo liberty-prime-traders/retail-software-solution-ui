@@ -75,6 +75,9 @@
               @if (period.yearEnd) {
                 <p-badge value="year-end" severity="contrast"/>
               }
+              @if (period.current) {
+                <p-badge value="current" severity="success"/>
+              }
             </div>
           </td>
 

@@ -8,7 +8,6 @@ import {
 import {LandingComponent} from '../lib/components/platform-level/landing/landing.component'
 import {ManagePlatformComponent} from '../lib/components/platform-level/manage-platform/manage-platform.component'
 import {MyJoinRequestsComponent} from '../lib/components/platform-level/my-join-request/my-join-request.component'
-import {SelectLocationComponent} from '../lib/components/platform-level/select-location/select-location.component'
 import {PublicComponent} from '../lib/components/public/public.component'
 import {CanViewLocation} from './route-guards/can-view-location'
 import {CanViewOrganization} from './route-guards/can-view-organization'
@@ -21,7 +20,6 @@ const secureRoutes: Routes = [
   {path: '', component: LandingComponent, pathMatch: 'full'},
   {path: 'create-organization', component: CreateOrganizationComponent},
   {path: 'my-join-requests', component: MyJoinRequestsComponent},
-  {path: 'select-location', component: SelectLocationComponent, canActivate: [CanViewOrganization]},
   {
     path: 'manage-organization',
     component: OrganizationDashboardComponent,

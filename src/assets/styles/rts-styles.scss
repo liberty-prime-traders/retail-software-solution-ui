@@ -3,7 +3,7 @@
 html, body {
   font-family: "Roboto Light", system-ui;
   font-size: 16px;
-  background-image: url("assets/bg.svg");
+  background-image: url("assets/images/bg.svg");
 }
 
 form, .form-container  {
@@ -23,6 +23,10 @@ form, .form-container  {
 
 .error-message {
   color: theme.$red;
+}
+
+.info-message {
+  color: theme.$infoColor;
 }
 
 .filled-background {

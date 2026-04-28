@@ -5,7 +5,8 @@ import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
 import {OrgFeatureService} from '../../api/organization-level/org-feature/org-feature.service'
-import {SessionContextService} from '../../utils/services/session-context.service'
+import {UserContextService} from '../../utils/services/user-context.service'
+import {OrganizationLaunchService} from '../welcome/top-navigation/organization-nav-content/organization-launch.service'
 
 @Component({
   selector: 'rts-manage-organization',
@@ -18,8 +19,9 @@ import {SessionContextService} from '../../utils/services/session-context.servic
   ]
 })
 export class OrganizationDashboardComponent implements OnInit {
-  private readonly sessionContextService = inject(SessionContextService)
+  private readonly userContextService = inject(UserContextService)
   private readonly orgFeatureService = inject(OrgFeatureService)
+  private readonly organizationLaunchService = inject(OrganizationLaunchService)
 
   private readonly organizationHomeMenuItems: MenuItem[] = [
     {label: 'Summary', icon: 'pi pi-home', routerLink: 'summary'}
@@ -41,6 +43,13 @@ export class OrganizationDashboardComponent implements OnInit {
     {label: 'Payment Options', icon: 'pi pi-dollar', routerLink: 'payment-options'},
     {label: 'Tags', icon: 'pi pi-tags', routerLink: 'tags'},
   ]
+
+  private readonly productSettingsMenuItems: MenuItem[] = [
+    {label: 'Product Categories', icon: 'pi pi-palette', routerLink: 'product-category'},
+    {label: 'Product Groups', icon: 'pi pi-clone', routerLink: 'product-groups'},
+    {label: 'Product Lines', icon: 'pi pi-objects-column', routerLink: 'products'}
+  ]
+
 
   private readonly financialSettingsMenuItems: Signal<MenuItem[]> = computed(() => {
     const showTaxes = this.orgFeatureService.isTaxEnabled()
@@ -73,12 +82,6 @@ export class OrganizationDashboardComponent implements OnInit {
     ]
   })
 
-  private readonly productSettingsMenuItems: MenuItem[] = [
-    {label: 'Product Categories', icon: 'pi pi-palette', routerLink: 'product-category'},
-    {label: 'Product Groups', icon: 'pi pi-clone', routerLink: 'product-groups'},
-    {label: 'Product Lines', icon: 'pi pi-objects-column', routerLink: 'products'}
-  ]
-
   readonly menuItems: Signal<MenuItem[]> = computed(() => {
     const menuItems = [
       {label: 'Home', items: this.organizationHomeMenuItems},
@@ -92,7 +95,7 @@ export class OrganizationDashboardComponent implements OnInit {
       menuItems.push({label: 'Finance', items:financeItems})
     }
 
-    if (this.sessionContextService.loggedInUserIsOrganizationAdmin()) {
+    if (this.userContextService.isOrganizationAdmin()) {
       menuItems.push({label: 'Admin Settings', items: this.orgAdminSettings})
     }
 
@@ -103,5 +106,6 @@ export class OrganizationDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.orgFeatureService.fetch()
+    this.organizationLaunchService.proceedToSelectedOrganization()
   }
 }

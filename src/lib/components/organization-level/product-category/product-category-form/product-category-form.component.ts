@@ -43,10 +43,11 @@ export class ProductCategoryFormComponent extends BaseFormComponent<ProductCateg
 
   upsertProductCategory() {
     const updatedProductCategory: Partial<ProductCategory> = {...this.productCategoryForm().getRawValue()}
-    if (isNil(updatedProductCategory.id)) {
-      this.productCategoryService.post(updatedProductCategory)
+    const onSuccess = () => this.productCategoryCreated.emit()
+    if (updatedProductCategory.id) {
+      this.productCategoryService.put(updatedProductCategory)
     } else {
-      this.productCategoryService.put(updatedProductCategory, {onSuccess: () => this.productCategoryCreated.emit()})
+      this.productCategoryService.post(updatedProductCategory, {onSuccess})
     }
   }
 

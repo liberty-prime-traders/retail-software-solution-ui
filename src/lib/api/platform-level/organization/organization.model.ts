@@ -1,6 +1,6 @@
 import {BaseModel} from '../../util/base-api/base.model'
 
-export interface Organization extends BaseModel{
+export interface Organization extends BaseModel {
 	createdBy?: string
 	createdOn?: number
 	name?: string

@@ -16,7 +16,6 @@ import {toErrorMessages} from '../../../utils/form-validation'
           <li class="error-message pl-0">{{ message }}</li>
         }
       </ul>
-
     }
   `,
   imports: []

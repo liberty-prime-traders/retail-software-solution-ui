@@ -74,5 +74,6 @@ export class ProductGeneralComponent<PRODUCT extends BaseProduct> extends BaseFi
 
   setAddingActiveFalse() {
     this.addingIsActive.set(false)
+    this.productFilterService.reloadClientSideFilteredEntities()
   }
 }

@@ -6,6 +6,7 @@ export interface FiscalPeriod extends BaseModel {
   endDate: string
   closable: boolean
   yearEnd: boolean
+  current: boolean
   fiscalYear: string
   stub: boolean
   closedAt?: string

@@ -42,7 +42,7 @@ import {ProductFilterService} from '../product-filter.service'
   ]
 })
 export class ProductGridComponent<PRODUCT extends BaseProduct> {
-  readonly productSearchService = inject(PaginatedBaseService<PRODUCT, ProductSearchParameters>)
+  private readonly productSearchService = inject(PaginatedBaseService<PRODUCT, ProductSearchParameters>)
   readonly productFilterService = inject(ProductFilterService<PRODUCT>)
 
   readonly ProductStatus = ProductStatus

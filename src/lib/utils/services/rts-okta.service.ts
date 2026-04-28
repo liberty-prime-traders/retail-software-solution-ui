@@ -1,9 +1,8 @@
 import {inject, Injectable} from '@angular/core'
 import {toSignal} from '@angular/core/rxjs-interop'
-import {Router} from '@angular/router'
 import {OKTA_AUTH, OktaAuthStateService} from '@okta/okta-angular'
 import {AccessToken, AuthState} from '@okta/okta-auth-js'
-import {filter, map, Observable, switchMap} from 'rxjs'
+import {filter, map, Observable} from 'rxjs'
 import {first} from 'rxjs/operators'
 import {OktaAccessTokenClaims} from '../types/okta-access-token-claims.model'
 import {UserRole} from '../types/user-role.enum'
@@ -12,18 +11,17 @@ import {UserRole} from '../types/user-role.enum'
 export class RtsOktaService {
   private readonly oktaAuth = inject(OKTA_AUTH)
   private readonly oktaStateService = inject(OktaAuthStateService)
-  private readonly router = inject(Router)
+
+  private readonly oktaId$ = this.oktaStateService.authState$.pipe(
+    map((s: AuthState) => s.idToken?.claims.sub)
+  )
+
+  readonly $oktaId = toSignal(this.oktaId$)
 
   readonly loggedIn$ = this.oktaStateService.authState$.pipe(
     filter((s: AuthState) => Boolean(s)),
     map((s: AuthState) => s.isAuthenticated ?? false)
   )
-
-  readonly $isLoggedIn = toSignal(this.loggedIn$, {initialValue: false})
-
-  async signIn() : Promise<void> {
-    await this.oktaAuth.signInWithRedirect().then(() => this.router.navigate(['']))
-  }
 
   async signOut(): Promise<void> { await this.oktaAuth.signOut() }
 
@@ -42,12 +40,4 @@ export class RtsOktaService {
     const claims = (accessToken?.claims as OktaAccessTokenClaims)?.groups
     return Boolean(claims?.includes(role))
   }
-
-  readonly isPlatformAdmin = toSignal(
-    this.loggedIn$.pipe(
-      filter((isLoggedIn) => Boolean(isLoggedIn)),
-      switchMap(() => this.hasRole$(UserRole.ROLE_PLATFORM_ADMIN))
-    ),
-    {initialValue: false}
-  )
 }

@@ -9,11 +9,9 @@
     <p-card class="w-full">
       <form [formGroup]="organizationDomainForm" class="px-4 mx-6 mt-4 flex flex-column gap-2">
         <label for="domain">Enter your Organization's Domain:</label>
-        @for (errorMessage of errorMessages(); track errorMessage) {
-          <div class="text-red-500 font-italic mt-1 mb-3 w-full">
-            {{errorMessage}}
-          </div>
-        }
+
+        <rts-error-summary [regularErrorMessages]="errorMessages()"/>
+
         <input id="domain" pInputText formControlName="domain" class="w-full" />
       </form>
 
@@ -25,17 +23,11 @@
                            saveInProgressMessage="Launching Organization"
                            [processingStatus]="processingStatus()"
                            saveLabel="Launch"
-                           (save)="submitOrganization()">
+                           (save)="launchOrganization()">
         </rts-forms-buttons>
       </div>
 
       <div class="px-4 flex flex-column justify-content-center align-items-center gap-3 my-4">
-        @if (hasPlatformAdminRole$ | async) {
-          <span routerLink="manage-platform" class="font-italic text-cyan-600 cursor-pointer">
-            Manage Platform
-          </span>
-        }
-
         @if (hasCreateRole$ | async) {
           <span routerLink="create-organization" class="font-italic text-cyan-600 cursor-pointer">
             Create a New Organization

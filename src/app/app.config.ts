@@ -1,3 +1,4 @@
+import {CurrencyPipe, DatePipe} from '@angular/common'
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http'
 import {
   ApplicationConfig,
@@ -29,6 +30,8 @@ export const appConfig: ApplicationConfig = {
         }
       }
     }),
-    {provide: HTTP_INTERCEPTORS, useClass: RtsHttpInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: RtsHttpInterceptor, multi: true},
+    {provide: CurrencyPipe},
+    {provide: DatePipe},
   ]
 }
