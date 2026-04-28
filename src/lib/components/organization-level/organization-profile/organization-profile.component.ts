@@ -81,7 +81,7 @@ export class OrganizationProfileComponent implements OnInit {
         detail: 'Request completed with success',
         severity: 'success'
       }),
-      onFail: (error) => this.messageService.add({
+      onFail: (_) => this.messageService.add({
         summary: 'Error',
         detail: 'Request failed',
         severity: 'error'

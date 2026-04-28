@@ -1,4 +1,4 @@
-import {computed, inject, Injectable, model, signal} from '@angular/core'
+import {computed, inject, Injectable, signal} from '@angular/core'
 import {toSignal} from '@angular/core/rxjs-interop'
 import {filter, switchMap} from 'rxjs'
 import {tap} from 'rxjs/operators'
