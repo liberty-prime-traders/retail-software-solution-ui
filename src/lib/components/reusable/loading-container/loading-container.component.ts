@@ -10,8 +10,8 @@ import {ProgressSpinner} from 'primeng/progressspinner'
       <ng-content/>
 
       @if (loading()) {
-        <div class="flex flex-column gap-1 absolute left-50 top-50">
-          <p-progress-spinner/>
+        <div class="loading-overlay">
+          <p-progress-spinner class="loading-spinner"/>
           <span class="text-center">{{ loadingText() }}</span>
         </div>
       }

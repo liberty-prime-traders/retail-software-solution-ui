@@ -1,4 +1,4 @@
-<div class="flex flex-column h-full" (onResize)="onResize()">
+<div class="flex flex-column gap-4 h-full" (onResize)="onResize()">
 
   @if (fullScreen()) {
     <div class="flex justify-content-end p-1">
@@ -9,37 +9,35 @@
     </div>
 
   } @else {
-    <div class="w-full flex justify-content-between p-3 align-items-center">
+    <div class="w-full flex justify-content-between align-items-center">
       @if (isLoggedIn$ | async) {
-        <div class="flex gap-2">
-          <p-avatar [label]="userInitials()" shape="circle"/>
-          <div class="flex flex-column gap-1">
-            @if (sessionContextService.selectedOrganization()) {
-              <span class="font-semibold text-2xl">{{sessionContextService.selectedOrganization()?.name}}</span>
-              @if (sessionContextService.selectedLocation()) {
-                <span>{{sessionContextService.selectedLocation()?.name}}</span>
-              }
-            } @else {
-              <span class="font-semibold">No Organization Selected</span>
-              <span routerLink="/secure" class="font-italic text-cyan-600 cursor-pointer">
-                Select Organization
-            </span>
-            }
-          </div>
-        </div>
+        <p-splitter gutterSize="1" class="border-noround flex-grow-1 p-2">
+          <ng-template pTemplate="panel">
+            <img ngSrc="assets/images/logo.svg" alt="Logo" height="32" width="160" priority/>
+          </ng-template>
 
-        <div class="flex gap-1 align-items-center">
-          <span class="font-semibold">Dark Mode</span>
-          <p-toggle-switch [(ngModel)]="darkMode"/>
-        </div>
+          <ng-template pTemplate="panel">
+            <rts-scope-pill [config]="PlatformPillConfig"/>
+          </ng-template>
 
-        <div class="flex gap-2 justify-content-end align-items-center">
-          <p-menubar [model]="quickActionsMenu()" class="text-sm font-semibold"/>
-          <div class="flex" [ngClass]="quickActionsMenuVisible() ? '' : 'flex-grow-1 justify-content-end'">
-            <p-button icon="pi pi-user" label="Logout" (onClick)="logout()" severity="info"/>
-          </div>
-        </div>
+          <ng-template pTemplate="panel">
+            <rts-scope-pill [config]="OrganizationPillConfig">
+              <rts-organization-nav-content/>
+            </rts-scope-pill>
+          </ng-template>
 
+          <ng-template pTemplate="panel">
+            <rts-scope-pill [config]="LocationPillConfig">
+              <rts-location-nav-content/>
+            </rts-scope-pill>
+          </ng-template>
+
+          <ng-template pTemplate="panel">
+            <div class="flex h-full flex-grow-1 justify-content-center align-items-center">
+              <rts-user-account-nav-content/>
+            </div>
+          </ng-template>
+        </p-splitter>
 
       } @else {
         <div class="flex flex-grow-1 justify-content-end">
@@ -47,8 +45,6 @@
         </div>
       }
     </div>
-
-    <p-divider class="mb-4"/>
   }
 
   <div class="relative">

@@ -1,0 +1,34 @@
+<a (click)="preferences.toggle($event)" class="p-button p-button-text">
+  <p-avatar [label]="userContextService.initials()" shape="circle"/>
+
+  <p-popover #preferences>
+    <div class="flex flex-column">
+      <span class="block font-semibold">{{ userContextService.displayName() }}</span>
+      <small class="block info-message">{{ userContextService.emailAddress() }}</small>
+    </div>
+
+    <p-divider/>
+
+    <div class="flex flex-column gap-3">
+      <div class="flex justify-content-between">
+        <span>Dark Mode</span>
+        <p-toggle-switch [(ngModel)]="darkMode"/>
+      </div>
+
+      <div class="flex flex-column gap-1 mb-2">
+        <span class="info-message">Timezone</span>
+        <p-select size="small" [options]="TIMEZONES"
+                  [(ngModel)]="selectedTimeZone"
+                  [filter]="true"
+                  [filterFields]="['value', 'label']">
+        </p-select>
+      </div>
+    </div>
+
+    <p-divider/>
+
+    <p-button icon="pi pi-user" text label="Logout" (onClick)="logout()" severity="danger"/>
+  </p-popover>
+
+</a>
+

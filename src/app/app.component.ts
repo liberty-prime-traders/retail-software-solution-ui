@@ -1,7 +1,9 @@
-import {CurrencyPipe} from '@angular/common'
 import {Component} from '@angular/core'
 import {MessageService} from 'primeng/api'
 import {ToastModule} from 'primeng/toast'
+import {
+  OrganizationLaunchService
+} from '../lib/components/welcome/top-navigation/organization-nav-content/organization-launch.service'
 import {WelcomeComponent} from '../lib/components/welcome/welcome.component'
 
 @Component({
@@ -14,7 +16,7 @@ import {WelcomeComponent} from '../lib/components/welcome/welcome.component'
   ],
   providers: [
     MessageService,
-    CurrencyPipe
+    OrganizationLaunchService
   ]
 })
 export class AppComponent {

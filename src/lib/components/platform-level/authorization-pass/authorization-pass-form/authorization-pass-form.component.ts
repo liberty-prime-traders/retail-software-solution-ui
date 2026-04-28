@@ -51,7 +51,6 @@ export class AuthorizationPassFormComponent extends BaseFormComponent<Authorizat
 
   override ngOnInit() {
     super.ngOnInit()
-    this.sysUserService.fetch()
     if (this.pass()) {
       this.passForm().value.set(AuthorizationPassFormDefinition.convertToFormModel(this.pass()))
     }

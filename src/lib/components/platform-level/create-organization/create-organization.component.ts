@@ -70,8 +70,8 @@ export class CreateOrganizationComponent implements OnInit {
 
       if (this.organizationProcessingStatus() === ProcessingStatus.SUCCESS) {
         const createdOrganization = this.organizationService.selectFirst()
-        this.sessionContextService.receiveNewOrganization(createdOrganization!)
-        this.router.navigate(['../select-location'], {relativeTo: this.activatedRoute}).then()
+        this.sessionContextService.selectOrganization(createdOrganization!)
+        this.router.navigate(['..'], {relativeTo: this.activatedRoute}).then()
       }
     })
   }

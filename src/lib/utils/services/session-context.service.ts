@@ -1,6 +1,7 @@
-import {computed, inject, Injectable, signal} from '@angular/core'
+import {inject, Injectable, signal} from '@angular/core'
 import {Location} from '../../api/organization-level/location/location.model'
 import {Organization} from '../../api/platform-level/organization/organization.model'
+import {NavigationScope} from '../../components/welcome/top-navigation/navigation-scope.model'
 import {LocalStorageKey} from '../types/local-storage-key.enum'
 import {LocalStorageService} from './local-storage.service'
 
@@ -8,48 +9,92 @@ import {LocalStorageService} from './local-storage.service'
 export class SessionContextService {
   private readonly localStorageService = inject(LocalStorageService)
 
-  readonly selectedOrganization = computed(() => this._selectedOrganization())
-  readonly organizationIsSelected = computed(() => this._selectedOrganization() !== null)
-  readonly selectedLocation = computed(() => this._selectedLocation())
-  readonly locationIsSelected = computed(() => this._selectedLocation() !== null)
-  readonly loggedInUserIsOrganizationAdmin = computed(() => this._loggedInUserIsOrganizationAdmin())
+  private readonly _selectedScope = signal<NavigationScope>(NavigationScope.LANDING)
+  private readonly _selectedOrganization = signal<Organization | null>(null)
+  private readonly _selectedLocation = signal<Location | null>(null)
+  private readonly _knownOrganizations = signal<Organization[]>([])
 
-  receiveNewOrganization(createdOrganization: Organization): void {
-    this.updateSelectedOrganization(createdOrganization)
-    this.clearSelectedLocation()
-    this.promoteToOrganizationAdmin()
+  readonly selectedScope = this._selectedScope.asReadonly()
+  readonly selectedOrganization = this._selectedOrganization.asReadonly()
+  readonly selectedLocation = this._selectedLocation.asReadonly()
+  readonly knownOrganizations = this._knownOrganizations.asReadonly()
+
+  constructor() {
+    this._selectedScope.set(this.deriveInitialScope())
+    this.selectOrganization(this.loadSelectedOrganization(), false)
+    this.selectLocation(this.loadSelectedLocation())
   }
 
-  updateSelectedOrganization(organization: Organization|null): void {
-    this._selectedOrganization.set(organization)
-    this.localStorageService.setItem(LocalStorageKey.ORGANIZATION, organization)
+  private deriveInitialScope(): NavigationScope {
+    if (this._selectedLocation())     return NavigationScope.LOCATION
+    if (this._selectedOrganization()) return NavigationScope.ORG
+    return NavigationScope.LANDING
   }
 
-  updateSelectedLocation(location: Location|null): void {
-    this._selectedLocation.set(location)
-    this.localStorageService.setItem(LocalStorageKey.LOCATION, location)
+  markAsSelectedScope(scope: NavigationScope): void {
+    if (scope === NavigationScope.ORG && !this._selectedOrganization()) return
+    if (scope === NavigationScope.LOCATION && !this._selectedLocation()) return
+    this._selectedScope.set(scope)
+  }
+
+  selectOrganization(organization: Organization | null, clearLocation = true): void {
+    if (!organization) {
+      this.clearSelectedOrganization()
+    } else {
+      this._selectedOrganization.set(organization)
+      this._selectedScope.set(NavigationScope.ORG)
+      this.localStorageService.setItem(LocalStorageKey.ORGANIZATION, organization)
+      this.appendToKnownOrganizations(organization)
+      if (clearLocation) {
+        this._selectedLocation.set(null)
+        this.localStorageService.removeItem(LocalStorageKey.LOCATION)
+      }
+    }
+  }
+
+  private appendToKnownOrganizations(organization: Organization): void {
+    if (this.knownOrganizations().some(o => o.id === organization.id)) return
+    this._knownOrganizations.update(current => [...current, organization])
   }
 
   clearSelectedOrganization(): void {
     this._selectedOrganization.set(null)
-    this.demoteFromOrganizationAdmin()
+    this._selectedLocation.set(null)
+    this._selectedScope.set(NavigationScope.LANDING)
     this.localStorageService.removeItem(LocalStorageKey.ORGANIZATION)
+    this.localStorageService.removeItem(LocalStorageKey.LOCATION)
+  }
+
+  selectLocation(location: Location | null): void {
+    if (!location) {
+      this.clearSelectedLocation()
+    } else {
+      this._selectedLocation.set(location)
+      this._selectedScope.set(NavigationScope.LOCATION)
+      this.localStorageService.setItem(LocalStorageKey.LOCATION, location)
+    }
   }
 
   clearSelectedLocation(): void {
     this._selectedLocation.set(null)
+    this._selectedScope.set(this._selectedOrganization() ? NavigationScope.ORG : NavigationScope.LANDING)
     this.localStorageService.removeItem(LocalStorageKey.LOCATION)
   }
 
-  promoteToOrganizationAdmin(): void {
-    this._loggedInUserIsOrganizationAdmin.set(true)
+  setPublicOrganizations(organizations: Organization[]): void {
+    this._knownOrganizations.update(current => {
+      const serverIds = new Set(organizations.map(o => o.id))
+      const sessionOnly = current.filter(o => !serverIds.has(o.id))
+      return [...organizations, ...sessionOnly]
+    })
   }
 
-  private demoteFromOrganizationAdmin(): void {
-    this._loggedInUserIsOrganizationAdmin.set(false)
+  private loadSelectedOrganization(): Organization | null {
+    return this.localStorageService.getItem<Organization>(LocalStorageKey.ORGANIZATION)
   }
 
-  private readonly _selectedOrganization = signal<Organization|null>(null)
-  private readonly _selectedLocation = signal<Location|null>(null)
-  private readonly _loggedInUserIsOrganizationAdmin = signal<boolean>(false)
+  private loadSelectedLocation(): Location | null {
+    return this.localStorageService.getItem<Location>(LocalStorageKey.LOCATION)
+  }
+
 }

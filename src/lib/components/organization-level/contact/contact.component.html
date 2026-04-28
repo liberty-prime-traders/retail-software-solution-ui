@@ -86,12 +86,14 @@
         <td>{{ contact?.phone | nullSafe }}</td>
         <td>{{ contact?.status | prettifyEnum }}</td>
         <td>
-          <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                    rounded
-                    severity="secondary"
-                    [disabled]="loading() || addingIsActive()"
-                    [pRowToggler]="contact">
-          </p-button>
+          @if (!contact.systemDefined) {
+            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                      rounded
+                      severity="secondary"
+                      [disabled]="loading() || addingIsActive()"
+                      [pRowToggler]="contact">
+            </p-button>
+          }
         </td>
       </tr>
     </ng-template>

@@ -1,0 +1,24 @@
+<div class="flex flex-column gap-3">
+  <span class="text-lg font-semibold">Select Location</span>
+
+  <rts-loading-container [loading]="loading()">
+    <div class="flex flex-column gap-1">
+      @for (location of locations(); track location.id) {
+
+        @if (location.id === selectedLocationId()) {
+          <div class="flex justify-content-between text-green-400" >
+            <a> {{ location.name }} </a>
+            <i class="pi pi-check"></i>
+          </div>
+
+        } @else {
+          <a class="p-button p-button-secondary p-button-text justify-content-start"
+             (click)="selectLocation(location)">
+            {{ location.name }}
+          </a>
+        }
+      }
+    </div>
+  </rts-loading-container>
+
+</div>

@@ -110,7 +110,7 @@
         </ng-template>
 
         <ng-template pTemplate="body" let-account let-expanded="expanded">
-          <tr [ngClass]="{ 'expanded-row': expanded }">
+          <tr [ngClass]="{ 'expanded-row': expanded, 'strike-through': !account.accountIsActive }">
             <td>{{ account.displayName }}</td>
             <td>{{ account.accountType | prettifyEnum }}</td>
             <td>

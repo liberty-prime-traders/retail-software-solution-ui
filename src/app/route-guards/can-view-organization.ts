@@ -1,5 +1,6 @@
 import {inject, Injectable} from '@angular/core'
 import {CanActivate, Router} from '@angular/router'
+import {NavigationScope} from '../../lib/components/welcome/top-navigation/navigation-scope.model'
 import {RoutingContextService} from '../../lib/utils/services/routing-context.service'
 import {SessionContextService} from '../../lib/utils/services/session-context.service'
 
@@ -15,6 +16,7 @@ export class CanViewOrganization implements CanActivate {
       this.router.navigate(['/secure']).then()
       return false
     }
+    this.sessionContextService.markAsSelectedScope(NavigationScope.ORG)
     return true
   }
 }

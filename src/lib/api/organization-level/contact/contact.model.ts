@@ -4,10 +4,10 @@ import {ContactType} from './contact-type.enum'
 import {IdentityType} from './identity-type.enum'
 
 export interface Contact extends BaseModel {
-  createdBy?: string
-  createdOn?: number
-  contactType?: ContactType
-  identityType?: IdentityType
+  createdBy: string
+  createdOn: number
+  contactType: ContactType
+  identityType: IdentityType
   firstName?: string
   lastName?: string
   companyName?: string
@@ -17,5 +17,6 @@ export interface Contact extends BaseModel {
   address?: string
   creditLimit?: number
   notes?: string
-  status?: ContactStatus
+  status: ContactStatus
+  systemDefined: boolean
 }

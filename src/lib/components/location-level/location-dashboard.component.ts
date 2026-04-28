@@ -1,10 +1,9 @@
-import {Component, inject, OnInit, signal} from '@angular/core'
-import {ActivatedRoute, Router, RouterOutlet} from '@angular/router'
+import {Component, signal} from '@angular/core'
+import {RouterOutlet} from '@angular/router'
 import {MenuItem} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
-import {SessionContextService} from '../../utils/services/session-context.service'
 
 @Component({
   selector: 'rts-private',
@@ -16,10 +15,7 @@ import {SessionContextService} from '../../utils/services/session-context.servic
   ],
   templateUrl: 'location-dashboard.component.html'
 })
-export class LocationDashboardComponent implements OnInit {
-  private readonly sessionContextService = inject(SessionContextService)
-  private readonly router = inject(Router)
-  private readonly activatedRoute = inject(ActivatedRoute)
+export class LocationDashboardComponent {
 
   readonly showNavigation = signal(true)
 
@@ -41,9 +37,4 @@ export class LocationDashboardComponent implements OnInit {
     {label: 'Admin Tasks', items: this.adminTasksMenuItems}
   ]
 
-  ngOnInit() {
-    if (!this.sessionContextService.locationIsSelected()) {
-      this.router.navigate(['..'], {relativeTo: this.activatedRoute}).then()
-    }
-  }
 }

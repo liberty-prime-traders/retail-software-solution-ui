@@ -1,0 +1,32 @@
+<a class="flex p-button p-button-text border-noround h-full gap-3"
+   [ngStyle]="activeBgStyle()"
+   (click)="handleClick($event)">
+
+  <i [class]="config().icon" class="block"></i>
+
+  <div class="flex flex-column align-items-center">
+    @if (showChevron()) {
+      <small class="info-message font-light">
+        {{ config().label }}
+      </small>
+
+    } @else {
+      <span class="p-button-label">
+        {{ config().label }}
+      </span>
+    }
+
+
+    <span class="block">
+      {{ detailText() }}
+    </span>
+  </div>
+
+  @if (showChevron()) {
+    <i class="pi pi-chevron-down block"></i>
+  }
+</a>
+
+<p-popover>
+  <ng-content/>
+</p-popover>

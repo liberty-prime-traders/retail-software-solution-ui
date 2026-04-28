@@ -1,28 +1,21 @@
 import {CommonModule} from '@angular/common'
-import {Component, computed, inject, OnInit, signal} from '@angular/core'
+import {Component, computed, inject, OnInit} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
-import {ActivatedRoute, Router, RouterLink} from '@angular/router'
-import {MessageService} from 'primeng/api'
+import {RouterLink} from '@angular/router'
 import {Card} from 'primeng/card'
 import {InputText} from 'primeng/inputtext'
-import {finalize, of, skipWhile, take} from 'rxjs'
-import {catchError, tap} from 'rxjs/operators'
-import {
-  OrganizationAdminService
-} from '../../../api/platform-level/organization/organization-admin/organization-admin.service'
-import {OrganizationLaunchResponse} from '../../../api/platform-level/organization/organization-launch-response.model'
-import {Organization} from '../../../api/platform-level/organization/organization.model'
-import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
 import {SysUserService} from '../../../api/platform-level/sys-user/sys-user.service'
-import {parseError} from '../../../utils/errors'
-import {LocalStorageService} from '../../../utils/services/local-storage.service'
 import {RtsOktaService} from '../../../utils/services/rts-okta.service'
 import {SessionContextService} from '../../../utils/services/session-context.service'
-import {LocalStorageKey} from '../../../utils/types/local-storage-key.enum'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {UserRole} from '../../../utils/types/user-role.enum'
+import {ErrorSummaryComponent} from '../../reusable/error-summary/error-summary.component'
 import {FormButtonsComponent} from '../../reusable/form-buttons/form-buttons.component'
 import {HasSubscriptionComponent} from '../../reusable/has-subscription.component'
+import {NavigationScope} from '../../welcome/top-navigation/navigation-scope.model'
+import {
+  OrganizationLaunchService
+} from '../../welcome/top-navigation/organization-nav-content/organization-launch.service'
 
 @Component({
   selector: 'rts-landing',
@@ -33,27 +26,22 @@ import {HasSubscriptionComponent} from '../../reusable/has-subscription.componen
     InputText,
     RouterLink,
     Card,
-    FormButtonsComponent
+    FormButtonsComponent,
+    ErrorSummaryComponent
   ]
 })
 export class LandingComponent extends HasSubscriptionComponent implements OnInit {
   private readonly userService = inject(SysUserService)
-  private readonly router = inject(Router)
-  private readonly activatedRoute = inject(ActivatedRoute)
   private readonly sessionContextService = inject(SessionContextService)
-  private readonly localStorageService = inject(LocalStorageService)
-  private readonly organizationAdminService = inject(OrganizationAdminService)
-  private readonly organizationService = inject(OrganizationService)
-  private readonly messageService = inject(MessageService)
+  private readonly organizationLaunchService = inject(OrganizationLaunchService)
 
   private readonly rtsOktaService = inject(RtsOktaService)
   readonly hasCreateRole$ = this.rtsOktaService.hasRole$(UserRole.ROLE_CREATE_ORGANIZATION)
-  readonly hasPlatformAdminRole$ = this.rtsOktaService.hasRole$(UserRole.ROLE_PLATFORM_ADMIN)
 
   readonly ProcessingStatus = ProcessingStatus
 
-  readonly launchingInProgress = signal(false)
-  readonly errorMessages = signal<string[] | null>(null)
+  readonly errorMessages = this.organizationLaunchService.errorMessages
+  readonly launchingInProgress = this.organizationLaunchService.launchingInProgress
 
   readonly processingStatus = computed(() =>
     this.launchingInProgress() ? ProcessingStatus.IN_PROGRESS : ProcessingStatus.IDLE
@@ -61,7 +49,7 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
 
   ngOnInit() {
     this.userService.post()
-    this.proceedToSelectLocation()
+    this.sessionContextService.markAsSelectedScope(NavigationScope.LANDING)
   }
 
   private readonly formBuilder = inject(FormBuilder)
@@ -70,51 +58,9 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
     domain: ['', Validators.required]
   })
 
-  submitOrganization() {
+  launchOrganization() {
     if (this.organizationDomainForm.invalid || this.launchingInProgress()) return
-    this.launchingInProgress.set(true)
-    this.errorMessages.set(null)
-    this.subscriptions.add(
-      this.organizationService.attemptLaunch$(this.organizationDomainForm.value.domain!).pipe(
-        tap((response) => this.launchOrganization(response)),
-        catchError((error) => {
-          this.errorMessages.set(parseError(error) ?? ['Failed to process organization launch'])
-          return of(null)
-        }),
-        finalize(() => this.launchingInProgress.set(false))
-      )
-        .subscribe()
-    )
+    this.organizationLaunchService.launchOrganization(this.organizationDomainForm.value.domain!)
   }
 
-  private launchOrganization(launchResponse: OrganizationLaunchResponse) {
-    if (!launchResponse.accessRequested) {
-      this.localStorageService.setItem(LocalStorageKey.ORGANIZATION, launchResponse.organization)
-      this.proceedToSelectLocation()
-    } else {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Request Submitted',
-        detail: 'Your request to join the organization has been successfully submitted'
-      })
-    }
-  }
-
-  private proceedToSelectLocation() {
-    const storedOrganization = this.localStorageService.getItem<Organization>(LocalStorageKey.ORGANIZATION)
-    if (storedOrganization?.subdomain){
-      this.sessionContextService.updateSelectedOrganization(storedOrganization)
-      this.router.navigate(['select-location'], {relativeTo: this.activatedRoute}).then()
-      this.checkIfUserIsOrganizationAdmin()
-    }
-  }
-
-  private checkIfUserIsOrganizationAdmin() {
-    return this.organizationAdminService.isOrganizationAdmin$().pipe(
-      skipWhile(isAdmin => !Boolean(isAdmin)),
-      tap(() => this.sessionContextService.promoteToOrganizationAdmin()),
-      take(1)
-    )
-      .subscribe()
-  }
 }

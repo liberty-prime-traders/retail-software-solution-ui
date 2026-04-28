@@ -1,30 +1,41 @@
+<h3>Organization Profile</h3>
+
+<p-divider/>
+
+<form [formGroup]="organizationForm" class="mt-2">
+  <rts-form-field for="name" label="Name" [required]="true" contentClass="col-8">
+    <input id="name" pInputText formControlName="name"/>
+  </rts-form-field>
+
+  <rts-form-field for="description" label="Description" contentClass="col-8">
+    <textarea id="description" pInputText formControlName="description" class="w-full"></textarea>
+  </rts-form-field>
+
+  <div class="flex justify-content-end col-6 p-0">
+    <rts-forms-buttons [disableReset]="!organizationForm.dirty"
+                       [disableSave]="!organizationForm.valid || !organizationForm.dirty"
+                       [hideReset]="true"
+                       [hideDelete]="true"
+                       [processingStatus]="organizationProcessingStatus()"
+                       [failureMessages]="organizationServiceFailureMessages()"
+                       [saveLabel]="'Update'"
+                       (save)="updateOrganization()"
+                       (resetAction)="organizationForm.reset()">
+    </rts-forms-buttons>
+  </div>
+</form>
+
 <p-card>
-  <h3>Organization Profile</h3>
+  <h3>Note to Admin</h3>
+  <p>
+    We recommend some initial data to be loaded onto each new organization to help them get started.
+    This data includes unit values, product categories, and more. It is very likely that this data was loaded when
+    your organization was created. If you are not seeing any of this data, or if you just want to reload it,
+    use the button below. This will not affect any existing data in your organization.
+  </p>
 
-  <p-divider/>
-
-  <form [formGroup]="organizationForm" class="mt-2">
-    <rts-form-field for="name" label="Name" [required]="true" contentClass="col-8">
-      <input id="name" pInputText formControlName="name"/>
-    </rts-form-field>
-
-    <rts-form-field for="description" label="Description" contentClass="col-8">
-      <textarea id="description" pInputText formControlName="description" class="w-full"></textarea>
-    </rts-form-field>
-
-    <div class="flex justify-content-end col-6 p-0">
-      <rts-forms-buttons [disableReset]="!organizationForm.dirty"
-                         [disableSave]="!organizationForm.valid || !organizationForm.dirty"
-                         [hideReset]="true"
-                         [hideDelete]="true"
-                         [processingStatus]="organizationProcessingStatus()"
-                         [failureMessages]="organizationServiceFailureMessages()"
-                         [saveLabel]="'Update'"
-                         (save)="updateOrganization()"
-                         (resetAction)="organizationForm.reset()">
-      </rts-forms-buttons>
-    </div>
-  </form>
-
+  <p-button label="Reload Initial Data"
+            (click)="applySeedData()"
+            [loading]="reloadInitialDataInProgress()">
+  </p-button>
 </p-card>
-

@@ -8,7 +8,11 @@
                       contentClass="col-8"
                       [required]="true"
                       [layout]="FormFieldDirection.VERTICAL">
-        <p-date-picker [formField]="paymentForm.paymentDate" [showIcon]="true" class="w-full"/>
+        <p-date-picker [formField]="paymentForm.paymentDate"
+                       [showIcon]="true"
+                       class="w-full"
+                       appendTo="body">
+        </p-date-picker>
       </rts-form-field>
 
       <rts-form-field label="Amount"
