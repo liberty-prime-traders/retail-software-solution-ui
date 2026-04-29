@@ -40,7 +40,9 @@ export class UnitGroupFormComponent extends BaseFormComponent<UnitGroupService> 
   upsertUnitGroup() {
     const updatedUnitGroup: Partial<UnitGroup> = this.unitGroupForm().getRawValue()
     if (isNil(updatedUnitGroup.id)) {
-      this.unitGroupService.post(updatedUnitGroup, {onSuccess: (saved) => this.unitGroupCreated.emit(saved)})
+      this.unitGroupService.post(updatedUnitGroup, {
+        onSuccess: (saved) => this.unitGroupCreated.emit(saved)
+      })
     } else {
       this.unitGroupService.put(updatedUnitGroup)
     }

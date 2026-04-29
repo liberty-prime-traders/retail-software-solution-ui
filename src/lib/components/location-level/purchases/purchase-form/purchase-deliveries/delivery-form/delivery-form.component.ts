@@ -5,9 +5,23 @@ import {Button} from 'primeng/button'
 import {DatePicker} from 'primeng/datepicker'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
+import {Select} from 'primeng/select'
 import {TableModule} from 'primeng/table'
 import {PurchaseDeliveryService} from '../../../../../../api/location-level/delivery/purchase-delivery.service'
 import {PurchaseService} from '../../../../../../api/location-level/purchase/purchase.service'
+import {
+  AlternativeUnitsFinderPipe
+} from '../../../../../../api/organization-level/unit-conversion/pipes/alternative-units-finder.pipe'
+import {
+  FullUnitDescriptionPipe
+} from '../../../../../../api/organization-level/unit-conversion/pipes/full-unit-description.pipe'
+import {
+  ConversionContextPipe,
+  UnitConversionDescriptorPipe,
+  UnitConvertPipe,
+  UnitCurrencyPipe,
+  UnitFactorResolver
+} from '../../../../../../api/organization-level/unit-conversion/pipes/unit-convert.pipe'
 import {ProductLabelPipe} from '../../../../../../utils/pipes/product-label.pipe'
 import {BaseFormComponent} from '../../../../../reusable/base-form.component'
 import {FormFieldDirection} from '../../../../../reusable/form-field/form-field-direction'
@@ -29,7 +43,15 @@ import {PurchaseFormContext} from '../../form-utils/purchase-form-context'
     FormsModule,
     InputNumber,
     LoadingContainerComponent,
-    ProductLabelPipe
+    ProductLabelPipe,
+    AlternativeUnitsFinderPipe,
+    Select,
+    FullUnitDescriptionPipe,
+    UnitConvertPipe,
+    ConversionContextPipe,
+    UnitCurrencyPipe,
+    UnitConversionDescriptorPipe,
+    UnitFactorResolver
   ]
 })
 export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliveryService> {
@@ -71,5 +93,16 @@ export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliverySer
         this.deliverySaved.emit()
       }
     })
+  }
+
+  clearQuantities(purchaseLineId: string, unitId: string) {
+    const lines = this.deliveryFormValue().lines
+    const updatedLines = lines.map(line => {
+      if (line.purchaseLineId === purchaseLineId) {
+        return {...line, unitId, quantityDelivered: 0, unitCost: 0}
+      }
+      return line
+    })
+    this.deliveryFormValue.update(form => ({...form, lines: updatedLines}))
   }
 }

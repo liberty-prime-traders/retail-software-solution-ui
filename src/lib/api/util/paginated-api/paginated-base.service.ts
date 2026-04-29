@@ -29,6 +29,10 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
     this.requireClientSideFilter = this.store.requireClientSideFilter
   }
 
+  refreshState() {
+    this.paginatedEntitiesVersion.update(v => v + 1)
+  }
+
   getPaginatedCount(): number {
     return this.paginatedEntities.filter(entity => !entity.placeholder).length
   }
@@ -118,7 +122,7 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
     if (response.hasMore) {
       entities.push(...this.getPlaceholders(5))
     }
-    this.paginatedEntitiesVersion.update(v => v + 1)
+    this.refreshState()
   }
 
   pushToPaginatedEntities(newEntities: RESPONSE[]) {
@@ -127,6 +131,6 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
     newEntities.forEach(newEntity => entitiesMap.set(newEntity.id, newEntity))
     const updatedEntities = Array.from(entitiesMap.values())
     entities.splice(0, entities.length, ...updatedEntities)
-    this.paginatedEntitiesVersion.update(v => v + 1)
+    this.refreshState()
   }
 }

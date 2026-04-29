@@ -59,8 +59,8 @@
       </p-tag>
     </rts-form-field>
 
-    <rts-form-field label="Total Amount" [labelColumnSize]="labelColumnSize">
-      <span class="flex-grow-1">{{ generalFieldsForm.orderTotal().value() | currency }}</span>
+    <rts-form-field label="Total Ordered" [labelColumnSize]="labelColumnSize">
+      <span class="flex-grow-1">{{ generalFieldsForm.orderedTotal().value() | currency }}</span>
     </rts-form-field>
 
     <rts-form-field label="Payment Status" [labelColumnSize]="labelColumnSize">

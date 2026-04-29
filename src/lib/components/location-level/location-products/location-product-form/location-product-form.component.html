@@ -23,6 +23,18 @@
     </p-input-number>
   </rts-form-field>
 
+  <rts-form-field label="Stock Balance">
+    <div class="flex gap-2 align-items-center">
+      {{ originalLocationProduct()?.stockBalance | nullishToZero }} {{ originalLocationProduct()?.baseUnit }}s
+
+      <p-button label="View History"
+                text
+                (click)="showStockHistory.set(true)"
+                [disabled]="!originalLocationProduct()?.stockBalance">
+      </p-button>
+    </div>
+  </rts-form-field>
+
   <rts-forms-buttons [disableReset]="!locationProductForm().dirty"
                      [disableSave]="locationProductForm().invalid() || !locationProductForm().dirty"
                      [hideSave]="productIsInactive()"
@@ -42,3 +54,12 @@
   </rts-forms-buttons>
 
 </form>
+
+@if (showStockHistory()) {
+  <p-dialog [header]="'Stock History for ' + originalLocationProduct()?.productName"
+            [modal]="false"
+            [(visible)]="showStockHistory">
+    <rts-stock-history [locationProductId]="originalLocationProduct()?.id"/>
+  </p-dialog>
+}
+

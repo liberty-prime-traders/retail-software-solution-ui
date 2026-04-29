@@ -14,6 +14,7 @@ export interface PurchaseDeliveryLine {
   id?: EntityId
   referenceNumber?: string
   purchaseLineId: string
+  unitId: string
   locationProduct?: LocationProduct
   quantityDelivered: number
   unitCost: number

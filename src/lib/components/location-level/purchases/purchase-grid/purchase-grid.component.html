@@ -10,10 +10,10 @@
       <tr>
         <th>Reference</th>
         <th>Supplier</th>
-        <th>Status</th>
+        <th>Delivery Status</th>
         <th>Date Ordered</th>
         <th>Ordered By</th>
-        <th>Total</th>
+        <th>Ordered Total</th>
         <th>Payment Status</th>
         <th style="width: 5rem"></th>
       </tr>
@@ -30,7 +30,7 @@
         </td>
         <td>{{ purchase.dateOrdered | date: 'mediumDate' | nullSafe }}</td>
         <td>{{ purchase.orderedBy | nullSafe }}</td>
-        <td>{{ purchase.orderTotal | currency }}</td>
+        <td>{{ purchase.orderedTotal | currency }}</td>
         <td>
           <p-tag [value]="purchase.paymentStatus | prettifyEnum"
                  [severity]="purchase.paymentStatus | paymentStatusSeverity">

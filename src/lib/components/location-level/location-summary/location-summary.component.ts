@@ -1,5 +1,5 @@
-import {Component, computed, inject} from '@angular/core'
-import {SysUserService} from '../../../api/platform-level/sys-user/sys-user.service'
+import {Component, inject} from '@angular/core'
+import {UserContextService} from '../../../utils/services/user-context.service'
 
 @Component({
   selector: 'rts-location-summary',
@@ -7,11 +7,6 @@ import {SysUserService} from '../../../api/platform-level/sys-user/sys-user.serv
   imports: []
 })
 export class LocationSummaryComponent {
-  private readonly userService = inject(SysUserService)
-  private readonly loggedInUser = this.userService.selectFirst
-
-  readonly userFullName = computed(() => {
-    const user = this.loggedInUser()
-    return user ? `${user?.firstName} ${user?.lastName}` : ''
-  })
+  private readonly userContextService = inject(UserContextService)
+  readonly userFullName = this.userContextService.displayName
 }

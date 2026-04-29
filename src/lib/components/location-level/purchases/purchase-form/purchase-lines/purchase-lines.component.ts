@@ -1,5 +1,5 @@
 import {CurrencyPipe, NgClass} from '@angular/common'
-import {Component, inject, OnInit} from '@angular/core'
+import {Component, computed, inject, OnInit} from '@angular/core'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {FormsModule} from '@angular/forms'
 import {EntityId} from '@ngrx/signals/entities'
@@ -17,6 +17,21 @@ import {
 import {LocationProductStore} from '../../../../../api/location-level/location-product/location-product.store'
 import {PurchaseLineCancelDto} from '../../../../../api/location-level/purchase/purchase.model'
 import {PurchaseService} from '../../../../../api/location-level/purchase/purchase.service'
+import {
+  AlternativeUnitsFinderPipe
+} from '../../../../../api/organization-level/unit-conversion/pipes/alternative-units-finder.pipe'
+import {
+  FullUnitDescriptionPipe
+} from '../../../../../api/organization-level/unit-conversion/pipes/full-unit-description.pipe'
+import {
+  ConversionContextPipe,
+  UnitConversionDescriptorPipe,
+  UnitConvertPipe,
+  UnitCurrencyPipe
+} from '../../../../../api/organization-level/unit-conversion/pipes/unit-convert.pipe'
+import {
+  UnitConversionGraphService
+} from '../../../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
 import {ProductLabelPipe} from '../../../../../utils/pipes/product-label.pipe'
 import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
 import {HasSubscriptionComponent} from '../../../../reusable/has-subscription.component'
@@ -41,12 +56,22 @@ import PurchaseLineModel = PurchaseLineFormDefinition.PurchaseLineModel
     InputNumber,
     Button,
     Select,
-    NgClass
+    NgClass,
+    AlternativeUnitsFinderPipe,
+    FullUnitDescriptionPipe,
+    UnitConvertPipe,
+    UnitCurrencyPipe,
+    UnitConversionDescriptorPipe,
+    ConversionContextPipe,
+    UnitCurrencyPipe,
+    UnitCurrencyPipe,
+    UnitConversionDescriptorPipe
   ]
 })
 export class PurchaseLinesComponent extends HasSubscriptionComponent implements OnInit {
 
   private readonly productQuickSearchService = inject(LocationProductQuickSearchService)
+  private readonly unitConversionGraphService = inject(UnitConversionGraphService)
   private readonly purchaseFormContext = inject(PurchaseFormContext)
   private readonly purchaseService = inject(PurchaseService)
 
@@ -58,6 +83,10 @@ export class PurchaseLinesComponent extends HasSubscriptionComponent implements 
   readonly isDraftOrNew = this.purchaseFormContext.isDraftOrNew
   readonly editingRowKeys = this.purchaseFormContext.keysForLinesBeingEdited
   private readonly linesBeingEdited = new Map<EntityId, PurchaseLineModel>()
+
+  readonly dependenciesLoading = computed(() =>
+    this.productQuickSearchService.selectLoading() || this.unitConversionGraphService.isLoading()
+  )
 
   readonly searchTerm$ = new BehaviorSubject('')
 
@@ -144,7 +173,10 @@ export class PurchaseLinesComponent extends HasSubscriptionComponent implements 
         unitCost: product.lastPurchasePrice ?? 0,
         productGroupName: product.productGroupName ?? '',
         productName: product.productName ?? '',
-        baseUnit: product.baseUnit ?? '',
+        baseUnitId: product.baseUnitId ?? '',
+        unitId: product.baseUnitId ?? '',
+        snapshotUnitId: '',
+        conversionFactor: null,
         lineTotal: 0,
         quantityExpected: 1,
         quantityDelivered: 0,

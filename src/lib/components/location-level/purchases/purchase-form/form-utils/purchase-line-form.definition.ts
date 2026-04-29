@@ -8,7 +8,10 @@ export namespace PurchaseLineFormDefinition {
     referenceNumber: string
     productGroupName: string
     productName: string
-    baseUnit: string
+    baseUnitId: string
+    unitId: string
+    snapshotUnitId: string
+    conversionFactor: number | null
     quantityOrdered: number
     unitCost: number
     lineTotal: number,
@@ -26,7 +29,10 @@ export namespace PurchaseLineFormDefinition {
       locationProductId: line.locationProduct?.id as string ?? '',
       productGroupName: line.locationProduct?.productGroupName ?? '',
       productName: line.locationProduct?.productName ?? '',
-      baseUnit: line.locationProduct?.baseUnit ?? '',
+      baseUnitId: line.locationProduct?.baseUnitId ?? '',
+      unitId: line.unitId ?? '',
+      snapshotUnitId: line.unitId ?? '',
+      conversionFactor: line.conversionFactor ?? null,
       quantityOrdered: line.quantityOrdered ?? 0,
       unitCost: line.unitCost ?? line.lastPurchasePrice ?? 0,
       lineTotal: line.lineTotal ?? 0,
@@ -43,7 +49,8 @@ export namespace PurchaseLineFormDefinition {
         id: line.id,
         locationProductId: line.locationProductId,
         quantityOrdered: line.quantityOrdered,
-        unitCost: line.unitCost
+        unitCost: line.unitCost,
+        unitId: line.unitId
       }
       return result
     })

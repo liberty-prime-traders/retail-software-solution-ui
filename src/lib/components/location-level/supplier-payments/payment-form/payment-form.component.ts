@@ -52,13 +52,13 @@ export class PaymentFormComponent extends BaseFormComponent<SupplierPaymentServi
   readonly isLoading = this.supplierPaymentService.selectLoading
   private readonly payments = this.supplierPaymentService.selectForGroup(this.purchaseId)
   private readonly purchase = computed(() => this.purchaseService.selectForId(this.purchaseId()))
-  readonly remainingAmount = computed(() => (this.purchase()?.orderTotal ?? 0) - this.totalPaid())
+  readonly remainingAmount = computed(() => (this.purchase()?.paymentCeiling ?? 0) - this.totalPaid())
 
   readonly deliveryOptions: Signal<SelectItem<EntityId>[]> = computed(() => {
     const deliveries = this.purchase()?.deliveries ?? []
     return toSelectItems(deliveries, {
       itemLabelBy: (delivery) =>
-        `${delivery.referenceNumber} (${this.currencyPipe.transform(delivery.deliveryTotal)})`,
+        `${delivery.referenceNumber} - ${this.currencyPipe.transform(delivery.deliveryTotal)}`,
       itemValueBy: (delivery) => delivery.id
     })
   })

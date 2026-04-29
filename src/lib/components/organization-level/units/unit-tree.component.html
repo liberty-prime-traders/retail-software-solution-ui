@@ -56,16 +56,18 @@
           <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info"/>
           <rts-unit-group-form (unitGroupCreated)="unitGroupCreated($event)"/>
         } @else if (selectedUnitGroup()) {
-          <p-accordion>
-            <p-accordion-panel value="0">
-              <p-accordion-header>Edit {{selectedUnitGroup()?.name ?? 'Unit'}}</p-accordion-header>
-              <p-accordion-content>
-                <rts-unit-group-form [unitGroup]="selectedUnitGroup()"/>
-              </p-accordion-content>
-            </p-accordion-panel>
-          </p-accordion>
+          @if (!selectedUnitGroup()?.systemDefined) {
+            <p-accordion>
+              <p-accordion-panel value="0">
+                <p-accordion-header>Edit {{selectedUnitGroup()?.name ?? 'Unit'}}</p-accordion-header>
+                <p-accordion-content>
+                  <rts-unit-group-form [unitGroup]="selectedUnitGroup()"/>
+                </p-accordion-content>
+              </p-accordion-panel>
+            </p-accordion>
+          }
 
-          <rts-unit-value [unitGroupId]="selectedUnitGroup()!.id!" class="flex-grow-1"/>
+          <rts-unit-value [unitGroup]="selectedUnitGroup()!" class="flex-grow-1"/>
         } @else {
           <span>Select a unit to see its details</span>
         }

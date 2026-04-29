@@ -16,7 +16,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     purchaseStatus: PurchaseStatus
     createdBy: string
     paymentStatus: PaymentStatus
-    orderTotal: number
+    orderedTotal: number
   }
 
   export const fieldMap = new Map<keyof PurchaseGeneralFieldsModel, string>([
@@ -38,7 +38,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     purchaseStatus: PurchaseStatus.DRAFT,
     createdBy: '',
     paymentStatus: PaymentStatus.UNPAID,
-    orderTotal: 0
+    orderedTotal: 0
   })
 
 
@@ -66,7 +66,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     purchaseStatus: purchase?.purchaseStatus ?? PurchaseStatus.DRAFT,
     createdBy: purchase?.createdBy ?? '',
     paymentStatus: purchase?.paymentStatus ?? PaymentStatus.UNPAID,
-    orderTotal: purchase?.orderTotal ?? 0
+    orderedTotal: purchase?.orderedTotal ?? 0
   })
 
   export const convertToBackendModel = (formValue: PurchaseGeneralFieldsModel): Partial<Purchase> => ({

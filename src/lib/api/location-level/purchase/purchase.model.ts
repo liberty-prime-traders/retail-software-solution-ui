@@ -7,17 +7,21 @@ import {PurchaseStatus} from './purchase-status.enum'
 
 export interface Purchase extends BaseModel {
   supplierId: string
-  supplierName?: string
+  supplierName: string
   purchaseStatus: PurchaseStatus
   paymentStatus: PaymentStatus
-  notes?: string
-  dateOrdered?: string
-  orderedBy?: string
-  orderedById?: string
-  createdBy?: string
-  createdOn?: string
-  orderTotal?: number
+  notes: string
+  dateOrdered: string
+  orderedBy: string
+  orderedById: string
+  createdBy: string
+  createdOn: string
+  orderedTotal: number,
+  deliveredTotal: number,
+  paymentCeiling: number,
   lines: Partial<PurchaseLine>[]
+  linesToAdd: Partial<PurchaseLine>[]
+  linesToUpdate: Partial<PurchaseLine>[]
   deliveries: PurchaseDelivery[]
 }
 
@@ -25,6 +29,8 @@ export interface PurchaseLine extends BaseModel {
   locationProduct: LocationProduct
   locationProductId: EntityId
   quantityOrdered: number
+  unitId: string
+  conversionFactor: number
   unitCost: number
   lastPurchasePrice: number
   lineTotal: number

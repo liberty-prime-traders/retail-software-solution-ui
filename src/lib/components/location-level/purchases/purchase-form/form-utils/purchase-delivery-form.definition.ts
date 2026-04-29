@@ -15,12 +15,15 @@ export namespace PurchaseDeliveryFormDefinition {
     referenceNumber: string
     productGroupName: string
     productName: string
-    baseUnit: string
+    baseUnitId: string
+    purchaseLineUnitId: string
+    conversionFactor: number | null
+    unitId: string
+    snapshotUnitId: string
     quantityYetToBeDelivered: number
     quantityDelivered: number
     unitCost: number
   }
-
 
   export const createDefault = (purchaseLines: PurchaseLineFormDefinition.PurchaseLineModel[]): DeliveryFormModel => ({
     deliveredAt: null,
@@ -33,7 +36,11 @@ export namespace PurchaseDeliveryFormDefinition {
     referenceNumber: line.referenceNumber,
     productGroupName: line.productGroupName,
     productName: line.productName,
-    baseUnit: line.baseUnit,
+    baseUnitId: line.baseUnitId,
+    purchaseLineUnitId: line.unitId,
+    conversionFactor: line.conversionFactor,
+    unitId: line.unitId,
+    snapshotUnitId: line.unitId,
     quantityYetToBeDelivered: line.quantityYetToBeDelivered,
     unitCost: line.unitCost,
     quantityDelivered: 0
@@ -49,7 +56,8 @@ export namespace PurchaseDeliveryFormDefinition {
         .map(line => ({
           purchaseLineId: line.purchaseLineId,
           quantityDelivered: line.quantityDelivered,
-          unitCost: line.unitCost
+          unitCost: line.unitCost,
+          unitId: line.unitId
         }))
     })
 }

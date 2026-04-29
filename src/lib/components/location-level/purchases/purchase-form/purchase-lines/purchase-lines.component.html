@@ -2,6 +2,7 @@
   @if (isDraftOrNew()) {
     <rts-form-field label="Search Products">
       <p-select [options]="productOptions()"
+                [loading]="dependenciesLoading()"
                 [filter]="true"
                 (onFilter)="searchTerm$.next($event.filter)"
                 (onClick)="addPurchaseLine(productSelect.value); productSelect.clear()"
@@ -22,9 +23,9 @@
     <ng-template pTemplate="header">
       <tr>
         <th>Product</th>
-        <th>Unit Price</th>
         <th>Units</th>
         <th>Qty Ordered</th>
+        <th>Unit Price</th>
 
         @if (!isDraftOrNew()) {
           <th>Qty Canceled</th>
@@ -46,31 +47,86 @@
           <td>
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.unitCost" />
+                <p-select [options]="purchaseLine.baseUnitId | alternativeUnitsFinder"
+                          appendTo="body"
+                          class="col-10 p-0"
+                          [(ngModel)]="purchaseLine.unitId">
+                </p-select>
               </ng-template>
               <ng-template pTemplate="output">
-                {{ purchaseLine.unitCost | currency  }}
+                {{ purchaseLine.unitId | fullUnitDescription  }}
               </ng-template>
             </p-cellEditor>
+            <small class="block info-message">
+              {{ purchaseLine.unitId | buildConversionContext : purchaseLine | unitConversionDescriptor }}
+            </small>
           </td>
-
-          <td>{{ purchaseLine.baseUnit }}</td>
 
           <td>
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <p-inputNumber [min]="0" [(ngModel)]="purchaseLine.quantityOrdered" />
+                <p-inputNumber [min]="0" [maxFractionDigits]="2" [(ngModel)]="purchaseLine.quantityOrdered"/>
               </ng-template>
               <ng-template pTemplate="output">
                 {{ purchaseLine.quantityOrdered }}
               </ng-template>
             </p-cellEditor>
+            <small class="block info-message">
+              {{
+                purchaseLine.unitId
+                  | buildConversionContext : purchaseLine : purchaseLine.quantityOrdered
+                  | convertToTargetUnitForDisplay
+              }}
+            </small>
+          </td>
+
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber [min]="0" [maxFractionDigits]="2" [(ngModel)]="purchaseLine.unitCost" />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ purchaseLine.unitCost | currency  }}
+              </ng-template>
+            </p-cellEditor>
+            <small class="block info-message">
+              {{
+                purchaseLine.unitId
+                  | buildConversionContext : purchaseLine : purchaseLine.unitCost
+                  | convertToTargetUnitAsCurrency
+              }}
+            </small>
           </td>
 
         } @else {
-          <td>{{ purchaseLine.unitCost | currency }}</td>
-          <td>{{ purchaseLine.baseUnit }}</td>
-          <td>{{ purchaseLine.quantityOrdered }}</td>
+          <td>
+            {{ purchaseLine.unitId | fullUnitDescription }}
+            <small class="block info-message">
+              {{ purchaseLine.unitId | buildConversionContext : purchaseLine | unitConversionDescriptor }}
+            </small>
+          </td>
+
+          <td>
+            {{ purchaseLine.quantityOrdered }}
+            <small class="block info-message">
+              {{
+                purchaseLine.unitId
+                  | buildConversionContext : purchaseLine : purchaseLine.quantityOrdered
+                  | convertToTargetUnitForDisplay
+              }}
+            </small>
+          </td>
+
+          <td>
+            {{ purchaseLine.unitCost | currency }}
+            <small class="block info-message">
+              {{
+                purchaseLine.unitId
+                  | buildConversionContext : purchaseLine : purchaseLine.unitCost
+                  | convertToTargetUnitAsCurrency
+              }}
+            </small>
+          </td>
 
           <td>
             <p-cellEditor>
@@ -84,9 +140,25 @@
                 {{ purchaseLine.quantityCanceled }}
               </ng-template>
             </p-cellEditor>
+            <small class="block info-message">
+              {{
+                purchaseLine.unitId
+                  | buildConversionContext : purchaseLine : purchaseLine.quantityCanceled
+                  | convertToTargetUnitForDisplay
+              }}
+            </small>
           </td>
 
-          <td>{{ purchaseLine.quantityDelivered }}</td>
+          <td>
+            {{ purchaseLine.quantityDelivered }}
+            <small class="block info-message">
+              {{
+                purchaseLine.unitId
+                  | buildConversionContext : purchaseLine : purchaseLine.quantityDelivered
+                  | convertToTargetUnitForDisplay
+              }}
+            </small>
+          </td>
         }
 
         <td>{{ purchaseLine.lineTotal | currency }}</td>
@@ -125,13 +197,3 @@
     </ng-template>
   </p-table>
 </div>
-
-
-
-
-
-
-
-
-
-
