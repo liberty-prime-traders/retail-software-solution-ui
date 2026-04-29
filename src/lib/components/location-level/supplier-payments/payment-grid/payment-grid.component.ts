@@ -25,6 +25,8 @@ import {PaymentFormComponent} from '../payment-form/payment-form.component'
 })
 export class PaymentGridComponent {
   readonly purchaseId = input.required<string>()
+  readonly canAddPayment = input<boolean>(false)
+
   readonly paymentChanged = output()
 
   private readonly supplierPaymentService = inject(SupplierPaymentService)

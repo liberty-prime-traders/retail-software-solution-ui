@@ -16,15 +16,20 @@ export abstract class MultimapBaseService<RESPONSE extends BaseModel> extends Ba
     this.cache.asMap()
   )
 
-  readonly selectForGroup =  (key: Signal<EntityId>) =>
-    computed(() => this.cache.get(String(key())) ?? [])
+  readonly selectForGroup =  (key: Signal<EntityId|undefined>) =>
+    computed(() => {
+      if (!key()) {
+        return []
+      }
+      return this.cache.get(String(key())) ?? []
+    })
 
   override getHttpParams(key: string): HttpParams {
     return new HttpParams().setNonNull(String(this.keyPath), key)
   }
 
-  override refetch(key: EntityId) {
-    if (this.cache.has(String(key))) {
+  override refetch(key: EntityId | undefined) {
+    if (!key || this.cache.has(String(key))) {
       return undefined
     }
     return super.refetch(key)

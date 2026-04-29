@@ -5,7 +5,7 @@ import {ProductSearchParameters} from '../../../api/cross-tier/product/product-s
 import {ProductStatus} from '../../../api/cross-tier/product/product-status.enum'
 import {ProductGroupService} from '../../../api/organization-level/product-group/product-group.service'
 import {PaginatedBaseService} from '../../../api/util/paginated-api/paginated-base.service'
-import {BaseFilterService} from '../../reusable/base-filter.service'
+import {BaseFilterService} from '../../../utils/services/base-filter.service'
 import {ProductFilterHelper} from './product-filter-helper'
 
 

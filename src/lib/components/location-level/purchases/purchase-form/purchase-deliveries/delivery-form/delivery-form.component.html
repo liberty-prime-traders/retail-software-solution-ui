@@ -7,7 +7,7 @@
 
     <div class="flex gap-4">
       <rts-form-field label="Delivered At" contentClass="col-8" class="col-4" [layout]="FormFieldDirection.VERTICAL">
-        <p-date-picker [formField]="deliveryForm.deliveredAt" [showTime]="true" [showIcon]="true"/>
+        <p-date-picker [formField]="deliveryForm.deliveredAt" [showTime]="true" [showIcon]="true" appendTo="body"/>
       </rts-form-field>
 
       <rts-form-field label="Notes" class="col-6" contentClass="col-8" [layout]="FormFieldDirection.VERTICAL">
@@ -27,27 +27,74 @@
         <tr>
           <th>Product</th>
           <th>Qty Expected</th>
+          <th>Units of Delivery</th>
           <th>Qty Delivered</th>
           <th>Unit Cost</th>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-line>
+      <ng-template pTemplate="body" let-deliveryLine>
         <tr>
-          <td>{{ line | productLabel }}</td>
-          <td>{{ line.quantityYetToBeDelivered }}</td>
+          <td>{{ deliveryLine | productLabel }}</td>
+
           <td>
-            <p-inputNumber [min]="0"
-                           [max]="line.quantityYetToBeDelivered"
-                           [(ngModel)]="line.quantityDelivered">
-            </p-inputNumber>
+            {{ deliveryLine.quantityYetToBeDelivered }} {{ deliveryLine.purchaseLineUnitId | fullUnitDescription }}
+
+            <small class="block info-message">
+              {{
+                deliveryLine.purchaseLineUnitId
+                  | buildConversionContext : deliveryLine: deliveryLine.quantityYetToBeDelivered
+                  | convertToTargetUnitForDisplay
+              }}
+            </small>
           </td>
+
+          <td>
+            <p-select appendTo="body"
+                      #select
+                      [options]="deliveryLine.purchaseLineUnitId | alternativeUnitsFinder"
+                      (ngModelChange)="clearQuantities(deliveryLine.purchaseLineId, select.value)"
+                      [(ngModel)]="deliveryLine.unitId">
+            </p-select>
+
+            <small class="block info-message">
+              {{ deliveryLine.unitId | buildConversionContext : deliveryLine | unitConversionDescriptor }}
+            </small>
+          </td>
+
+          <td>
+            @let deliveryLineFactor = deliveryLine.unitId | unitFactorResolver : deliveryLine.baseUnitId;
+            @let effectiveFactor = deliveryLine.conversionFactor / deliveryLineFactor;
+
+            <p-inputNumber [min]="0"
+                           [max]="deliveryLine.quantityYetToBeDelivered * effectiveFactor"
+                           [maxFractionDigits]="2"
+                           [(ngModel)]="deliveryLine.quantityDelivered">
+            </p-inputNumber>
+
+            <small class="block info-message">
+              {{
+                deliveryLine.unitId
+                  | buildConversionContext : deliveryLine : deliveryLine.quantityDelivered
+                  | convertToTargetUnitForDisplay
+              }}
+            </small>
+          </td>
+
           <td>
             <p-inputNumber [min]="0"
                            mode="currency"
                            currency="USD"
-                           [(ngModel)]="line.unitCost">
+                           [(ngModel)]="deliveryLine.unitCost">
             </p-inputNumber>
+
+            <small class="block info-message">
+              {{
+                deliveryLine.unitId
+                  | buildConversionContext : deliveryLine : deliveryLine.unitCost
+                  | convertToTargetUnitAsCurrency
+              }}
+            </small>
           </td>
         </tr>
       </ng-template>

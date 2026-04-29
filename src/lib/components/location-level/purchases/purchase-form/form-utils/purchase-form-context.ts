@@ -40,7 +40,7 @@ export class PurchaseFormContext {
 
     untracked(() => {
       const total = lines.reduce((sum, l) => sum + l.lineTotal, 0)
-      this.purchaseForm.generalFields.orderTotal().value.set(total)
+      this.purchaseForm.generalFields.orderedTotal().value.set(total)
     })
   })
 

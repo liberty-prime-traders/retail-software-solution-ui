@@ -1,13 +1,17 @@
-import {Component, computed, inject, Input, signal} from '@angular/core'
+import {Component, computed, inject, Input, model, signal} from '@angular/core'
 import {form, FormField} from '@angular/forms/signals'
 import {isNil} from 'lodash-es'
+import {Button} from 'primeng/button'
+import {Dialog} from 'primeng/dialog'
 import {InputNumber} from 'primeng/inputnumber'
 import {ProductStatus} from '../../../../api/cross-tier/product/product-status.enum'
 import {LocationProduct} from '../../../../api/location-level/location-product/location-product.model'
 import {LocationProductService} from '../../../../api/location-level/location-product/location-product.service'
+import {NullishToZeroPipe} from '../../../../utils/pipes/nullish-to-zero.pipe'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {StockHistoryComponent} from '../../stock-history/stock-history.component'
 import {LocationProductFormDefinition} from './location-product-form.definition'
 
 @Component({
@@ -17,7 +21,11 @@ import {LocationProductFormDefinition} from './location-product-form.definition'
     InputNumber,
     FormButtonsComponent,
     FormFieldComponent,
-    FormField
+    FormField,
+    NullishToZeroPipe,
+    Button,
+    Dialog,
+    StockHistoryComponent
   ]
 })
 export class LocationProductFormComponent extends BaseFormComponent<LocationProductService> {
@@ -33,6 +41,7 @@ export class LocationProductFormComponent extends BaseFormComponent<LocationProd
     }
   }
 
+  readonly showStockHistory = model(false)
   readonly originalLocationProduct = signal<LocationProduct | undefined>(undefined)
 
   readonly locationProductFormValue = signal<LocationProductFormDefinition.LocationProductFormModel>(
@@ -64,6 +73,5 @@ export class LocationProductFormComponent extends BaseFormComponent<LocationProd
 
   reactivateProduct() {
     this.locationProductService.reactivateProduct(this.locationProductFormValue()?.id)
-
   }
 }

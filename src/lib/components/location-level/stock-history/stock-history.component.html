@@ -1,0 +1,41 @@
+<div id="stock-history" rtsAutoStretch="stock-history">
+  <p-table [value]="stockHistory()"
+           [loading]="loading()"
+           dataKey="id"
+           sortField="recordedOn"
+           [sortOrder]="-1">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Recorded On</th>
+        <th>Reference</th>
+        <th>Movement Type</th>
+        <th>Quantity Moved</th>
+        <th>Rolling Balance</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-history>
+      <tr>
+        <td>{{ history.recordedOn | date }}</td>
+        <td>{{ history.externalReferenceNumber | nullSafe }}</td>
+        <td>{{ history.movementType | prettifyEnum }}</td>
+        <td>
+          {{ history.quantityMoved | nullSafe }}
+          @if (history.conversionDriftNote) {
+            <small class="block info-message">
+              {{ history.conversionDriftNote }}
+            </small>
+          }
+        </td>
+        <td>{{ history.newQuantity | nullSafe }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr rts-empty-row message="No stock movements recorded yet"></tr>
+    </ng-template>
+
+  </p-table>
+
+</div>

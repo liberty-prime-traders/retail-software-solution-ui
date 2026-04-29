@@ -1,9 +1,10 @@
 import {NgClass} from '@angular/common'
-import {Component, effect, inject, input, untracked} from '@angular/core'
+import {Component, computed, effect, inject, input, untracked} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {Button} from 'primeng/button'
 import {Ripple} from 'primeng/ripple'
 import {TableModule} from 'primeng/table'
+import {UnitGroup} from '../../../../api/organization-level/unit-group/unitgroup.model'
 import {UnitValueService} from '../../../../api/organization-level/unit-value/unitvalue.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
@@ -27,11 +28,12 @@ import {UnitValueFormComponent} from './unit-value-form/unit-value-form.componen
   ]
 })
 export class UnitValueComponent extends GridWithAddButtonComponent<UnitValueService>{
-  readonly unitGroupId = input.required<EntityId>()
+  readonly unitGroup = input.required<UnitGroup>()
 
   private readonly unitValueService = inject(UnitValueService)
   readonly apiService = this.unitValueService
 
+  readonly unitGroupId = computed(() => this.unitGroup().id as EntityId)
   readonly unitValues = this.unitValueService.selectForGroup(this.unitGroupId)
 
   private refetchUnitsForGroup = effect(() => {

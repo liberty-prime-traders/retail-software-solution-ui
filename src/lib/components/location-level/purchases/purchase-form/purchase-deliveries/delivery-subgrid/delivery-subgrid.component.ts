@@ -3,6 +3,9 @@ import {Component, input} from '@angular/core'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
 import {TableModule} from 'primeng/table'
 import {PurchaseDelivery} from '../../../../../../api/location-level/delivery/purchase-delivery.model'
+import {
+  FullUnitDescriptionPipe
+} from '../../../../../../api/organization-level/unit-conversion/pipes/full-unit-description.pipe'
 import {ProductLabelPipe} from '../../../../../../utils/pipes/product-label.pipe'
 import {KafkaEventLogComponent} from '../../../../kafka-event-log/kafka-event-log.component'
 
@@ -18,7 +21,8 @@ import {KafkaEventLogComponent} from '../../../../kafka-event-log/kafka-event-lo
     TableModule,
     CurrencyPipe,
     ProductLabelPipe,
-    KafkaEventLogComponent
+    KafkaEventLogComponent,
+    FullUnitDescriptionPipe
   ]
 })
 export class DeliverySubgridComponent {

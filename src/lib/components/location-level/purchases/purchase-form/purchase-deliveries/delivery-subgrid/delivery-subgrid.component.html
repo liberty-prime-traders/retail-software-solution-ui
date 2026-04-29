@@ -17,7 +17,7 @@
         <ng-template pTemplate="body" let-line>
           <tr>
             <td>{{ line.locationProduct | productLabel }}</td>
-            <td>{{ line.quantityDelivered }}</td>
+            <td>{{ line.quantityDelivered }} {{ line.unitId | fullUnitDescription }}</td>
             <td>{{ line.unitCost | currency }}</td>
           </tr>
         </ng-template>

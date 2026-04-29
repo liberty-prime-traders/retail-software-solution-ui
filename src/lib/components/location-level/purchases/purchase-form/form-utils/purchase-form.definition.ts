@@ -19,8 +19,14 @@ export namespace PurchaseFormDefinition {
     purchaseLines: PurchaseLineFormDefinition.convertLinesToFormModel(purchase?.lines ?? [])
   })
 
-  export const convertToBackendModel = (formValue: PurchaseFormModel): Partial<Purchase> => ({
-    ...PurchaseGeneralFieldsFormDefinition.convertToBackendModel(formValue.generalFields),
-    lines: PurchaseLineFormDefinition.convertLinesToBackendModel(Array.from(formValue.purchaseLines.values()))
-  })
+  export const convertToBackendModel = (formValue: PurchaseFormModel): Partial<Purchase> => {
+    const purchaseLines = Array.from(formValue.purchaseLines.values())
+    const linesToAdd = purchaseLines.filter(l => !l.id)
+    const linesToUpdate = purchaseLines.filter(l => l.id)
+    return  {
+      ...PurchaseGeneralFieldsFormDefinition.convertToBackendModel(formValue.generalFields),
+      linesToAdd: PurchaseLineFormDefinition.convertLinesToBackendModel(linesToAdd),
+      linesToUpdate: PurchaseLineFormDefinition.convertLinesToBackendModel(linesToUpdate)
+    }
+  }
 }

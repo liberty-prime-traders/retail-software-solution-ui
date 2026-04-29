@@ -6,9 +6,11 @@
 } @else {
   <div class="flex flex-column gap-3">
 
-    <div class="flex justify-content-end">
-      <p-button label="Record Payment" icon="pi pi-plus" (click)="showAddForm.set(true)"/>
-    </div>
+    @if (canAddPayment()) {
+      <div class="flex justify-content-end">
+        <p-button label="Record Payment" icon="pi pi-plus" (click)="showAddForm.set(true)"/>
+      </div>
+    }
 
     <p-table [value]="payments()" dataKey="id" sortField="referenceNumber">
       <ng-template pTemplate="header">
@@ -19,7 +21,7 @@
           <th>Amount</th>
           <th>Payment Date</th>
           <th>Delivery Reference</th>
-          <th>Created By</th>
+          <th>Recorded By</th>
         </tr>
       </ng-template>
 

@@ -26,7 +26,7 @@
 
           <p-button (click)="addingIsActive.set(true)"
                     [disabled]="loading()"
-                    label="+ Add Unit Value"
+                    [label]="'+ Add Unit Value (' + unitGroup().name + ')'"
                     rounded
                     severity="secondary">
           </p-button>
@@ -43,10 +43,6 @@
             Code
             <p-sortIcon field="code"></p-sortIcon>
           </th>
-          <th pSortableColumn="description">
-            Description
-            <p-sortIcon field="description"></p-sortIcon>
-          </th>
           <th pSortableColumn="baseUnitName">
             Base Unit
             <p-sortIcon field="baseUnitName"></p-sortIcon>
@@ -55,6 +51,10 @@
             Multiplier
             <p-sortIcon field="conversionFactor"></p-sortIcon>
           </th>
+          <th pSortableColumn="description">
+            Description
+            <p-sortIcon field="description"></p-sortIcon>
+          </th>
           <th style="width: 5rem;"></th>
       </ng-template>
 
@@ -62,18 +62,20 @@
         <tr [ngClass]="{ 'expanded-row': expanded }">
           <td>{{unitvalue?.name | nullSafe}}</td>
           <td>{{unitvalue?.code | nullSafe}}</td>
-          <td>{{unitvalue?.description | nullSafe}}</td>
           <td>{{unitvalue?.baseUnitName | nullSafe}}</td>
           <td>{{unitvalue?.conversionFactor | nullSafe}}</td>
+          <td>{{unitvalue?.description | nullSafe}}</td>
           <td>
-            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                      rounded
-                      pRipple
-                      severity="secondary"
-                      [text]="true"
-                      [disabled]="loading() || addingIsActive()"
-                      [pRowToggler]="unitvalue">
-            </p-button>
+            @if (!unitvalue.systemDefined) {
+              <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                        rounded
+                        pRipple
+                        severity="secondary"
+                        [text]="true"
+                        [disabled]="loading() || addingIsActive()"
+                        [pRowToggler]="unitvalue">
+              </p-button>
+            }
           </td>
         </tr>
       </ng-template>

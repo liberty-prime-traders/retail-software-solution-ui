@@ -25,7 +25,10 @@
           </p-tabpanel>
 
           <p-tabpanel value="payments">
-            <rts-supplier-payment-grid [purchaseId]="purchaseId()" (paymentChanged)="reloadFormFromStore()"/>
+            <rts-supplier-payment-grid [purchaseId]="purchaseId()"
+                                       [canAddPayment]="canAddPayments()"
+                                       (paymentChanged)="reloadFormFromStore()">
+            </rts-supplier-payment-grid>
           </p-tabpanel>
         }
       </p-tabpanels>

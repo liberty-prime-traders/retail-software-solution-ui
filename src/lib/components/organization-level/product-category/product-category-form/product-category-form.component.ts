@@ -1,7 +1,6 @@
 import {NgClass} from '@angular/common'
 import {Component, computed, inject, input, output} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
-import {isNil} from 'lodash-es'
 import {InputText} from 'primeng/inputtext'
 import {ProductCategory} from '../../../../api/organization-level/product-category/product-category.model'
 import {ProductCategoryService} from '../../../../api/organization-level/product-category/product-category.service'

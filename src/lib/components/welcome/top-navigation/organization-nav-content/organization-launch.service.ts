@@ -3,6 +3,7 @@ import {Router} from '@angular/router'
 import {MessageService} from 'primeng/api'
 import {finalize, of} from 'rxjs'
 import {catchError, tap} from 'rxjs/operators'
+import {LocationService} from '../../../../api/organization-level/location/location.service'
 import {
   OrganizationLaunchResponse
 } from '../../../../api/platform-level/organization/organization-launch-response.model'
@@ -18,6 +19,7 @@ export class OrganizationLaunchService {
   private readonly router = inject(Router)
   private readonly sessionContextService = inject(SessionContextService)
   private readonly organizationService = inject(OrganizationService)
+  private readonly locationService = inject(LocationService)
 
   private readonly _errorMessages = signal<string[] | undefined>(undefined)
   private readonly _launchingInProgress = signal(false)
@@ -54,6 +56,7 @@ export class OrganizationLaunchService {
   proceedToSelectedOrganization() {
     if (this.sessionContextService.selectedOrganization()){
       this.userContextService.checkOrganizationAdminStatus()
+      this.locationService.fetch()
       this.router.navigate(['/secure/manage-organization']).then()
     }
   }
