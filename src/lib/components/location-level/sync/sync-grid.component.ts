@@ -1,4 +1,4 @@
-import {DatePipe} from '@angular/common'
+import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
 import {Component, inject} from '@angular/core'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
@@ -13,7 +13,7 @@ import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
   imports: [
     TableModule,
     Tag,
-    DatePipe,
+    TimezoneAwareDatePipe,
     NullSafePipe,
     PrettifyEnumPipe,
     SyncStatusSeverityPipe

@@ -1,4 +1,4 @@
-import {DatePipe} from '@angular/common'
+import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
 import {Component, computed, effect, inject, model, OnInit, signal} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {MessageService} from 'primeng/api'
@@ -20,7 +20,7 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
   selector: 'rts-end-user-join-request',
   templateUrl: 'end-user-join-request.component.html',
   imports: [
-    DatePipe,
+    TimezoneAwareDatePipe,
     JoinRequestStatusSeverityPipe,
     TableModule,
     NullSafePipe,

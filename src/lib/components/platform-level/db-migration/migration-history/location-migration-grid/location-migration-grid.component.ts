@@ -1,4 +1,4 @@
-import {DatePipe} from '@angular/common'
+import {TimezoneAwareDatePipe} from '../../../../../utils/pipes/timezone-aware-date.pipe'
 import {Component, input} from '@angular/core'
 import {PrimeTemplate} from 'primeng/api'
 import {TableModule} from 'primeng/table'
@@ -11,7 +11,7 @@ import {MigrationStatusSeverityPipe} from '../migration-status-severity.pipe'
   selector: 'rts-location-migration-grid',
   templateUrl: 'location-migration-grid.component.html',
   imports: [
-    DatePipe,
+    TimezoneAwareDatePipe,
     MigrationStatusSeverityPipe,
     PrettifyEnumPipe,
     PrimeTemplate,

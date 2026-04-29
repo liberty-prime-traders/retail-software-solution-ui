@@ -1,4 +1,5 @@
-import {CurrencyPipe, DatePipe, NgClass} from '@angular/common'
+import {CurrencyPipe, NgClass} from '@angular/common'
+import {TimezoneAwareDatePipe} from '../../../../utils/pipes/timezone-aware-date.pipe'
 import {Component, effect, inject, input, output, signal, untracked} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
@@ -15,7 +16,7 @@ import {PaymentFormComponent} from '../payment-form/payment-form.component'
     TableModule,
     Button,
     CurrencyPipe,
-    DatePipe,
+    TimezoneAwareDatePipe,
     NgClass,
     EmptyRowComponent,
     TooltipComponent,

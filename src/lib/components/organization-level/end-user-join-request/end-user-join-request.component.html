@@ -67,7 +67,7 @@
         </td>
       }
       <td>{{ request?.fullName | nullSafe }}</td>
-      <td>{{ request?.requestedDate | date: 'medium' }}</td>
+      <td>{{ request?.requestedDate | timezoneAwareDate }}</td>
       <td>
         <p-tag [value]="request?.status | prettifyEnum"
                [severity]="request?.status | joinRequestStatusSeverity"

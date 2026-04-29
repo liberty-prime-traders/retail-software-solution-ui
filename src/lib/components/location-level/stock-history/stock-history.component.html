@@ -17,7 +17,7 @@
 
     <ng-template pTemplate="body" let-history>
       <tr>
-        <td>{{ history.recordedOn | date }}</td>
+        <td>{{ history.recordedOn | timezoneAwareDate }}</td>
         <td>{{ history.externalReferenceNumber | nullSafe }}</td>
         <td>{{ history.movementType | prettifyEnum }}</td>
         <td>

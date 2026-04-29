@@ -1,4 +1,4 @@
-import {DatePipe} from '@angular/common'
+import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
 import {Component, inject, OnInit} from '@angular/core'
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop'
 import {Button} from 'primeng/button'
@@ -21,7 +21,7 @@ import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
     Tag,
     ProgressBar,
     Message,
-    DatePipe,
+    TimezoneAwareDatePipe,
     PrettifyEnumPipe,
     SyncStatusSeverityPipe
   ]

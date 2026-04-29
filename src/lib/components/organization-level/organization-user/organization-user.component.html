@@ -53,10 +53,10 @@
       <td>
         {{ organizationUser?.user | nullSafe }}
       </td>
-      <td>{{ organizationUser?.startOn | date: 'medium'}}</td>
+      <td>{{ organizationUser?.startOn | timezoneAwareDate }}</td>
       <td>
         @if (organizationUser.endOn) {
-          {{ organizationUser.endOn | date:'medium' }}
+          {{ organizationUser.endOn | timezoneAwareDate  }}
         } @else {
           <p-tag value="Active" severity="success" [rounded]="true"></p-tag>
         }

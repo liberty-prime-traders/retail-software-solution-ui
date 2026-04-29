@@ -63,9 +63,9 @@
           <td>{{ feature?.feature | prettifyEnum }}</td>
           <td>{{ feature?.status | prettifyEnum }}</td>
           <td>{{ feature?.enabledBy | nullSafe }}</td>
-          <td>{{ feature?.enabledOn | date: 'short' }}</td>
+          <td>{{ feature?.enabledOn | timezoneAwareDate: 'short' }}</td>
           <td>{{ feature?.disabledBy | nullSafe }}</td>
-          <td>{{ feature?.disabledOn | date: 'short' }}</td>
+          <td>{{ feature?.disabledOn | timezoneAwareDate: 'short' }}</td>
         </tr>
       </ng-template>
 

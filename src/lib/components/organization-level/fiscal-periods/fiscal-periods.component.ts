@@ -1,4 +1,5 @@
-import {DatePipe, NgTemplateOutlet} from '@angular/common'
+import {NgTemplateOutlet} from '@angular/common'
+import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
 import {Component, inject} from '@angular/core'
 import {MessageService} from 'primeng/api'
 import {Badge} from 'primeng/badge'
@@ -20,7 +21,7 @@ import {FiscalPeriodFormComponent} from './fiscal-period-form/fiscal-period-form
   imports: [
     TableModule,
     Button,
-    DatePipe,
+    TimezoneAwareDatePipe,
     NullSafePipe,
     GridFilterComponent,
     EmptyRowComponent,

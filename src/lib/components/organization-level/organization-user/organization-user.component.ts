@@ -1,4 +1,5 @@
-import {DatePipe, NgClass} from '@angular/common'
+import {NgClass} from '@angular/common'
+import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
 import {Component, effect, inject, model, OnInit, signal} from '@angular/core'
 import {MessageService} from 'primeng/api'
 import {Button} from 'primeng/button'
@@ -16,7 +17,7 @@ import {HasSubscriptionComponent} from '../../reusable/has-subscription.componen
   selector: 'rts-organization-user',
   templateUrl: 'organization-user.component.html',
   imports: [
-    DatePipe,
+    TimezoneAwareDatePipe,
     TableModule,
     NullSafePipe,
     GridFilterComponent,
