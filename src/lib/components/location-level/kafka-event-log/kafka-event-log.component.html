@@ -32,7 +32,7 @@
       <td>{{ log.referenceNumber | nullSafe }}</td>
       <td>{{ log.processor | nullSafe }}</td>
       <td>{{ log.status | prettifyEnum }}</td>
-      <td>{{ log.processedOn | date: 'medium' | nullSafe }}</td>
+      <td>{{ log.processedOn | date  | nullSafe }}</td>
       <td>{{ log.failureReason | nullSafe }}</td>
       <td>
         <p-button icon="pi pi-replay"

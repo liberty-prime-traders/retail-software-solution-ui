@@ -19,6 +19,7 @@
         <span class="info-message">Timezone</span>
         <p-select size="small" [options]="TIMEZONES"
                   [(ngModel)]="selectedTimeZone"
+                  (ngModelChange)="persistTimezoneChange()"
                   [filter]="true"
                   [filterFields]="['value', 'label']">
         </p-select>

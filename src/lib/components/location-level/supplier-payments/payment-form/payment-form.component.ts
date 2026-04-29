@@ -11,6 +11,7 @@ import {PurchaseService} from '../../../../api/location-level/purchase/purchase.
 import {SupplierPayment} from '../../../../api/location-level/supplier-payment/supplier-payment.model'
 import {SupplierPaymentService} from '../../../../api/location-level/supplier-payment/supplier-payment.service'
 import {PaymentOptionService} from '../../../../api/organization-level/payment-option/payment-option.service'
+import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 import {SelectItem, toSelectItems} from '../../../../utils/types/select-item.type'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
@@ -45,6 +46,7 @@ export class PaymentFormComponent extends BaseFormComponent<SupplierPaymentServi
   private readonly paymentOptionService = inject(PaymentOptionService)
   protected readonly apiService = this.supplierPaymentService
   private readonly currencyPipe = inject(CurrencyPipe)
+  private readonly zonedDatesService = inject(ZonedDatesService)
 
   readonly FormFieldDirection = FormFieldDirection
   readonly paymentFormFields = PaymentFormDefinition.fieldMap
@@ -92,7 +94,9 @@ export class PaymentFormComponent extends BaseFormComponent<SupplierPaymentServi
   }
 
   save() {
-    const dto = PaymentFormDefinition.convertToBackendModel(this.formValue(), this.purchaseId())
+    const dto = PaymentFormDefinition.convertToBackendModel(
+      this.formValue(), this.purchaseId(), this.zonedDatesService
+    )
     this.supplierPaymentService.post(dto, {
       onSuccess: (payment) => {
         this.applyPurchasePaymentStatus(payment)

@@ -9,6 +9,7 @@ import {PassStatus} from '../../../../api/platform-level/authorization-pass/pass
 import {PassType} from '../../../../api/platform-level/authorization-pass/pass-type.enum'
 import {SysUserService} from '../../../../api/platform-level/sys-user/sys-user.service'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
+import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
@@ -32,6 +33,7 @@ export class AuthorizationPassFormComponent extends BaseFormComponent<Authorizat
   private readonly authorizationPassService = inject(AuthorizationPassService)
   private readonly sysUserService = inject(SysUserService)
   protected readonly apiService = this.authorizationPassService
+  private readonly zonedDatesService = inject(ZonedDatesService)
 
   readonly passCreated = output<void>()
 
@@ -52,16 +54,18 @@ export class AuthorizationPassFormComponent extends BaseFormComponent<Authorizat
   override ngOnInit() {
     super.ngOnInit()
     if (this.pass()) {
-      this.passForm().value.set(AuthorizationPassFormDefinition.convertToFormModel(this.pass()))
+      this.passForm().value.set(AuthorizationPassFormDefinition.convertToFormModel(this.zonedDatesService, this.pass()))
     }
   }
 
   resetForm() {
-    this.passForm().reset(AuthorizationPassFormDefinition.convertToFormModel(this.pass()))
+    this.passForm().reset(AuthorizationPassFormDefinition.convertToFormModel(this.zonedDatesService, this.pass()))
   }
 
   upsert() {
-    const payload = AuthorizationPassFormDefinition.convertToBackendModel(this.formValue())
+    const payload = AuthorizationPassFormDefinition.convertToBackendModel(
+      this.formValue(), this.zonedDatesService
+    )
     if (payload.id) {
       this.authorizationPassService.put(payload)
     } else {

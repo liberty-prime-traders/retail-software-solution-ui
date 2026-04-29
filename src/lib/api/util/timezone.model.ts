@@ -1,9 +1,17 @@
+import {InjectionToken} from '@angular/core'
+import {LocalStorageKey} from '../../utils/types/local-storage-key.enum'
+
 export interface Timezone {
   label: string
   value: string
 }
 
 export const DEFAULT_TIMEZONE: Timezone = { label: 'Nairobi (EAT, UTC+3)', value: 'Africa/Nairobi' }
+
+export const TIMEZONE_TOKEN = new InjectionToken<string>('TIMEZONE_TOKEN', {
+  providedIn: 'root',
+  factory: () => localStorage.getItem(LocalStorageKey.TIMEZONE) ?? DEFAULT_TIMEZONE.value
+})
 
 export const TIMEZONES = [
   // Africa

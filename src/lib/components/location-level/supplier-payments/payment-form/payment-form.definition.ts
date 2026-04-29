@@ -1,6 +1,6 @@
 import {max, min, required, schema} from '@angular/forms/signals'
 import {SupplierPaymentCreateRequest} from '../../../../api/location-level/supplier-payment/supplier-payment.model'
-import {toLocaleDateString} from '../../../../utils/dates'
+import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 
 export namespace PaymentFormDefinition {
   export interface PaymentFormModel {
@@ -37,13 +37,15 @@ export namespace PaymentFormDefinition {
     max(path.amount, ({valueOf}) => valueOf(path.purchaseArrears))
   })
 
-  export const convertToBackendModel = (formValue: PaymentFormModel, purchaseId: string)
+  export const convertToBackendModel = (
+    formValue: PaymentFormModel, purchaseId: string, zonedDatesService: ZonedDatesService
+  )
     : SupplierPaymentCreateRequest => ({
       purchaseId,
       deliveryId: formValue.deliveryId ?? undefined,
       paymentMethodId: formValue.paymentMethodId,
       amount: formValue.amount!,
-      paymentDate: toLocaleDateString(formValue.paymentDate),
+      paymentDate: zonedDatesService.toZonedISOString(formValue.paymentDate),
       notes: formValue.notes || undefined
     })
 }

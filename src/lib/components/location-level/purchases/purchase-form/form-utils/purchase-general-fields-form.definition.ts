@@ -2,6 +2,7 @@ import {disabled, required, schema} from '@angular/forms/signals'
 import {PaymentStatus} from '../../../../../api/location-level/purchase/payment-status.enum'
 import {PurchaseStatus} from '../../../../../api/location-level/purchase/purchase-status.enum'
 import {Purchase} from '../../../../../api/location-level/purchase/purchase.model'
+import {ZonedDatesService} from '../../../../../utils/services/zoned-dates.service'
 
 export namespace PurchaseGeneralFieldsFormDefinition {
   export interface PurchaseGeneralFieldsModel {
@@ -69,10 +70,13 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     orderedTotal: purchase?.orderedTotal ?? 0
   })
 
-  export const convertToBackendModel = (formValue: PurchaseGeneralFieldsModel): Partial<Purchase> => ({
+  export const convertToBackendModel = (
+    formValue: PurchaseGeneralFieldsModel, zonedDatesService: ZonedDatesService
+  ): Partial<Purchase> => ({
+
     id: formValue.id,
     supplierId: formValue.supplierId,
-    dateOrdered: formValue.dateOrdered?.toISOString(),
+    dateOrdered: zonedDatesService.toZonedISOString(formValue.dateOrdered),
     orderedById: formValue.orderedById,
     notes: formValue.notes
   })

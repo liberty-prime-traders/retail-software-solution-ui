@@ -37,7 +37,7 @@
             </p-button>
           </td>
           <td>{{ delivery.referenceNumber }}</td>
-          <td>{{ delivery.deliveredAt | timezoneAwareDate }}</td>
+          <td>{{ delivery.deliveredAt | date  }}</td>
           <td>{{ delivery.deliveryTotal | currency }}</td>
           <td>{{ delivery.notes }}</td>
         </tr>

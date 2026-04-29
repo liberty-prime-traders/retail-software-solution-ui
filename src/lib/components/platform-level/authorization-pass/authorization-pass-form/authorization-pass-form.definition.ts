@@ -1,6 +1,7 @@
 import {applyWhen, required, schema} from '@angular/forms/signals'
 import {AuthorizationPass} from '../../../../api/platform-level/authorization-pass/authorization-pass.model'
 import {PassType} from '../../../../api/platform-level/authorization-pass/pass-type.enum'
+import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 
 export namespace AuthorizationPassFormDefinition {
   export interface AuthorizationPassFormModel {
@@ -8,7 +9,7 @@ export namespace AuthorizationPassFormDefinition {
     passType: PassType | ''
     maxUseCount: number
     assignedToId: string
-    expiresOn: string
+    expiresOn: Date | null
   }
 
   export const fieldMap = new Map<keyof AuthorizationPassFormModel, string>([
@@ -23,7 +24,7 @@ export namespace AuthorizationPassFormDefinition {
     passType: PassType.CREATE_ORGANIZATION,
     maxUseCount: 1,
     assignedToId: '',
-    expiresOn: '',
+    expiresOn: null,
   }
 
   export const formSchema = schema<AuthorizationPassFormModel>((path) => {
@@ -36,19 +37,25 @@ export namespace AuthorizationPassFormDefinition {
     )
   })
 
-  export const convertToFormModel = (pass?: AuthorizationPass): AuthorizationPassFormModel => ({
+  export const convertToFormModel = (
+    zonedDatesService: ZonedDatesService, pass?: AuthorizationPass
+  ): AuthorizationPassFormModel => ({
+
     id: pass?.id as string ?? '',
     passType: pass?.passType ?? '',
     maxUseCount: pass?.maxUseCount ?? 1,
     assignedToId: pass?.assignedToId ?? '',
-    expiresOn: pass?.expiresOn ?? '',
+    expiresOn: zonedDatesService.fromUTCToZonedDate(pass?.expiresOn)
   })
 
-  export const convertToBackendModel = (formValue: AuthorizationPassFormModel): Partial<AuthorizationPass> => ({
+  export const convertToBackendModel = (
+    formValue: AuthorizationPassFormModel, zonedDatesService: ZonedDatesService
+  ): Partial<AuthorizationPass> => ({
+
     id: formValue.id,
     passType: formValue.passType as PassType,
     maxUseCount: formValue.maxUseCount,
     assignedToId: formValue.assignedToId,
-    expiresOn: formValue.expiresOn,
+    expiresOn: zonedDatesService.toZonedISOString(formValue.expiresOn)
   })
 }

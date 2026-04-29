@@ -39,7 +39,7 @@
       <ng-template pTemplate="body" let-request>
         <tr>
           <td>{{request?.domain | nullSafe}}</td>
-          <td>{{request?.requestedDate | date: 'medium'}}</td>
+          <td>{{request?.requestedDate | date  }}</td>
           <td>
             <p-tag [value]="request?.status | prettifyEnum"
                    [severity]="request?.status | joinRequestStatusSeverity"

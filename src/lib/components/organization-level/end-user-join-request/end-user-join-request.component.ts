@@ -6,7 +6,9 @@ import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {TagModule} from 'primeng/tag'
 import {EndUserJoinRequest} from '../../../api/organization-level/end-user-join-request/end-user-join-request.model'
-import {EndUserJoinRequestService} from '../../../api/organization-level/end-user-join-request/end-user-join-request.service'
+import {
+  EndUserJoinRequestService
+} from '../../../api/organization-level/end-user-join-request/end-user-join-request.service'
 import {OrganizationUserService} from '../../../api/organization-level/organization_user/organization-user.service'
 import {JoinRequestStatus} from '../../../api/util/join-request/join-request-status.enum'
 import {JoinRequestStatusSeverityPipe} from '../../../utils/pipes/join-request-status-severity.pipe'

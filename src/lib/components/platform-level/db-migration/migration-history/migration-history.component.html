@@ -68,8 +68,8 @@
         </td>
         <td>{{ migration.organizationName }}</td>
         <td>{{ migration.versionNumber }}</td>
-        <td>{{ migration.startOn | date:'medium' }}</td>
-        <td>{{ migration.endOn | date:'medium' }}</td>
+        <td>{{ migration.startOn | date   }}</td>
+        <td>{{ migration.endOn | date   }}</td>
         <td>
           <p-tag [value]="migration.status | prettifyEnum"
                  [severity]="migration.status | migrationStatusSeverity">

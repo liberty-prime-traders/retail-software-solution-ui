@@ -41,21 +41,3 @@ export const toLocaleDate = (date: Date | string | null | undefined): Date | nul
   return new Date(Number(year), Number(month) - 1, Number(day))
 }
 
-
-export const ianaToAngularOffset = (iana: string): string => {
-  const parts = new Intl.DateTimeFormat('en', {
-    timeZone: iana,
-    timeZoneName: 'shortOffset'
-  }).formatToParts(new Date())
-
-  const gmt = parts.find(p => p.type === 'timeZoneName')?.value // 'GMT+3' or 'GMT-5'
-
-  const match = gmt?.match(/GMT([+-])(\d+)(:(\d+))?/)
-  if (!match) return '+0000'
-
-  const sign = match[1]
-  const hours = match[2].padStart(2, '0')
-  const minutes = (match[4] ?? '00').padStart(2, '0')
-
-  return `${sign}${hours}${minutes}` // '+0300', '-0600'
-}

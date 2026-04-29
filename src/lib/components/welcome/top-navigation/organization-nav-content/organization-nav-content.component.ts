@@ -35,5 +35,6 @@ export class OrganizationNavContentComponent {
 
   launchOrganization(domain?: string) {
     this.organizationLaunchService.launchOrganization(domain)
+    setTimeout(() => window.location.reload(), 200)
   }
 }

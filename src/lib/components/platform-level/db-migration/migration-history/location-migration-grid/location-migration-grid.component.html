@@ -28,8 +28,8 @@
       <tr>
         <td>{{ location.locationName }}</td>
         <td>{{ location.versionNumber }}</td>
-        <td>{{ location.startOn | date:'medium' }}</td>
-        <td>{{ location.endOn | date:'medium' }}</td>
+        <td>{{ location.startOn | date   }}</td>
+        <td>{{ location.endOn | date   }}</td>
         <td>
           <p-tag [value]="location.status | prettifyEnum" [severity]="location.status | migrationStatusSeverity"/>
         </td>

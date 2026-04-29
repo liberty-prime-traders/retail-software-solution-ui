@@ -24,6 +24,7 @@ export class LocationNavContentComponent implements OnInit{
   selectLocation(location: Location) {
     this.sessionContextService.selectLocation(location)
     this.router.navigate(['/secure/location-dashboard']).then()
+    window.location.reload()
   }
 
   ngOnInit() {

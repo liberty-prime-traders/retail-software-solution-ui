@@ -9,8 +9,8 @@ import {FiscalPeriodService} from '../../../api/organization-level/fiscal-period
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
-import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {ExpandableGridComponent} from '../../reusable/expandable-grid.component'
+import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {FiscalPeriodCloseComponent} from './fiscal-period-close/fiscal-period-close.component'
 import {FiscalPeriodFormComponent} from './fiscal-period-form/fiscal-period-form.component'
 
