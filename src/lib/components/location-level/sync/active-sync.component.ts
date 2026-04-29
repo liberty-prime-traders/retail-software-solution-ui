@@ -1,4 +1,4 @@
-import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
+import {DatePipe} from '@angular/common'
 import {Component, inject, OnInit} from '@angular/core'
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop'
 import {Button} from 'primeng/button'
@@ -7,8 +7,8 @@ import {ProgressBar} from 'primeng/progressbar'
 import {Tag} from 'primeng/tag'
 import {filter, interval} from 'rxjs'
 import {switchMap, tap} from 'rxjs/operators'
-import {SyncService} from '../../../api/location-level/sync/sync.service'
 import {SyncStatus} from '../../../api/location-level/sync/sync-status.enum'
+import {SyncService} from '../../../api/location-level/sync/sync.service'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {HasSubscriptionComponent} from '../../reusable/has-subscription.component'
 import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
@@ -21,7 +21,7 @@ import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
     Tag,
     ProgressBar,
     Message,
-    TimezoneAwareDatePipe,
+    DatePipe,
     PrettifyEnumPipe,
     SyncStatusSeverityPipe
   ]

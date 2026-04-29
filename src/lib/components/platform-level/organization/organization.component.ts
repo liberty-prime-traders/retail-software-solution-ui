@@ -1,4 +1,4 @@
-import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
+import {DatePipe} from '@angular/common'
 import {Component, inject} from '@angular/core'
 import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
@@ -12,7 +12,7 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
   selector: 'rts-organization',
   templateUrl: './organization.component.html',
   imports: [
-    TimezoneAwareDatePipe,
+    DatePipe,
     TableModule,
     NullSafePipe,
     GridFilterComponent,

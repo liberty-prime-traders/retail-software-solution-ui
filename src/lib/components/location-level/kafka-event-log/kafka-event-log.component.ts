@@ -1,4 +1,4 @@
-import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
+import {DatePipe} from '@angular/common'
 import {Component, effect, inject, input, OnDestroy, signal, untracked} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {MessageService} from 'primeng/api'
@@ -16,7 +16,7 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
   imports: [
     TableModule,
     Button,
-    TimezoneAwareDatePipe,
+    DatePipe,
     NullSafePipe,
     EmptyRowComponent,
     PrettifyEnumPipe

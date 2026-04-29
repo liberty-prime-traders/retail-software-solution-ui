@@ -1,5 +1,4 @@
-import {CurrencyPipe} from '@angular/common'
-import {TimezoneAwareDatePipe} from '../../../../utils/pipes/timezone-aware-date.pipe'
+import {CurrencyPipe, DatePipe} from '@angular/common'
 import {Component, inject} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
@@ -23,7 +22,7 @@ import {PurchaseStatusSeverityPipe} from '../purchase-status-severity.pipe'
     NullSafePipe,
     PrettifyEnumPipe,
     PurchaseStatusSeverityPipe,
-    TimezoneAwareDatePipe,
+    DatePipe,
     AutoStretchDirective,
     CurrencyPipe,
     PaymentStatusSeverityPipe

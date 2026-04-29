@@ -1,8 +1,10 @@
-import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
+import {DatePipe} from '@angular/common'
 import {Component, effect, inject, model, OnInit} from '@angular/core'
 import {TableModule} from 'primeng/table'
 import {OrganizationAdmin} from '../../../api/platform-level/organization/organization-admin/organization-admin.model'
-import {OrganizationAdminService} from '../../../api/platform-level/organization/organization-admin/organization-admin.service'
+import {
+  OrganizationAdminService
+} from '../../../api/platform-level/organization/organization-admin/organization-admin.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
@@ -11,7 +13,7 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
   selector: 'rts-admin',
   templateUrl: 'organization-admin.component.html',
   imports: [
-    TimezoneAwareDatePipe,
+    DatePipe,
     TableModule,
     NullSafePipe,
     GridFilterComponent

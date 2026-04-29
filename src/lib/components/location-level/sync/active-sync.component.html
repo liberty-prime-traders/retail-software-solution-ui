@@ -50,13 +50,13 @@
 
     <div class="flex gap-3 text-sm flex-wrap">
       @if (log.createdOn) {
-        <span>Initiated: {{ log.createdOn | timezoneAwareDate }}</span>
+        <span>Initiated: {{ log.createdOn | date  }}</span>
       }
       @if (log.completedAt) {
-        <span>Completed: {{ log.completedAt | timezoneAwareDate }}</span>
+        <span>Completed: {{ log.completedAt | date  }}</span>
       }
       @if (log.canceledAt) {
-        <span>Canceled: {{ log.canceledAt | timezoneAwareDate }}</span>
+        <span>Canceled: {{ log.canceledAt | date  }}</span>
       }
     </div>
 

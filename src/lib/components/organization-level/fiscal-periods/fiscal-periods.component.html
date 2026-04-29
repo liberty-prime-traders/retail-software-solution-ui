@@ -82,9 +82,9 @@
           </td>
 
           <td>{{ period.fiscalYear | nullSafe }}</td>
-          <td>{{ period.startDate | timezoneAwareDate }}</td>
-          <td>{{ period.endDate | timezoneAwareDate }}</td>
-          <td>{{ period.closedAt | timezoneAwareDate | nullSafe }}</td>
+          <td>{{ period.startDate | date  }}</td>
+          <td>{{ period.endDate | date  }}</td>
+          <td>{{ period.closedAt | date  | nullSafe }}</td>
           <td>{{ period.closedBy | nullSafe }}</td>
           <td>
             <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"

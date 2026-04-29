@@ -41,7 +41,7 @@
       <td>{{organization?.subdomain | nullSafe}}</td>
       <td>{{organization?.description | nullSafe}}</td>
       <td>{{organization?.createdBy}}</td>
-      <td>{{organization?.createdOn | timezoneAwareDate }}</td>
+      <td>{{organization?.createdOn | date  }}</td>
     </tr>
   </ng-template>
 

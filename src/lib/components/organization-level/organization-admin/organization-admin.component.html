@@ -46,8 +46,8 @@
         <p-tableCheckbox [value]="organizationAdmin" />
       </td>
       <td>{{ organizationAdmin?.user | nullSafe }}</td>
-      <td>{{ organizationAdmin?.startOn | timezoneAwareDate }}</td>
-      <td>{{organizationAdmin?.endOn | timezoneAwareDate }}</td>
+      <td>{{ organizationAdmin?.startOn | date  }}</td>
+      <td>{{organizationAdmin?.endOn | date  }}</td>
     </tr>
   </ng-template>
 </p-table>

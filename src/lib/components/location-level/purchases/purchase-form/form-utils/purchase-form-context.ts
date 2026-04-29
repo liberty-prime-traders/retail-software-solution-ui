@@ -1,12 +1,15 @@
-import {computed, effect, Injectable, signal, untracked} from '@angular/core'
+import {computed, effect, inject, Injectable, signal, untracked} from '@angular/core'
 import {apply, form} from '@angular/forms/signals'
 import {PurchaseStatus} from '../../../../../api/location-level/purchase/purchase-status.enum'
 import {Purchase} from '../../../../../api/location-level/purchase/purchase.model'
+import {ZonedDatesService} from '../../../../../utils/services/zoned-dates.service'
 import {PurchaseFormDefinition} from './purchase-form.definition'
 import {PurchaseGeneralFieldsFormDefinition} from './purchase-general-fields-form.definition'
 
 @Injectable()
 export class PurchaseFormContext {
+
+  private readonly zonedDatesService = inject(ZonedDatesService)
 
   private readonly originalPurchase = signal<Purchase | null>(null)
   readonly formIsVisible = signal(false)
@@ -67,7 +70,7 @@ export class PurchaseFormContext {
   }
 
   getSavableFormValue(): Partial<Purchase> {
-    return PurchaseFormDefinition.convertToBackendModel(this.purchaseFormValue())
+    return PurchaseFormDefinition.convertToBackendModel(this.purchaseFormValue(), this.zonedDatesService)
   }
 
 }

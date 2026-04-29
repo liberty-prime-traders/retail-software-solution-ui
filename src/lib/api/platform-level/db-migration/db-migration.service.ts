@@ -1,15 +1,19 @@
 import {HttpParams} from '@angular/common/http'
-import {Injectable, signal} from '@angular/core'
+import {inject, Injectable, signal} from '@angular/core'
 import {Subscription} from 'rxjs'
+import {ZonedDatesService} from '../../../utils/services/zoned-dates.service'
 import {BaseService} from '../../util/base-api/base.service'
-import {DbMigrationStore} from './db-migration.store'
 import {DbMigrationRequestDto} from './db-migration-request.dto'
 import {DbMigrationRetryRequestDto} from './db-migration-retry-request.dto'
+import {DbMigrationStore} from './db-migration.store'
 import {OrganizationMigrationModel} from './organization-migration.model'
 
 @Injectable({providedIn: 'root'})
 export class DbMigrationService
   extends BaseService<OrganizationMigrationModel, DbMigrationRequestDto | DbMigrationRetryRequestDto> {
+
+  private readonly zonedDatesService = inject(ZonedDatesService)
+
   private readonly migrationCache: Map<string, OrganizationMigrationModel[]> = new Map()
   private readonly latestQuery = signal('')
 
@@ -47,8 +51,8 @@ export class DbMigrationService
 
   private getStartAndEnd(dateRange: Date[]): [string, string] {
     const [start, end] = dateRange
-    const startString = start.toISOString()
-    const endString = end.toISOString()
+    const startString = this.zonedDatesService.toZonedISOString(start)
+    const endString = this.zonedDatesService.toZonedISOString(end)
     return [startString, endString]
   }
 

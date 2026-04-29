@@ -1,5 +1,4 @@
-import {NgClass} from '@angular/common'
-import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
+import {DatePipe, NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
@@ -27,7 +26,7 @@ import {AuthorizationPassFormComponent} from './authorization-pass-form/authoriz
     EmptyRowComponent,
     GridFilterComponent,
     AuthorizationPassFormComponent,
-    TimezoneAwareDatePipe,
+    DatePipe,
     NullishToZeroPipe
   ]
 })

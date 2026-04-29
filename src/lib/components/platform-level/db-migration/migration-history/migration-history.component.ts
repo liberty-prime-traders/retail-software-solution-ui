@@ -1,5 +1,4 @@
-import {NgClass} from '@angular/common'
-import {TimezoneAwareDatePipe} from '../../../../utils/pipes/timezone-aware-date.pipe'
+import {DatePipe, NgClass} from '@angular/common'
 import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Button} from 'primeng/button'
@@ -21,7 +20,7 @@ import {MigrationStatusSeverityPipe} from './migration-status-severity.pipe'
     Button,
     Tag,
     MigrationStatusSeverityPipe,
-    TimezoneAwareDatePipe,
+    DatePipe,
     FormsModule,
     DatePicker,
     EmptyRowComponent,

@@ -26,8 +26,8 @@
       <td>{{ log.failedRecords }}</td>
       <td>{{ log.totalRecords | nullSafe }}</td>
       <td>{{ log.percentComplete | nullSafe }}</td>
-      <td>{{ log.createdOn | timezoneAwareDate | nullSafe }}</td>
-      <td>{{ (log.completedAt ?? log.canceledAt) | timezoneAwareDate | nullSafe }}</td>
+      <td>{{ log.createdOn | date  | nullSafe }}</td>
+      <td>{{ (log.completedAt ?? log.canceledAt) | date  | nullSafe }}</td>
     </tr>
   </ng-template>
 

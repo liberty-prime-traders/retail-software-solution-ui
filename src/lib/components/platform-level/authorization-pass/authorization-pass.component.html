@@ -83,13 +83,13 @@
       <ng-template pTemplate="body" let-pass let-expanded="expanded">
         <tr [ngClass]="{ 'expanded-row': expanded }">
           <td>{{ pass.referenceNumber | nullSafe }}</td>
-          <td>{{ pass.createdOn | timezoneAwareDate }}</td>
+          <td>{{ pass.createdOn | date  }}</td>
           <td>{{ pass.passType | prettifyEnum }}</td>
           <td>{{ pass.passStatus | prettifyEnum }}</td>
           <td>{{ pass.maxUseCount | nullSafe }}</td>
           <td>{{ pass.usedCount | nullishToZero }}</td>
           <td>{{ pass.assignedTo | nullSafe }}</td>
-          <td>{{ pass.expiresOn | timezoneAwareDate | nullSafe }}</td>
+          <td>{{ pass.expiresOn | date  | nullSafe }}</td>
           <td>{{ pass.createdBy | nullSafe }}</td>
           <td>
             @if (pass.passStatus === PassStatus.ACTIVE || expanded) {

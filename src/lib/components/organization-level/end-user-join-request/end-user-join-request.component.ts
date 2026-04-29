@@ -1,4 +1,4 @@
-import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
+import {DatePipe} from '@angular/common'
 import {Component, computed, effect, inject, model, OnInit, signal} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {MessageService} from 'primeng/api'
@@ -6,7 +6,9 @@ import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {TagModule} from 'primeng/tag'
 import {EndUserJoinRequest} from '../../../api/organization-level/end-user-join-request/end-user-join-request.model'
-import {EndUserJoinRequestService} from '../../../api/organization-level/end-user-join-request/end-user-join-request.service'
+import {
+  EndUserJoinRequestService
+} from '../../../api/organization-level/end-user-join-request/end-user-join-request.service'
 import {OrganizationUserService} from '../../../api/organization-level/organization_user/organization-user.service'
 import {JoinRequestStatus} from '../../../api/util/join-request/join-request-status.enum'
 import {JoinRequestStatusSeverityPipe} from '../../../utils/pipes/join-request-status-severity.pipe'
@@ -20,7 +22,7 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
   selector: 'rts-end-user-join-request',
   templateUrl: 'end-user-join-request.component.html',
   imports: [
-    TimezoneAwareDatePipe,
+    DatePipe,
     JoinRequestStatusSeverityPipe,
     TableModule,
     NullSafePipe,

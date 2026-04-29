@@ -1,4 +1,4 @@
-import {TimezoneAwareDatePipe} from '../../../utils/pipes/timezone-aware-date.pipe'
+import {DatePipe} from '@angular/common'
 import {Component, computed, effect, inject, model} from '@angular/core'
 import {MessageService} from 'primeng/api'
 import {Button} from 'primeng/button'
@@ -29,7 +29,7 @@ import {OrgFeatureAddFormComponent} from './org-feature-add-form/org-feature-add
     EmptyRowComponent,
     AutoStretchDirective,
     NewFormCancelButtonComponent,
-    TimezoneAwareDatePipe
+    DatePipe
   ]
 })
 export class OrgFeatureComponent extends GridWithAddButtonComponent<OrgFeatureService> {

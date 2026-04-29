@@ -1,4 +1,5 @@
 import {Purchase} from '../../../../../api/location-level/purchase/purchase.model'
+import {ZonedDatesService} from '../../../../../utils/services/zoned-dates.service'
 import {PurchaseGeneralFieldsFormDefinition} from './purchase-general-fields-form.definition'
 import {PurchaseLineFormDefinition} from './purchase-line-form.definition'
 
@@ -19,12 +20,14 @@ export namespace PurchaseFormDefinition {
     purchaseLines: PurchaseLineFormDefinition.convertLinesToFormModel(purchase?.lines ?? [])
   })
 
-  export const convertToBackendModel = (formValue: PurchaseFormModel): Partial<Purchase> => {
+  export const convertToBackendModel = (
+    formValue: PurchaseFormModel, zonedDatesService: ZonedDatesService
+  ): Partial<Purchase> => {
     const purchaseLines = Array.from(formValue.purchaseLines.values())
     const linesToAdd = purchaseLines.filter(l => !l.id)
     const linesToUpdate = purchaseLines.filter(l => l.id)
     return  {
-      ...PurchaseGeneralFieldsFormDefinition.convertToBackendModel(formValue.generalFields),
+      ...PurchaseGeneralFieldsFormDefinition.convertToBackendModel(formValue.generalFields, zonedDatesService),
       linesToAdd: PurchaseLineFormDefinition.convertLinesToBackendModel(linesToAdd),
       linesToUpdate: PurchaseLineFormDefinition.convertLinesToBackendModel(linesToUpdate)
     }

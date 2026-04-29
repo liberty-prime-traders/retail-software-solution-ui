@@ -28,7 +28,7 @@
                  [severity]="purchase.purchaseStatus | purchaseStatusSeverity">
           </p-tag>
         </td>
-        <td>{{ purchase.dateOrdered | timezoneAwareDate | nullSafe }}</td>
+        <td>{{ purchase.dateOrdered | date  | nullSafe }}</td>
         <td>{{ purchase.orderedBy | nullSafe }}</td>
         <td>{{ purchase.orderedTotal | currency }}</td>
         <td>

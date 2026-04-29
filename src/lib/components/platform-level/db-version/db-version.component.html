@@ -19,7 +19,7 @@
       <td>{{ version.prevVersion }}</td>
       <td>
         @if (version.activatedOn) {
-          {{ version.activatedOn | timezoneAwareDate  }}
+          {{ version.activatedOn | date   }}
         } @else {
           <p-button label="Activate"
                     icon="pi pi-check"

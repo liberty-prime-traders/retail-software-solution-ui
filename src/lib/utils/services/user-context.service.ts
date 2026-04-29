@@ -6,7 +6,6 @@ import {
   OrganizationAdminService
 } from '../../api/platform-level/organization/organization-admin/organization-admin.service'
 import {SysUserService} from '../../api/platform-level/sys-user/sys-user.service'
-import {DEFAULT_TIMEZONE} from '../../api/util/timezone.model'
 import {UserRole} from '../types/user-role.enum'
 import {RtsOktaService} from './rts-okta.service'
 
@@ -21,9 +20,6 @@ export class UserContextService {
   private readonly loggedInUser = computed(() =>
     this.userService.selectAll().find(user => user.oktaId === this.rtsOktaService.$oktaId())
   )
-
-  readonly darkMode = signal(false)
-  readonly selectedTimezone = signal(DEFAULT_TIMEZONE.value)
 
   readonly isOrganizationAdmin = this._isOrganizationAdmin.asReadonly()
   readonly displayName = computed(() => this.loggedInUser()?.fullName ?? '')

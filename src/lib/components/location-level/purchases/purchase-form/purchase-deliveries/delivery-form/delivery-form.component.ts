@@ -23,6 +23,7 @@ import {
   UnitFactorResolver
 } from '../../../../../../api/organization-level/unit-conversion/pipes/unit-convert.pipe'
 import {ProductLabelPipe} from '../../../../../../utils/pipes/product-label.pipe'
+import {ZonedDatesService} from '../../../../../../utils/services/zoned-dates.service'
 import {BaseFormComponent} from '../../../../../reusable/base-form.component'
 import {FormFieldDirection} from '../../../../../reusable/form-field/form-field-direction'
 import {FormFieldComponent} from '../../../../../reusable/form-field/form-field.component'
@@ -60,6 +61,7 @@ export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliverySer
   private readonly deliveryService = inject(PurchaseDeliveryService)
   private readonly purchaseService = inject(PurchaseService)
   protected readonly apiService = this.deliveryService
+  private readonly zonedDatesService = inject(ZonedDatesService)
 
   readonly cancelled = output()
   readonly deliverySaved = output()
@@ -85,7 +87,9 @@ export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliverySer
 
   save() {
     const purchaseId = this.purchaseFormContext.purchaseId() ?? ''
-    const dto = PurchaseDeliveryFormDefinition.toBackendModel(purchaseId, this.deliveryFormValue())
+    const dto = PurchaseDeliveryFormDefinition.toBackendModel(
+      purchaseId, this.deliveryFormValue(), this.zonedDatesService
+    )
     this.deliveryService.post(dto, {
       onSuccess: (updatedPurchase) => {
         this.purchaseService.applyResponse(updatedPurchase)

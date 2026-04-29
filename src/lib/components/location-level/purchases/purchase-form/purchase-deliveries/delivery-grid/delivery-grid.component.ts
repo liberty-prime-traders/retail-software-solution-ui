@@ -1,9 +1,8 @@
-import {CurrencyPipe, NgClass} from '@angular/common'
+import {CurrencyPipe, DatePipe, NgClass} from '@angular/common'
 import {Component, computed, inject, signal} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {PurchaseStatus} from '../../../../../../api/location-level/purchase/purchase-status.enum'
-import {TimezoneAwareDatePipe} from '../../../../../../utils/pipes/timezone-aware-date.pipe'
 import {EmptyRowComponent} from '../../../../../reusable/empty-row/empty-row.component'
 import {PurchaseFormContext} from '../../form-utils/purchase-form-context'
 import {DeliveryFormComponent} from '../delivery-form/delivery-form.component'
@@ -20,7 +19,7 @@ import {DeliverySubgridComponent} from '../delivery-subgrid/delivery-subgrid.com
     DeliveryFormComponent,
     DeliverySubgridComponent,
     NgClass,
-    TimezoneAwareDatePipe
+    DatePipe
   ]
 })
 export class DeliveryGridComponent {

@@ -1,5 +1,6 @@
 import {EntityId} from '@ngrx/signals/entities'
 import {PurchaseDelivery} from '../../../../../api/location-level/delivery/purchase-delivery.model'
+import {ZonedDatesService} from '../../../../../utils/services/zoned-dates.service'
 import {PurchaseLineFormDefinition} from './purchase-line-form.definition'
 
 export namespace PurchaseDeliveryFormDefinition {
@@ -46,10 +47,12 @@ export namespace PurchaseDeliveryFormDefinition {
     quantityDelivered: 0
   })
 
-  export const toBackendModel =
-    (purchaseId: EntityId, formValue: DeliveryFormModel): Partial<PurchaseDelivery> => ({
+  export const toBackendModel = (
+    purchaseId: EntityId, formValue: DeliveryFormModel, zonedDatesService: ZonedDatesService
+  ): Partial<PurchaseDelivery> => ({
+
       purchaseId,
-      deliveredAt: formValue.deliveredAt?.toISOString(),
+      deliveredAt: zonedDatesService.toZonedISOString(formValue.deliveredAt),
       notes: formValue.notes || undefined,
       lines: formValue.lines
         .filter(line => line.quantityDelivered > 0)
