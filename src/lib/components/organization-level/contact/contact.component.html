@@ -1,113 +1,92 @@
 <div id="contacts" [rtsAutoStretch]="'contacts'">
-  <div class="flex align-items-center justify-content-between mb-3">
-    <h3 class="font-bold">Contacts</h3>
-
-    <p-button (click)="setAddingActiveTrue()"
-              [disabled]="loading() || addingIsActive()"
-              label="+ Add Contact"
-              rounded
-              severity="secondary">
-    </p-button>
-  </div>
-
-  <p-divider/>
-
-  <div class="flex gap-3">
-    <div class="col-2">
-      @for (contactType of CONTACT_TYPES; track contactType) {
-        <div (click)="selectContactType(contactType)"
-             class="p-3 cursor-pointer hover:surface-400"
-             [ngClass]="{'bg-bluegray-100': selectedContactType() === contactType}">
-          <span class="font-medium truncate w-12rem">{{ contactType | prettifyEnum }}</span>
-        </div>
-      }
-    </div>
-
-    <p-divider layout="vertical" />
+  @if (addingIsActive()) {
 
     <div class="flex flex-column gap-4 flex-grow-1">
-      @if (addingIsActive()) {
-        <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info"/>
-        <rts-contact-form (contactCreated)="contactCreated($event)"/>
-      } @else if (selectedContactType()) {
-        <ng-container *ngTemplateOutlet="contactGrid"/>
-      } @else {
-        <span>Select a contact type to see contacts</span>
-      }
+      <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info"/>
+      <rts-contact-form (contactCreated)="setAddingActiveFalse()"/>
     </div>
-  </div>
+
+  } @else {
+    <p-table
+      [loading]="loading() && !addingIsActive()"
+      rowExpandMode="single"
+      dataKey="id"
+      scrollHeight="flex"
+      scrollable="true"
+      sortField="referenceNumber"
+      #contactsTable
+      [globalFilterFields]="['referenceNumber', 'firstName', 'lastName', 'companyName', 'email', 'phone', 'createdBy']"
+      (onRowExpand)="rowIsExpanded.set(true)"
+      (onRowCollapse)="rowIsExpanded.set(false)"
+      [value]="contacts()">
+
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between align-items-center">
+          <h3 class="font-bold">Contacts</h3>
+
+          <rts-grid-filter [dataTable]="contactsTable"/>
+
+          <p-button (click)="setAddingActiveTrue()"
+                    [disabled]="loading() || addingIsActive()"
+                    label="+ Add Contact"
+                    rounded
+                    severity="secondary">
+          </p-button>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="referenceNumber">Reference #
+            <p-sortIcon field="referenceNumber"></p-sortIcon>
+          </th>
+          <th>Name</th>
+          <th pSortableColumn="email">Email
+            <p-sortIcon field="email"></p-sortIcon>
+          </th>
+          <th pSortableColumn="phone">Phone
+            <p-sortIcon field="phone"></p-sortIcon>
+          </th>
+          <th pSortableColumn="status">Status
+            <p-sortIcon field="status"></p-sortIcon>
+          </th>
+          <th>Contact Type</th>
+          <th style="width: 5rem"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-contact let-expanded="expanded">
+        <tr [ngClass]="{ 'expanded-row': expanded }">
+          <td>{{ contact?.referenceNumber | nullSafe }}</td>
+          <td>{{ contact | contactName }}</td>
+          <td>{{ contact?.email | nullSafe }}</td>
+          <td>{{ contact?.phone | nullSafe }}</td>
+          <td>{{ contact?.status | prettifyEnum }}</td>
+          <td>{{ contact?.contactTypes | joinEnum }}</td>
+          <td>
+            @if (!contact.systemDefined) {
+              <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                        rounded
+                        severity="secondary"
+                        [disabled]="loading() || addingIsActive()"
+                        [pRowToggler]="contact">
+              </p-button>
+            }
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="expandedrow" let-contact>
+        <tr>
+          <td colspan="7" class="filled-background">
+            <rts-contact-form [contact]="contact"/>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr rts-empty-row [colspan]="7" message="No Contacts Were Found"></tr>
+      </ng-template>
+    </p-table>
+  }
 </div>
-
-
-<ng-template #contactGrid>
-  <p-table  [loading]="loading() && !addingIsActive()"
-            rowExpandMode="single"
-            dataKey="id"
-            scrollHeight="flex"
-            scrollable="true"
-            sortField="referenceNumber"
-            #contactsTable
-            [globalFilterFields]="['referenceNumber', 'firstName', 'lastName', 'companyName', 'email', 'phone', 'createdBy']"
-            (onRowExpand)="rowIsExpanded.set(true)"
-            (onRowCollapse)="rowIsExpanded.set(false)"
-            [value]="contacts()">
-
-    <ng-template pTemplate="caption">
-      <div class="flex justify-content-between align-items-center">
-        <h3>{{selectedContactType() | prettifyEnum}} Contacts</h3>
-        <rts-grid-filter [dataTable]="contactsTable"/>
-      </div>
-    </ng-template>
-
-    <ng-template pTemplate="header">
-      <tr>
-        <th pSortableColumn="referenceNumber">Reference #
-          <p-sortIcon field="referenceNumber"></p-sortIcon>
-        </th>
-        <th>Name</th>
-        <th pSortableColumn="email">Email
-          <p-sortIcon field="email"></p-sortIcon>
-        </th>
-        <th pSortableColumn="phone">Phone
-          <p-sortIcon field="phone"></p-sortIcon>
-        </th>
-        <th pSortableColumn="status">Status
-          <p-sortIcon field="status"></p-sortIcon>
-        </th>
-        <th style="width: 5rem"></th>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="body" let-contact let-expanded="expanded">
-      <tr [ngClass]="{ 'expanded-row': expanded }">
-        <td>{{ contact?.referenceNumber | nullSafe }}</td>
-        <td>{{ contact | contactName }}</td>
-        <td>{{ contact?.email | nullSafe }}</td>
-        <td>{{ contact?.phone | nullSafe }}</td>
-        <td>{{ contact?.status | prettifyEnum }}</td>
-        <td>
-          @if (!contact.systemDefined) {
-            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                      rounded
-                      severity="secondary"
-                      [disabled]="loading() || addingIsActive()"
-                      [pRowToggler]="contact">
-            </p-button>
-          }
-        </td>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="expandedrow" let-contact>
-      <tr>
-        <td colspan="7" class="filled-background">
-          <rts-contact-form [contact]="contact"/>
-        </td>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="emptymessage">
-      <tr rts-empty-row [colspan]="7" message="No Contacts Were Found"></tr>
-    </ng-template>
-  </p-table>
-</ng-template>

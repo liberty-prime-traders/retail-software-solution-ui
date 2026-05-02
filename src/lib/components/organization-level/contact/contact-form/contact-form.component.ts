@@ -1,9 +1,11 @@
-import {Component, computed, inject, Input, output, signal} from '@angular/core'
+import {Component, computed, inject, Input, model, output, signal} from '@angular/core'
+import {FormsModule} from '@angular/forms'
 import {FormField, form} from '@angular/forms/signals'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
 import {Panel} from 'primeng/panel'
 import {Select} from 'primeng/select'
+import {Checkbox} from 'primeng/checkbox'
 import {Contact} from '../../../../api/organization-level/contact/contact.model'
 import {ContactService} from '../../../../api/organization-level/contact/contact.service'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
@@ -27,7 +29,9 @@ import {ContactFormDefinition} from './contact-form.definition'
     EnumToDropdownPipe,
     InputNumber,
     FormField,
-    Panel
+    Panel,
+    Checkbox,
+    FormsModule
   ]
 })
 export class ContactFormComponent extends BaseFormComponent<ContactService> {
@@ -42,12 +46,14 @@ export class ContactFormComponent extends BaseFormComponent<ContactService> {
     if (contact) {
       this.originalContact.set(contact)
       this.contactFormValue.set(ContactFormDefinition.convertToFormModel(contact))
+      this.selectedContactTypes.set(contact.contactTypes)
     }
   }
 
-  readonly contactType = ContactType
+  readonly ContactType = ContactType
   readonly contactStatus = ContactStatus
   readonly identityType = IdentityType
+  readonly selectedContactTypes = model<ContactType[]>([ContactType.CUSTOMER])
 
   readonly contactFormValue = signal<ContactFormDefinition.ContactFormModel>(
     ContactFormDefinition.defaultContactFormModel
@@ -58,8 +64,17 @@ export class ContactFormComponent extends BaseFormComponent<ContactService> {
   readonly contactFormFields = ContactFormDefinition.fieldMap
   readonly isOrganization = computed(() => this.contactFormValue().identityType === IdentityType.ORGANIZATION)
 
+  onContactTypeChecked() {
+    this.contactFormValue.update(formValue => ({
+      ...formValue,
+      contactTypes: this.selectedContactTypes()
+    }))
+    this.contactForm().markAsDirty()
+  }
+
   resetForm() {
     this.contactFormValue.set(ContactFormDefinition.convertToFormModel(this.originalContact()))
+    this.selectedContactTypes.set(this.originalContact()?.contactTypes ?? [ContactType.CUSTOMER])
   }
 
   upsertContact() {
@@ -67,7 +82,9 @@ export class ContactFormComponent extends BaseFormComponent<ContactService> {
     if (updatedContact.id) {
       this.contactService.put(updatedContact)
     } else {
-      this.contactService.post(updatedContact, {onSuccess: (saved) => this.contactCreated.emit(saved)})
+      this.contactService.post(updatedContact, {
+        onSuccess: (saved) => this.contactCreated.emit(saved)
+      })
     }
   }
 

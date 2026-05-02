@@ -1,4 +1,4 @@
-import {AsyncPipe, NgOptimizedImage} from '@angular/common'
+import {AsyncPipe, NgClass, NgOptimizedImage} from '@angular/common'
 import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {RouterLink, RouterOutlet} from '@angular/router'
@@ -39,7 +39,8 @@ import {
     ScopePillComponent,
     OrganizationNavContentComponent,
     LocationNavContentComponent,
-    UserAccountNavContentComponent
+    UserAccountNavContentComponent,
+    NgClass
   ]
 })
 export class WelcomeComponent implements OnInit {

@@ -7,16 +7,12 @@ import {ContactStore} from './contact.store'
 @Injectable({providedIn: 'root'})
 export class ContactService extends BaseService<Contact> {
 
-  readonly customers = computed(() =>
-    this.selectAll().filter(contact => contact.contactType === ContactType.CUSTOMER)
-  )
-
-  readonly vendors = computed(() =>
-    this.selectAll().filter(contact => contact.contactType === ContactType.VENDOR)
-  )
-
   readonly suppliers = computed(() =>
-    this.selectAll().filter(contact => contact.contactType === ContactType.SUPPLIER)
+    this.selectAll().filter(contact => contact.contactTypes.includes(ContactType.SUPPLIER))
+  )
+
+  readonly customers = computed(() =>
+    this.selectAll().filter(contact => contact.contactTypes.includes(ContactType.CUSTOMER))
   )
 
   constructor(protected override readonly store: ContactStore) {

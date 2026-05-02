@@ -1,22 +1,6 @@
-<form class="flex flex-column gap-2">
+<div class="form-container flex flex-column gap-2">
 
   <p-panel>
-    <rts-form-field [required]="true" label="Contact Type" for="contactType">
-      <p-select id="contactType"
-                class="flex-grow-1"
-                [options]="contactType | enumToDropdown"
-                [formField]="contactForm.contactType">
-      </p-select>
-    </rts-form-field>
-
-    <rts-form-field [required]="true" label="Status" for="status">
-      <p-select id="status"
-                class="flex-grow-1"
-                [options]="contactStatus | enumToDropdown"
-                [formField]="contactForm.status">
-      </p-select>
-    </rts-form-field>
-
     <rts-form-field [required]="true" label="Identity Type" for="identityType">
       <p-select id="identityType"
                 class="flex-grow-1"
@@ -39,6 +23,30 @@
         <input id="lastName" class="flex-grow-1" pInputText [formField]="contactForm.lastName">
       </rts-form-field>
     }
+
+    <rts-form-field [required]="true" label="Status" for="status">
+      <p-select id="status"
+                class="flex-grow-1"
+                [options]="contactStatus | enumToDropdown"
+                [formField]="contactForm.status">
+      </p-select>
+    </rts-form-field>
+
+    <rts-form-field [required]="true" label="Contact Type" labelClass="align-self-start">
+      <div class="flex flex-column gap-2">
+        @for (type of (ContactType | enumToDropdown); track type) {
+          <div class="flex gap-2">
+            <p-check-box [id]="type.value"
+                         [value]="type.value"
+                         (onChange)="onContactTypeChecked()"
+                         [(ngModel)]="selectedContactTypes">
+            </p-check-box>
+            <label [for]="type.value">{{ type.label }}</label>
+          </div>
+        }
+      </div>
+    </rts-form-field>
+
   </p-panel>
 
   <p-panel header="Additional Information" toggleable collapsed>
@@ -82,4 +90,4 @@
                      (save)="upsertContact()"
                      (resetAction)="resetForm()">
   </rts-forms-buttons>
-</form>
+</div>
