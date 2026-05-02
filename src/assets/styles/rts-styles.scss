@@ -58,9 +58,18 @@ $positions: left right center top bottom;
     right: 2rem;
   }
 
+  &.center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   &.top {
     top: 1.5rem;
   }
+}
+
+.money {
+  font-family: monospace;
 }
 
 .money-in {

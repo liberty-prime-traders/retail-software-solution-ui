@@ -1,23 +1,36 @@
-<div class="flex gap-4 mr-3 h-full">
-  @if (showNavigation()) {
-    <div class="relative">
-      <p-button icon="pi pi-bars"
-                (onClick)="showNavigation.set(false)"
-                size="small"
-                severity="secondary"
-                class="absolute position-right-5 position-top-3 z-1">
-      </p-button>
-      <p-menu [model]="menuItems" class="block h-full filled-background"/>
-    </div>
+@if (showSaleForm()) {
+  <rts-new-sale (hideSaleForm)="showSaleForm.set(false)"/>
 
-  } @else {
-    <div class="pl-1">
-      <p-button icon="pi pi-bars" severity="secondary" (onClick)="showNavigation.set(true)" size="small"/>
-    </div>
-  }
+} @else {
+  <div class="flex gap-4 mr-3 h-full relative">
+    @if (showNavigation()) {
+      <div class="relative">
+        <p-button icon="pi pi-bars"
+                  (onClick)="showNavigation.set(false)"
+                  size="small"
+                  severity="secondary"
+                  class="absolute position-right-5 position-top-3 z-1">
+        </p-button>
+        <p-menu [model]="menuItems" class="block h-full filled-background"/>
+      </div>
 
-  <p-card class="flex-grow-1">
-    <router-outlet/>
-  </p-card>
+    } @else {
+      <div class="pl-1">
+        <p-button icon="pi pi-bars" severity="secondary" (onClick)="showNavigation.set(true)" size="small"/>
+      </div>
+    }
 
-</div>
+    <p-card class="flex-grow-1">
+      <router-outlet/>
+    </p-card>
+
+    <a id="sale-button"
+       (click)="showSaleForm.set(true)"
+       class="flex gap-1 justify-content-between align-items-center cursor-pointer floating bottom right">
+      <i class="pi pi-plus"></i>
+      <span>New Sale</span>
+    </a>
+  </div>
+}
+
+

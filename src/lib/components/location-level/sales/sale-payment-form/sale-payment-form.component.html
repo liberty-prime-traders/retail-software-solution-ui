@@ -1,0 +1,62 @@
+<rts-loading-container [loading]="paymentOptionsLoading()">
+  <div class="flex flex-column gap-3">
+
+    <div class="flex gap-1">
+      <p-select-button
+        [options]="preselectedPaymentOptions()"
+        [(ngModel)]="selectedPaymentOption"
+        (click)="showOtherOptionsIfNecessary(hiddenPaymentOptionsMenu, $event)"
+        optionLabel="name"
+        optionValue="id"
+        size="small"
+        class="flex-grow-1">
+      </p-select-button>
+
+      <p-menu #hiddenPaymentOptionsMenu
+              appendTo="body"
+              [model]="hiddenPaymentOptions()"
+              [popup]="true">
+      </p-menu>
+    </div>
+
+    <div class="flex flex-column gap-1">
+      <div class="flex justify-content-between">
+        <rts-form-field label="Amount" [layout]="FormFieldDirection.COMPACT" contentClass="">
+          <p-input-number [min]="0" mode="currency" currency="USD" placeholder="$0.00"/>
+        </rts-form-field>
+
+        <rts-form-field label="Reference" [layout]="FormFieldDirection.COMPACT" contentClass="">
+          <input pInputText/>
+        </rts-form-field>
+      </div>
+
+      <rts-form-field label="Date" [layout]="FormFieldDirection.COMPACT" contentClass="">
+        @if (showDateField()) {
+          <p-date-picker
+            [showIcon]="true"
+            dateFormat="yy-mm-dd"
+            class="w-full"
+            appendTo="body"
+            [showTime]="true">
+          </p-date-picker>
+
+        } @else {
+
+          <a (click)="showDateField.set(true)"
+             class="justify-content-start w-full p-inputtext p-button p-button-text">
+            <div class="flex gap-1">
+              <i class="pi pi-clock"></i>
+              <span class="info-message">Now</span>
+            </div>
+          </a>
+        }
+      </rts-form-field>
+
+      <div class="flex justify-content-end">
+        <p-button icon="pi pi-plus" label="Add Payment" class="mt-2" (onClick)="emitNewPayment()"/>
+      </div>
+
+    </div>
+
+  </div>
+</rts-loading-container>

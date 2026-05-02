@@ -21,15 +21,23 @@ export class FormFieldComponent {
   readonly containerClass = input('')
   readonly labelClass = input('')
 
-  readonly formFieldDirection = FormFieldDirection
+  readonly effectiveContentClass = computed(() => {
+    const compactClass = this.layout() === FormFieldDirection.COMPACT ? 'compact-form-field' : ''
+    return `${this.contentClass()} ${compactClass}`
+  })
 
   readonly effectiveLabelClass = computed(() => {
     const widthClass = this.layout() === FormFieldDirection.HORIZONTAL ? `col-${this.labelColumnSize()}` : ''
     const requiredClass = this.required() ? 'required-label' : ''
-    return `${this.labelClass()} ${widthClass} ${requiredClass}`
+    const marginClass = this.layout() === FormFieldDirection.COMPACT ? 'm-0' : ''
+    const boldClass = this.layout() !== FormFieldDirection.COMPACT ? 'font-semibold' : ''
+    return `${this.labelClass()} ${widthClass} ${requiredClass} ${marginClass} ${boldClass}`
   })
 
   readonly rightPadding = computed(() => {
+    if (this.layout() !== FormFieldDirection.HORIZONTAL) {
+      return 0
+    }
     const matches = this.contentClass().match(/col-(\d+)/)
     if (matches && matches[1]) {
       const contentColumnSize = parseInt(matches[1])
@@ -37,4 +45,15 @@ export class FormFieldComponent {
     }
     return 5
   })
+
+  readonly effectiveLayoutClass = computed(() => {
+    switch (this.layout()) {
+      case FormFieldDirection.COMPACT: return 'flex-column'
+      case FormFieldDirection.VERTICAL: return 'field flex-column gap-1 pl-4'
+      case FormFieldDirection.HORIZONTAL:
+      default:
+        return 'field gap-2 align-items-center pl-4'
+    }
+  })
+  protected readonly FormFieldDirection = FormFieldDirection
 }

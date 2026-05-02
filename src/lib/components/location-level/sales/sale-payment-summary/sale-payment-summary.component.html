@@ -1,0 +1,65 @@
+<p-card class="border-noround">
+  <div class="flex flex-column gap-3" id="sale-payments" rtsAutoStretch="sale-payments">
+
+    <div class="filled-background p-3">
+      <rts-sale-payment-form (paymentAdded)="receiveNewPayment($event)"/>
+    </div>
+
+    @if (payments().length === 0) {
+      <p-card class="flex-grow-1">
+        <div class="info-message">No payments added yet.</div>
+      </p-card>
+
+    } @else {
+      <div class="flex-grow-1 flex flex-column gap-2 overflow-hidden filled-background p-2">
+        <small class="info-message font-semibold"> {{payments().length}} Payments</small>
+
+        <div class="flex flex-column gap-2 pr-3 w-full h-full overflow-y-scroll">
+          @for (payment of payments(); track payment.fakeId) {
+            <p-card >
+              <div class="flex flex-column gap-1">
+                <div class="flex justify-content-between">
+                  <p-tag severity="success">{{ payment.paymentMethodName }}</p-tag>
+                  <span class="info-message">{{ payment.paymentDate }}</span>
+                </div>
+
+                <div class="flex justify-content-between">
+                  <span class="money">{{ payment.amount | currency }}</span>
+                  <span class="info-message">{{ payment.reference }}</span>
+                </div>
+              </div>
+            </p-card>
+          }
+        </div>
+    </div>
+    }
+
+    <div class="flex flex-column gap-3 filled-background p-3">
+      <p-message severity="error">
+        Walk-in customers must pay in full
+      </p-message>
+
+      <div class="flex flex-column gap-2 info-message">
+        <div class="flex justify-content-between">
+          <span>Order total</span>
+          <span class="money">{{ 10.00 | currency }}</span>
+        </div>
+
+        <div class="flex justify-content-between">
+          <span>Total paid</span>
+          <span class="money">{{ 12.00 | currency }}</span>
+        </div>
+
+        <div class="flex justify-content-between">
+          <span class="font-bold">Balance due</span>
+          <span class="money irregular-balance">{{ 2.00 | currency }}</span>
+        </div>
+      </div>
+
+      <div class="flex gap-2 justify-content-end">
+        <p-button label="Save Draft" text  severity="secondary"/>
+        <p-button label="Complete Sale" icon="pi pi-check" severity="success"/>
+      </div>
+    </div>
+  </div>
+</p-card>

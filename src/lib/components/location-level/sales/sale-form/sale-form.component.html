@@ -1,0 +1,32 @@
+<div class="flex ">
+
+  <div class="flex flex-grow-1 gap-2 flex-column">
+    <p-card class="border-noround">
+      <div class="flex align-items-center gap-4 card">
+        <p-button label="Back" icon="pi pi-arrow-left" severity="secondary" (onClick)="hideSaleForm.emit()"/>
+        <h2 class="m-0">New Sale</h2>
+      </div>
+    </p-card>
+
+    <div class="flex flex-column">
+      <rts-form-field label="Customer">
+        <div class="flex gap-2">
+          <p-select
+            [options]="customers()"
+            optionLabel="fullName"
+            optionValue="id"
+            [filter]="true"
+            class="flex-grow-1"
+            placeholder="Select a Customer">
+          </p-select>
+
+          <p-toggle-button onLabel="Walk-In" offLabel="Walk-In"/>
+        </div>
+      </rts-form-field>
+
+      <rts-product-lookup (productSelected)="addSaleLine($event)"/>
+    </div>
+  </div>
+
+  <rts-sale-payment-summary class="col-3 p-0 flex-shrink-0"/>
+</div>

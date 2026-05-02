@@ -1,18 +1,6 @@
 <div class="flex flex-column gap-4">
   @if (isDraftOrNew()) {
-    <rts-form-field label="Search Products">
-      <p-select [options]="productOptions()"
-                [loading]="dependenciesLoading()"
-                [filter]="true"
-                (onFilter)="searchTerm$.next($event.filter)"
-                (onClick)="addPurchaseLine(productSelect.value); productSelect.clear()"
-                #productSelect
-                optionLabel="label"
-                optionValue="value"
-                class="w-full"
-                dataKey="value">
-      </p-select>
-    </rts-form-field>
+    <rts-product-lookup (productSelected)="addPurchaseLine($event)"/>
   }
 
   <p-table [value]="purchaseLinesArray()"

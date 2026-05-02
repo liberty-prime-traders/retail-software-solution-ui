@@ -4,6 +4,7 @@ import {MenuItem} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
+import {SaleFormComponent} from './sales/sale-form/sale-form.component'
 
 @Component({
   selector: 'rts-private',
@@ -11,12 +12,15 @@ import {Menu} from 'primeng/menu'
     RouterOutlet,
     Button,
     Menu,
-    Card
+    Card,
+    SaleFormComponent
   ],
-  templateUrl: 'location-dashboard.component.html'
+  templateUrl: 'location-dashboard.component.html',
+  styleUrls: ['sale-button.component.scss']
 })
 export class LocationDashboardComponent {
 
+  readonly showSaleForm = signal(false)
   readonly showNavigation = signal(true)
 
   private readonly commonTasksMenuItems: MenuItem[] = [

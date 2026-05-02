@@ -1,0 +1,13 @@
+<rts-form-field label="Search Products">
+  <p-select [options]="productOptions()"
+            [loading]="dependenciesLoading()"
+            [filter]="true"
+            (onFilter)="searchTerm$.next($event.filter)"
+            (onClick)="emitSelectedProduct(productSelect.value); productSelect.clear()"
+            #productSelect
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+            dataKey="value">
+  </p-select>
+</rts-form-field>
