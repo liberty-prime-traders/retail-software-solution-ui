@@ -10,7 +10,7 @@ import {ReservedSubdomainService} from '../../../api/platform-level/reserved-sub
 import {SessionContextService} from '../../../utils/services/session-context.service'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {FormButtonsComponent} from '../../reusable/form-buttons/form-buttons.component'
-import {FormFieldDirection} from '../../reusable/form-field/form-field-direction'
+import {FormFieldLayout} from '../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../reusable/form-field/form-field.component'
 import {CreateOrganizationFormDefinition} from './create-organization-form.definition'
 
@@ -35,7 +35,7 @@ export class CreateOrganizationComponent implements OnInit {
   private readonly organizationService = inject(OrganizationService)
   private readonly sessionContextService = inject(SessionContextService)
 
-  readonly FormFieldDirection = FormFieldDirection
+  readonly FormFieldDirection = FormFieldLayout
   readonly formFields = CreateOrganizationFormDefinition.fieldMap
 
   readonly requestedSubdomain = signal<string | null>(null)

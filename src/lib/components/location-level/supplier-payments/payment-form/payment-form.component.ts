@@ -15,7 +15,7 @@ import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 import {SelectItem, toSelectItems} from '../../../../utils/types/select-item.type'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
-import {FormFieldDirection} from '../../../reusable/form-field/form-field-direction'
+import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {PaymentFormDefinition} from './payment-form.definition'
@@ -48,7 +48,7 @@ export class PaymentFormComponent extends BaseFormComponent<SupplierPaymentServi
   private readonly currencyPipe = inject(CurrencyPipe)
   private readonly zonedDatesService = inject(ZonedDatesService)
 
-  readonly FormFieldDirection = FormFieldDirection
+  readonly FormFieldDirection = FormFieldLayout
   readonly paymentFormFields = PaymentFormDefinition.fieldMap
   readonly paymentOptions = this.paymentOptionService.selectAll
   readonly isLoading = this.supplierPaymentService.selectLoading

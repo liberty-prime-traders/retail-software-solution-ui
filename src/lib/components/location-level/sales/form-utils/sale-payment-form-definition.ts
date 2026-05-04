@@ -4,7 +4,7 @@ export namespace SalePaymentFormDefinition {
 
   export interface SalePaymentFormModel {
     paymentMethodId: string
-    amount: number
+    amount: number | null
     reference: string
     useNowForDate:boolean
     paymentDate: Date | null
@@ -12,7 +12,7 @@ export namespace SalePaymentFormDefinition {
 
   export const createInitial : SalePaymentFormModel ={
     paymentMethodId: '',
-    amount: 0,
+    amount: null,
     reference: '',
     paymentDate: null,
     useNowForDate: true

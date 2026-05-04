@@ -9,12 +9,20 @@ export class AutoStretchDirective implements AfterViewInit {
 
   readonly elementId = input('', {alias: 'rtsAutoStretch'})
   readonly useMinHeight = input(false)
+  readonly padding = input<number|undefined>(undefined)
 
   private readonly el = inject(ElementRef<HTMLElement>)
   private readonly autoStretchService = inject(AutoStretchService)
   private readonly destroyRef = inject(DestroyRef)
 
   private readonly targetId = computed(() => this.elementId() || this.el.nativeElement.id)
+
+  private readonly effectivePadding = computed(() => {
+    if (this.padding() !== undefined) {
+      return this.padding()
+    }
+    return this.useMinHeight() ? 0 : 20
+  })
 
   ngAfterViewInit(): void {
     this.stretch()
@@ -25,6 +33,6 @@ export class AutoStretchDirective implements AfterViewInit {
   }
 
   private stretch(): void {
-    setTimeout(() => stretchVisibleElement(this.targetId(), this.useMinHeight()), 0)
+    setTimeout(() => stretchVisibleElement(this.targetId(), this.useMinHeight(), this.effectivePadding()), 0)
   }
 }

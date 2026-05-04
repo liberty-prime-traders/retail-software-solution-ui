@@ -7,7 +7,7 @@ export class PaymentStatusSeverityPipe implements PipeTransform {
   transform(paymentStatus?: PaymentStatus): RtsSeverity {
     switch (paymentStatus) {
       case PaymentStatus.UNPAID:
-        return RtsSeverity.WARN
+        return RtsSeverity.SECONDARY
       case PaymentStatus.PARTIALLY_SETTLED:
         return RtsSeverity.INFO
       case PaymentStatus.FULLY_SETTLED:

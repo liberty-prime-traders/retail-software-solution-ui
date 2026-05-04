@@ -8,6 +8,7 @@
            dataKey="referenceNumber"
            [multiSortMeta]="linesMultiSort"
            editMode="row">
+
     <ng-template pTemplate="header">
       <tr>
         <th>Product</th>
@@ -182,6 +183,10 @@
           </div>
         </td>
       </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr rts-empty-row [colspan]="isDraftOrNew() ? 7 : 9" [message]="emptyPurchaseLinesMessage()"></tr>
     </ng-template>
   </p-table>
 </div>

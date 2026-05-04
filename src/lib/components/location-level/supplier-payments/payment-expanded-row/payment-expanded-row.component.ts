@@ -12,7 +12,7 @@ import {
 import {SupplierPaymentService} from '../../../../api/location-level/supplier-payment/supplier-payment.service'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
-import {FormFieldDirection} from '../../../reusable/form-field/form-field-direction'
+import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {KafkaEventLogComponent} from '../../kafka-event-log/kafka-event-log.component'
 
@@ -43,7 +43,7 @@ export class PaymentExpandedRowComponent extends BaseFormComponent<SupplierPayme
   private readonly purchaseService = inject(PurchaseService)
   protected readonly apiService = this.supplierPaymentService
 
-  readonly FormFieldDirection = FormFieldDirection
+  readonly FormFieldDirection = FormFieldLayout
   readonly isVoided = computed(() => !!this.payment().voidedReason)
   readonly voidIsActive = signal(false)
 

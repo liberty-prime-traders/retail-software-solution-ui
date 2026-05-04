@@ -1,5 +1,5 @@
 <rts-loading-container [loading]="purchaseIsLoading()" loadingText="Saving...">
-  <form class="flex flex-column" id="purchaseForm" rtsAutoStretch="purchaseForm" [useMinHeight]="true">
+  <form class="flex flex-column" id="purchaseForm" rtsAutoStretch="purchaseForm" [useMinHeight]="true" [padding]="20">
 
     <rts-purchase-form-general-fields/>
 
@@ -38,7 +38,7 @@
   </form>
 
   @if (isDraftOrNew()) {
-    <div class="floating bottom center flex gap-2">
+    <div class="floating bottom right flex gap-2">
       <p-button label="Reset"
                 icon="pi pi-times"
                 severity="secondary"

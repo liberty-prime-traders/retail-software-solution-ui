@@ -8,9 +8,11 @@ export const toErrorMessages = <T> (
     return []
   }
   return errors.map((error) => {
+    if (error.message) {
+      return error.message
+    }
     const prefix = fieldMap.get(toFieldName(error) as keyof T) ?? ''
-    const message = error.message ?? toMessage(error)
-    return prefix + ' ' + message
+    return prefix + ' ' + toMessage(error)
   })
 }
 

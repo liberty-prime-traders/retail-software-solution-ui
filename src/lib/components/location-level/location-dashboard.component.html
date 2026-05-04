@@ -1,5 +1,5 @@
-@if (showSaleForm()) {
-  <rts-new-sale (hideSaleForm)="showSaleForm.set(false)"/>
+@if (saleFormVisibilityContext.formIsVisible()) {
+  <rts-new-sale/>
 
 } @else {
   <div class="flex gap-4 mr-3 h-full relative">
@@ -24,12 +24,14 @@
       <router-outlet/>
     </p-card>
 
-    <a id="sale-button"
-       (click)="showSaleForm.set(true)"
-       class="flex gap-1 justify-content-between align-items-center cursor-pointer floating bottom right">
-      <i class="pi pi-plus"></i>
-      <span>New Sale</span>
-    </a>
+    @if (saleFormVisibilityContext.newSaleButtonIsVisible()) {
+      <a id="sale-button"
+         (click)="saleFormVisibilityContext.showForm()"
+         class="flex gap-1 justify-content-between align-items-center cursor-pointer floating bottom right">
+        <i class="pi pi-plus"></i>
+        <span>New Sale</span>
+      </a>
+    }
   </div>
 }
 

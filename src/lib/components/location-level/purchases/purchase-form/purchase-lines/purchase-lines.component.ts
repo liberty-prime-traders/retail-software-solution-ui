@@ -1,5 +1,5 @@
 import {CurrencyPipe, NgClass} from '@angular/common'
-import {Component, inject} from '@angular/core'
+import {Component, computed, inject} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {EntityId} from '@ngrx/signals/entities'
 import {SortMeta} from 'primeng/api'
@@ -23,7 +23,11 @@ import {
   UnitConvertPipe,
   UnitCurrencyPipe
 } from '../../../../../api/organization-level/unit-conversion/pipes/unit-convert.pipe'
+import {
+  UnitConversionGraphService
+} from '../../../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
 import {ProductLabelPipe} from '../../../../../utils/pipes/product-label.pipe'
+import {EmptyRowComponent} from '../../../../reusable/empty-row/empty-row.component'
 import {LocationProductLookupComponent} from '../../../location-product-lookup/location-product-lookup.component'
 import {PurchaseFormContext} from '../form-utils/purchase-form-context'
 import {PurchaseLineFormDefinition} from '../form-utils/purchase-line-form.definition'
@@ -51,20 +55,30 @@ import PurchaseLineModel = PurchaseLineFormDefinition.PurchaseLineModel
     UnitCurrencyPipe,
     UnitCurrencyPipe,
     UnitConversionDescriptorPipe,
-    LocationProductLookupComponent
+    LocationProductLookupComponent,
+    EmptyRowComponent
   ]
 })
 export class PurchaseLinesComponent {
 
   private readonly purchaseFormContext = inject(PurchaseFormContext)
   private readonly purchaseService = inject(PurchaseService)
+  private readonly unitConversionGraphService = inject(UnitConversionGraphService)
 
-  readonly purchaseLinesArray = this.purchaseFormContext.purchaseLinesArray
+  readonly unitConversionGraphIsLoading = this.unitConversionGraphService.isLoading
   readonly purchaseLinesFieldTree = this.purchaseFormContext.purchaseForm.purchaseLines
   readonly isOrderedOrPartiallyDelivered = this.purchaseFormContext.isOrderedOrPartiallyDelivered
   readonly isDraftOrNew = this.purchaseFormContext.isDraftOrNew
   readonly editingRowKeys = this.purchaseFormContext.keysForLinesBeingEdited
   private readonly linesBeingEdited = new Map<EntityId, PurchaseLineModel>()
+
+  readonly purchaseLinesArray = computed(() =>
+    this.unitConversionGraphIsLoading() ? [] : this.purchaseFormContext.purchaseLinesArray()
+  )
+
+  readonly emptyPurchaseLinesMessage = computed(() =>
+    this.unitConversionGraphIsLoading() ? 'Loading ...' : 'No purchase lines added yet.'
+  )
 
   readonly linesMultiSort: SortMeta[] = [
     {field: 'productGroupName', order: 1},
@@ -124,25 +138,7 @@ export class PurchaseLinesComponent {
       line => line.referenceNumber === product?.referenceNumber
     )
     if (product && !productAlreadyAdded) {
-      const newLine: PurchaseLineModel = {
-        id: '',
-        referenceNumber: product.referenceNumber ?? '',
-        locationProductId: product.id as string,
-        quantityOrdered: 1,
-        unitCost: product.lastPurchasePrice ?? 0,
-        productGroupName: product.productGroupName ?? '',
-        productName: product.productName ?? '',
-        baseUnitId: product.baseUnitId ?? '',
-        unitId: product.baseUnitId ?? '',
-        snapshotUnitId: '',
-        conversionFactor: null,
-        lineTotal: 0,
-        quantityExpected: 1,
-        quantityDelivered: 0,
-        quantityYetToBeDelivered: 1,
-        quantityCanceled: 0,
-        canceledWithoutSingleDelivery: false
-      }
+      const newLine: PurchaseLineModel = PurchaseLineFormDefinition.createFromProduct(product)
       this.purchaseLinesFieldTree().value.update(lines => [...lines, newLine])
       this.purchaseLinesFieldTree().markAsDirty()
       this.editingRowKeys.update(keys => ({...keys, [newLine.referenceNumber]: true}))

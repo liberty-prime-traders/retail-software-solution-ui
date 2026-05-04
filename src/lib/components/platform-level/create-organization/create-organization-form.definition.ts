@@ -29,8 +29,9 @@ export namespace CreateOrganizationFormDefinition {
     required(path.passCode)
 
     const uuidSegment = '[0-9a-fA-F]'
-    pattern(path.passCode, new RegExp(
-        `^${uuidSegment}{8}-${uuidSegment}{4}-${uuidSegment}{4}-${uuidSegment}{4}-${uuidSegment}{12}$`),
+    pattern(
+      path.passCode,
+      new RegExp(`^${uuidSegment}{8}-${uuidSegment}{4}-${uuidSegment}{4}-${uuidSegment}{4}-${uuidSegment}{12}$`),
       {message: 'Pass Code must be a valid UUID'}
     )
   })

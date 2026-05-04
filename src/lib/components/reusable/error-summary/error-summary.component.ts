@@ -26,10 +26,11 @@ export class ErrorSummaryComponent<T> {
   readonly regularErrorMessages = input<string[] | undefined>([])
 
   readonly errorMessages = computed(() => {
+    const messages = this.regularErrorMessages() ?? []
     if (this.fieldMap()) {
-      return toErrorMessages(this.fieldMap()!, this.signalFormErrors())
+      return messages.concat(toErrorMessages(this.fieldMap()!, this.signalFormErrors()))
     }
-    return this.regularErrorMessages() ?? []
+    return messages
   })
 
 }

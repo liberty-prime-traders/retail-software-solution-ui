@@ -1,10 +1,10 @@
-<rts-loading-container [loading]="paymentOptionsLoading()">
-  <div class="flex flex-column gap-3">
+<rts-loading-container [loading]="dependenciesLoading()">
+  <div class="flex flex-column gap-3 p-2">
 
     <div class="flex gap-1">
       <p-select-button
         [options]="preselectedPaymentOptions()"
-        [(ngModel)]="selectedPaymentOption"
+        [formField]="paymentForm.paymentMethodId"
         (click)="showOtherOptionsIfNecessary(hiddenPaymentOptionsMenu, $event)"
         optionLabel="name"
         optionValue="id"
@@ -22,27 +22,34 @@
     <div class="flex flex-column gap-1">
       <div class="flex justify-content-between">
         <rts-form-field label="Amount" [layout]="FormFieldDirection.COMPACT" contentClass="">
-          <p-input-number [min]="0" mode="currency" currency="USD" placeholder="$0.00"/>
+          <p-input-number
+            [min]="0"
+            mode="currency"
+            currency="KES"
+            [placeholder]="(0 | currency) ?? undefined"
+            [formField]="paymentForm.amount">
+          </p-input-number>
         </rts-form-field>
 
         <rts-form-field label="Reference" [layout]="FormFieldDirection.COMPACT" contentClass="">
-          <input pInputText/>
+          <input pInputText [formField]="paymentForm.reference"/>
         </rts-form-field>
       </div>
 
       <rts-form-field label="Date" [layout]="FormFieldDirection.COMPACT" contentClass="">
-        @if (showDateField()) {
+        @if (!paymentForm.useNowForDate().value()) {
           <p-date-picker
             [showIcon]="true"
             dateFormat="yy-mm-dd"
             class="w-full"
             appendTo="body"
-            [showTime]="true">
+            [showTime]="true"
+            [formField]="paymentForm.paymentDate">
           </p-date-picker>
 
         } @else {
 
-          <a (click)="showDateField.set(true)"
+          <a (click)="paymentForm.useNowForDate().value.set(false)"
              class="justify-content-start w-full p-inputtext p-button p-button-text">
             <div class="flex gap-1">
               <i class="pi pi-clock"></i>
@@ -53,10 +60,17 @@
       </rts-form-field>
 
       <div class="flex justify-content-end">
-        <p-button icon="pi pi-plus" label="Add Payment" class="mt-2" (onClick)="emitNewPayment()"/>
+        <p-button
+          icon="pi pi-plus"
+          label="Add Payment"
+          class="mt-2"
+          [disabled]="paymentForm().invalid()"
+          (onClick)="commitPaymentFormToContext()">
+        </p-button>
       </div>
-
     </div>
+
+    <rts-error-summary [regularErrorMessages]="paymentsFailureMessages()"/>
 
   </div>
 </rts-loading-container>

@@ -1,0 +1,58 @@
+<div id="sale-grid" rtsAutoStretch="sale-grid">
+  <p-table [value]="sales()"
+           [loading]="loading()"
+           sortField="referenceNumber"
+           scrollHeight="flex"
+           dataKey="id">
+
+    <ng-template pTemplate="caption">
+      <h3>Sales</h3>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Reference</th>
+        <th>Customer</th>
+        <th>Sale Total</th>
+        <th>Sale Status</th>
+        <th>Payment Status</th>
+        <th>Sold By</th>
+        <th>Date Sold</th>
+        <th style="width: 5rem"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-sale>
+      <tr>
+        <td>{{sale.referenceNumber | nullSafe}}</td>
+        <td>{{ sale.contactName | nullSafe }}</td>
+        <td>{{ sale.saleTotal | currency }}</td>
+
+        <td>
+          <p-tag [value]="sale.status | prettifyEnum"
+                 [severity]="sale.status | saleStatusSeverity">
+          </p-tag>
+        </td>
+
+        <td>
+          <p-tag [value]="sale.paymentStatus | prettifyEnum"
+                 [severity]="sale.paymentStatus | paymentStatusSeverity">
+          </p-tag>
+        </td>
+
+        <td>{{ sale.soldBy | nullSafe }}</td>
+        <td>{{ sale.dateSold | date | nullSafe }}</td>
+
+        <td>
+          <p-button icon="pi pi-pen-to-square"
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading()"
+                    (onClick)="onEditSale(sale)">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</div>

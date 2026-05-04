@@ -4,7 +4,7 @@
          dataKey="id"
          sortField="name"
          scrollHeight="600px"
-         scrollable="true"
+         [scrollable]="true"
          #locationsTable
          [globalFilterFields]="['name', 'description', 'locationType', 'createdBy']"
          (onRowExpand)="rowIsExpanded.set(true)"

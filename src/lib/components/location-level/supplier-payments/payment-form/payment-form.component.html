@@ -22,7 +22,7 @@
                       [layout]="FormFieldDirection.VERTICAL">
         <p-inputNumber [formField]="paymentForm.amount"
                        mode="currency"
-                       currency="USD"
+                       currency="KES"
                        [min]="0"
                        class="w-full">
         </p-inputNumber>
@@ -38,6 +38,7 @@
                       [layout]="FormFieldDirection.VERTICAL">
         <p-select [options]="paymentOptions()"
                   [formField]="paymentForm.paymentMethodId"
+                  appendTo="body"
                   optionLabel="name"
                   optionValue="id"
                   placeholder="Select method..."
@@ -51,6 +52,7 @@
                       [layout]="FormFieldDirection.VERTICAL">
         <p-select [options]="deliveryOptions()"
                   [formField]="paymentForm.deliveryId"
+                  appendTo="body"
                   placeholder="None (not tied to a delivery)"
                   [showClear]="true"
                   class="w-full">

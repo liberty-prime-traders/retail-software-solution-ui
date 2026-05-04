@@ -12,7 +12,7 @@
       rowExpandMode="single"
       dataKey="id"
       scrollHeight="flex"
-      scrollable="true"
+      [scrollable]="true"
       sortField="referenceNumber"
       #contactsTable
       [globalFilterFields]="['referenceNumber', 'firstName', 'lastName', 'companyName', 'email', 'phone', 'createdBy']"

@@ -1,5 +1,6 @@
-import {Component, computed, inject, model, OnInit, output, signal, Signal} from '@angular/core'
-import {FormsModule} from '@angular/forms'
+import {CurrencyPipe} from '@angular/common'
+import {Component, computed, inject, OnInit, signal, Signal} from '@angular/core'
+import {apply, form, FormField} from '@angular/forms/signals'
 import {EntityId} from '@ngrx/signals/entities'
 import {MenuItem} from 'primeng/api'
 import {Button} from 'primeng/button'
@@ -8,13 +9,21 @@ import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
 import {Menu} from 'primeng/menu'
 import {SelectButton} from 'primeng/selectbutton'
-import {SalePayment} from '../../../../api/location-level/sale/sale-payment.model'
+import {SalePayment} from '../../../../api/location-level/sale-payment/sale-payment.model'
+import {SalePaymentService} from '../../../../api/location-level/sale-payment/sale-payment.service'
+import {SaleStatus} from '../../../../api/location-level/sale/sale-status.enum'
+import {Sale} from '../../../../api/location-level/sale/sale.model'
+import {SaleService} from '../../../../api/location-level/sale/sale.service'
 import {PaymentOption} from '../../../../api/organization-level/payment-option/payment-option.model.'
 import {PaymentOptionService} from '../../../../api/organization-level/payment-option/payment-option.service'
 import {SequentialIdGenerator} from '../../../../utils/services/sequential-id-generator'
-import {FormFieldDirection} from '../../../reusable/form-field/form-field-direction'
+import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
+import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
+import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
+import {SaleFormContext} from '../form-utils/sale-form-context'
+import {SalePaymentFormDefinition} from '../form-utils/sale-payment-form-definition'
 
 @Component({
   selector: 'rts-sale-payment-form',
@@ -28,22 +37,34 @@ import {LoadingContainerComponent} from '../../../reusable/loading-container/loa
     InputNumber,
     InputText,
     DatePicker,
-    FormsModule
+    FormField,
+    CurrencyPipe,
+    ErrorSummaryComponent
   ]
 })
 export class SalePaymentFormComponent implements OnInit {
   private readonly paymentOptionService = inject(PaymentOptionService)
   private readonly sequentialIdGenerator = inject(SequentialIdGenerator)
+  private readonly context = inject(SaleFormContext)
+  private readonly salePaymentService = inject(SalePaymentService)
+  private readonly zonedDatesService = inject(ZonedDatesService)
+  private readonly saleService = inject(SaleService)
 
-  readonly paymentAdded = output<SalePayment>()
-
-  readonly FormFieldDirection = FormFieldDirection
+  readonly FormFieldDirection = FormFieldLayout
   private readonly otherPaymentOption: Partial<PaymentOption> = {id: 'other', name: 'Other'}
   private readonly preselectedOverride = signal<Partial<PaymentOption>[]>([])
-  readonly selectedPaymentOption = model<EntityId>('')
-  readonly showDateField = signal(false)
   readonly paymentOptions: Signal<Partial<PaymentOption>[]> = this.paymentOptionService.selectAll
-  readonly paymentOptionsLoading = this.paymentOptionService.selectLoading
+
+  readonly paymentsFailureMessages = this.salePaymentService.selectFailureMessages
+  readonly originalSale = this.context.originalSale
+  private readonly paymentFormValue = signal(SalePaymentFormDefinition.createInitial)
+  private readonly paymentOptionsLoading = this.paymentOptionService.selectLoading
+  private readonly paymentsLoading = this.salePaymentService.selectLoading
+  readonly dependenciesLoading = computed(() => this.paymentOptionsLoading() || this.paymentsLoading())
+
+  readonly paymentForm = form(this.paymentFormValue, s => {
+    apply(s, SalePaymentFormDefinition.salePaymentFormSchema)
+  })
 
   private readonly paymentOptionsMap = computed(() => {
     const map = new Map<EntityId, Partial<PaymentOption>>()
@@ -75,7 +96,7 @@ export class SalePaymentFormComponent implements OnInit {
   }
 
   showOtherOptionsIfNecessary(menu: Menu, event: any) {
-    if (this.selectedPaymentOption() === this.otherPaymentOption.id) {
+    if (this.paymentForm.paymentMethodId().value() === this.otherPaymentOption.id) {
       menu.toggle(event)
     }
   }
@@ -83,22 +104,58 @@ export class SalePaymentFormComponent implements OnInit {
   promoteHiddenOption(optionToPromote: EntityId) {
     const selectedOption = this.paymentOptionsMap().get(optionToPromote)
     if (selectedOption) {
-      const updatedList = this.preselectedPaymentOptions().slice(0,2)
+      const updatedList = this.preselectedPaymentOptions().slice(0, 2)
       updatedList.push(selectedOption)
       this.preselectedOverride.set(updatedList)
-      this.selectedPaymentOption.set(optionToPromote)
+      this.paymentForm.paymentMethodId().value.set(optionToPromote as string)
     }
   }
 
-  emitNewPayment() {
-    this.paymentAdded.emit({
-      paymentMethodId: this.selectedPaymentOption(),
-      paymentMethodName: this.paymentOptionsMap().get(this.selectedPaymentOption())?.name ?? '',
-      amount: 0,
-      paymentDate: (new Date()).toLocaleDateString(),
-      saleId: '',
-      fakeId: this.sequentialIdGenerator.next()
-    })
+  commitPaymentFormToContext() {
+    const paymentFormValue = this.buildSalePayment()
+    if (this.originalSale()?.status === SaleStatus.CONFIRMED) {
+      this.salePaymentService.post(paymentFormValue, {onSuccess: this.commitPaymentToContext})
+    } else {
+      this.commitPaymentToContext(paymentFormValue)
+    }
   }
 
+  private buildSalePayment(): Partial<SalePayment> {
+    const paymentFormValue = this.paymentFormValue()
+    const methodId = paymentFormValue.paymentMethodId
+    const paymentDate = paymentFormValue.useNowForDate ? null : paymentFormValue.paymentDate
+    return{
+      paymentMethodId: methodId,
+      paymentMethodName: this.paymentOptionsMap().get(methodId)?.name ?? '',
+      amount: paymentFormValue.amount!,
+      reference: paymentFormValue.reference,
+      paymentDateFormModel: paymentDate ?? undefined,
+      paymentDate: this.zonedDatesService.toZonedISOString(paymentDate),
+      saleId: this.originalSale()?.id as string ?? '',
+      fakeId: this.sequentialIdGenerator.next()
+    }
+  }
+
+  private readonly commitPaymentToContext = (updatedSalePayment: Partial<SalePayment>)=> {
+    const originalSale = this.originalSale()
+
+    if (originalSale && originalSale.status === SaleStatus.CONFIRMED) {
+      const updatedSale: Sale = {
+        ...this.originalSale()!,
+        paymentStatus: updatedSalePayment.updatedSalePaymentStatus!,
+        payments: [...originalSale.payments, updatedSalePayment]
+      }
+      this.saleService.applyResponse(updatedSale)
+      this.context.initializeForm(updatedSale)
+      this.context.recalculateTotals()
+
+    } else {
+      this.context.addPayment(updatedSalePayment)
+    }
+
+    this.paymentFormValue.set({
+      ...SalePaymentFormDefinition.createInitial,
+      paymentMethodId: this.paymentFormValue().paymentMethodId
+    })
+  }
 }

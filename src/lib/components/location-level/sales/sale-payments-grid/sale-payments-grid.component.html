@@ -1,0 +1,50 @@
+@let countOfPayments = payments().length;
+
+<div class="flex flex-column gap-2 p-2">
+  @if (countOfPayments === 0) {
+
+    <div class="h-full info-message flex flex-column gap-2 justify-content-center align-items-center">
+      <i class="pi pi-credit-card text-4xl"></i>
+      No payments have been recorded.
+    </div>
+
+  } @else {
+    <small class="info-message font-semibold">
+      {{ countOfPayments }} Payment{{ countOfPayments > 1 ? 's' : '' }}
+    </small>
+
+    <div class="flex flex-column gap-2">
+      @for (payment of payments(); track payment.fakeId + (payment.referenceNumber ?? '')) {
+        <p-card>
+          <div class="flex flex-column" [ngClass]="{'gap-1': payment.paymentDateFormModel || payment.reference}">
+            <div class="flex justify-content-between align-items-center">
+              <p-tag severity="secondary">{{ payment.paymentMethodName }}</p-tag>
+              <span class="money">{{ payment.amount | currency }}</span>
+
+              @if (!payment.paymentDateFormModel && payment.fakeId) {
+                <div class="flex gap-1 info-message">
+                  <i class="pi pi-clock"></i>
+                  <small>Now</small>
+                </div>
+              }
+
+              <p-button icon="pi pi-times" text (onClick)="removePayment(payment.fakeId)"/>
+            </div>
+
+            <div class="flex gap-3">
+              @if (payment.paymentDate) {
+                <small class="info-message">{{ payment.paymentDate | date }}</small>
+              }
+              @if (payment.paymentDate && payment.reference) {
+                <div>&bullet;</div>
+              }
+              @if (payment.reference) {
+                <small class="info-message">{{ payment.reference }}</small>
+              }
+            </div>
+          </div>
+        </p-card>
+      }
+    </div>
+  }
+</div>

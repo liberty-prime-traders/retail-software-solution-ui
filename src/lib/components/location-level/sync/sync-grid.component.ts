@@ -5,6 +5,7 @@ import {Tag} from 'primeng/tag'
 import {SyncService} from '../../../api/location-level/sync/sync.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
+import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
 
 @Component({
@@ -16,7 +17,8 @@ import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
     DatePipe,
     NullSafePipe,
     PrettifyEnumPipe,
-    SyncStatusSeverityPipe
+    SyncStatusSeverityPipe,
+    AutoStretchDirective
   ]
 })
 export class SyncGridComponent {

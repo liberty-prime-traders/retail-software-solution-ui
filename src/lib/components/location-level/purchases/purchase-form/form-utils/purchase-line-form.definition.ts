@@ -1,3 +1,4 @@
+import {LocationProduct} from '../../../../../api/location-level/location-product/location-product.model'
 import {PurchaseLine} from '../../../../../api/location-level/purchase/purchase.model'
 
 export namespace PurchaseLineFormDefinition {
@@ -20,6 +21,28 @@ export namespace PurchaseLineFormDefinition {
     quantityYetToBeDelivered: number
     quantityCanceled: number
     canceledWithoutSingleDelivery: boolean
+  }
+
+  export const createFromProduct = (product: LocationProduct): PurchaseLineModel => {
+    return  {
+      id: '',
+      locationProductId: product.id as string,
+      referenceNumber: product.referenceNumber ?? '',
+      productName: product.productName ?? '',
+      productGroupName: product.productGroupName ?? '',
+      baseUnitId: product.baseUnitId ?? '',
+      unitId: product.baseUnitId ?? '',
+      quantityOrdered: 1,
+      unitCost: product.lastPurchasePrice ?? 0,
+      lineTotal: 0,
+      conversionFactor: null,
+      snapshotUnitId: '',
+      quantityExpected: 1,
+      quantityDelivered: 0,
+      quantityYetToBeDelivered: 1,
+      quantityCanceled: 0,
+      canceledWithoutSingleDelivery: false
+    }
   }
 
   export const convertLinesToFormModel = (lines: Partial<PurchaseLine>[]): PurchaseLineModel[] =>
@@ -45,13 +68,12 @@ export namespace PurchaseLineFormDefinition {
 
   export const convertLinesToBackendModel = (lines: PurchaseLineModel[]): Partial<PurchaseLine>[] =>
     lines.map(line => {
-      const result: Partial<PurchaseLine> = {
+      return  {
         id: line.id,
         locationProductId: line.locationProductId,
         quantityOrdered: line.quantityOrdered,
         unitCost: line.unitCost,
         unitId: line.unitId
       }
-      return result
     })
 }

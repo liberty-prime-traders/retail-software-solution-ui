@@ -2,7 +2,7 @@
   <p-table [value]="migrations()"
            [loading]="loading()"
            dataKey="id"
-           scrollable
+           [scrollable]="true"
            scrollHeight="flex"
            sortField="startOn"
            [sortOrder]="-1"
