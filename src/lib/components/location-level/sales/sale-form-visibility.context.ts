@@ -1,5 +1,4 @@
-import {inject, Injectable, signal} from '@angular/core'
-import {SaleFormContext} from './form-utils/sale-form-context'
+import {Injectable, signal} from '@angular/core'
 
 @Injectable()
 export class SaleFormVisibilityContext {

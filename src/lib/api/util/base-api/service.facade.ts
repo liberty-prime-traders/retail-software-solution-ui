@@ -11,8 +11,6 @@ import {BaseModel} from './base.model'
 import {BaseStore} from './base.store'
 
 export abstract class ServiceFacade<RESPONSE extends BaseModel> {
-  private readonly SerialNumber = Math.round(Math.random() * Math.random() * 10000)
-
   readonly selectLoading
   readonly selectFirst
   readonly selectAll: Signal<RESPONSE[]>

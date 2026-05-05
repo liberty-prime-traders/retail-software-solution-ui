@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http'
-import {computed, inject, Injectable, signal} from '@angular/core'
+import {inject, Injectable, signal} from '@angular/core'
 import {finalize, Subscription} from 'rxjs'
 import {tap} from 'rxjs/operators'
 import {UnitConversionGraph, UnitConversionTarget} from './unit-conversion-target.model'

@@ -15,7 +15,6 @@ import {HasSubscriptionComponent} from '../../../reusable/has-subscription.compo
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {SaleFormContext} from '../form-utils/sale-form-context'
 import {SaleFormHeaderComponent} from '../sale-form-header/sale-form-header.component'
-import {SaleFormVisibilityContext} from '../sale-form-visibility.context'
 import {SaleLinesComponent} from '../sale-lines/sale-lines.component'
 import {SaleSummaryComponent} from '../sale-summary/sale-summary.component'
 
@@ -40,7 +39,6 @@ import {SaleSummaryComponent} from '../sale-summary/sale-summary.component'
 })
 export class SaleFormComponent extends HasSubscriptionComponent implements OnInit {
 
-  private readonly saleFormVisibilityContext = inject(SaleFormVisibilityContext)
   private readonly contactService = inject(ContactService)
   private readonly context = inject(SaleFormContext)
   private readonly saleService = inject(SaleService)

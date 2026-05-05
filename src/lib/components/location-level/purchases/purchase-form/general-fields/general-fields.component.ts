@@ -14,7 +14,6 @@ import {
 } from '../../../../../api/organization-level/organization_user/organization-user.service'
 import {PrettifyEnumPipe} from '../../../../../utils/pipes/prettify-enum.pipe'
 import {ErrorSummaryComponent} from '../../../../reusable/error-summary/error-summary.component'
-import {FormFieldLayout} from '../../../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
 import {PaymentStatusSeverityPipe} from '../../payment-status-severity.pipe'
 import {PurchaseStatusSeverityPipe} from '../../purchase-status-severity.pipe'
