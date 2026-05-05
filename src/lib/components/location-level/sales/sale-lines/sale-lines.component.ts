@@ -27,7 +27,6 @@ import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component
 import {LocationProductLookupComponent} from '../../location-product-lookup/location-product-lookup.component'
 import {SaleFormContext} from '../form-utils/sale-form-context'
 import {SaleLineFormDefinition} from '../form-utils/sale-line-form.definition'
-import SaleLineModel = SaleLineFormDefinition.SaleLineModel
 
 @Component({
   selector: 'rts-sale-lines',
@@ -66,6 +65,10 @@ export class SaleLinesComponent {
     this.unitConversionGraphIsLoading() ? [] : this.context.saleLines()
   )
 
+  readonly selectedProductIds = computed(() =>
+    this.saleLines().map(l => l.locationProductId)
+  )
+
   readonly emptySaleLinesMessage = computed(() =>
     this.unitConversionGraphIsLoading() ? 'Loading ...' : 'No Sale lines added yet.'
   )
@@ -87,15 +90,7 @@ export class SaleLinesComponent {
     }
   }
 
-  completeEditingLine(line: SaleLineModel) {
-    // const updated: SaleLineModel = {
-    //   ...line,
-    //   lineTotal: line.quantity * line.unitPrice
-    // }
-    // // this.saleLinesFieldTree().value.update(lines =>
-    // //   lines.map(l => l.referenceNumber === line.referenceNumber ? updated : l)
-    // // )
-    // //this.saleLinesFieldTree().markAsDirty()
+  completeEditingLine() {
     this.context.recalculateTotals()
   }
 }

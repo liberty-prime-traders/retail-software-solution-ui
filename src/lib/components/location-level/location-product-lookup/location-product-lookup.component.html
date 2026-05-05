@@ -2,7 +2,7 @@
   <p-select [options]="productOptions()"
             [loading]="dependenciesLoading()"
             [filter]="true"
-            (onFilter)="searchTerm$.next($event.filter)"
+            (onFilter)="pushToSearch($event.filter)"
             (onClick)="emitSelectedProduct(productSelect.value); productSelect.clear()"
             #productSelect
             optionLabel="label"

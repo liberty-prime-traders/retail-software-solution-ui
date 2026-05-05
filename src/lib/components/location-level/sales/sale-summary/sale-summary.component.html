@@ -1,5 +1,5 @@
 <p-card class="border-noround h-full shadow-none">
-  <div class="flex h-full flex-column gap-3">
+  <div class="flex h-full flex-column gap-3 pb-3">
 
     @let canAddPayments = canAddPaymentsToSale();
 
@@ -18,12 +18,12 @@
       <p-tabpanels>
         @if (canAddPayments) {
           <p-tabpanel value="add-payment">
-            <rts-sale-payment-form/>
+            <rts-sale-payment-form (paymentReturnedFromBackend)="receivePaymentFromBackEnd($event)"/>
           </p-tabpanel>
         }
 
         <p-tabpanel value="payments">
-          <rts-sale-payments-grid/>
+          <rts-sale-payments-grid (paymentReturnedFromBackend)="receivePaymentFromBackEnd($event)"/>
         </p-tabpanel>
 
       </p-tabpanels>

@@ -1,5 +1,5 @@
 import {CurrencyPipe} from '@angular/common'
-import {Component, computed, inject, OnInit, signal, Signal} from '@angular/core'
+import {Component, computed, inject, OnInit, output, signal, Signal} from '@angular/core'
 import {apply, form, FormField} from '@angular/forms/signals'
 import {EntityId} from '@ngrx/signals/entities'
 import {MenuItem} from 'primeng/api'
@@ -9,11 +9,9 @@ import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
 import {Menu} from 'primeng/menu'
 import {SelectButton} from 'primeng/selectbutton'
-import {SalePayment} from '../../../../api/location-level/sale-payment/sale-payment.model'
+import {SalePayment, SalePaymentCreateRequest} from '../../../../api/location-level/sale-payment/sale-payment.model'
 import {SalePaymentService} from '../../../../api/location-level/sale-payment/sale-payment.service'
 import {SaleStatus} from '../../../../api/location-level/sale/sale-status.enum'
-import {Sale} from '../../../../api/location-level/sale/sale.model'
-import {SaleService} from '../../../../api/location-level/sale/sale.service'
 import {PaymentOption} from '../../../../api/organization-level/payment-option/payment-option.model.'
 import {PaymentOptionService} from '../../../../api/organization-level/payment-option/payment-option.service'
 import {SequentialIdGenerator} from '../../../../utils/services/sequential-id-generator'
@@ -48,8 +46,8 @@ export class SalePaymentFormComponent implements OnInit {
   private readonly context = inject(SaleFormContext)
   private readonly salePaymentService = inject(SalePaymentService)
   private readonly zonedDatesService = inject(ZonedDatesService)
-  private readonly saleService = inject(SaleService)
 
+  readonly paymentReturnedFromBackend = output<Partial<SalePayment>>()
   readonly FormFieldDirection = FormFieldLayout
   private readonly otherPaymentOption: Partial<PaymentOption> = {id: 'other', name: 'Other'}
   private readonly preselectedOverride = signal<Partial<PaymentOption>[]>([])
@@ -112,43 +110,32 @@ export class SalePaymentFormComponent implements OnInit {
   }
 
   commitPaymentFormToContext() {
-    const paymentFormValue = this.buildSalePayment()
+    const salePayment = this.buildSalePaymentCreateRequest()
     if (this.originalSale()?.status === SaleStatus.CONFIRMED) {
-      this.salePaymentService.post(paymentFormValue, {onSuccess: this.commitPaymentToContext})
+      this.salePaymentService.post(salePayment, {onSuccess: this.commitPaymentToContext})
     } else {
-      this.commitPaymentToContext(paymentFormValue)
+      this.commitPaymentToContext(this.enrichForTempDisplay(salePayment))
     }
   }
 
-  private buildSalePayment(): Partial<SalePayment> {
+  private buildSalePaymentCreateRequest(): SalePaymentCreateRequest {
     const paymentFormValue = this.paymentFormValue()
     const methodId = paymentFormValue.paymentMethodId
     const paymentDate = paymentFormValue.useNowForDate ? null : paymentFormValue.paymentDate
-    return{
+    return {
       paymentMethodId: methodId,
-      paymentMethodName: this.paymentOptionsMap().get(methodId)?.name ?? '',
       amount: paymentFormValue.amount!,
       reference: paymentFormValue.reference,
-      paymentDateFormModel: paymentDate ?? undefined,
       paymentDate: this.zonedDatesService.toZonedISOString(paymentDate),
-      saleId: this.originalSale()?.id as string ?? '',
-      fakeId: this.sequentialIdGenerator.next()
+      saleId: this.originalSale()?.id as string ?? ''
     }
   }
 
   private readonly commitPaymentToContext = (updatedSalePayment: Partial<SalePayment>)=> {
     const originalSale = this.originalSale()
 
-    if (originalSale && originalSale.status === SaleStatus.CONFIRMED) {
-      const updatedSale: Sale = {
-        ...this.originalSale()!,
-        paymentStatus: updatedSalePayment.updatedSalePaymentStatus!,
-        payments: [...originalSale.payments, updatedSalePayment]
-      }
-      this.saleService.applyResponse(updatedSale)
-      this.context.initializeForm(updatedSale)
-      this.context.recalculateTotals()
-
+    if (!!originalSale && !!updatedSalePayment.id) {
+      this.paymentReturnedFromBackend.emit(updatedSalePayment)
     } else {
       this.context.addPayment(updatedSalePayment)
     }
@@ -157,5 +144,17 @@ export class SalePaymentFormComponent implements OnInit {
       ...SalePaymentFormDefinition.createInitial,
       paymentMethodId: this.paymentFormValue().paymentMethodId
     })
+  }
+
+  private enrichForTempDisplay(salePaymentCreateRequest: SalePaymentCreateRequest): Partial<SalePayment> {
+    const paymentMethodName = this.paymentOptionsMap().get(salePaymentCreateRequest.paymentMethodId)?.name ?? ''
+    const paymentDate = salePaymentCreateRequest.paymentDate
+      ? new Date(salePaymentCreateRequest.paymentDate) : undefined
+    return {
+      ...salePaymentCreateRequest,
+      paymentMethodName,
+      paymentDateFormModel: paymentDate,
+      fakeId: this.sequentialIdGenerator.next()
+    }
   }
 }

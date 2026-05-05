@@ -1,6 +1,6 @@
 import {applyWhen, disabled, max, required, RootFieldContext, schema, SchemaPath} from '@angular/forms/signals'
 import {SalePayment} from '../../../../api/location-level/sale-payment/sale-payment.model'
-import {Sale, SaleLine, SalePaymentRecord} from '../../../../api/location-level/sale/sale.model'
+import {calculateTotalPaid, Sale, SaleLine, SalePaymentRecord} from '../../../../api/location-level/sale/sale.model'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 import {SaleLineFormDefinition} from './sale-line-form.definition'
 
@@ -62,9 +62,7 @@ export namespace SaleFormDefinition {
 
   export const convertToFormModel = (sale: Sale | null): SaleFormModel => {
     if (!sale) return createDefault()
-    const totalPaid = (sale.payments ?? []).reduce(
-      (sum, p) => sum + (p.amount ?? 0), 0
-    )
+    const totalPaid = calculateTotalPaid(sale.payments)
     return {
       id: sale.id as string ?? '',
       contactId: sale.contactId ?? '',

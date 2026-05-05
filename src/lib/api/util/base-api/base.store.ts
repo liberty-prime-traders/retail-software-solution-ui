@@ -24,6 +24,7 @@ export interface BaseStore<ENTITY extends BaseModel> {
 	resetStore(): void
 	setLoading(loading: boolean): void
 	remove(id: EntityId): void
+	removeMany(ids: EntityId[]): void
 }
 
 export function createBaseStore<ENTITY extends BaseModel>(idSelector = (entity: ENTITY) => entity.id) {

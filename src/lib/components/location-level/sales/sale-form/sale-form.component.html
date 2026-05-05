@@ -2,9 +2,9 @@
   <div class="flex flex-column" id="sale-form" rtsAutoStretch="sale-form" [useMinHeight]="true">
     <rts-sale-form-header/>
 
-    <div class="flex flex-grow-1 scrollable">
+    <div class="flex flex-grow-1">
       <div class="flex flex-column flex-grow-1 pt-3">
-        <rts-form-field label="Customer">
+        <rts-form-field label="Customer" class="pl-3">
           @if (canEditCustomer()) {
             <div class="flex gap-2">
               <p-select
@@ -33,7 +33,7 @@
         <rts-sale-lines class="p-3 flex-grow-1"/>
 
         @if (canVoidSale()) {
-          <p-card class="border-noround">
+          <p-card class="border-noround pb-3">
             <rts-forms-buttons
               [hideSave]="true"
               [hideReset]="true"

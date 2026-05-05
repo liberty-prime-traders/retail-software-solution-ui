@@ -1,3 +1,4 @@
+import {EntityId} from '@ngrx/signals/entities'
 import {BaseModel} from '../../util/base-api/base.model'
 import {PaymentStatus} from '../purchase/payment-status.enum'
 
@@ -10,5 +11,19 @@ export interface SalePayment extends BaseModel{
   reference?: string,
   paymentDate?: string
   paymentDateFormModel?: Date
+  voidedReason?: string
   updatedSalePaymentStatus?: PaymentStatus
+}
+
+export interface SalePaymentCreateRequest {
+  saleId: string,
+  paymentMethodId: string,
+  amount: number,
+  reference?: string,
+  paymentDate?: string
+}
+
+export interface SalePaymentVoidRequest {
+  salePaymentId: EntityId
+  reason: string
 }

@@ -11,6 +11,8 @@ import {BaseModel} from './base.model'
 import {BaseStore} from './base.store'
 
 export abstract class ServiceFacade<RESPONSE extends BaseModel> {
+  private readonly SerialNumber = Math.round(Math.random() * Math.random() * 10000)
+
   readonly selectLoading
   readonly selectFirst
   readonly selectAll: Signal<RESPONSE[]>
@@ -107,5 +109,9 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     this.store.setError(error)
     this.store.setHasCache(false)
     return throwError(() => error)
+  }
+
+  removeEntities(ids: EntityId[]) {
+    this.store.removeMany(ids)
   }
 }

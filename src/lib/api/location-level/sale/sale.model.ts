@@ -40,3 +40,8 @@ export interface SalePaymentRecord extends BaseModel {
   createdOn: string
   voidedReason: string
 }
+
+export const calculateTotalPaid = (payments?: Partial<SalePaymentRecord>[]) =>
+  (payments ?? [])
+    .filter(p => !p.voidedReason)
+    .reduce((sum, p) => sum + (p.amount ?? 0), 0)

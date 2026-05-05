@@ -3,6 +3,7 @@ import {patchState, signalStoreFeature, withMethods, withProps, withState} from 
 import {
   EntityId,
   removeAllEntities,
+  removeEntities,
   removeEntity,
   SelectEntityId,
   setAllEntities,
@@ -68,6 +69,10 @@ export const withBaseStore = <ENTITY extends BaseModel>(selectId: SelectEntityId
 
     remove(id: EntityId) {
       patchState(store, removeEntity(id))
+    },
+
+    removeMany(ids: EntityId[]): void {
+      patchState(store, removeEntities(ids))
     }
 
   }))

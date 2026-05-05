@@ -76,6 +76,10 @@ export class PurchaseLinesComponent {
     this.unitConversionGraphIsLoading() ? [] : this.purchaseFormContext.purchaseLinesArray()
   )
 
+  readonly selectedProductIds = computed(() =>
+    this.purchaseLinesArray().map(l => l.locationProductId)
+  )
+
   readonly emptyPurchaseLinesMessage = computed(() =>
     this.unitConversionGraphIsLoading() ? 'Loading ...' : 'No purchase lines added yet.'
   )

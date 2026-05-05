@@ -1,4 +1,5 @@
 import {inject, Injectable, signal} from '@angular/core'
+import {Router} from '@angular/router'
 import {Location} from '../../api/organization-level/location/location.model'
 import {Organization} from '../../api/platform-level/organization/organization.model'
 import {NavigationScope} from '../../components/welcome/top-navigation/navigation-scope.model'
@@ -8,6 +9,7 @@ import {LocalStorageService} from './local-storage.service'
 @Injectable({providedIn: 'root'})
 export class SessionContextService {
   private readonly localStorageService = inject(LocalStorageService)
+  private readonly router = inject(Router)
 
   private readonly _selectedScope = signal<NavigationScope>(NavigationScope.LANDING)
   private readonly _selectedOrganization = signal<Organization | null>(null)
@@ -23,12 +25,23 @@ export class SessionContextService {
     this._selectedScope.set(this.deriveInitialScope())
     this.selectOrganization(this.loadSelectedOrganization(), false)
     this.selectLocation(this.loadSelectedLocation())
+    this.navigateToInitialScope()
   }
 
   private deriveInitialScope(): NavigationScope {
     if (this._selectedLocation())     return NavigationScope.LOCATION
     if (this._selectedOrganization()) return NavigationScope.ORG
     return NavigationScope.LANDING
+  }
+
+  private navigateToInitialScope() {
+    if (this.selectedLocation()) {
+      if (this.selectedLocation()) {
+        this.router.navigate(['/secure/location-dashboard']).then()
+      } else {
+        this.router.navigate(['/secure/manage-organization']).then()
+      }
+    }
   }
 
   markAsSelectedScope(scope: NavigationScope): void {

@@ -5,6 +5,7 @@ import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Divider} from 'primeng/divider'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
+import {SalePayment} from '../../../../api/location-level/sale-payment/sale-payment.model'
 import {SaleStatus} from '../../../../api/location-level/sale/sale-status.enum'
 import {Sale} from '../../../../api/location-level/sale/sale.model'
 import {SaleService} from '../../../../api/location-level/sale/sale.service'
@@ -82,5 +83,20 @@ export class SaleSummaryComponent {
 
   private readonly onSuccessfulSave = (savedSale: Sale) => {
     this.context.initializeForm(savedSale)
+  }
+
+  receivePaymentFromBackEnd(updatedSalePayment: Partial<SalePayment>) {
+    const originalSale = this.originalSale()
+    const payments = originalSale!.payments.map(
+      p => p.id === updatedSalePayment.id ? {...p, ...updatedSalePayment} : p
+    )
+    const updatedSale: Sale = {
+      ...originalSale!,
+      payments,
+      paymentStatus: updatedSalePayment.updatedSalePaymentStatus!
+    }
+    this.saleService.applyResponse(updatedSale)
+    this.context.initializeForm(updatedSale)
+    this.context.recalculateTotals()
   }
 }

@@ -1,7 +1,7 @@
 import {computed, effect, inject, Injectable, signal, untracked} from '@angular/core'
 import {apply, form} from '@angular/forms/signals'
 import {SalePayment} from '../../../../api/location-level/sale-payment/sale-payment.model'
-import {Sale} from '../../../../api/location-level/sale/sale.model'
+import {calculateTotalPaid, Sale} from '../../../../api/location-level/sale/sale.model'
 import {SaleService} from '../../../../api/location-level/sale/sale.service'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 import {SaleFormVisibilityContext} from '../sale-form-visibility.context'
@@ -27,14 +27,14 @@ export class SaleFormContext {
     const orderTotal = this.saleFormValue().lines.reduce(
       (sum, line) => sum + (line.quantity * line.unitPrice), 0
     )
-    const totalPaid = this.payments().reduce((sum, p) => sum + (p.amount ?? 0), 0)
+    const totalPaid = calculateTotalPaid(this.payments())
     this.saleForm.orderTotal().value.set(orderTotal)
     this.saleForm.totalPaid().value.set(totalPaid)
     this.saleForm.balanceDue().value.set(orderTotal - totalPaid)
   }
 
   addPayment(payment: Partial<SalePayment>) {
-    this.payments.update(payments => [...payments, payment])
+    this.payments.update(payments => [payment, ...payments])
     this.recalculateTotals()
   }
 
