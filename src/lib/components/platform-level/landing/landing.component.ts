@@ -49,7 +49,13 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
 
   ngOnInit() {
     this.userService.post()
-    this.sessionContextService.markAsSelectedScope(NavigationScope.LANDING)
+    if (this.sessionContextService.selectedScope()) {
+      this.organizationLaunchService.launchOrganization(
+        this.sessionContextService.selectedOrganization()?.subdomain
+      )
+    } else {
+      this.sessionContextService.markAsSelectedScope(NavigationScope.LANDING)
+    }
   }
 
   private readonly formBuilder = inject(FormBuilder)

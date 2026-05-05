@@ -6,7 +6,7 @@ import {IdentityType} from './identity-type.enum'
 export interface Contact extends BaseModel {
   createdBy: string
   createdOn: number
-  contactType: ContactType
+  contactTypes: ContactType[]
   identityType: IdentityType
   firstName?: string
   lastName?: string

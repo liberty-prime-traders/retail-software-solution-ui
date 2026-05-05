@@ -11,7 +11,7 @@ import {ProductStatus} from '../../../../api/cross-tier/product/product-status.e
 import {TagService} from '../../../../api/organization-level/tag/tag.service'
 import {SchemaLevel} from '../../../../api/platform-level/table-registry/schema-level.enum'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
-import {FormFieldDirection} from '../../../reusable/form-field/form-field-direction'
+import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {ProductFilterService} from '../product-filter.service'
 
@@ -37,7 +37,7 @@ export class ProductFilterComponent<PRODUCT extends BaseProduct> implements OnIn
 
   readonly schemaLevel = input.required<SchemaLevel>()
 
-  readonly FormFieldDirection = FormFieldDirection
+  readonly FormFieldDirection = FormFieldLayout
   readonly ProductStatus = ProductStatus
   readonly SchemaLevel = SchemaLevel
 

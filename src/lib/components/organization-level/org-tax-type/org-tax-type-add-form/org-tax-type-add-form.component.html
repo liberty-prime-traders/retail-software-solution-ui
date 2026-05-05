@@ -1,11 +1,12 @@
-<rts-loading-container [loading]="orgTaxTypesLoading()">
-  <div class="flex gap-4">
+<rts-loading-container [loading]="orgTaxTypesLoading()" class="block h-full">
+  <div class="flex gap-4 h-full">
     <div class="flex col-7 flex-column gap-4">
       <div class="flex gap-5 align-items-center">
         <p-tree-select [options]="availableTaxTypes()"
                        [metaKeySelection]="false"
                        [loading]="taxTypeTreeIsLoading()"
                        selectionMode="multiple"
+                       appendTo="body"
                        placeholder="Select taxes that affect your organization"
                        [(ngModel)]="selectedTaxNodes"
                        class="col-9">

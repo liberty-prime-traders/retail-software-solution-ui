@@ -6,7 +6,7 @@ import {Checkbox} from 'primeng/checkbox'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
 import {CalculationMethod} from '../../../../api/platform-level/tax-type/calculation-method.enum'
-import {TaxApplicationLevel} from '../../../../api/platform-level/tax-type/tax-application-level.enum'
+import {TaxApplicationLevelOptions} from '../../../../api/platform-level/tax-type/tax-application-level.enum'
 import {TaxRecoveryType} from '../../../../api/platform-level/tax-type/tax-recovery-type.enum'
 import {TaxTrigger} from '../../../../api/platform-level/tax-type/tax-trigger.enum'
 import {TaxType} from '../../../../api/platform-level/tax-type/tax-type.model'
@@ -60,8 +60,8 @@ export class TaxTypeFormComponent extends BaseFormComponent<TaxTypeService> {
   readonly taxTypeFormFields = TaxTypeFormDefinition.fieldMap
   readonly CalculationMethod = CalculationMethod
   readonly TaxRecoveryType = TaxRecoveryType
-  readonly TaxApplicationLevel = TaxApplicationLevel
   readonly TaxTrigger = TaxTrigger
+  readonly TaxApplicationLevelOptions = TaxApplicationLevelOptions
   readonly selectedTriggers = model<TaxTrigger[]>([])
 
   resetForm() {

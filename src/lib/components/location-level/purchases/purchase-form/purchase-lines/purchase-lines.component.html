@@ -1,18 +1,6 @@
 <div class="flex flex-column gap-4">
   @if (isDraftOrNew()) {
-    <rts-form-field label="Search Products">
-      <p-select [options]="productOptions()"
-                [loading]="dependenciesLoading()"
-                [filter]="true"
-                (onFilter)="searchTerm$.next($event.filter)"
-                (onClick)="addPurchaseLine(productSelect.value); productSelect.clear()"
-                #productSelect
-                optionLabel="label"
-                optionValue="value"
-                class="w-full"
-                dataKey="value">
-      </p-select>
-    </rts-form-field>
+    <rts-product-lookup (productSelected)="addPurchaseLine($event)" [selectedProductIds]="selectedProductIds()"/>
   }
 
   <p-table [value]="purchaseLinesArray()"
@@ -20,6 +8,7 @@
            dataKey="referenceNumber"
            [multiSortMeta]="linesMultiSort"
            editMode="row">
+
     <ng-template pTemplate="header">
       <tr>
         <th>Product</th>
@@ -194,6 +183,10 @@
           </div>
         </td>
       </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr rts-empty-row [colspan]="isDraftOrNew() ? 7 : 9" [message]="emptyPurchaseLinesMessage()"></tr>
     </ng-template>
   </p-table>
 </div>

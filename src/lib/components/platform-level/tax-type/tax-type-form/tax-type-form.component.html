@@ -26,7 +26,7 @@
   <rts-form-field [required]="true" label="Tax Application Level" for="taxApplicationLevel">
     <p-select id="taxApplicationLevel"
               class="flex-grow-1"
-              [options]="TaxApplicationLevel | enumToDropdown"
+              [options]="TaxApplicationLevelOptions"
               [formField]="taxTypeForm.taxApplicationLevel"
               placeholder="At what level is this tax applied?">
     </p-select>

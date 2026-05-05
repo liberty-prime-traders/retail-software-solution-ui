@@ -1,16 +1,18 @@
-<div [class]="containerClass() + ' flex form-field field justify-content-end'"
-     [ngClass]="{
-        'gap-2 align-items-center': layout() === formFieldDirection.HORIZONTAL,
-        'flex-column gap-1': layout() === formFieldDirection.VERTICAL
-     }">
+<div [class]="containerClass() + effectiveLayoutClass() + ' flex form-field justify-content-end'">
 
-    <label [for]="for()" class="font-semibold" [ngClass]="effectiveLabelClass()">
-      {{ label() }}:
+    <label [for]="for()" [ngClass]="effectiveLabelClass()">
+      @if (layout() === FormFieldDirection.COMPACT) {
+        <small class="info-message">{{ label() }}</small>
+      } @else {
+        {{ label() }}:
+      }
     </label>
 
-    <div class="p-0 input-container" [ngClass]="contentClass()">
+    <div class="p-0 input-container" [ngClass]="effectiveContentClass()">
       <ng-content/>
     </div>
 
-  <div [class]="'col-' + rightPadding()"></div>
+  @if (rightPadding() > 0) {
+    <div [class]="'col-' + rightPadding()"></div>
+  }
 </div>

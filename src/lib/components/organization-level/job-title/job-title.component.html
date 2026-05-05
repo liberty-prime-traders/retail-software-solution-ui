@@ -3,7 +3,7 @@
           rowExpandMode="single"
           dataKey="id"
           scrollHeight="600px"
-          scrollable="true"
+          [scrollable]="true"
           #jobTitlesTable
           [value]="jobTitles()"
           [(selection)]="selectedJobTitle"

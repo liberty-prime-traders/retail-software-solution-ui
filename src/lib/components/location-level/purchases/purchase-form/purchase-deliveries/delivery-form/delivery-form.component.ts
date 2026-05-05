@@ -25,7 +25,7 @@ import {
 import {ProductLabelPipe} from '../../../../../../utils/pipes/product-label.pipe'
 import {ZonedDatesService} from '../../../../../../utils/services/zoned-dates.service'
 import {BaseFormComponent} from '../../../../../reusable/base-form.component'
-import {FormFieldDirection} from '../../../../../reusable/form-field/form-field-direction'
+import {FormFieldLayout} from '../../../../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../../../../reusable/form-field/form-field.component'
 import {LoadingContainerComponent} from '../../../../../reusable/loading-container/loading-container.component'
 import {PurchaseDeliveryFormDefinition} from '../../form-utils/purchase-delivery-form.definition'
@@ -66,7 +66,7 @@ export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliverySer
   readonly cancelled = output()
   readonly deliverySaved = output()
 
-  readonly FormFieldDirection = FormFieldDirection
+  readonly FormFieldDirection = FormFieldLayout
 
   private readonly deliveryFormValue = signal<PurchaseDeliveryFormDefinition.DeliveryFormModel>(
     PurchaseDeliveryFormDefinition.createDefault(

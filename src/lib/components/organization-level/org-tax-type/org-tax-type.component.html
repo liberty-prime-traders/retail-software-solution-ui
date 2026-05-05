@@ -1,7 +1,7 @@
 <div class="flex flex-column gap-4" id="org-tax-types" rtsAutoStretch="org-tax-types">
   @if (addingIsActive()) {
     <rts-new-form-cancel-button (onCancel)="setAddingActiveFalse()"/>
-    <rts-org-tax-type-add-form (allSaved)="closeAddRow()"/>
+    <rts-org-tax-type-add-form (allSaved)="closeAddRow()" class="h-full"/>
 
   } @else {
     <p-table [loading]="loading() && !addingIsActive()"

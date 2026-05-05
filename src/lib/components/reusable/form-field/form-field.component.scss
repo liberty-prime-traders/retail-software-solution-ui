@@ -3,8 +3,18 @@ label {
     min-width: 120px;
 }
 
-:host::ng-deep .input-container > * {
-  width: 100%;
+:host::ng-deep {
+  .input-container > * {
+    width: 100%;
+  }
+
+  .field {
+    margin-bottom: 0.5rem;
+  }
+
+  .compact-form-field .p-inputtext {
+     font-size: 12px;
+  }
 }
 
 @media (max-width: 768px) {

@@ -108,4 +108,8 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     this.store.setHasCache(false)
     return throwError(() => error)
   }
+
+  removeEntities(ids: EntityId[]) {
+    this.store.removeMany(ids)
+  }
 }

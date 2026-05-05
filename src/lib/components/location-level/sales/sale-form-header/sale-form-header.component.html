@@ -1,0 +1,38 @@
+<p-card class="border-noround">
+  <div class="flex align-items-center gap-4 card">
+    <p-button
+      label="Back"
+      icon="pi pi-chevron-left"
+      (onClick)="hideSaleForm()">
+    </p-button>
+
+    @let originalSale = originalSaleRecord();
+    @if (originalSale) {
+      <div class="flex gap-3 align-items-center w-full">
+        <span class="font-semibold">{{ originalSale.referenceNumber | nullSafe }}</span>
+
+        @if (saleIsBeyondDraft()) {
+          <div>&bullet;</div>
+          <span>
+                  {{ originalSale.soldBy | nullSafe }}
+                </span>
+          <div>&bullet;</div>
+          {{ originalSale.dateSold | date }}
+        }
+
+        <div>&bullet;</div>
+        <p-tag [severity]="originalSale.status | saleStatusSeverity">
+          {{ originalSale.status | prettifyEnum }}
+        </p-tag>
+
+        <div>&bullet;</div>
+        <p-tag [severity]="originalSale.paymentStatus | paymentStatusSeverity">
+          {{ originalSale.paymentStatus | prettifyEnum }}
+        </p-tag>
+      </div>
+
+    } @else {
+      <h2 class="m-0">New Sale</h2>
+    }
+  </div>
+</p-card>

@@ -46,6 +46,7 @@ export class FormButtonsComponent<T> {
 
   readonly deleteIcon = input('pi pi-trash')
   readonly deleteSeverity = input<ButtonSeverity>('danger')
+  readonly contentClass = input('p-4 pb-1')
 
   readonly processingStatus = model<ProcessingStatus|undefined|null>(ProcessingStatus.IDLE)
   readonly deleteInProgressMessage = input('Deleting...')

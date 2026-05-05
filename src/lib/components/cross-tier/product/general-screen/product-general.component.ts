@@ -13,7 +13,7 @@ import {SchemaLevel} from '../../../../api/platform-level/table-registry/schema-
 import {PaginatedBaseService} from '../../../../api/util/paginated-api/paginated-base.service'
 import {SessionContextService} from '../../../../utils/services/session-context.service'
 import {OrganizationProductFormComponent} from '../../../organization-level/products/product-form/organization-product-form.component'
-import {BaseFilteredListComponent} from '../../../reusable/base-filtered-list.component'
+import {HasFilteredDataComponent} from '../../../reusable/has-filtered-data.component'
 import {SearchComponent} from '../../../reusable/search.component'
 import {ProductFilterComponent} from '../filter-screen/product-filter.component'
 import {ProductFilterService} from '../product-filter.service'
@@ -37,7 +37,7 @@ import {ProductGridComponent} from '../product-grid/product-grid.component'
     ProductGridComponent
   ]
 })
-export class ProductGeneralComponent<PRODUCT extends BaseProduct> extends BaseFilteredListComponent {
+export class ProductGeneralComponent<PRODUCT extends BaseProduct> extends HasFilteredDataComponent {
 
   private readonly productFilterService = inject(ProductFilterService<PRODUCT>)
   protected readonly productSearchService = inject(PaginatedBaseService<PRODUCT, ProductSearchParameters>)

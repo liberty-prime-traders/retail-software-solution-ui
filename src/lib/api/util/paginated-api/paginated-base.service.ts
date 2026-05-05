@@ -13,7 +13,7 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
   extends BaseService<RESPONSE, PageRequest<PARAMETERS>> {
 
   protected abstract readonly defaultCursor: CURSOR
-  protected static readonly BATCH_SIZE = 100
+  protected readonly BATCH_SIZE: number = 100
   private readonly paginatedEntitiesVersion = signal(0)
 
   readonly requireClientSideFilter: Signal<boolean>
@@ -84,7 +84,7 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
     this.startApiRequest()
     const pageRequest: PageRequest<PARAMETERS> = {
       previousCursor,
-      requestedSize: PaginatedBaseService.BATCH_SIZE,
+      requestedSize: this.BATCH_SIZE,
       parameters
     }
     this.patchApiRequestConfig({urlSuffix: 'search'})

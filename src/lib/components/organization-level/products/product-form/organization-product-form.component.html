@@ -24,7 +24,9 @@
     <p-select id="baseUnitId"
               class="flex-grow-1"
               [options]="unitValues()"
-              group
+              [group]="true"
+              filterBy="label"
+              [filter]="true"
               [formField]="productForm.baseUnitId"
               placeholder="Select a Unit" >
     </p-select>

@@ -1,34 +1,44 @@
-<p-table [value]="syncs()" [loading]="loading()" dataKey="id" sortField="createdOn" [sortOrder]="-1">
+<div id="catalog-sync" rtsAutoStretch="catalog-sync">
+  <p-table
+    [value]="syncs()"
+    [loading]="loading()"
+    [scrollable]="true"
+    scrollHeight="flex"
+    dataKey="id"
+    sortField="createdOn"
+    [sortOrder]="-1">
 
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Mode</th>
-      <th>Status</th>
-      <th>Processed</th>
-      <th>Skipped</th>
-      <th>Failed</th>
-      <th>Total</th>
-      <th>% Complete</th>
-      <th>Initiated</th>
-      <th>Completed</th>
-    </tr>
-  </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Mode</th>
+        <th>Status</th>
+        <th>Processed</th>
+        <th>Skipped</th>
+        <th>Failed</th>
+        <th>Total</th>
+        <th>% Complete</th>
+        <th>Initiated</th>
+        <th>Completed</th>
+      </tr>
+    </ng-template>
 
-  <ng-template pTemplate="body" let-log>
-    <tr>
-      <td>{{ log.syncMode | prettifyEnum }}</td>
-      <td>
-        <p-tag [value]="log.status | prettifyEnum"
-               [severity]="log.status | syncStatusSeverity"/>
-      </td>
-      <td>{{ log.processedRecords }}</td>
-      <td>{{ log.skippedRecords }}</td>
-      <td>{{ log.failedRecords }}</td>
-      <td>{{ log.totalRecords | nullSafe }}</td>
-      <td>{{ log.percentComplete | nullSafe }}</td>
-      <td>{{ log.createdOn | date  | nullSafe }}</td>
-      <td>{{ (log.completedAt ?? log.canceledAt) | date  | nullSafe }}</td>
-    </tr>
-  </ng-template>
+    <ng-template pTemplate="body" let-log>
+      <tr>
+        <td>{{ log.syncMode | prettifyEnum }}</td>
+        <td>
+          <p-tag [value]="log.status | prettifyEnum"
+                 [severity]="log.status | syncStatusSeverity"/>
+        </td>
+        <td>{{ log.processedRecords }}</td>
+        <td>{{ log.skippedRecords }}</td>
+        <td>{{ log.failedRecords }}</td>
+        <td>{{ log.totalRecords | nullSafe }}</td>
+        <td>{{ log.percentComplete | nullSafe }}</td>
+        <td>{{ log.createdOn | date  | nullSafe }}</td>
+        <td>{{ (log.completedAt ?? log.canceledAt) | date  | nullSafe }}</td>
+      </tr>
+    </ng-template>
 
-</p-table>
+  </p-table>
+
+</div>

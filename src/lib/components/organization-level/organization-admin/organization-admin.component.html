@@ -3,7 +3,7 @@
          sortField="user"
          #adminTable
          scrollHeight="600px"
-         scrollable="true"
+         [scrollable]="true"
          [value]="organizationAdmins()"
          [globalFilterFields]="['user']"
          [(selection)]="selectedOrganizationAdmins">

@@ -3,7 +3,7 @@
          sortField="user"
          #userTable
          scrollHeight="600px"
-         scrollable="true"
+         [scrollable]="true"
          [value]="organizationUsers()"
          [globalFilterFields]="['user']"
          [(selection)]="selectedOrganizationUsers">

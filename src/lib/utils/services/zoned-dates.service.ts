@@ -15,7 +15,7 @@ export class ZonedDatesService {
     return new Date(get('year'), get('month') - 1, get('day'), get('hour'), get('minute'), get('second'))
   }
 
-  toZonedISOString = (date: Date | null): string => {
+  toZonedISOString = (date?: Date | null): string => {
     if (!date) return ''
 
     const parts = this.getDateParts(date)

@@ -1,0 +1,76 @@
+<rts-loading-container [loading]="dependenciesLoading()">
+  <div class="flex flex-column gap-3 p-2">
+
+    <div class="flex gap-1">
+      <p-select-button
+        [options]="preselectedPaymentOptions()"
+        [formField]="paymentForm.paymentMethodId"
+        (click)="showOtherOptionsIfNecessary(hiddenPaymentOptionsMenu, $event)"
+        optionLabel="name"
+        optionValue="id"
+        size="small"
+        class="flex-grow-1">
+      </p-select-button>
+
+      <p-menu #hiddenPaymentOptionsMenu
+              appendTo="body"
+              [model]="hiddenPaymentOptions()"
+              [popup]="true">
+      </p-menu>
+    </div>
+
+    <div class="flex flex-column gap-1">
+      <div class="flex justify-content-between">
+        <rts-form-field label="Amount" [layout]="FormFieldDirection.COMPACT" contentClass="">
+          <p-input-number
+            [min]="0"
+            mode="currency"
+            currency="KES"
+            [placeholder]="(0 | currency) ?? undefined"
+            [formField]="paymentForm.amount">
+          </p-input-number>
+        </rts-form-field>
+
+        <rts-form-field label="Reference" [layout]="FormFieldDirection.COMPACT" contentClass="">
+          <input pInputText [formField]="paymentForm.reference"/>
+        </rts-form-field>
+      </div>
+
+      <rts-form-field label="Date" [layout]="FormFieldDirection.COMPACT" contentClass="">
+        @if (!paymentForm.useNowForDate().value()) {
+          <p-date-picker
+            [showIcon]="true"
+            dateFormat="yy-mm-dd"
+            class="w-full"
+            appendTo="body"
+            [showTime]="true"
+            [formField]="paymentForm.paymentDate">
+          </p-date-picker>
+
+        } @else {
+
+          <a (click)="paymentForm.useNowForDate().value.set(false)"
+             class="justify-content-start w-full p-inputtext p-button p-button-text">
+            <div class="flex gap-1">
+              <i class="pi pi-clock"></i>
+              <span class="info-message">Now</span>
+            </div>
+          </a>
+        }
+      </rts-form-field>
+
+      <div class="flex justify-content-end">
+        <p-button
+          icon="pi pi-plus"
+          label="Add Payment"
+          class="mt-2"
+          [disabled]="paymentForm().invalid()"
+          (onClick)="commitPaymentFormToContext()">
+        </p-button>
+      </div>
+    </div>
+
+    <rts-error-summary [regularErrorMessages]="paymentsFailureMessages()"/>
+
+  </div>
+</rts-loading-container>

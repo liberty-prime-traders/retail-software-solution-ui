@@ -1,4 +1,4 @@
-import {applyWhen, pattern, required, schema, SchemaPath} from '@angular/forms/signals'
+import {applyWhen, minLength, pattern, required, schema, SchemaPath} from '@angular/forms/signals'
 import {Contact} from '../../../../api/organization-level/contact/contact.model'
 import {ContactStatus} from '../../../../api/organization-level/contact/contact-status.enum'
 import {ContactType} from '../../../../api/organization-level/contact/contact-type.enum'
@@ -7,7 +7,7 @@ import {IdentityType} from '../../../../api/organization-level/contact/identity-
 export namespace ContactFormDefinition {
   export interface ContactFormModel {
     id: string
-    contactType: ContactType
+    contactTypes: ContactType[]
     identityType: IdentityType
     firstName: string
     lastName: string
@@ -22,7 +22,7 @@ export namespace ContactFormDefinition {
 
   export const fieldMap = new Map<keyof ContactFormModel, string>(
     [
-      ['contactType', 'Contact Type'],
+      ['contactTypes', 'Contact Types'],
       ['identityType', 'Identity Type'],
       ['firstName', 'First Name'],
       ['lastName', 'Last Name'],
@@ -38,7 +38,7 @@ export namespace ContactFormDefinition {
 
   export const defaultContactFormModel: ContactFormModel = {
     id: '',
-    contactType: ContactType.CUSTOMER,
+    contactTypes: [ContactType.CUSTOMER],
     identityType: IdentityType.INDIVIDUAL,
     firstName: '',
     lastName: '',
@@ -52,7 +52,7 @@ export namespace ContactFormDefinition {
   }
 
   export const contactFormSchema = schema<ContactFormModel>(path=> {
-    required(path.contactType)
+    minLength(path.contactTypes, 1, {message: 'At least one contact type must be selected.'})
     required(path.identityType)
     required(path.status)
 
@@ -73,7 +73,7 @@ export namespace ContactFormDefinition {
 
   export const convertToFormModel = (contact?: Contact): ContactFormModel => ({
     id: contact?.id as string ?? '',
-    contactType: contact?.contactType ?? ContactType.CUSTOMER,
+    contactTypes: contact?.contactTypes ?? [ContactType.CUSTOMER],
     identityType: contact?.identityType ?? IdentityType.INDIVIDUAL,
     firstName: contact?.firstName ?? '',
     lastName: contact?.lastName ?? '',
@@ -88,7 +88,7 @@ export namespace ContactFormDefinition {
 
   export const convertToBackendModel = (formValue: ContactFormModel): Partial<Contact> => ({
     id: formValue.id,
-    contactType: formValue.contactType,
+    contactTypes: formValue.contactTypes,
     identityType: formValue.identityType,
     firstName: formValue.firstName,
     lastName: formValue.lastName,

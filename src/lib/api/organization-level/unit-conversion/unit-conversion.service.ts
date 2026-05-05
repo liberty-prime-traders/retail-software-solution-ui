@@ -41,7 +41,7 @@ export class UnitConversionService {
   }
 
   private transformToCurrency(value: number): string {
-    return this.currencyPipe.transform(value, 'USD') ?? '_'
+    return this.currencyPipe.transform(value, 'KES') ?? '_'
   }
 
   private applyConversion(

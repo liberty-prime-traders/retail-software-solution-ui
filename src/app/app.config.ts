@@ -1,6 +1,12 @@
 import {CurrencyPipe, DATE_PIPE_DEFAULT_OPTIONS, DatePipe} from '@angular/common'
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http'
-import {ApplicationConfig, importProvidersFrom, inject, provideZoneChangeDetection} from '@angular/core'
+import {
+  ApplicationConfig,
+  DEFAULT_CURRENCY_CODE,
+  importProvidersFrom,
+  inject,
+  provideZoneChangeDetection
+} from '@angular/core'
 import {provideRouter} from '@angular/router'
 import {OktaAuthModule} from '@okta/okta-angular'
 import {provideMarkdown} from 'ngx-markdown'
@@ -37,6 +43,7 @@ export const appConfig: ApplicationConfig = {
         const timezone = zonedDatesService.getOffsetFromDate(new Date())
         return {timezone, dateFormat: 'medium'}
       }
-    }
+    },
+    {provide: DEFAULT_CURRENCY_CODE, useValue: 'KES '}
   ]
 }
