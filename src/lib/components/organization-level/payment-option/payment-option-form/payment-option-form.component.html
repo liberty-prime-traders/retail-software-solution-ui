@@ -8,16 +8,19 @@
   </rts-form-field>
 
   @if (isChartOfAccountsEnabled()) {
-    <rts-form-field label="Linked Account" for="accountCode">
-      <p-tree-select id="accountCode"
-                     [options]="paymentMethodTrees()"
-                     [loading]="accountTreesLoading()"
-                     [(ngModel)]="linkedAccount"
-                     (click)="onAccountChange()"
-                     placeholder="Select an Account"
-                     class="flex-grow-1">
-      </p-tree-select>
-    </rts-form-field>
+    <rts-loading-container [loading]="accountTreesLoading()">
+      <rts-form-field label="Linked Account" for="accountCode">
+        <p-tree-select id="accountCode"
+                       [options]="paymentMethodTrees()"
+                       [loading]="accountTreesLoading()"
+                       [(ngModel)]="linkedAccount"
+                       (ngModelChange)="onAccountChange()"
+                       appendTo="body"
+                       placeholder="Select an Account"
+                       class="flex-grow-1">
+        </p-tree-select>
+      </rts-form-field>
+    </rts-loading-container>
   }
 
   <rts-forms-buttons [disableReset]="!paymentOptionForm().dirty()"

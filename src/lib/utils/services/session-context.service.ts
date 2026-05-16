@@ -1,5 +1,6 @@
 import {inject, Injectable, signal} from '@angular/core'
 import {Router} from '@angular/router'
+import {OKTA_CALLBACK_ROUTE} from '../../../app/app.routes'
 import {Location} from '../../api/organization-level/location/location.model'
 import {Organization} from '../../api/platform-level/organization/organization.model'
 import {NavigationScope} from '../../components/welcome/top-navigation/navigation-scope.model'
@@ -35,6 +36,7 @@ export class SessionContextService {
   }
 
   private navigateToInitialScope() {
+    if (window.location.pathname.includes(OKTA_CALLBACK_ROUTE)) return
     if (this.selectedLocation()) {
       if (this.selectedLocation()) {
         this.router.navigate(['/secure/location-dashboard']).then()
