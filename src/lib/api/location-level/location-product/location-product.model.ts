@@ -1,10 +1,9 @@
-import {BaseProduct} from '../../cross-tier/product/base-product.model'
+import {ProductDetail} from '../../cross-tier/product/product-detail.model'
 
-export interface LocationProduct extends BaseProduct {
-  productId?: string
-  categoryId?: string
+export interface LocationProduct extends ProductDetail {
   defaultSalePrice?: number
+  lastPurchasePrice?: number
   minStockLevel?: number
   lastSyncedAt?: number
-  lastPurchasePrice?: number
+  stockBalance?: number
 }

@@ -1,4 +1,13 @@
-import {applyWhen, disabled, max, required, RootFieldContext, schema, SchemaPath} from '@angular/forms/signals'
+import {
+  applyEach,
+  applyWhen,
+  disabled,
+  max,
+  required,
+  RootFieldContext,
+  schema,
+  SchemaPath
+} from '@angular/forms/signals'
 import {SalePayment} from '../../../../api/location-level/sale-payment/sale-payment.model'
 import {calculateTotalPaid, Sale, SaleLine, SalePaymentRecord} from '../../../../api/location-level/sale/sale.model'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
@@ -58,6 +67,8 @@ export namespace SaleFormDefinition {
       ({valueOf}) => valueOf(path.orderTotal),
       {message: 'Total paid cannot exceed order total'}
     )
+
+    applyEach(path.lines, SaleLineFormDefinition.saleLineSchema)
   })
 
   export const convertToFormModel = (sale: Sale | null): SaleFormModel => {
@@ -84,8 +95,7 @@ export namespace SaleFormDefinition {
       id: line.id,
       locationProductId: line.locationProductId,
       quantity: line.quantity,
-      unitId: line.unitId,
-      unitPrice: line.unitPrice
+      unitId: line.unitId
     }))
 
     const payments: Partial<SalePaymentRecord>[] = paymentsInput
@@ -102,8 +112,7 @@ export namespace SaleFormDefinition {
       linesToAdd: lines.filter(l => !l.id),
       linesToUpdate: lines.filter(l => l.id),
       payments,
-      contactId: formValue.contactId,
-      walkInCustomer: !!formValue.walkInCustomer,
+      contactId: formValue.contactId
     }
   }
 }

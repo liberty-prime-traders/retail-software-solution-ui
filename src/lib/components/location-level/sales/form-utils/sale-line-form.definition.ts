@@ -1,4 +1,5 @@
-import {LocationProduct} from '../../../../api/location-level/location-product/location-product.model'
+import {min, schema} from '@angular/forms/signals'
+import {SaleProductLookup} from '../../../../api/cross-tier/product/sale-product-lookup.model'
 import {SaleLine} from '../../../../api/location-level/sale/sale.model'
 
 export namespace SaleLineFormDefinition {
@@ -18,7 +19,7 @@ export namespace SaleLineFormDefinition {
     conversionFactor: number | null
   }
 
-  export const createFromProduct = (product: LocationProduct): SaleLineModel => ({
+  export const createFromProduct = (product: SaleProductLookup): SaleLineModel => ({
     id: '',
     locationProductId: product.id as string,
     referenceNumber: product.referenceNumber ?? '',
@@ -49,4 +50,8 @@ export namespace SaleLineFormDefinition {
       conversionFactor: line.conversionFactor ?? null
     }))
   }
+
+  export const saleLineSchema = schema<SaleLineFormDefinition.SaleLineModel>(linePath => {
+    min(linePath.lineTotal, 10)
+  })
 }

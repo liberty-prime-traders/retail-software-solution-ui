@@ -4,7 +4,7 @@ import {Button} from 'primeng/button'
 import {Checkbox} from 'primeng/checkbox'
 import {InputText} from 'primeng/inputtext'
 import {MultiSelect} from 'primeng/multiselect'
-import {BaseProduct} from '../../../../api/cross-tier/product/base-product.model'
+import {ProductDetail} from '../../../../api/cross-tier/product/product-detail.model'
 import {ProductCategoryService} from '../../../../api/organization-level/product-category/product-category.service'
 import {ProductGroupService} from '../../../../api/organization-level/product-group/product-group.service'
 import {ProductStatus} from '../../../../api/cross-tier/product/product-status.enum'
@@ -29,7 +29,7 @@ import {ProductFilterService} from '../product-filter.service'
     Button
   ]
 })
-export class ProductFilterComponent<PRODUCT extends BaseProduct> implements OnInit {
+export class ProductFilterComponent<PRODUCT extends ProductDetail> implements OnInit {
   private readonly productCategoryService = inject(ProductCategoryService)
   private readonly productGroupService = inject(ProductGroupService)
   private readonly tagService = inject(TagService)

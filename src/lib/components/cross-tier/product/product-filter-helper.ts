@@ -1,8 +1,8 @@
 import {FormGroup} from '@angular/forms'
-import {BaseProduct} from '../../../api/cross-tier/product/base-product.model'
+import {ProductDetail} from '../../../api/cross-tier/product/product-detail.model'
 import {ProductStatus} from '../../../api/cross-tier/product/product-status.enum'
 
-export class ProductFilterHelper<PRODUCT extends BaseProduct> {
+export class ProductFilterHelper<PRODUCT extends ProductDetail> {
   constructor(private readonly filterForm: FormGroup){}
 
   readonly matchesSearchText = (product: PRODUCT): boolean => {

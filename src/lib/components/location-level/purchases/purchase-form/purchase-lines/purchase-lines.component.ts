@@ -8,7 +8,7 @@ import {Button} from 'primeng/button'
 import {InputNumber} from 'primeng/inputnumber'
 import {Select} from 'primeng/select'
 import {TableModule} from 'primeng/table'
-import {LocationProduct} from '../../../../../api/location-level/location-product/location-product.model'
+import {PurchaseProductLookup} from '../../../../../api/cross-tier/product/purchase-product-lookup.model'
 import {PurchaseLineCancelDto} from '../../../../../api/location-level/purchase/purchase.model'
 import {PurchaseService} from '../../../../../api/location-level/purchase/purchase.service'
 import {
@@ -28,7 +28,7 @@ import {
 } from '../../../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
 import {ProductLabelPipe} from '../../../../../utils/pipes/product-label.pipe'
 import {EmptyRowComponent} from '../../../../reusable/empty-row/empty-row.component'
-import {LocationProductLookupComponent} from '../../../location-product-lookup/location-product-lookup.component'
+import {PurchaseProductLookupComponent} from '../../../purchase-product-lookup/purchase-product-lookup.component'
 import {PurchaseFormContext} from '../form-utils/purchase-form-context'
 import {PurchaseLineFormDefinition} from '../form-utils/purchase-line-form.definition'
 import PurchaseLineModel = PurchaseLineFormDefinition.PurchaseLineModel
@@ -55,7 +55,7 @@ import PurchaseLineModel = PurchaseLineFormDefinition.PurchaseLineModel
     UnitCurrencyPipe,
     UnitCurrencyPipe,
     UnitConversionDescriptorPipe,
-    LocationProductLookupComponent,
+    PurchaseProductLookupComponent,
     EmptyRowComponent
   ]
 })
@@ -137,7 +137,7 @@ export class PurchaseLinesComponent {
     this.linesBeingEdited.delete(line.referenceNumber)
   }
 
-  addPurchaseLine(product: LocationProduct) {
+  addPurchaseLine(product: PurchaseProductLookup) {
     const productAlreadyAdded = this.purchaseLinesArray().some(
       line => line.referenceNumber === product?.referenceNumber
     )

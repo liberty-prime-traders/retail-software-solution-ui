@@ -5,7 +5,7 @@ import {MessageService} from 'primeng/api'
 import {InputNumber} from 'primeng/inputnumber'
 import {Select} from 'primeng/select'
 import {TableModule} from 'primeng/table'
-import {LocationProduct} from '../../../../api/location-level/location-product/location-product.model'
+import {SaleProductLookup} from '../../../../api/cross-tier/product/sale-product-lookup.model'
 import {SaleStatus} from '../../../../api/location-level/sale/sale-status.enum'
 import {
   AlternativeUnitsFinderPipe
@@ -24,7 +24,7 @@ import {
 } from '../../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
 import {ProductLabelPipe} from '../../../../utils/pipes/product-label.pipe'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
-import {LocationProductLookupComponent} from '../../location-product-lookup/location-product-lookup.component'
+import {SaleProductLookupComponent} from '../../sale-product-lookup/sale-product-lookup.component'
 import {SaleFormContext} from '../form-utils/sale-form-context'
 import {SaleLineFormDefinition} from '../form-utils/sale-line-form.definition'
 
@@ -43,7 +43,7 @@ import {SaleLineFormDefinition} from '../form-utils/sale-line-form.definition'
     UnitCurrencyPipe,
     UnitConversionDescriptorPipe,
     ConversionContextPipe,
-    LocationProductLookupComponent,
+    SaleProductLookupComponent,
     UnitConvertPipe,
     EmptyRowComponent
   ]
@@ -73,7 +73,7 @@ export class SaleLinesComponent {
     this.unitConversionGraphIsLoading() ? 'Loading ...' : 'No Sale lines added yet.'
   )
 
-  addSaleLine(product: LocationProduct) {
+  addSaleLine(product: SaleProductLookup) {
     const alreadyAdded = this.saleLines().some(l => l.referenceNumber === product.referenceNumber)
     if (!alreadyAdded) {
       const newLine = SaleLineFormDefinition.createFromProduct(product)

@@ -1,5 +1,5 @@
 @if (canAddOrEditProducts()) {
-  <rts-product-lookup (productSelected)="addSaleLine($event)" [selectedProductIds]="selectedProductIds()"/>
+  <rts-sale-product-lookup (productSelected)="addSaleLine($event)" [selectedProductIds]="selectedProductIds()"/>
 }
 
 <p-table [value]="saleLines()" dataKey="referenceNumber">

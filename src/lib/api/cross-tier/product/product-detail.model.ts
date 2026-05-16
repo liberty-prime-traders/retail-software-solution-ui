@@ -1,16 +1,13 @@
 import {PaginatedModel} from '../../util/paginated-api/paginated.model'
+import {ProductCore} from './product-core.model'
 import {ProductStatus} from './product-status.enum'
 
-export interface BaseProduct extends PaginatedModel {
-  productName?: string
+export interface ProductDetail extends ProductCore, PaginatedModel {
+  baseUnit?: string
+  description?: string
+  status?: ProductStatus
   createdBy?: string
   createdOn?: number
-  description?: string
-  productGroupName?: string
-  status?: ProductStatus
-  baseUnit?: string
-  baseUnitId?: string
   categoryId?: string
   productGroupId?: string
-  stockBalance?: number
 }

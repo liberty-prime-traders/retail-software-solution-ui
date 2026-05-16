@@ -1,6 +1,6 @@
 import {inject} from '@angular/core'
 import {Validators} from '@angular/forms'
-import {BaseProduct} from '../../../api/cross-tier/product/base-product.model'
+import {ProductDetail} from '../../../api/cross-tier/product/product-detail.model'
 import {ProductSearchParameters} from '../../../api/cross-tier/product/product-search-parameters.model'
 import {ProductStatus} from '../../../api/cross-tier/product/product-status.enum'
 import {ProductGroupService} from '../../../api/organization-level/product-group/product-group.service'
@@ -9,7 +9,7 @@ import {BaseFilterService} from '../../../utils/services/base-filter.service'
 import {ProductFilterHelper} from './product-filter-helper'
 
 
-export abstract class ProductFilterService<PRODUCT extends BaseProduct>
+export abstract class ProductFilterService<PRODUCT extends ProductDetail>
   extends BaseFilterService<PRODUCT, ProductSearchParameters> {
 
   private readonly productGroupService = inject(ProductGroupService)
