@@ -5,10 +5,7 @@ import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Divider} from 'primeng/divider'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
-import {SalePayment} from '../../../../api/location-level/sale-payment/sale-payment.model'
-import {SaleStatus} from '../../../../api/location-level/sale/sale-status.enum'
-import {Sale} from '../../../../api/location-level/sale/sale.model'
-import {SaleService} from '../../../../api/location-level/sale/sale.service'
+import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
 import {SaleFormContext} from '../form-utils/sale-form-context'
 import {SaleFormDefinition} from '../form-utils/sale-form.definition'
@@ -37,66 +34,21 @@ import {SalePaymentsGridComponent} from '../sale-payments-grid/sale-payments-gri
 export class SaleSummaryComponent {
 
   private readonly context = inject(SaleFormContext)
-  private readonly saleService = inject(SaleService)
+  private readonly saleSessionService = inject(SaleSessionService)
 
   readonly saleForm = this.context.saleForm
   readonly saleFormFieldMap = SaleFormDefinition.fieldMap
-  readonly orderTotal = this.context.orderTotal
-  readonly totalPaid = this.context.totalPaid
-  readonly balanceDue = this.context.balanceDue
-  readonly originalSale =  this.context.originalSale
+  readonly saleSession =  this.context.saleSession
   readonly paymentsCount = computed(() => this.context.payments().length)
-  readonly originalSaleStatus = computed(() => this.originalSale()?.status)
-  readonly failureMessages = this.saleService.selectFailureMessages
-
-  readonly canMakeChangesToTheSale = computed(() =>
-    !this.originalSale() || this.originalSaleStatus() === SaleStatus.DRAFT
-  )
-
-  readonly canAddPaymentsToSale = computed(() => {
-    if (!this.originalSale() || this.originalSaleStatus() === SaleStatus.DRAFT) {
-      return true
-    }
-    if ([SaleStatus.VOIDED, SaleStatus.DISCARDED].includes(this.originalSaleStatus()!)) {
-      return false
-    }
-    return this.balanceDue() > 0
-  })
+  readonly failureMessages = this.saleSessionService.selectFailureMessages
+  readonly canMakeChangesToTheSale = computed(() => this.saleSession()?.uiOptions.canMakeChangesToTheSale)
+  readonly canAddPaymentsToSale = computed(() => this.saleSession()?.uiOptions.canAddPaymentsToSale)
 
   saveDraft() {
-    const payload = this.context.getSavableFormValue()
-    if (payload.id) {
-      this.saleService.updateDraft(payload, {onSuccess: this.onSuccessfulSave})
-    } else {
-      this.saleService.createDraft(payload, {onSuccess: this.onSuccessfulSave})
-    }
+    this.saleSessionService.saveAsDraft()
   }
 
   completeSale() {
-    const payload = this.context.getSavableFormValue()
-    if (payload.id) {
-      this.saleService.convertDraftToSale(payload, {onSuccess: this.onSuccessfulSave})
-    } else {
-      this.saleService.createSale(payload, {onSuccess: this.onSuccessfulSave})
-    }
-  }
-
-  private readonly onSuccessfulSave = (savedSale: Sale) => {
-    this.context.initializeForm(savedSale)
-  }
-
-  receivePaymentFromBackEnd(updatedSalePayment: Partial<SalePayment>) {
-    const originalSale = this.originalSale()
-    const payments = originalSale!.payments.map(
-      p => p.id === updatedSalePayment.id ? {...p, ...updatedSalePayment} : p
-    )
-    const updatedSale: Sale = {
-      ...originalSale!,
-      payments,
-      paymentStatus: updatedSalePayment.updatedSalePaymentStatus!
-    }
-    this.saleService.applyResponse(updatedSale)
-    this.context.initializeForm(updatedSale)
-    this.context.recalculateTotals()
+    this.saleSessionService.confirmSession({onSuccess: this.context.onSuccessfulSave})
   }
 }

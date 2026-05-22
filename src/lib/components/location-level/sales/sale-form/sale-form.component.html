@@ -1,60 +1,66 @@
-<rts-loading-container [loading]="saleIsLoading()">
-  <div class="flex flex-column" id="sale-form" rtsAutoStretch="sale-form" [useMinHeight]="true">
-    <rts-sale-form-header/>
+<rts-loading-container [loading]="sessionIsLoading()">
 
-    <div class="flex flex-grow-1">
-      <div class="flex flex-column flex-grow-1 pt-3">
-        <rts-form-field label="Customer" class="pl-3">
-          @if (canEditCustomer()) {
-            <div class="flex gap-2">
-              <p-select
-                [options]="customers()"
-                optionLabel="fullName"
-                optionValue="id"
-                [filter]="true"
-                class="flex-grow-1"
-                [formField]="saleForm.contactId"
-                placeholder="Select a Customer">
-              </p-select>
+  @if (showOpenSessions()) {
+    <rts-open-sale-sessions />
 
-              <p-toggle-button
-                onLabel="Walk-In"
-                offLabel="Walk-In"
-                (onChange)="respondToWalkInCustomer($event.checked)"
-                [formField]="saleForm.walkInCustomer">
-              </p-toggle-button>
-            </div>
+  } @else {
+    <div class="flex flex-column" id="sale-form" rtsAutoStretch="sale-form" [useMinHeight]="true">
+      <rts-sale-form-header/>
 
-          } @else {
-           {{ originalSaleRecord()?.contactName | nullSafe }}
+      <div class="flex flex-grow-1">
+        <div class="flex flex-column flex-grow-1 pt-3">
+          <rts-form-field label="Customer" class="pl-3">
+            @if (canEditCustomer()) {
+              <div class="flex gap-2">
+                <p-select
+                  [options]="customers()"
+                  optionLabel="fullName"
+                  optionValue="id"
+                  [filter]="true"
+                  class="flex-grow-1"
+                  (onChange)="onCustomerChange()"
+                  [formField]="saleForm.contactId"
+                  placeholder="Select a Customer">
+                </p-select>
+
+                <p-toggle-button
+                  onLabel="Walk-In"
+                  offLabel="Walk-In"
+                  (onChange)="respondToWalkInCustomer($event.checked)"
+                  [formField]="saleForm.walkInCustomer">
+                </p-toggle-button>
+              </div>
+
+            } @else {
+              {{ saleSession().contactLabel | nullSafe }}
+            }
+          </rts-form-field>
+
+          <rts-sale-lines class="p-3 flex-grow-1"/>
+
+          @if (canVoidSale()) {
+            <p-card class="border-noround pb-3">
+              <rts-forms-buttons
+                [hideSave]="true"
+                [hideReset]="true"
+                (delete)="voidSale()"
+                contentClass=""
+                deleteInProgressMessage="Processing request..."
+                deleteWarning="All payments have been voided, and products have not been expended"
+                [deleteLabel]="voidSaleLabel()">
+              </rts-forms-buttons>
+            </p-card>
           }
-        </rts-form-field>
+        </div>
 
-        <rts-sale-lines class="p-3 flex-grow-1"/>
-
-        @if (canVoidSale()) {
-          <p-card class="border-noround pb-3">
-            <rts-forms-buttons
-              [hideSave]="true"
-              [hideReset]="true"
-              (delete)="voidSale()"
-              contentClass=""
-              deleteInProgressMessage="Processing request..."
-              deleteWarning="All payments have been voided, and products have not been expended"
-              [deleteLabel]="voidSaleLabel()">
-            </rts-forms-buttons>
-          </p-card>
-        }
+        <rts-sale-payment-summary
+          class="col-3 p-0"
+          id="sale-payment-summary"
+          rtsAutoStretch="sale-payment-summary"
+          [useMinHeight]="true">
+        </rts-sale-payment-summary>
       </div>
-
-      <rts-sale-payment-summary
-        class="col-3 p-0"
-        id="sale-payment-summary"
-        rtsAutoStretch="sale-payment-summary"
-        [useMinHeight]="true">
-      </rts-sale-payment-summary>
     </div>
+  }
 
-
-  </div>
 </rts-loading-container>

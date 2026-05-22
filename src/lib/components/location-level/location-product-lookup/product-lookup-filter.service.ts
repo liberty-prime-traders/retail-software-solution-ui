@@ -46,7 +46,6 @@ export abstract class ProductLookupFilterService<LOOKUP extends ProductCore & Pa
         .toLowerCase()
       if (!haystack.includes(searchText)) return false
     }
-    if (externalParameters.excludeIds?.includes(product.id)) return false
-    return true
+    return !externalParameters.excludeIds?.includes(product.id)
   }
 }

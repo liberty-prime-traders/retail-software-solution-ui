@@ -1,4 +1,4 @@
-import {Component, computed, inject, Input, model, signal} from '@angular/core'
+import {Component, computed, inject, Input, model, output, signal} from '@angular/core'
 import {form, FormField} from '@angular/forms/signals'
 import {isNil} from 'lodash-es'
 import {Button} from 'primeng/button'
@@ -33,6 +33,8 @@ export class LocationProductFormComponent extends BaseFormComponent<LocationProd
   private readonly locationProductService = inject(LocationProductService)
   protected override apiService: LocationProductService = this.locationProductService
 
+  readonly productUpdated = output<void>()
+
   @Input()
   set locationProduct(locationProduct: LocationProduct | null) {
     if (locationProduct) {
@@ -61,17 +63,28 @@ export class LocationProductFormComponent extends BaseFormComponent<LocationProd
   }
 
   updateLocationProduct() {
-    const updatedLocationProduct = LocationProductFormDefinition.convertToBackendModel(this.locationProductFormValue())
+    const updatedLocationProduct = LocationProductFormDefinition.convertToBackendModel(
+      this.locationProductFormValue()
+    )
     if (updatedLocationProduct.id) {
-      this.locationProductService.put(updatedLocationProduct)
+      this.locationProductService.put(
+        updatedLocationProduct,
+        {onSuccess: () => this.productUpdated.emit()}
+      )
     }
   }
 
   deactivateProduct() {
-    this.locationProductService.deactivateProduct(this.locationProductFormValue()?.id)
+    this.locationProductService.deactivateProduct(
+      this.locationProductFormValue()?.id,
+      {onSuccess: () => this.productUpdated.emit()}
+    )
   }
 
   reactivateProduct() {
-    this.locationProductService.reactivateProduct(this.locationProductFormValue()?.id)
+    this.locationProductService.reactivateProduct(
+      this.locationProductFormValue()?.id,
+      {onSuccess: () => this.productUpdated.emit()}
+    )
   }
 }

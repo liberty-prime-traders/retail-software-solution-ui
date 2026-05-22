@@ -6,23 +6,21 @@
       (onClick)="hideSaleForm()">
     </p-button>
 
-    @let originalSale = originalSaleRecord();
-    @if (originalSale) {
+    @let originalSale = saleSession();
+    @if (originalSale.referenceNumber) {
       <div class="flex gap-3 align-items-center w-full">
         <span class="font-semibold">{{ originalSale.referenceNumber | nullSafe }}</span>
 
         @if (saleIsBeyondDraft()) {
           <div>&bullet;</div>
-          <span>
-                  {{ originalSale.soldBy | nullSafe }}
-                </span>
+          <span>{{ originalSale.soldBy | nullSafe }}</span>
           <div>&bullet;</div>
           {{ originalSale.dateSold | date }}
+          <div>&bullet;</div>
         }
 
-        <div>&bullet;</div>
-        <p-tag [severity]="originalSale.status | saleStatusSeverity">
-          {{ originalSale.status | prettifyEnum }}
+        <p-tag [severity]="originalSale.saleStatus | saleStatusSeverity">
+          {{ originalSale.saleStatus | prettifyEnum }}
         </p-tag>
 
         <div>&bullet;</div>

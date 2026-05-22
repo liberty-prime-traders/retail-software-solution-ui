@@ -97,3 +97,26 @@ $positions: left right center top bottom;
 .strike-through {
   text-decoration: line-through;
 }
+
+.pulse {
+  animation: fab-pulse 3s ease-in-out infinite;
+
+  &.primary-color {
+    --pulse-color: var(--p-primary-color);
+  }
+
+  &.green {
+    --pulse-color: #16a34a;
+  }
+
+  &.red {
+    --pulse-color: var(--p-red-500);
+  }
+}
+
+@keyframes fab-pulse {
+  0%   { box-shadow: 0 4px 18px color-mix(in srgb, var(--pulse-color) 50%, transparent), 0 0 0 0 color-mix(in srgb, var(--pulse-color) 35%, transparent); }
+  60%  { box-shadow: 0 4px 18px color-mix(in srgb, var(--pulse-color) 50%, transparent), 0 0 0 14px transparent; }
+  100% { box-shadow: 0 4px 18px color-mix(in srgb, var(--pulse-color) 50%, transparent), 0 0 0 0 transparent; }
+}
+

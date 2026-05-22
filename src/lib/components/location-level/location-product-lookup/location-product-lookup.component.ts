@@ -1,4 +1,4 @@
-import {computed, Directive, effect, inject, input, OnInit, output, untracked} from '@angular/core'
+import {Component, computed, Directive, effect, inject, input, OnInit, output, untracked} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {Subscription} from 'rxjs'
 import {ProductCore} from '../../../api/cross-tier/product/product-core.model'
@@ -13,7 +13,7 @@ import {toSelectItems} from '../../../utils/types/select-item.type'
 import {HasFilteredDataComponent} from '../../reusable/has-filtered-data.component'
 import {ProductLookupFilterService} from './product-lookup-filter.service'
 
-@Directive()
+@Component({selector: 'rts-product-lookup', template: ''})
 export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore & PaginatedModel>
   extends HasFilteredDataComponent implements OnInit {
 

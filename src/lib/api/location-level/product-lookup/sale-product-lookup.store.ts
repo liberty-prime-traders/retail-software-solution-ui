@@ -7,5 +7,5 @@ import {createPaginatedBaseStore, PaginatedBaseStore} from '../../util/paginated
 export class SaleProductLookupStore extends createPaginatedBaseStore<SaleProductLookup, ProductSearchParameters>()
   implements PaginatedBaseStore<SaleProductLookup, ProductSearchParameters> {
 
-  readonly basePath = 'location-products/for-sale'
+  readonly basePath = 'location-products/search-for-sale'
 }

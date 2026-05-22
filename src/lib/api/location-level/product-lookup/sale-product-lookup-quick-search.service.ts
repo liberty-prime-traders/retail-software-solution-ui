@@ -11,6 +11,7 @@ export class SaleProductLookupQuickSearchService
 
   protected override readonly defaultCursor = ''
   protected override readonly BATCH_SIZE = 10
+  protected override readonly urlSuffix: string = ''
 
   constructor(protected override readonly store: SaleProductLookupStore) {
     super(store)

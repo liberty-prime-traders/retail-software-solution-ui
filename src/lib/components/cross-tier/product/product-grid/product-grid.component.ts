@@ -72,4 +72,9 @@ export class ProductGridComponent<PRODUCT extends ProductDetail> {
   onRowCollapse(): void {
     this.rowIsExpanded.set(false)
   }
+
+  onProductUpdated() {
+    this.productFilterService.reloadClientSideFilteredEntities()
+  }
+  
 }

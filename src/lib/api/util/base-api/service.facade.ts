@@ -16,7 +16,6 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
   readonly selectAll: Signal<RESPONSE[]>
   readonly selectProcessingStatus
   readonly selectFailureMessages
-  readonly processingIsUnderWay
   readonly selectCount: Signal<number>
   private readonly defaultApiRequestConfig: ApiRequestConfig = {
     upsertOnSuccess: false,
@@ -31,7 +30,6 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     this.selectProcessingStatus = this.store.processingStatus
     this.selectFailureMessages = this.store.failureMessages
     this.selectCount = computed(() => this.selectAll().length)
-    this.processingIsUnderWay = computed(() => this.selectProcessingStatus() === ProcessingStatus.IN_PROGRESS)
   }
 
   selectForId(id: EntityId): RESPONSE | undefined {

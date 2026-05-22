@@ -1,0 +1,56 @@
+<div class="p-3 flex flex-column gap-3">
+
+  <div class="flex flex-column">
+    <span class="text-2xl bold">My Open Sales</span>
+    <span class="info-message">
+      These are not drafts. These are sales that have been started but not completed.
+      You can resume and complete/discard any of them.
+    </span>
+  </div>
+
+  <p-table [value]="myOpenSessions()" [loading]="gridLoading()" dataKey="id">
+
+    <ng-template pTemplate="caption">
+      <div class="flex justify-content-end gap-4">
+        <p-button label="Exit" severity="secondary" icon="pi pi-times" (onClick)="hideSaleForm()"/>
+        <p-button label="Start New Sale Anyway" icon="pi pi-plus" (onClick)="proceedToNewSession()"/>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Created By</th>
+        <th>Created On</th>
+        <th>Last Accessed By</th>
+        <th>Last Accessed At</th>
+        <th>Last Updated At</th>
+        <th>Contact</th>
+        <th>Payable Total</th>
+        <th>Notes</th>
+        <th style="width: 50px"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-session>
+      <tr>
+        <td>{{ session.createdBy }}</td>
+        <td>{{ session.createdAt | date }}</td>
+        <td>{{ session.lastAccessedBy | nullSafe }}</td>
+        <td>{{ session.lastAccessedAt | date }}</td>
+        <td>{{ session.lastUpdatedAt | date }}</td>
+        <td>{{ session.contactLabel }}</td>
+        <td>{{ session.payableTotal | currency }}</td>
+        <td>{{ session.notes | nullSafe}}</td>
+        <td>
+          <p-button
+            icon="pi pi-arrow-right"
+            text
+            (onClick)="resumeSession(session.id)">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <rts-error-summary [regularErrorMessages]="failureMessages()"/>
+</div>

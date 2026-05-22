@@ -29,7 +29,6 @@ export abstract class BaseFilterService<ENTITY extends PaginatedModel, PARAMETER
 
   private readonly asyncFilterFormValue$: Observable<unknown> = this.filterForm.valueChanges.pipe(
     startWith(this.filterForm.value),
-    tap(() => console.log('Filter form value changed:', this.filterForm.value)),
     debounceTime(1000),
   )
 

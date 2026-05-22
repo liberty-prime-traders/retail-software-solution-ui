@@ -9,14 +9,12 @@ import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
 import {Menu} from 'primeng/menu'
 import {SelectButton} from 'primeng/selectbutton'
-import {SalePayment, SalePaymentCreateRequest} from '../../../../api/location-level/sale-payment/sale-payment.model'
-import {SalePaymentService} from '../../../../api/location-level/sale-payment/sale-payment.service'
-import {SaleStatus} from '../../../../api/location-level/sale/sale-status.enum'
+import {SaleSessionPaymentAddRequest} from '../../../../api/location-level/sale_session/sale-session-requests.model'
+import {SalePayment} from '../../../../api/location-level/sale_session/sale-session.model'
+import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {PaymentOption} from '../../../../api/organization-level/payment-option/payment-option.model.'
 import {PaymentOptionService} from '../../../../api/organization-level/payment-option/payment-option.service'
-import {SequentialIdGenerator} from '../../../../utils/services/sequential-id-generator'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
-import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
 import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
@@ -36,29 +34,21 @@ import {SalePaymentFormDefinition} from '../form-utils/sale-payment-form-definit
     InputText,
     DatePicker,
     FormField,
-    CurrencyPipe,
-    ErrorSummaryComponent
+    CurrencyPipe
   ]
 })
 export class SalePaymentFormComponent implements OnInit {
   private readonly paymentOptionService = inject(PaymentOptionService)
-  private readonly sequentialIdGenerator = inject(SequentialIdGenerator)
   private readonly context = inject(SaleFormContext)
-  private readonly salePaymentService = inject(SalePaymentService)
   private readonly zonedDatesService = inject(ZonedDatesService)
+  private readonly saleSessionService = inject(SaleSessionService)
 
-  readonly paymentReturnedFromBackend = output<Partial<SalePayment>>()
   readonly FormFieldDirection = FormFieldLayout
   private readonly otherPaymentOption: Partial<PaymentOption> = {id: 'other', name: 'Other'}
-  private readonly preselectedOverride = signal<Partial<PaymentOption>[]>([])
   readonly paymentOptions: Signal<Partial<PaymentOption>[]> = this.paymentOptionService.selectAll
-
-  readonly paymentsFailureMessages = this.salePaymentService.selectFailureMessages
-  readonly originalSale = this.context.originalSale
+  readonly paymentOptionsLoading = this.paymentOptionService.selectLoading
+  private readonly preselectedOverride = signal<Partial<PaymentOption>[]>([])
   private readonly paymentFormValue = signal(SalePaymentFormDefinition.createInitial)
-  private readonly paymentOptionsLoading = this.paymentOptionService.selectLoading
-  private readonly paymentsLoading = this.salePaymentService.selectLoading
-  readonly dependenciesLoading = computed(() => this.paymentOptionsLoading() || this.paymentsLoading())
 
   readonly paymentForm = form(this.paymentFormValue, s => {
     apply(s, SalePaymentFormDefinition.salePaymentFormSchema)
@@ -109,52 +99,27 @@ export class SalePaymentFormComponent implements OnInit {
     }
   }
 
-  commitPaymentFormToContext() {
+  addPayment() {
     const salePayment = this.buildSalePaymentCreateRequest()
-    if (this.originalSale()?.status === SaleStatus.CONFIRMED) {
-      this.salePaymentService.post(salePayment, {onSuccess: this.commitPaymentToContext})
-    } else {
-      this.commitPaymentToContext(this.enrichForTempDisplay(salePayment))
-    }
-  }
-
-  private buildSalePaymentCreateRequest(): SalePaymentCreateRequest {
-    const paymentFormValue = this.paymentFormValue()
-    const methodId = paymentFormValue.paymentMethodId
-    const paymentDate = paymentFormValue.useNowForDate ? null : paymentFormValue.paymentDate
-    return {
-      paymentMethodId: methodId,
-      amount: paymentFormValue.amount!,
-      reference: paymentFormValue.reference,
-      paymentDate: this.zonedDatesService.toZonedISOString(paymentDate),
-      saleId: this.originalSale()?.id as string ?? ''
-    }
-  }
-
-  private readonly commitPaymentToContext = (updatedSalePayment: Partial<SalePayment>)=> {
-    const originalSale = this.originalSale()
-
-    if (!!originalSale && !!updatedSalePayment.id) {
-      this.paymentReturnedFromBackend.emit(updatedSalePayment)
-    } else {
-      this.context.addPayment(updatedSalePayment)
-    }
-
-    this.paymentFormValue.set({
-      ...SalePaymentFormDefinition.createInitial,
-      paymentMethodId: this.paymentFormValue().paymentMethodId
+    this.saleSessionService.addPayment(salePayment, {
+      onSuccess: (updatedSession) => {
+        this.paymentFormValue.set({
+          ...SalePaymentFormDefinition.createInitial,
+          paymentMethodId: this.paymentFormValue().paymentMethodId
+        })
+        this.context.onSuccessfulSave(updatedSession)
+      }
     })
   }
 
-  private enrichForTempDisplay(salePaymentCreateRequest: SalePaymentCreateRequest): Partial<SalePayment> {
-    const paymentMethodName = this.paymentOptionsMap().get(salePaymentCreateRequest.paymentMethodId)?.name ?? ''
-    const paymentDate = salePaymentCreateRequest.paymentDate
-      ? new Date(salePaymentCreateRequest.paymentDate) : undefined
+  private buildSalePaymentCreateRequest(): SaleSessionPaymentAddRequest {
+    const paymentFormValue = this.paymentFormValue()
+    const paymentDate = paymentFormValue.useNowForDate ? null : paymentFormValue.paymentDate
     return {
-      ...salePaymentCreateRequest,
-      paymentMethodName,
-      paymentDateFormModel: paymentDate,
-      fakeId: this.sequentialIdGenerator.next()
+      paymentMethodId: paymentFormValue.paymentMethodId,
+      amount: paymentFormValue.amount!,
+      reference: paymentFormValue.reference,
+      paymentDate: this.zonedDatesService.toZonedISOString(paymentDate)
     }
   }
 }

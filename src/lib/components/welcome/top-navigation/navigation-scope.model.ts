@@ -37,5 +37,5 @@ export const LocationPillConfig: ScopePillConfig = {
   icon: 'pi pi-map-marker',
   placeholder: 'Select a location',
   routerLink: '/secure/location-dashboard',
-  activeBgColor: '#FCE8F0'
+  activeBgColor: '#E1F5EE'
 }

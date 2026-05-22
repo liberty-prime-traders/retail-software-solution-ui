@@ -1,14 +1,11 @@
 import {CurrencyPipe, DatePipe, NgClass} from '@angular/common'
-import {Component, inject, output, signal} from '@angular/core'
-import {EntityId} from '@ngrx/signals/entities'
+import {Component, inject, signal} from '@angular/core'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {InputText} from 'primeng/inputtext'
 import {Tag} from 'primeng/tag'
-import {SalePayment} from '../../../../api/location-level/sale-payment/sale-payment.model'
-import {SalePaymentService} from '../../../../api/location-level/sale-payment/sale-payment.service'
-import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
-import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
+import {SalePayment, SaleSession} from '../../../../api/location-level/sale_session/sale-session.model'
+import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {SaleFormContext} from '../form-utils/sale-form-context'
 
 @Component({
@@ -21,47 +18,42 @@ import {SaleFormContext} from '../form-utils/sale-form-context'
     DatePipe,
     CurrencyPipe,
     NgClass,
-    InputText,
-    LoadingContainerComponent,
-    ErrorSummaryComponent
+    InputText
   ]
 })
 export class SalePaymentsGridComponent {
   private readonly context = inject(SaleFormContext)
-  private readonly salePaymentService = inject(SalePaymentService)
+  private readonly saleSessionService = inject(SaleSessionService)
 
-  readonly paymentReturnedFromBackend = output<Partial<SalePayment>>()
   readonly payments = this.context.payments
-  readonly paymentsFailureMessages = this.salePaymentService.selectFailureMessages
-  readonly paymentServiceLoading = this.salePaymentService.selectLoading
+  readonly paymentGettingVoided = signal('')
 
-  readonly paymentGettingVoided = signal<EntityId>('')
-
-  removePayment(payment: Partial<SalePayment>) {
-    if (payment.id) {
-      if (this.paymentGettingVoided() === payment.id) {
+  removePayment(payment: SalePayment) {
+    if (payment.identity.id) {
+      if (this.paymentGettingVoided() === payment.identity.id) {
         this.paymentGettingVoided.set('')
       } else {
-        this.paymentGettingVoided.set(payment.id)
+        this.paymentGettingVoided.set(payment.identity.id)
       }
-    } else if (payment.fakeId !== undefined) {
-      this.context.removePayment(payment.fakeId)
+    } else if (payment.identity.transientId) {
+      this.saleSessionService.removePayment(
+        {identity: payment.identity},
+        {onSuccess: this.context.onSuccessfulSave}
+      )
     }
   }
 
-  confirmVoidPayment(reason: string) {
+  confirmVoidPayment(voidReason: string) {
     if (this.paymentGettingVoided()) {
-      this.salePaymentService.voidPayment(
-        {salePaymentId: this.paymentGettingVoided(), reason},
+      this.saleSessionService.removePayment(
+        {identity: {id: this.paymentGettingVoided()}, voidReason},
         {onSuccess: this.onSuccessfulVoid}
       )
     }
   }
 
-  private readonly onSuccessfulVoid = (updatedPayment: SalePayment) => {
-    if (updatedPayment.id === this.paymentGettingVoided()) {
-      this.paymentReturnedFromBackend.emit(updatedPayment)
-      this.paymentGettingVoided.set('')
-    }
+  private readonly onSuccessfulVoid = (updatedSession: SaleSession) => {
+    this.paymentGettingVoided.set('')
+    this.context.onSuccessfulSave(updatedSession)
   }
 }

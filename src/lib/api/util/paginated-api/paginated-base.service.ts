@@ -14,6 +14,7 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
 
   protected abstract readonly defaultCursor: CURSOR
   protected readonly BATCH_SIZE: number = 100
+  protected readonly urlSuffix: string = 'search'
   private readonly paginatedEntitiesVersion = signal(0)
 
   readonly requireClientSideFilter: Signal<boolean>
@@ -87,7 +88,7 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
       requestedSize: this.BATCH_SIZE,
       parameters
     }
-    this.patchApiRequestConfig({urlSuffix: 'search'})
+    this.patchApiRequestConfig({urlSuffix: this.urlSuffix})
     return this.httpClient.post<PageResponse<RESPONSE>>(this.getBasePath(), pageRequest).pipe(
       first(),
       tap((response: PageResponse<RESPONSE>) => this.finishSavingPageWithSuccess(response, parameters)),

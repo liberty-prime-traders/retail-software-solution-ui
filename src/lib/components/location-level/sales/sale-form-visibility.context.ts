@@ -1,6 +1,6 @@
 import {Injectable, signal} from '@angular/core'
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class SaleFormVisibilityContext {
 
   private readonly _formIsVisible = signal(false)

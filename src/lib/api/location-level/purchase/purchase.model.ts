@@ -1,4 +1,5 @@
 import {EntityId} from '@ngrx/signals/entities'
+import {ProductCore} from '../../cross-tier/product/product-core.model'
 import {BaseModel} from '../../util/base-api/base.model'
 import {PurchaseDelivery} from '../delivery/purchase-delivery.model'
 import {LocationProduct} from '../location-product/location-product.model'
@@ -26,7 +27,7 @@ export interface Purchase extends BaseModel {
 }
 
 export interface PurchaseLine extends BaseModel {
-  locationProduct: LocationProduct
+  locationProduct: ProductCore
   locationProductId: EntityId
   quantityOrdered: number
   unitId: string

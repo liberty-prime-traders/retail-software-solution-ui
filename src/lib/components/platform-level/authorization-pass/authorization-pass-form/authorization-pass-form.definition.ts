@@ -1,4 +1,4 @@
-import {applyWhen, required, schema} from '@angular/forms/signals'
+import {required, schema} from '@angular/forms/signals'
 import {AuthorizationPass} from '../../../../api/platform-level/authorization-pass/authorization-pass.model'
 import {PassType} from '../../../../api/platform-level/authorization-pass/pass-type.enum'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
@@ -30,10 +30,9 @@ export namespace AuthorizationPassFormDefinition {
   export const formSchema = schema<AuthorizationPassFormModel>((path) => {
     required(path.passType)
 
-    applyWhen(
+    required(
       path.assignedToId,
-      ({valueOf}) => valueOf(path.id) === '',
-      (assignedToPath) => required(assignedToPath)
+      {when: ({valueOf}) => valueOf(path.id) === ''}
     )
   })
 

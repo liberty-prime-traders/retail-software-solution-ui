@@ -21,7 +21,8 @@ export class UnitFactorResolver implements PipeTransform {
   private readonly unitConversionService = inject(UnitConversionService)
 
   transform(sourceUnitId: string, targetUnitId: string): number {
-    return this.unitConversionService.resolveFactor({sourceUnitId, targetUnitId, value: 0}) ?? 0
+    const context: ConversionContext = {sourceUnitId, targetUnitId, value: 0, conversionFactor: 1}
+    return this.unitConversionService.resolveFactor(context) ?? 0
   }
 }
 

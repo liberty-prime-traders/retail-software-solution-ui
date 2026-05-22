@@ -1,4 +1,4 @@
-<rts-loading-container [loading]="dependenciesLoading()">
+<rts-loading-container [loading]="paymentOptionsLoading()">
   <div class="flex flex-column gap-3 p-2">
 
     <div class="flex gap-1">
@@ -65,12 +65,9 @@
           label="Add Payment"
           class="mt-2"
           [disabled]="paymentForm().invalid()"
-          (onClick)="commitPaymentFormToContext()">
+          (onClick)="addPayment()">
         </p-button>
       </div>
     </div>
-
-    <rts-error-summary [regularErrorMessages]="paymentsFailureMessages()"/>
-
   </div>
 </rts-loading-container>

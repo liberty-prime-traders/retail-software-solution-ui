@@ -20,17 +20,19 @@
     </p-select>
   </rts-form-field>
 
-  <rts-form-field [required]="true" label="Base Unit" for="baseUnitId" [labelColumnSize]="labelSize">
-    <p-select id="baseUnitId"
-              class="flex-grow-1"
-              [options]="unitValues()"
-              [group]="true"
-              filterBy="label"
-              [filter]="true"
-              [formField]="productForm.baseUnitId"
-              placeholder="Select a Unit" >
-    </p-select>
-  </rts-form-field>
+  @if (!originalProduct()) {
+    <rts-form-field [required]="true" label="Base Unit" for="baseUnitId" [labelColumnSize]="labelSize">
+      <p-select id="baseUnitId"
+                class="flex-grow-1"
+                [options]="unitValues()"
+                [group]="true"
+                filterBy="label"
+                [filter]="true"
+                [formField]="productForm.baseUnitId"
+                placeholder="Select a Unit" >
+      </p-select>
+    </rts-form-field>
+  }
 
   <rts-form-field  label="Description" for="description" [labelColumnSize]="labelSize">
     <input id="description" pInputText [formField]="productForm.description" />

@@ -1,7 +1,7 @@
-import {applyWhen, minLength, pattern, required, schema, SchemaPath} from '@angular/forms/signals'
-import {Contact} from '../../../../api/organization-level/contact/contact.model'
+import {minLength, pattern, required, schema} from '@angular/forms/signals'
 import {ContactStatus} from '../../../../api/organization-level/contact/contact-status.enum'
 import {ContactType} from '../../../../api/organization-level/contact/contact-type.enum'
+import {Contact} from '../../../../api/organization-level/contact/contact.model'
 import {IdentityType} from '../../../../api/organization-level/contact/identity-type.enum'
 
 export namespace ContactFormDefinition {
@@ -58,16 +58,14 @@ export namespace ContactFormDefinition {
 
     pattern(path.phone, /^[0-9]{10}$/, { message: 'Phone number must be 10 digits' })
 
-    applyWhen(
+    required(
       path.firstName,
-      ({ valueOf }) => valueOf(path.identityType) === IdentityType.INDIVIDUAL,
-      (firstNamePath: SchemaPath<string>) => { required(firstNamePath) }
+      {when: ({ valueOf }) => valueOf(path.identityType) === IdentityType.INDIVIDUAL}
     )
 
-    applyWhen(
+    required(
       path.companyName,
-      ({ valueOf }) => valueOf(path.identityType) === IdentityType.ORGANIZATION,
-      (companyNamePath: SchemaPath<string>) => { required(companyNamePath) }
+      {when: ({ valueOf }) => valueOf(path.identityType) === IdentityType.ORGANIZATION}
     )
   })
 

@@ -1,61 +1,57 @@
-import {computed, inject, Injectable, signal} from '@angular/core'
+import {computed, Injectable, signal} from '@angular/core'
 import {form} from '@angular/forms/signals'
-import {SalePayment} from '../../../../api/location-level/sale-payment/sale-payment.model'
-import {calculateTotalPaid, Sale} from '../../../../api/location-level/sale/sale.model'
-import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
-import {SaleFormVisibilityContext} from '../sale-form-visibility.context'
+import {defaultSaleSession} from '../../../../api/location-level/sale_session/sale-session-default.value'
+import {SaleSession} from '../../../../api/location-level/sale_session/sale-session.model'
 import {SaleFormDefinition} from './sale-form.definition'
+import {SaleLineFormDefinition} from './sale-line-form.definition'
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class SaleFormContext {
 
-  private readonly zonedDatesService = inject(ZonedDatesService)
-  private readonly saleFormVisibilityContext = inject(SaleFormVisibilityContext)
+  private readonly _saleSession = signal<SaleSession>(defaultSaleSession())
+  private readonly _defaultToOpenSessionsView = signal(true)
+  private readonly _productIdsForTouchedLines = signal(new Set<string>())
 
-  private readonly _originalSale = signal<Sale | null>(null)
-  readonly originalSale = this._originalSale.asReadonly()
+  readonly defaultToOpenSessionsView = this._defaultToOpenSessionsView.asReadonly()
+  readonly currentContactId = computed(() => this.saleSession().contactId)
+  readonly saleSession = this._saleSession.asReadonly()
   private readonly saleFormValue = signal(SaleFormDefinition.createDefault())
-  readonly saleForm = form(this.saleFormValue, SaleFormDefinition.saleFormSchema)
-  readonly saleLines = computed(() => this.saleFormValue().lines)
-  readonly orderTotal = computed(() => this.saleFormValue().orderTotal)
-  readonly totalPaid = computed(() => this.saleFormValue().totalPaid)
-  readonly balanceDue = computed(() => this.saleFormValue().balanceDue)
-  readonly payments = signal<Partial<SalePayment>[]>([])
+  readonly productIdsForTouchedLines = this._productIdsForTouchedLines.asReadonly()
+  readonly saleLines = computed(() => this.saleFormValue().saleLines)
+  readonly payments = computed(() => this.saleSession()?.salePayments ?? [])
 
-  recalculateTotals() {
-    const orderTotal = this.saleFormValue().lines.reduce(
-      (sum, line) => sum + (line.quantity * line.unitPrice), 0
-    )
-    const totalPaid = calculateTotalPaid(this.payments())
-    this.saleForm.orderTotal().value.set(orderTotal)
-    this.saleForm.totalPaid().value.set(totalPaid)
-    this.saleForm.balanceDue().value.set(orderTotal - totalPaid)
+  readonly saleForm = form(
+    this.saleFormValue,
+    SaleFormDefinition.createSaleFormSchema(this.productIdsForTouchedLines)
+  )
+
+  readonly onSuccessfulSave = (updatedSession: SaleSession) => {
+    this._saleSession.set(updatedSession)
+    this._productIdsForTouchedLines.set(new Set<string>())
+    this.saleForm().reset(SaleFormDefinition.convertToFormModel(updatedSession))
   }
 
-  addPayment(payment: Partial<SalePayment>) {
-    this.payments.update(payments => [payment, ...payments])
-    this.recalculateTotals()
+  readonly selectOpenSession = (openSession: SaleSession) => {
+    this.hideOpenSessions()
+    this.onSuccessfulSave(openSession)
   }
 
-  removePayment(fakeId?: number) {
-    if (fakeId !== undefined) {
-      this.payments.update(payments => payments.filter(p => p.fakeId !== fakeId))
-      this.recalculateTotals()
+  showOpenSessions() {
+    this._defaultToOpenSessionsView.set(true)
+  }
+
+  hideOpenSessions() {
+    this._defaultToOpenSessionsView.set(false)
+  }
+
+  onSaleLineTouched(saleLine: Partial<SaleLineFormDefinition.SaleLineFormModel>) {
+    const locationProductId = saleLine.locationProductId!
+    const productIdsForTouchedLines = this.productIdsForTouchedLines()
+    if (saleLine.unitId === saleLine.snapshotUnitId && saleLine.quantity === saleLine.snapshotQuantity) {
+      productIdsForTouchedLines.delete(locationProductId)
+    } else {
+      productIdsForTouchedLines.add(locationProductId)
     }
-  }
-
-  initializeForm(sale: Sale | null) {
-    this._originalSale.set(sale)
-    this.saleForm().reset(SaleFormDefinition.convertToFormModel(sale))
-    this.payments.set(sale?.payments ?? [])
-    if (sale) {
-      this.saleFormVisibilityContext.showForm()
-    }
-  }
-
-  getSavableFormValue(): Partial<Sale> {
-    return SaleFormDefinition.convertToBackendModel(
-      this.saleFormValue(), this.payments(), this.zonedDatesService
-    )
+    this._productIdsForTouchedLines.set(new Set(productIdsForTouchedLines))
   }
 }

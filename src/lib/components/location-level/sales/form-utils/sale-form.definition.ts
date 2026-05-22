@@ -1,118 +1,74 @@
-import {
-  applyEach,
-  applyWhen,
-  disabled,
-  max,
-  required,
-  RootFieldContext,
-  schema,
-  SchemaPath
-} from '@angular/forms/signals'
-import {SalePayment} from '../../../../api/location-level/sale-payment/sale-payment.model'
-import {calculateTotalPaid, Sale, SaleLine, SalePaymentRecord} from '../../../../api/location-level/sale/sale.model'
-import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
+import {Signal} from '@angular/core'
+import {applyEach, disabled, max, required, RootFieldContext, schema} from '@angular/forms/signals'
+import {SaleSession} from '../../../../api/location-level/sale_session/sale-session.model'
 import {SaleLineFormDefinition} from './sale-line-form.definition'
 
 export namespace SaleFormDefinition {
 
   export interface SaleFormModel {
-    id: string,
     contactId: string
     walkInCustomer: boolean | null
-    lines: SaleLineFormDefinition.SaleLineModel[]
-    orderTotal: number
-    totalPaid: number
-    balanceDue: number
+    saleLines: SaleLineFormDefinition.SaleLineFormModel[]
+    payableTotal: number
+    paymentTotal: number
+    balance: number
   }
+
 
   export const fieldMap: Map<string, string> = new Map([
     ['contactId', 'Customer'],
     ['walkInCustomer', 'Walk-in Customer'],
-    ['lines', 'Sale Lines'],
-    ['orderTotal', 'Order Total'],
-    ['totalPaid', 'Total Paid'],
-    ['balanceDue', 'Balance Due']
+    ['saleLines', 'Sale Lines'],
+    ['payableTotal', 'Total Payable'],
+    ['paymentTotal', 'Total Paid'],
+    ['balance', 'Balance Due']
   ])
 
   export const createDefault = (): SaleFormModel => ({
-    id: '',
     contactId: '',
     walkInCustomer: null,
-    lines: [],
-    orderTotal: 0,
-    totalPaid: 0,
-    balanceDue: 0
+    saleLines: [],
+    paymentTotal: 0,
+    balance: 0,
+    payableTotal: 0
   })
 
-  export const saleFormSchema = schema<SaleFormModel>((path) => {
-    applyWhen(
-      path.contactId,
-      ({valueOf}: RootFieldContext<string>) => !valueOf(path.walkInCustomer),
-      (contactIdPath: SchemaPath<string>) => required(contactIdPath)
-    )
+  export const createSaleFormSchema = (productIdsForTouchedLines: Signal<Set<string>>) =>
+    schema<SaleFormModel>((path) => {
+      applyEach(path.saleLines, SaleLineFormDefinition.createSaleLineSchema(productIdsForTouchedLines))
 
-    disabled(
-      path.contactId,
-      ({valueOf}: RootFieldContext<string>) => !!valueOf(path.walkInCustomer)
-    )
+      required(
+        path.contactId,
+        {when: ({valueOf}) => !valueOf(path.walkInCustomer)}
+      )
 
-    max(
-      path.balanceDue,
-      ({valueOf}) => valueOf(path.walkInCustomer) ? 0 : valueOf(path.orderTotal),
-      {message: 'Walk-in customers must pay in full'}
-    )
+      disabled(
+        path.contactId,
+        ({valueOf}: RootFieldContext<string>) => !!valueOf(path.walkInCustomer)
+      )
 
-    max(
-      path.totalPaid,
-      ({valueOf}) => valueOf(path.orderTotal),
-      {message: 'Total paid cannot exceed order total'}
-    )
+      max(
+        path.balance,
+        ({valueOf}) => valueOf(path.walkInCustomer) ? 0 : valueOf(path.payableTotal),
+        {message: 'Walk-in customers must pay in full'}
+      )
 
-    applyEach(path.lines, SaleLineFormDefinition.saleLineSchema)
-  })
+      max(
+        path.paymentTotal,
+        ({valueOf}) => valueOf(path.payableTotal),
+        {message: 'Total paid cannot exceed order total'}
+      )
+    })
 
-  export const convertToFormModel = (sale: Sale | null): SaleFormModel => {
-    if (!sale) return createDefault()
-    const totalPaid = calculateTotalPaid(sale.payments)
+  export const convertToFormModel = (sale: SaleSession): SaleFormModel => {
     return {
-      id: sale.id as string ?? '',
-      contactId: sale.contactId ?? '',
+      contactId: sale.contactId,
       walkInCustomer: sale.walkInCustomer ?? null,
-      lines: SaleLineFormDefinition.convertLinesToFormModel(sale.lines),
-      totalPaid,
-      orderTotal: sale.saleTotal ?? 0,
-      balanceDue: (sale.saleTotal ?? 0) - totalPaid
+      saleLines: SaleLineFormDefinition.mapSaleLines(sale.saleLines),
+      payableTotal: sale.totals.payableTotal,
+      paymentTotal: sale.totals.paymentTotal,
+      balance: sale.totals.balance
     }
   }
 
-  export const convertToBackendModel = (
-    formValue: SaleFormModel,
-    paymentsInput: Partial<SalePayment>[],
-    zonedDatesService: ZonedDatesService
-  ): Partial<Sale> => {
-
-    const lines: Partial<SaleLine>[] = formValue.lines.map(line => ({
-      id: line.id,
-      locationProductId: line.locationProductId,
-      quantity: line.quantity,
-      unitId: line.unitId
-    }))
-
-    const payments: Partial<SalePaymentRecord>[] = paymentsInput
-      .filter(p => p.amount && p.paymentMethodId)
-      .map(p => ({
-        paymentMethodId: p.paymentMethodId,
-        amount: p.amount,
-        reference: p.reference,
-        paymentDate: zonedDatesService.toZonedISOString(p.paymentDateFormModel)
-      }))
-
-    return {
-      id: formValue.id,
-      linesToAdd: lines.filter(l => !l.id),
-      linesToUpdate: lines.filter(l => l.id),
-      payments,
-      contactId: formValue.contactId
-    }
-  }
 }

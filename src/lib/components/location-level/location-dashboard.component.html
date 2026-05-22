@@ -25,12 +25,23 @@
     </p-card>
 
     @if (saleFormVisibilityContext.newSaleButtonIsVisible()) {
-      <a id="sale-button"
-         (click)="saleFormVisibilityContext.showForm()"
-         class="flex gap-1 justify-content-between align-items-center cursor-pointer floating bottom right">
-        <i class="pi pi-plus"></i>
-        <span>New Sale</span>
-      </a>
+      <div id="saleButton" class="floating bottom right flex align-items-center gap-1">
+
+        <p-button cdkDrag
+                  cdkDragRootElement="#saleButton"
+                  size="small"
+                  icon="pi pi-arrows-alt"
+                  rounded
+                  severity="success">
+        </p-button>
+
+        <a id="sale-button"
+           (click)="saleFormVisibilityContext.showForm()"
+           class="flex gap-1 justify-content-between align-items-center cursor-pointer pulse green">
+          <i class="pi pi-plus"></i>
+          <span>New Sale</span>
+        </a>
+      </div>
     }
   </div>
 }

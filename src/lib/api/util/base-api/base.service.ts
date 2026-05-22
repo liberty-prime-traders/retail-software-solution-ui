@@ -58,16 +58,25 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
   }
 
   delete(id?: EntityId): Subscription | undefined {
-    if (!id) {
+    return this.deleteRequest({id})
+  }
+
+  deleteRequest(apiRequest: ApiRequest<PAYLOAD, RESPONSE>): Subscription | undefined {
+    if (!apiRequest.id) {
       return
     }
     this.startApiRequest()
-    return this.httpClient.delete(this.getBasePath(id)).pipe(
+    return this.httpClient.delete<RESPONSE>(this.getBasePath(apiRequest.id), {body: apiRequest.body}).pipe(
       first(),
-      tap(() => this.finishDeletingWithSuccess(id)),
-      catchError((error: HttpErrorResponse) => this.setStoreError(error)),
+      tap((response) => {
+        this.finishDeletingWithSuccess(apiRequest.id!)
+        apiRequest.callbacks?.onSuccess?.(response)
+      }),
+      catchError((error: HttpErrorResponse) => {
+        apiRequest.callbacks?.onFail?.(error)
+        return this.setStoreError(error)
+      }),
       finalize(() => this.finalizeApiRequest())
-    )
-      .subscribe()
+    ).subscribe()
   }
 }

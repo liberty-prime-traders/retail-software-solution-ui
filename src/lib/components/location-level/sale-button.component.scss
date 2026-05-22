@@ -23,8 +23,6 @@
     box-shadow 0.2s ease,
     background 0.15s ease;
 
-  animation: fab-pulse 3s ease-out 1.5s infinite;
-
   .pi-plus {
     font-size: 14px;
     opacity: 0.9;
@@ -47,8 +45,3 @@
   }
 }
 
-@keyframes fab-pulse {
-  0%   { box-shadow: 0 4px 18px rgba(21,128,61,0.50), 0 0 0 0   rgba(21,128,61,0.35); }
-  60%  { box-shadow: 0 4px 18px rgba(21,128,61,0.50), 0 0 0 14px rgba(21,128,61,0); }
-  100% { box-shadow: 0 4px 18px rgba(21,128,61,0.50), 0 0 0 0   rgba(21,128,61,0); }
-}

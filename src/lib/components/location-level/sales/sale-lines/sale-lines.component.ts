@@ -1,12 +1,15 @@
 import {CurrencyPipe} from '@angular/common'
 import {Component, computed, inject} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {MessageService} from 'primeng/api'
+import {Button} from 'primeng/button'
 import {InputNumber} from 'primeng/inputnumber'
 import {Select} from 'primeng/select'
 import {TableModule} from 'primeng/table'
+import {Tag} from 'primeng/tag'
+import {Tooltip} from 'primeng/tooltip'
 import {SaleProductLookup} from '../../../../api/cross-tier/product/sale-product-lookup.model'
-import {SaleStatus} from '../../../../api/location-level/sale/sale-status.enum'
+import {SaleLine} from '../../../../api/location-level/sale_session/sale-session.model'
+import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {
   AlternativeUnitsFinderPipe
 } from '../../../../api/organization-level/unit-conversion/pipes/alternative-units-finder.pipe'
@@ -22,11 +25,12 @@ import {
 import {
   UnitConversionGraphService
 } from '../../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
-import {ProductLabelPipe} from '../../../../utils/pipes/product-label.pipe'
+import {IterableIncludesPipe} from '../../../../utils/pipes/iterable-includes.pipe'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
 import {SaleProductLookupComponent} from '../../sale-product-lookup/sale-product-lookup.component'
 import {SaleFormContext} from '../form-utils/sale-form-context'
 import {SaleLineFormDefinition} from '../form-utils/sale-line-form.definition'
+import SaleLineFormModel = SaleLineFormDefinition.SaleLineFormModel
 
 @Component({
   selector: 'rts-sale-lines',
@@ -35,30 +39,33 @@ import {SaleLineFormDefinition} from '../form-utils/sale-line-form.definition'
     TableModule,
     FormsModule,
     CurrencyPipe,
-    ProductLabelPipe,
     InputNumber,
     Select,
     AlternativeUnitsFinderPipe,
-    FullUnitDescriptionPipe,
     UnitCurrencyPipe,
     UnitConversionDescriptorPipe,
     ConversionContextPipe,
     SaleProductLookupComponent,
     UnitConvertPipe,
-    EmptyRowComponent
+    EmptyRowComponent,
+    FullUnitDescriptionPipe,
+    Button,
+    IterableIncludesPipe,
+    Tag,
+    Tooltip
   ]
 })
 export class SaleLinesComponent {
-  private readonly messageService = inject(MessageService)
+  private readonly saleSessionService = inject(SaleSessionService)
   private readonly context = inject(SaleFormContext)
   private readonly unitConversionGraphService = inject(UnitConversionGraphService)
 
-  readonly originalSale = this.context.originalSale
-  private readonly saleLinesFieldTree = this.context.saleForm.lines
+  readonly productIdsForTouchedLines = this.context.productIdsForTouchedLines
+  readonly saleSession = this.context.saleSession
   readonly unitConversionGraphIsLoading = this.unitConversionGraphService.isLoading
 
   readonly canAddOrEditProducts = computed(() =>
-    !this.originalSale() || this.originalSale()?.status === SaleStatus.DRAFT
+    this.saleSession().uiOptions.canMakeChangesToTheSale
   )
 
   readonly saleLines = computed(() =>
@@ -69,28 +76,41 @@ export class SaleLinesComponent {
     this.saleLines().map(l => l.locationProductId)
   )
 
+  readonly linesBeingEdited = computed(() => {
+    let result: Record<string, boolean> = {}
+    this.saleLines().forEach(line => {
+      result = {...result, [line.locationProductId]: true}
+    })
+    return result
+  })
+
   readonly emptySaleLinesMessage = computed(() =>
     this.unitConversionGraphIsLoading() ? 'Loading ...' : 'No Sale lines added yet.'
   )
 
-  addSaleLine(product: SaleProductLookup) {
-    const alreadyAdded = this.saleLines().some(l => l.referenceNumber === product.referenceNumber)
-    if (!alreadyAdded) {
-      const newLine = SaleLineFormDefinition.createFromProduct(product)
-      this.saleLinesFieldTree().value.update(lines => [...lines, newLine])
-      this.saleLinesFieldTree().markAsDirty()
-      this.context.recalculateTotals()
-
-    } else {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Product already added',
-        detail: `${ProductLabelPipe.prototype.transform(product)} has already been added.`
-      })
-    }
+  onSaleLineTouched(partial: Partial<SaleLineFormModel>, original: SaleLineFormModel) {
+    this.context.onSaleLineTouched({...original, ...partial})
   }
 
-  completeEditingLine() {
-    this.context.recalculateTotals()
+  addSaleLine(product: SaleProductLookup) {
+    this.saleSessionService.addSaleLine(
+      {
+        locationProductId: product.id,
+        unitId: product.baseUnitId,
+        quantity: 1
+      },
+      {onSuccess: this.context.onSuccessfulSave}
+    )
+  }
+
+  completeEditingLine(line: SaleLine) {
+    this.saleSessionService.updateSaleLine(
+      {
+        identity: line.identity,
+        unitId: line.unitId,
+        quantity: line.quantity
+      },
+      {onSuccess: this.context.onSuccessfulSave}
+    )
   }
 }
