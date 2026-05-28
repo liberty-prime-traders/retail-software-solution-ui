@@ -7,10 +7,15 @@ export interface SaleSessionStartRequest {
   saleId?: EntityId
 }
 
+export interface SaleSessionLineRequest {
+  additions: SaleSessionLineAddRequest[]
+  updates: SaleSessionLineUpdateRequest[]
+}
+
 export interface SaleSessionLineAddRequest {
   locationProductId: EntityId,
   quantity: number,
-  unitId: EntityId
+  unitId?: EntityId
 }
 
 export interface SaleSessionLineUpdateRequest {

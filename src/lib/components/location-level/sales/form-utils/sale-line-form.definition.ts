@@ -1,5 +1,5 @@
 import {Signal} from '@angular/core'
-import {schema, validateTree} from '@angular/forms/signals'
+import {max, schema, validateTree} from '@angular/forms/signals'
 import {SaleLine} from '../../../../api/location-level/sale_session/sale-session.model'
 
 export namespace SaleLineFormDefinition {
@@ -17,8 +17,13 @@ export namespace SaleLineFormDefinition {
     }))
   }
 
+  export const hasChanged = (saleLine: Partial<SaleLineFormDefinition.SaleLineFormModel>): boolean => {
+    return saleLine.unitId !== saleLine.snapshotUnitId || saleLine.quantity !== saleLine.snapshotQuantity
+  }
+
   export const createSaleLineSchema = (productIdsForTouchedLines: Signal<Set<string>>) =>
     schema<SaleLineFormDefinition.SaleLineFormModel>(linePath => {
+
       validateTree(linePath, ({valueOf}) => {
         if (productIdsForTouchedLines().has(valueOf(linePath.locationProductId))) {
           return {
@@ -28,5 +33,11 @@ export namespace SaleLineFormDefinition {
         }
         return null
       })
+
+      max(
+        linePath.baseQuantity,
+        ({valueOf}) =>  valueOf(linePath.quantityAvailable),
+        {message: ({valueOf}) => `${valueOf(linePath.productLabel)} has exceeded the available quantity`}
+      )
     })
 }

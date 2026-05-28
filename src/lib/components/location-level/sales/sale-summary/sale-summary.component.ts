@@ -45,10 +45,10 @@ export class SaleSummaryComponent {
   readonly canAddPaymentsToSale = computed(() => this.saleSession()?.uiOptions.canAddPaymentsToSale)
 
   saveDraft() {
-    this.saleSessionService.saveAsDraft()
+    this.saleSessionService.saveAsDraft({onSuccess: this.context.loadSession})
   }
 
   completeSale() {
-    this.saleSessionService.confirmSession({onSuccess: this.context.onSuccessfulSave})
+    this.saleSessionService.confirmSession({onSuccess: this.context.loadSession})
   }
 }

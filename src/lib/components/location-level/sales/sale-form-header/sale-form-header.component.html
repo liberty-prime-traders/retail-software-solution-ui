@@ -10,9 +10,9 @@
     @if (originalSale.referenceNumber) {
       <div class="flex gap-3 align-items-center w-full">
         <span class="font-semibold">{{ originalSale.referenceNumber | nullSafe }}</span>
+        <div>&bullet;</div>
 
         @if (saleIsBeyondDraft()) {
-          <div>&bullet;</div>
           <span>{{ originalSale.soldBy | nullSafe }}</span>
           <div>&bullet;</div>
           {{ originalSale.dateSold | date }}

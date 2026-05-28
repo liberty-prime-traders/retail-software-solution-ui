@@ -30,14 +30,10 @@ export abstract class ProductLookupFilterService<LOOKUP extends ProductCore & Pa
   }
 
   override afterExternalParametersReset(parameters: Partial<ProductSearchParameters>) {
-    if (parameters.excludeIds) {
-      this.removeEntities(parameters.excludeIds)
-    }
+    this.excludeIds.set(parameters.excludeIds ? new Set(parameters.excludeIds) : new Set())
   }
 
-  protected override passesClientSideFilters(
-    product: LOOKUP, externalParameters: Partial<ProductSearchParameters>
-  ): boolean {
+  protected override passesClientSideFilters(product: LOOKUP): boolean {
     const searchText = (this.filterForm.value.searchText ?? '').trim().toLowerCase()
     if (searchText) {
       const haystack = [product.productName, product.referenceNumber, product.productGroupName]
@@ -46,6 +42,6 @@ export abstract class ProductLookupFilterService<LOOKUP extends ProductCore & Pa
         .toLowerCase()
       if (!haystack.includes(searchText)) return false
     }
-    return !externalParameters.excludeIds?.includes(product.id)
+    return true
   }
 }

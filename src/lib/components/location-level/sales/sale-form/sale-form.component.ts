@@ -4,21 +4,21 @@ import {Card} from 'primeng/card'
 import {Select} from 'primeng/select'
 import {ToggleButton} from 'primeng/togglebutton'
 import {
-  SaleSessionSummaryService
-} from '../../../../api/location-level/sale-session-summary/sale-session-summary.service'
+  UnsavedCartsSummaryService
+} from '../../../../api/location-level/unsaved-carts-summary/unsaved-carts-summary.service'
 import {SaleStatus} from '../../../../api/location-level/sale-summary/sale-status.enum'
-import {SaleSummaryService} from '../../../../api/location-level/sale-summary/sale-summary.service'
 import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {ContactService} from '../../../../api/organization-level/contact/contact.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
-import {ProcessingStatus} from '../../../../utils/types/processing-status.enum'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {SaleFormContext} from '../form-utils/sale-form-context'
-import {OpenSaleSessionsComponent} from '../open-sale-sessions/open-sale-sessions.component'
+import {SaleFormMode} from '../form-utils/sale-form-mode.enum'
+import {SaleFormNavigator} from '../form-utils/sale-form-navigator'
+import {UnsavedCartsComponent} from '../unsaved-carts/unsaved-carts.component'
 import {SaleFormHeaderComponent} from '../sale-form-header/sale-form-header.component'
 import {SaleLinesComponent} from '../sale-lines/sale-lines.component'
 import {SaleSummaryComponent} from '../sale-summary/sale-summary.component'
@@ -40,15 +40,16 @@ import {SaleSummaryComponent} from '../sale-summary/sale-summary.component'
     AutoStretchDirective,
     NullSafePipe,
     SaleFormHeaderComponent,
-    OpenSaleSessionsComponent
+    UnsavedCartsComponent
   ]
 })
 export class SaleFormComponent extends HasSubscriptionComponent implements OnInit {
 
   private readonly contactService = inject(ContactService)
   private readonly context = inject(SaleFormContext)
+  private readonly navigator = inject(SaleFormNavigator)
   private readonly saleSessionService = inject(SaleSessionService)
-  private readonly saleSessionSummaryService = inject(SaleSessionSummaryService)
+  private readonly saleSessionSummaryService = inject(UnsavedCartsSummaryService)
 
   private static readonly WalkInCustomerId = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
   readonly customers = this.contactService.customers
@@ -58,9 +59,7 @@ export class SaleFormComponent extends HasSubscriptionComponent implements OnIni
   readonly currentContactId = computed(() => this.context.currentContactId())
   private readonly sessionIsPersisted = computed(() => !!this.saleSession().id)
 
-  readonly showOpenSessions = computed(() =>
-    this.saleSessionSummaryService.selectCount() > 0 && this.context.defaultToOpenSessionsView()
-  )
+  readonly showUnsavedCarts = computed(() => this.navigator.mode() === SaleFormMode.PICKER)
 
   readonly sessionIsLoading = computed(() =>
     this.saleSessionService.selectLoading() || this.saleSessionSummaryService.selectLoading()
@@ -80,8 +79,6 @@ export class SaleFormComponent extends HasSubscriptionComponent implements OnIni
 
   ngOnInit() {
     this.contactService.fetch()
-    this.context.showOpenSessions()
-    this.saleSessionSummaryService.getMySessions()
   }
 
   onCustomerChange() {
@@ -90,7 +87,7 @@ export class SaleFormComponent extends HasSubscriptionComponent implements OnIni
     } else {
       this.saleSessionService.updateHeader(
         {contactId: this.saleForm.contactId().value()},
-        {onSuccess: this.context.onSuccessfulSave}
+        {onSuccess: this.context.loadSession}
       )
     }
   }
@@ -98,7 +95,7 @@ export class SaleFormComponent extends HasSubscriptionComponent implements OnIni
   private startNewSession() {
     this.saleSessionService.startNewSession(
       {contactId: this.saleForm.contactId().value()},
-      {onSuccess: this.context.onSuccessfulSave}
+      {onSuccess: this.context.loadSession}
     );
   }
 
@@ -114,6 +111,6 @@ export class SaleFormComponent extends HasSubscriptionComponent implements OnIni
   }
 
   voidSale() {
-    //this.saleService.voidSale(this.context.saleSession()?.id!, {onSuccess: this.onSuccessfulSave})
+    //this.saleSessionService.voidSale(this.context.saleSession()?.id!, {onSuccess: this.context.loadSession})
   }
 }

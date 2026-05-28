@@ -1,5 +1,5 @@
 import {CurrencyPipe, DatePipe} from '@angular/common'
-import {Component, inject} from '@angular/core'
+import {Component, computed, inject, OnInit} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
@@ -9,10 +9,8 @@ import {SaleSessionService} from '../../../../api/location-level/sale_session/sa
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
-import {GridWithAddButtonComponent} from '../../../reusable/grid-with-add-button.component'
 import {PaymentStatusSeverityPipe} from '../../purchases/payment-status-severity.pipe'
-import {SaleFormContext} from '../form-utils/sale-form-context'
-import {SaleFormVisibilityContext} from '../sale-form-visibility.context'
+import {SaleFormNavigator} from '../form-utils/sale-form-navigator'
 import {SaleStatusSeverityPipe} from '../sale-status-severity.pipe'
 
 @Component({
@@ -31,22 +29,22 @@ import {SaleStatusSeverityPipe} from '../sale-status-severity.pipe'
     AutoStretchDirective
   ]
 })
-export class SaleGridComponent extends GridWithAddButtonComponent<SaleSummaryService> {
+export class SaleGridComponent implements OnInit {
   private readonly saleSummaryService = inject(SaleSummaryService)
   private readonly saleSessionService = inject(SaleSessionService)
-  private readonly saleFormVisibilityContext = inject(SaleFormVisibilityContext)
-  private readonly context = inject(SaleFormContext)
-
-  protected override readonly apiService = this.saleSummaryService
+  private readonly navigator = inject(SaleFormNavigator)
 
   readonly sales = this.saleSummaryService.selectAll
 
+  readonly loading = computed(() =>
+    this.saleSessionService.selectLoading() || this.saleSummaryService.selectLoading()
+  )
+
   onEditSale(sale: SaleSummary) {
-    this.saleSessionService.startNewSession({saleId: sale.id}, {
-      onSuccess: (updatedSession) => {
-        this.context.selectOpenSession(updatedSession)
-        this.saleFormVisibilityContext.showForm()
-      }
-    })
+    this.navigator.openForEditSale(sale.id)
+  }
+
+  ngOnInit() {
+    this.saleSummaryService.fetch()
   }
 }

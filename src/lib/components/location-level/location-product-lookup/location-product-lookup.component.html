@@ -5,9 +5,14 @@
             (onFilter)="pushToSearch($event.filter)"
             (onClick)="emitSelectedProduct(productSelect.value); productSelect.clear()"
             #productSelect
-            optionLabel="label"
-            optionValue="value"
             class="w-full"
             dataKey="value">
+
+    @if (templateRef()) {
+      <ng-template let-product pTemplate="item">
+        <ng-container *ngTemplateOutlet="templateRef(); context: {$implicit: productsMap().get(product.value)}"/>
+      </ng-template>
+    }
+
   </p-select>
 </rts-form-field>

@@ -5,6 +5,7 @@ import {MenuItem} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
+import {SaleFormNavigator} from './sales/form-utils/sale-form-navigator'
 import {SaleFormVisibilityContext} from './sales/sale-form-visibility.context'
 import {SaleFormComponent} from './sales/sale-form/sale-form.component'
 
@@ -24,6 +25,7 @@ import {SaleFormComponent} from './sales/sale-form/sale-form.component'
 export class LocationDashboardComponent {
 
   readonly saleFormVisibilityContext = inject(SaleFormVisibilityContext)
+  readonly saleFormNavigator = inject(SaleFormNavigator)
 
   readonly showNavigation = signal(true)
 
@@ -45,9 +47,4 @@ export class LocationDashboardComponent {
     {label: 'Admin Tasks', items: this.adminTasksMenuItems}
   ]
 
-  onSaleButtonClicked(cdkDrag: CdkDrag) {
-    if (!cdkDrag._dragRef.started) {
-      this.saleFormVisibilityContext.showForm()
-    }
-  }
 }

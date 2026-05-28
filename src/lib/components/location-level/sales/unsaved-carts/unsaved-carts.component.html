@@ -1,14 +1,16 @@
 <div class="p-3 flex flex-column gap-3">
 
   <div class="flex flex-column">
-    <span class="text-2xl bold">My Open Sales</span>
+    <span class="text-2xl bold">My Unsaved Carts</span>
     <span class="info-message">
-      These are not drafts. These are sales that have been started but not completed.
-      You can resume and complete/discard any of them.
+      These are sales that have been started but not saved.
+    </span>
+    <span class="info-message">
+      The carts are not retained for long. Save them as drafts if you want to keep them for a long time without completing.
     </span>
   </div>
 
-  <p-table [value]="myOpenSessions()" [loading]="gridLoading()" dataKey="id">
+  <p-table [value]="myUnsavedCarts()" [loading]="gridLoading()" dataKey="id">
 
     <ng-template pTemplate="caption">
       <div class="flex justify-content-end gap-4">
@@ -26,8 +28,8 @@
         <th>Last Updated At</th>
         <th>Contact</th>
         <th>Payable Total</th>
-        <th>Notes</th>
-        <th style="width: 50px"></th>
+        <th style="width: 50px">Abandon</th>
+        <th style="width: 50px">Continue</th>
       </tr>
     </ng-template>
 
@@ -40,7 +42,16 @@
         <td>{{ session.lastUpdatedAt | date }}</td>
         <td>{{ session.contactLabel }}</td>
         <td>{{ session.payableTotal | currency }}</td>
-        <td>{{ session.notes | nullSafe}}</td>
+
+        <td>
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            text
+            (onClick)="discardSession(session.id)">
+          </p-button>
+        </td>
+
         <td>
           <p-button
             icon="pi pi-arrow-right"

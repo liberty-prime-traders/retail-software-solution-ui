@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core'
 import {ProductSearchParameters} from '../../cross-tier/product/product-search-parameters.model'
-import {PurchaseProductLookup} from '../../cross-tier/product/purchase-product-lookup.model'
+import {ProductForPurchase} from './product-for-purchase.model'
 import {createPaginatedBaseStore, PaginatedBaseStore} from '../../util/paginated-api/paginated-base.store'
 
 @Injectable({providedIn: 'root'})
 export class PurchaseProductLookupStore
-  extends createPaginatedBaseStore<PurchaseProductLookup, ProductSearchParameters>()
-  implements PaginatedBaseStore<PurchaseProductLookup, ProductSearchParameters> {
+  extends createPaginatedBaseStore<ProductForPurchase, ProductSearchParameters>()
+  implements PaginatedBaseStore<ProductForPurchase, ProductSearchParameters> {
 
-  readonly basePath = 'location-products/for-purchase'
+  readonly basePath = 'location-products/search-for-purchase'
 }

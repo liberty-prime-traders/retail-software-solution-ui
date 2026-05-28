@@ -1,11 +1,11 @@
-import {computed, Injectable} from '@angular/core'
+import {computed, inject, Injectable} from '@angular/core'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {ApiCallbacks} from '../../util/base-api/api-callbacks'
 import {BaseService} from '../../util/base-api/base.service'
+import {UnsavedCartsSummaryService} from '../unsaved-carts-summary/unsaved-carts-summary.service'
 import {
   SaleSessionHeaderUpdateRequest,
-  SaleSessionLineAddRequest,
-  SaleSessionLineUpdateRequest,
+  SaleSessionLineRequest,
   SaleSessionPaymentAddRequest,
   SaleSessionPaymentRemoveRequest,
   SaleSessionStartRequest
@@ -17,6 +17,7 @@ import {SaleSessionStore} from './sale-session.store'
 @Injectable({providedIn: 'root'})
 export class SaleSessionService extends BaseService<SaleSession> {
 
+  private readonly unsavedCartsSummaryService = inject(UnsavedCartsSummaryService)
   readonly currentSession = computed(() => this.selectFirst()!)
   private readonly currentSessionId = computed(() => this.currentSession()?.id)
 
@@ -24,26 +25,26 @@ export class SaleSessionService extends BaseService<SaleSession> {
     super(store)
   }
 
-  startNewSession(newSessionRequest: SaleSessionStartRequest, callbacks?: ApiCallbacks<SaleSession>) {
-    return this.post(newSessionRequest, callbacks)
+  override prepareResponse(response: SaleSession) {
+    return [response]
   }
+
+  startNewSession(newSessionRequest: SaleSessionStartRequest, callbacks?: ApiCallbacks<SaleSession>) {
+    this.resetStoreAndClearCache()
+    return this.postRequest({body: newSessionRequest, callbacks: this.getCallBackForNewSession(callbacks)})
+  }
+
+  private readonly getCallBackForNewSession = (callbacks?: ApiCallbacks<SaleSession>) =>
+    this.applyInternalCallBacks({onSuccess: () => this.unsavedCartsSummaryService.refetch()}, callbacks)
+
 
   acquireSession(sessionId: string, callbacks?: ApiCallbacks<SaleSession>) {
     return this.refetchRequest({id: sessionId, callbacks})
   }
 
-  abandonSession(callbacks?: ApiCallbacks<SaleSession>) {
-    return this.deleteRequest({id: this.currentSessionId(), callbacks})
-  }
-
-  addSaleLine(lineAddRequest: SaleSessionLineAddRequest, callbacks?: ApiCallbacks<SaleSession>) {
+  updateSaleLines(lineRequest: SaleSessionLineRequest, callbacks?: ApiCallbacks<SaleSession>) {
     this.patchApiRequestConfig({urlSuffix: 'lines'})
-    return this.postRequest({id: this.currentSessionId(), body: lineAddRequest as any, callbacks})
-  }
-
-  updateSaleLine(lineUpdateRequest: SaleSessionLineUpdateRequest, callbacks?: ApiCallbacks<SaleSession>) {
-    this.patchApiRequestConfig({urlSuffix: 'lines'})
-    return this.putRequest({id: this.currentSessionId(), body: lineUpdateRequest as any, callbacks})
+    return this.putRequest({id: this.currentSessionId(), body: lineRequest as any, callbacks})
   }
 
   removeSaleLine(identity: SessionIdentity, callbacks?: ApiCallbacks<SaleSession>) {
@@ -68,12 +69,24 @@ export class SaleSessionService extends BaseService<SaleSession> {
 
   saveAsDraft(callbacks?: ApiCallbacks<SaleSession>) {
     this.patchApiRequestConfig({urlSuffix: 'draft'})
-    return this.postRequest({id: this.currentSessionId(), callbacks})
+    return this.postRequest({
+      id: this.currentSessionId(),
+      callbacks: this.getCallBackForPersistedSession(callbacks)
+    })
   }
+
+  private readonly getCallBackForPersistedSession = (callbacks?: ApiCallbacks<SaleSession>) =>
+    this.applyInternalCallBacks(
+      {onSuccess: (result: SaleSession) => this.unsavedCartsSummaryService.removeEntities([result.id])},
+      callbacks
+    )
 
   confirmSession(callbacks?: ApiCallbacks<SaleSession>) {
     this.patchApiRequestConfig({urlSuffix: 'confirm'})
-    return this.postRequest({id: this.currentSessionId(), callbacks})
+    return this.postRequest({
+      id: this.currentSessionId(),
+      callbacks: this.getCallBackForPersistedSession(callbacks)
+    })
   }
 
   override finishDeletingWithSuccess() {

@@ -5,9 +5,13 @@ import {Button} from 'primeng/button'
 import {InputNumber} from 'primeng/inputnumber'
 import {Select} from 'primeng/select'
 import {TableModule} from 'primeng/table'
-import {Tag} from 'primeng/tag'
 import {Tooltip} from 'primeng/tooltip'
-import {SaleProductLookup} from '../../../../api/cross-tier/product/sale-product-lookup.model'
+import {ProductForSale} from '../../../../api/location-level/product-lookup/product-for-sale.model'
+import {SaleStatus} from '../../../../api/location-level/sale-summary/sale-status.enum'
+import {
+  SaleSessionLineAddRequest,
+  SaleSessionLineUpdateRequest
+} from '../../../../api/location-level/sale_session/sale-session-requests.model'
 import {SaleLine} from '../../../../api/location-level/sale_session/sale-session.model'
 import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {
@@ -26,8 +30,11 @@ import {
   UnitConversionGraphService
 } from '../../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
 import {IterableIncludesPipe} from '../../../../utils/pipes/iterable-includes.pipe'
+import {ProductLabelPipe} from '../../../../utils/pipes/product-label.pipe'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
-import {SaleProductLookupComponent} from '../../sale-product-lookup/sale-product-lookup.component'
+import {
+  SaleProductLookupComponent
+} from '../../location-product-lookup/sale-product-lookup/sale-product-lookup.component'
 import {SaleFormContext} from '../form-utils/sale-form-context'
 import {SaleLineFormDefinition} from '../form-utils/sale-line-form.definition'
 import SaleLineFormModel = SaleLineFormDefinition.SaleLineFormModel
@@ -51,8 +58,8 @@ import SaleLineFormModel = SaleLineFormDefinition.SaleLineFormModel
     FullUnitDescriptionPipe,
     Button,
     IterableIncludesPipe,
-    Tag,
-    Tooltip
+    Tooltip,
+    ProductLabelPipe
   ]
 })
 export class SaleLinesComponent {
@@ -60,6 +67,7 @@ export class SaleLinesComponent {
   private readonly context = inject(SaleFormContext)
   private readonly unitConversionGraphService = inject(UnitConversionGraphService)
 
+  readonly saleLinesFieldTree = this.context.saleForm.saleLines
   readonly productIdsForTouchedLines = this.context.productIdsForTouchedLines
   readonly saleSession = this.context.saleSession
   readonly unitConversionGraphIsLoading = this.unitConversionGraphService.isLoading
@@ -78,6 +86,9 @@ export class SaleLinesComponent {
 
   readonly linesBeingEdited = computed(() => {
     let result: Record<string, boolean> = {}
+    if (this.saleSession().saleStatus !== SaleStatus.DRAFT) {
+      return result
+    }
     this.saleLines().forEach(line => {
       result = {...result, [line.locationProductId]: true}
     })
@@ -92,25 +103,40 @@ export class SaleLinesComponent {
     this.context.onSaleLineTouched({...original, ...partial})
   }
 
-  addSaleLine(product: SaleProductLookup) {
-    this.saleSessionService.addSaleLine(
+  sendLineRequest(newProduct?: ProductForSale) {
+    this.saleSessionService.updateSaleLines(
       {
-        locationProductId: product.id,
-        unitId: product.baseUnitId,
-        quantity: 1
+        additions: this.getLinesToAdd(newProduct),
+        updates: this.getLinesToUpdate()
       },
-      {onSuccess: this.context.onSuccessfulSave}
+      {onSuccess: this.context.loadSession}
     )
   }
 
-  completeEditingLine(line: SaleLine) {
-    this.saleSessionService.updateSaleLine(
-      {
-        identity: line.identity,
-        unitId: line.unitId,
-        quantity: line.quantity
-      },
-      {onSuccess: this.context.onSuccessfulSave}
+  private getLinesToAdd(newProduct?: ProductForSale): SaleSessionLineAddRequest[] {
+    if (newProduct) {
+      return [{locationProductId: newProduct.id, quantity: 1}]
+    }
+    return []
+  }
+
+  private getLinesToUpdate(): SaleSessionLineUpdateRequest[] {
+    return this.saleLines()
+      .filter(SaleLineFormDefinition.hasChanged)
+      .map(saleLine => {
+        return {
+          identity: saleLine.identity,
+          unitId: saleLine.unitId,
+          quantity: saleLine.quantity
+        }
+    })
+  }
+
+
+  removeSaleLine(line: SaleLine) {
+    this.saleSessionService.removeSaleLine(
+      line.identity,
+      {onSuccess: this.context.loadSession}
     )
   }
 }

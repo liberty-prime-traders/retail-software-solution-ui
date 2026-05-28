@@ -1,22 +1,20 @@
-import {Component, computed, Directive, effect, inject, input, OnInit, output, untracked} from '@angular/core'
+import {Component, computed, effect, inject, input, OnInit, output, TemplateRef, untracked} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {Subscription} from 'rxjs'
 import {ProductCore} from '../../../api/cross-tier/product/product-core.model'
 import {ProductSearchParameters} from '../../../api/cross-tier/product/product-search-parameters.model'
-import {
-  UnitConversionGraphService
-} from '../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
+import {UnitConversionGraphService} from '../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
 import {PaginatedBaseService} from '../../../api/util/paginated-api/paginated-base.service'
-import {PaginatedModel} from '../../../api/util/paginated-api/paginated.model'
 import {ProductLabelPipe} from '../../../utils/pipes/product-label.pipe'
 import {toSelectItems} from '../../../utils/types/select-item.type'
 import {HasFilteredDataComponent} from '../../reusable/has-filtered-data.component'
 import {ProductLookupFilterService} from './product-lookup-filter.service'
 
 @Component({selector: 'rts-product-lookup', template: ''})
-export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore & PaginatedModel>
+export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore>
   extends HasFilteredDataComponent implements OnInit {
 
+  readonly templateRef = input<TemplateRef<unknown>>()
   readonly selectedProductIds = input<string[]>([])
   readonly productSelected = output<LOOKUP>()
 

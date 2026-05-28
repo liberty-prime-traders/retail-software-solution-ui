@@ -48,12 +48,10 @@ export abstract class ProductFilterService<PRODUCT extends ProductDetail>
   }
 
   override afterExternalParametersReset(parameters: Partial<ProductSearchParameters>) {
-    if (parameters.excludeIds) {
-      this.removeEntities(parameters.excludeIds)
-    }
+    this.excludeIds.set(parameters.excludeIds ? new Set(parameters.excludeIds) : new Set())
   }
 
-  protected override passesClientSideFilters(product: PRODUCT, externalParameters: Partial<ProductSearchParameters>): boolean {
+  protected override passesClientSideFilters(product: PRODUCT): boolean {
     if (!this.productFilterHelper.matchesSearchText(product)) return false
     if (!this.filterForm.valid) return true
 
@@ -62,7 +60,6 @@ export abstract class ProductFilterService<PRODUCT extends ProductDetail>
         && this.productFilterHelper.belongsToSelectedCategories(product, this.getProductGroupIdsForCategories)
         && this.productFilterHelper.hasAllSelectedTags(product)
         && this.productFilterHelper.matchesSelectedStatus(product)
-        && this.productPassesExternalParameters(product, externalParameters)
     )
   }
 
@@ -70,12 +67,5 @@ export abstract class ProductFilterService<PRODUCT extends ProductDetail>
     return this.productGroupService.selectAll()
       .filter(pg => pg.categoryId && categoryIds.has(pg.categoryId))
       .map(pg => String(pg.id))
-  }
-
-  private productPassesExternalParameters(product: PRODUCT, externalParameters: Partial<ProductSearchParameters>): boolean {
-    if (externalParameters.excludeIds) {
-      return !externalParameters.excludeIds.includes(product.id)
-    }
-    return true
   }
 }

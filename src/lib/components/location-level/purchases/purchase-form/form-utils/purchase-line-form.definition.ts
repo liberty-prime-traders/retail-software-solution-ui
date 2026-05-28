@@ -1,4 +1,4 @@
-import {PurchaseProductLookup} from '../../../../../api/cross-tier/product/purchase-product-lookup.model'
+import {ProductForPurchase} from '../../../../../api/location-level/product-lookup/product-for-purchase.model'
 import {PurchaseLine} from '../../../../../api/location-level/purchase/purchase.model'
 
 export namespace PurchaseLineFormDefinition {
@@ -23,7 +23,7 @@ export namespace PurchaseLineFormDefinition {
     canceledWithoutSingleDelivery: boolean
   }
 
-  export const createFromProduct = (product: PurchaseProductLookup): PurchaseLineModel => {
+  export const createFromProduct = (product: ProductForPurchase): PurchaseLineModel => {
     return  {
       id: '',
       locationProductId: product.id as string,

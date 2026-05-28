@@ -1,5 +1,15 @@
 import {Signal} from '@angular/core'
-import {applyEach, disabled, max, required, RootFieldContext, schema} from '@angular/forms/signals'
+import {
+  applyEach,
+  applyWhen,
+  disabled,
+  max,
+  minLength,
+  required,
+  RootFieldContext,
+  schema
+} from '@angular/forms/signals'
+import {SaleStatus} from '../../../../api/location-level/sale-summary/sale-status.enum'
 import {SaleSession} from '../../../../api/location-level/sale_session/sale-session.model'
 import {SaleLineFormDefinition} from './sale-line-form.definition'
 
@@ -12,6 +22,7 @@ export namespace SaleFormDefinition {
     payableTotal: number
     paymentTotal: number
     balance: number
+    saleStatus: SaleStatus
   }
 
 
@@ -30,35 +41,44 @@ export namespace SaleFormDefinition {
     saleLines: [],
     paymentTotal: 0,
     balance: 0,
-    payableTotal: 0
+    payableTotal: 0,
+    saleStatus: SaleStatus.DRAFT
   })
 
   export const createSaleFormSchema = (productIdsForTouchedLines: Signal<Set<string>>) =>
-    schema<SaleFormModel>((path) => {
-      applyEach(path.saleLines, SaleLineFormDefinition.createSaleLineSchema(productIdsForTouchedLines))
+    schema<SaleFormModel>((salePath) => {
+      applyEach(salePath.saleLines, (linePath) => {
+        applyWhen(
+          linePath,
+          ({valueOf}) => valueOf(salePath.saleStatus) === SaleStatus.DRAFT,
+          SaleLineFormDefinition.createSaleLineSchema(productIdsForTouchedLines)
+        )
+      })
 
+      minLength(salePath.saleLines, 1, {message: 'Sale must have at least one line'})
+      
       required(
-        path.contactId,
-        {when: ({valueOf}) => !valueOf(path.walkInCustomer)}
+        salePath.contactId,
+        {when: ({valueOf}) => !valueOf(salePath.walkInCustomer)}
       )
 
       disabled(
-        path.contactId,
-        ({valueOf}: RootFieldContext<string>) => !!valueOf(path.walkInCustomer)
+        salePath.contactId,
+        ({valueOf}: RootFieldContext<string>) => !!valueOf(salePath.walkInCustomer)
       )
 
       max(
-        path.balance,
-        ({valueOf}) => valueOf(path.walkInCustomer) ? 0 : valueOf(path.payableTotal),
+        salePath.balance,
+        ({valueOf}) => valueOf(salePath.walkInCustomer) ? 0 : valueOf(salePath.payableTotal),
         {message: 'Walk-in customers must pay in full'}
       )
 
       max(
-        path.paymentTotal,
-        ({valueOf}) => valueOf(path.payableTotal),
+        salePath.paymentTotal,
+        ({valueOf}) => valueOf(salePath.payableTotal),
         {message: 'Total paid cannot exceed order total'}
       )
-    })
+  })
 
   export const convertToFormModel = (sale: SaleSession): SaleFormModel => {
     return {
@@ -67,7 +87,8 @@ export namespace SaleFormDefinition {
       saleLines: SaleLineFormDefinition.mapSaleLines(sale.saleLines),
       payableTotal: sale.totals.payableTotal,
       paymentTotal: sale.totals.paymentTotal,
-      balance: sale.totals.balance
+      balance: sale.totals.balance,
+      saleStatus: sale.saleStatus
     }
   }
 

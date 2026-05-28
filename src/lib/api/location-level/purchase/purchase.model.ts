@@ -1,8 +1,7 @@
 import {EntityId} from '@ngrx/signals/entities'
-import {ProductCore} from '../../cross-tier/product/product-core.model'
+import {ProductForPurchase} from '../product-lookup/product-for-purchase.model'
 import {BaseModel} from '../../util/base-api/base.model'
 import {PurchaseDelivery} from '../delivery/purchase-delivery.model'
-import {LocationProduct} from '../location-product/location-product.model'
 import {PaymentStatus} from './payment-status.enum'
 import {PurchaseStatus} from './purchase-status.enum'
 
@@ -27,7 +26,7 @@ export interface Purchase extends BaseModel {
 }
 
 export interface PurchaseLine extends BaseModel {
-  locationProduct: ProductCore
+  locationProduct: ProductForPurchase
   locationProductId: EntityId
   quantityOrdered: number
   unitId: string

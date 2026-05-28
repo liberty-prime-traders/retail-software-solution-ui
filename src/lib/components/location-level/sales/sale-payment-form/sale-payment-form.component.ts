@@ -1,5 +1,5 @@
 import {CurrencyPipe} from '@angular/common'
-import {Component, computed, inject, OnInit, output, signal, Signal} from '@angular/core'
+import {Component, computed, inject, OnInit, signal, Signal} from '@angular/core'
 import {apply, form, FormField} from '@angular/forms/signals'
 import {EntityId} from '@ngrx/signals/entities'
 import {MenuItem} from 'primeng/api'
@@ -10,7 +10,6 @@ import {InputText} from 'primeng/inputtext'
 import {Menu} from 'primeng/menu'
 import {SelectButton} from 'primeng/selectbutton'
 import {SaleSessionPaymentAddRequest} from '../../../../api/location-level/sale_session/sale-session-requests.model'
-import {SalePayment} from '../../../../api/location-level/sale_session/sale-session.model'
 import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {PaymentOption} from '../../../../api/organization-level/payment-option/payment-option.model.'
 import {PaymentOptionService} from '../../../../api/organization-level/payment-option/payment-option.service'
@@ -107,7 +106,7 @@ export class SalePaymentFormComponent implements OnInit {
           ...SalePaymentFormDefinition.createInitial,
           paymentMethodId: this.paymentFormValue().paymentMethodId
         })
-        this.context.onSuccessfulSave(updatedSession)
+        this.context.loadSession(updatedSession)
       }
     })
   }

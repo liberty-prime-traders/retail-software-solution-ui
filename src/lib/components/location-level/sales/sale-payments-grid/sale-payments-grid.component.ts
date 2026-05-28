@@ -38,7 +38,7 @@ export class SalePaymentsGridComponent {
     } else if (payment.identity.transientId) {
       this.saleSessionService.removePayment(
         {identity: payment.identity},
-        {onSuccess: this.context.onSuccessfulSave}
+        {onSuccess: this.context.loadSession}
       )
     }
   }
@@ -54,6 +54,6 @@ export class SalePaymentsGridComponent {
 
   private readonly onSuccessfulVoid = (updatedSession: SaleSession) => {
     this.paymentGettingVoided.set('')
-    this.context.onSuccessfulSave(updatedSession)
+    this.context.loadSession(updatedSession)
   }
 }

@@ -1,6 +1,6 @@
 import {BaseModel} from '../../util/base-api/base.model'
 
-export interface SaleSessionSummary extends BaseModel {
+export interface UnsavedCartsSummary extends BaseModel {
   createdBy: string,
   createdAt: string,
   lastUpdatedAt: string,

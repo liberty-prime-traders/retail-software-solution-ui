@@ -1,5 +1,6 @@
 import {CalculationMethod} from '../../platform-level/tax-type/calculation-method.enum'
 import {BaseModel} from '../../util/base-api/base.model'
+import {ProductQuantities} from '../product-lookup/product-for-sale.model'
 import {PaymentStatus} from '../purchase/payment-status.enum'
 import {SaleStatus} from '../sale-summary/sale-status.enum'
 
@@ -43,11 +44,12 @@ export interface SalePayment {
   voidedReason: string
 }
 
-export interface SaleLine {
+export interface SaleLine extends ProductQuantities {
   identity: SessionIdentity
   locationProductId: string
   productLabel: string
   quantity: number
+  baseQuantity: number
   unitId: string
   baseUnitId: string
   conversionFactor: number

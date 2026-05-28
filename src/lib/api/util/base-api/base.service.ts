@@ -79,4 +79,20 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
       finalize(() => this.finalizeApiRequest())
     ).subscribe()
   }
+
+  protected readonly applyInternalCallBacks = (
+    internalCallbacks: ApiCallbacks<RESPONSE>,
+    callbacks?: ApiCallbacks<RESPONSE>
+  ) => {
+    return {
+      onSuccess: (result: RESPONSE) => {
+        internalCallbacks.onSuccess?.(result)
+        callbacks?.onSuccess?.(result)
+      },
+      onFail: (error: HttpErrorResponse) => {
+        internalCallbacks.onFail?.(error)
+        callbacks?.onFail?.(error)
+      }
+    }
+  }
 }

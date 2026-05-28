@@ -9,48 +9,33 @@ import {SaleLineFormDefinition} from './sale-line-form.definition'
 export class SaleFormContext {
 
   private readonly _saleSession = signal<SaleSession>(defaultSaleSession())
-  private readonly _defaultToOpenSessionsView = signal(true)
   private readonly _productIdsForTouchedLines = signal(new Set<string>())
 
-  readonly defaultToOpenSessionsView = this._defaultToOpenSessionsView.asReadonly()
   readonly currentContactId = computed(() => this.saleSession().contactId)
   readonly saleSession = this._saleSession.asReadonly()
   private readonly saleFormValue = signal(SaleFormDefinition.createDefault())
   readonly productIdsForTouchedLines = this._productIdsForTouchedLines.asReadonly()
   readonly saleLines = computed(() => this.saleFormValue().saleLines)
-  readonly payments = computed(() => this.saleSession()?.salePayments ?? [])
+  readonly payments = computed(() => this.saleSession().salePayments)
 
   readonly saleForm = form(
     this.saleFormValue,
     SaleFormDefinition.createSaleFormSchema(this.productIdsForTouchedLines)
   )
 
-  readonly onSuccessfulSave = (updatedSession: SaleSession) => {
-    this._saleSession.set(updatedSession)
+  readonly loadSession = (session: SaleSession) => {
+    this._saleSession.set(session)
     this._productIdsForTouchedLines.set(new Set<string>())
-    this.saleForm().reset(SaleFormDefinition.convertToFormModel(updatedSession))
-  }
-
-  readonly selectOpenSession = (openSession: SaleSession) => {
-    this.hideOpenSessions()
-    this.onSuccessfulSave(openSession)
-  }
-
-  showOpenSessions() {
-    this._defaultToOpenSessionsView.set(true)
-  }
-
-  hideOpenSessions() {
-    this._defaultToOpenSessionsView.set(false)
+    this.saleForm().reset(SaleFormDefinition.convertToFormModel(session))
   }
 
   onSaleLineTouched(saleLine: Partial<SaleLineFormDefinition.SaleLineFormModel>) {
     const locationProductId = saleLine.locationProductId!
     const productIdsForTouchedLines = this.productIdsForTouchedLines()
-    if (saleLine.unitId === saleLine.snapshotUnitId && saleLine.quantity === saleLine.snapshotQuantity) {
-      productIdsForTouchedLines.delete(locationProductId)
-    } else {
+    if (SaleLineFormDefinition.hasChanged(saleLine)) {
       productIdsForTouchedLines.add(locationProductId)
+    } else {
+      productIdsForTouchedLines.delete(locationProductId)
     }
     this._productIdsForTouchedLines.set(new Set(productIdsForTouchedLines))
   }

@@ -1,8 +1,22 @@
 @if (canAddOrEditProducts()) {
   <rts-sale-product-lookup
-    (productSelected)="addSaleLine($event)"
+    (productSelected)="sendLineRequest($event)"
+    [templateRef]="saleProductLookup"
     [selectedProductIds]="selectedProductIds()">
   </rts-sale-product-lookup>
+
+  <ng-template #saleProductLookup let-product>
+    <div class="flex flex-column gap-1">
+      {{ product | productLabel }}
+      <small class="block fle gap-2 info-message">
+        Available: {{ product.quantityAvailable }}
+
+        @if (product.quantityReserved) {
+          ({{product.quantityOnHand}} on hand, {{product.quantityReserved}} reserved)
+        }
+      </small>
+    </div>
+  </ng-template>
 }
 
 <p-table [value]="saleLines()"
@@ -17,21 +31,34 @@
       <th>Quantity</th>
       <th>Unit Price</th>
       <th>Total</th>
-      <th>Confirm</th>
+
+      @if (canAddOrEditProducts()) {
+        <th>Remove</th>
+        <th>Confirm</th>
+      }
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-line>
+  <ng-template pTemplate="body" let-line let-index="rowIndex">
     @let touched = line.locationProductId | includes : productIdsForTouchedLines();
     <tr [pEditableRow]="line">
       <td>
-        <div class="flex gap-1">
-          @if (touched) {
-            <i class="pi pi-exclamation-triangle error-message" pTooltip="Unconfirmed Changes"></i>
-          }
-          {{ line.productLabel }}
-        </div>
+        <div class="flex flex-column gap-1">
+          <div class="flex gap-1">
+            @if (touched) {
+              <i class="pi pi-exclamation-triangle error-message" pTooltip="Unconfirmed Changes"></i>
+            } @else if (saleLinesFieldTree[index]().invalid()) {
+              <i class="pi pi-exclamation-triangle error-message" pTooltip="Invalid Values Detected"></i>
+            }
+            {{ line.productLabel }}
+          </div>
 
+          @if (line.quantityAvailable != null && canAddOrEditProducts()) {
+            <small class="info-message">
+              Available: {{ line.quantityAvailable }} {{ line.baseUnitId | fullUnitDescription }}
+            </small>
+          }
+        </div>
       </td>
 
       <td>
@@ -87,20 +114,30 @@
         {{ line.lineTotal | currency }}
       </td>
 
-      <td>
-        @if (touched) {
-          <p-button icon="pi pi-check"
-                    text
-                    class="pulse primary-color border-round"
+      @if (canAddOrEditProducts()) {
+        <td>
+          <p-button icon="pi pi-times"
+                    severity="danger"
                     rounded
-                    (onClick)="completeEditingLine(line)">
+                    text
+                    (onClick)="removeSaleLine(line)">
           </p-button>
-        }
-      </td>
+        </td>
+        <td>
+          @if (touched) {
+            <p-button icon="pi pi-check"
+                      text
+                      class="pulse primary-color border-round"
+                      rounded
+                      (onClick)="sendLineRequest()">
+            </p-button>
+          }
+        </td>
+      }
     </tr>
   </ng-template>
 
   <ng-template pTemplate="emptymessage">
-    <tr rts-empty-row [colspan]="6" [message]="emptySaleLinesMessage()"></tr>
+    <tr rts-empty-row [colspan]="7" [message]="emptySaleLinesMessage()"></tr>
   </ng-template>
 </p-table>

@@ -1,4 +1,4 @@
-import {disabled, required, schema} from '@angular/forms/signals'
+import {required, schema} from '@angular/forms/signals'
 import {OrganizationProduct} from '../../../../api/organization-level/product/organization-product.model'
 
 export namespace OrganizationProductFormDefinition {
@@ -35,7 +35,6 @@ export namespace OrganizationProductFormDefinition {
     required(path.productName)
     required(path.productGroupId)
     required(path.baseUnitId, {when: ({valueOf}) => !valueOf(path.id)})
-    disabled(path.baseUnitId, ({valueOf}) => !!valueOf(path.id))
   })
 
   export const convertToFormModel = (product?: OrganizationProduct): ProductFormModel => ({
