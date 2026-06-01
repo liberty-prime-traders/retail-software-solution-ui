@@ -58,6 +58,7 @@ export class OrganizationProductFormComponent extends BaseFormComponent<Organiza
   protected override apiService: OrganizationProductService =  this.productService
 
   readonly productCreated = output<void>()
+  readonly productUpdated = output<void>()
 
   @Input()
   set product(product: OrganizationProduct|null) {
@@ -149,7 +150,7 @@ export class OrganizationProductFormComponent extends BaseFormComponent<Organiza
   upsertProduct() {
     const updatedProduct: Partial<OrganizationProduct> = OrganizationProductFormDefinition.convertToBackendModel(this.productFormValue())
     if (updatedProduct.id) {
-      this.productService.put(updatedProduct)
+      this.productService.put(updatedProduct, {onSuccess: () => this.productUpdated.emit()})
     } else {
       this.productService.post(updatedProduct, {onSuccess: () => this.productCreated.emit()})
     }
@@ -157,13 +158,19 @@ export class OrganizationProductFormComponent extends BaseFormComponent<Organiza
 
   deactivateProduct() {
     if (this.productFormValue()?.id) {
-      this.productService.deactivateProduct(this.productFormValue()?.id)
+      this.productService.deactivateProduct(
+        this.productFormValue()?.id,
+        {onSuccess: () => this.productUpdated.emit()}
+      )
     }
   }
 
   reactivateProduct() {
     if (this.productFormValue()?.id) {
-      this.productService.reactivateProduct(this.productFormValue()?.id)
+      this.productService.reactivateProduct(
+        this.productFormValue()?.id,
+        {onSuccess: () => this.productUpdated.emit()}
+      )
     }
   }
 

@@ -1,10 +1,10 @@
-import {BaseProduct} from '../../cross-tier/product/base-product.model'
+import {ProductDetail} from '../../cross-tier/product/product-detail.model'
 import {Tag} from '../tag/tag.model'
 
-export interface OrganizationProduct extends BaseProduct {
-  productGroupId?: string
+export interface OrganizationProduct extends ProductDetail {
+  baseUnitId?: string
   activeTags?: TagSummary[]
-  tagsToAdd?: string[],
+  tagsToAdd?: string[]
   tagsToRemove?: string[]
 }
 

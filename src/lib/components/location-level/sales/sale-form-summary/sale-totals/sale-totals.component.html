@@ -1,0 +1,59 @@
+<div class="flex flex-column gap-3">
+  <div class="flex flex-column gap-2 info-message">
+    <div class="flex justify-content-between">
+      <span>Subtotal</span>
+      <span class="money">{{ saleSession().totals.subtotal | currency }}</span>
+    </div>
+
+    <div class="flex justify-content-between">
+      <span>Line discounts</span>
+      <span class="money">{{ saleSession().totals.lineLevelDiscountTotal | currency }}</span>
+    </div>
+
+    <div class="flex flex-column">
+      <div class="flex justify-content-between">
+        <span>Order discounts</span>
+        <span class="money">{{ saleSession().totals.orderLevelDiscountTotal | currency }}</span>
+      </div>
+      <p-divider/>
+    </div>
+
+    <div class="flex justify-content-between">
+      <span>Payable total</span>
+      <span class="money">{{ saleSession().totals.payableTotal | currency }}</span>
+    </div>
+
+    <div class="flex flex-column">
+      <div class="flex justify-content-between">
+        <span>Total paid</span>
+        <span class="money">{{ saleSession().totals.paymentTotal | currency }}</span>
+      </div>
+      <p-divider/>
+    </div>
+  </div>
+  <div class="flex justify-content-between">
+    <span class="font-bold">Balance due</span>
+    <span class="money irregular-balance">{{ saleSession().totals.balance | currency }}</span>
+  </div>
+
+  @if (canMakeChangesToTheSale()) {
+    <p-divider/>
+    <div class="flex gap-2 justify-content-end">
+      <p-button
+        label="Save Draft"
+        text
+        severity="secondary"
+        [disabled]="saleForm().invalid()"
+        (onClick)="saveDraft()">
+      </p-button>
+
+      <p-button
+        label="Confirm Sale"
+        icon="pi pi-check"
+        severity="success"
+        [disabled]="saleForm().invalid()"
+        (onClick)="completeSale()">
+      </p-button>
+    </div>
+  }
+</div>

@@ -18,6 +18,6 @@ export const provideLocationServices = (): Provider[] => [
 ]
 
 export const provideOrganizationServices = (): Provider[] => [
-  {provide: ProductFilterService, useExisting: OrganizationProductFilterService},
-  {provide: PaginatedBaseService, useExisting: OrganizationProductSearchService}
+  {provide: PaginatedBaseService, useExisting: OrganizationProductSearchService},
+  {provide: ProductFilterService, useExisting: OrganizationProductFilterService}
 ]

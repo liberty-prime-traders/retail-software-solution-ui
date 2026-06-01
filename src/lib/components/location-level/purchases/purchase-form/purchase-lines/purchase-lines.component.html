@@ -1,6 +1,9 @@
 <div class="flex flex-column gap-4">
   @if (isDraftOrNew()) {
-    <rts-product-lookup (productSelected)="addPurchaseLine($event)" [selectedProductIds]="selectedProductIds()"/>
+    <rts-purchase-product-lookup
+      (productSelected)="addPurchaseLine($event)"
+      [selectedProductIds]="selectedProductIds()">
+    </rts-purchase-product-lookup>
   }
 
   <p-table [value]="purchaseLinesArray()"

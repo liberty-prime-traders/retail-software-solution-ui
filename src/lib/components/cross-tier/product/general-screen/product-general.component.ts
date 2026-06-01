@@ -7,7 +7,7 @@ import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {Message} from 'primeng/message'
 import {TableModule} from 'primeng/table'
-import {BaseProduct} from '../../../../api/cross-tier/product/base-product.model'
+import {ProductDetail} from '../../../../api/cross-tier/product/product-detail.model'
 import {ProductSearchParameters} from '../../../../api/cross-tier/product/product-search-parameters.model'
 import {SchemaLevel} from '../../../../api/platform-level/table-registry/schema-level.enum'
 import {PaginatedBaseService} from '../../../../api/util/paginated-api/paginated-base.service'
@@ -37,7 +37,7 @@ import {ProductGridComponent} from '../product-grid/product-grid.component'
     ProductGridComponent
   ]
 })
-export class ProductGeneralComponent<PRODUCT extends BaseProduct> extends HasFilteredDataComponent {
+export class ProductGeneralComponent<PRODUCT extends ProductDetail> extends HasFilteredDataComponent {
 
   private readonly productFilterService = inject(ProductFilterService<PRODUCT>)
   protected readonly productSearchService = inject(PaginatedBaseService<PRODUCT, ProductSearchParameters>)

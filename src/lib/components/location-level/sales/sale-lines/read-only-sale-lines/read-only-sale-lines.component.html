@@ -1,0 +1,54 @@
+<div id="read-only-sale-lines" rtsAutoStretch="read-only-sale-lines">
+  <p-table [value]="saleLines()"
+           sortField="productLabel"
+           [scrollable]="true"
+           scrollHeight="flex"
+           dataKey="locationProduct">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Default Unit Price</th>
+        <th>Effective Unit Price</th>
+        <th>Total</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-line>
+      <tr>
+        <td class="font-medium">{{ line.productLabel }}</td>
+
+        <td>
+          <div class="flex flex-column">
+            {{ line.quantity }} {{ line.unitId | fullUnitDescription : line.quantity}}
+            <small class="block info-message">
+              {{ line.unitId | buildConversionContext: line : line.quantity | convertToTargetUnitForDisplay }}
+            </small>
+          </div>
+        </td>
+
+        <td>
+          <div class="flex flex-column">
+            {{ line.unitPrice | currency }}
+            <small class="block info-message">
+              {{ line.unitId | buildConversionContext: line : line.unitPrice | convertToTargetUnitAsCurrency }}
+            </small>
+          </div>
+        </td>
+
+        <td>
+          <div class="flex flex-column">
+            {{ line.netUnitPrice | currency }}
+            <small class="block info-message">
+              {{ line.unitId | buildConversionContext: line : line.netUnitPrice | convertToTargetUnitAsCurrency }}
+            </small>
+          </div>
+        </td>
+
+        <td>{{ line.lineTotal | currency }}</td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</div>

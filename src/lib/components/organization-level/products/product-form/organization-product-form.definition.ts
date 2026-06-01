@@ -34,7 +34,7 @@ export namespace OrganizationProductFormDefinition {
   export const productFormSchema = schema<ProductFormModel>((path) => {
     required(path.productName)
     required(path.productGroupId)
-    required(path.baseUnitId)
+    required(path.baseUnitId, {when: ({valueOf}) => !valueOf(path.id)})
   })
 
   export const convertToFormModel = (product?: OrganizationProduct): ProductFormModel => ({

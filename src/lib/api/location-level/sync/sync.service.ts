@@ -29,7 +29,7 @@ export class SyncService extends BaseService<SyncLog, SyncRequest> {
   }
 
   pollSyncProgress(syncLogId: EntityId) {
-    return this.refetchById(syncLogId)
+    return this.refetchRequest({id: syncLogId})
   }
 
   private isTerminalStatus(status: SyncStatus): boolean {

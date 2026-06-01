@@ -1,6 +1,6 @@
 import {inject} from '@angular/core'
 import {Validators} from '@angular/forms'
-import {BaseProduct} from '../../../api/cross-tier/product/base-product.model'
+import {ProductDetail} from '../../../api/cross-tier/product/product-detail.model'
 import {ProductSearchParameters} from '../../../api/cross-tier/product/product-search-parameters.model'
 import {ProductStatus} from '../../../api/cross-tier/product/product-status.enum'
 import {ProductGroupService} from '../../../api/organization-level/product-group/product-group.service'
@@ -9,7 +9,7 @@ import {BaseFilterService} from '../../../utils/services/base-filter.service'
 import {ProductFilterHelper} from './product-filter-helper'
 
 
-export abstract class ProductFilterService<PRODUCT extends BaseProduct>
+export abstract class ProductFilterService<PRODUCT extends ProductDetail>
   extends BaseFilterService<PRODUCT, ProductSearchParameters> {
 
   private readonly productGroupService = inject(ProductGroupService)
@@ -48,12 +48,10 @@ export abstract class ProductFilterService<PRODUCT extends BaseProduct>
   }
 
   override afterExternalParametersReset(parameters: Partial<ProductSearchParameters>) {
-    if (parameters.excludeIds) {
-      this.removeEntities(parameters.excludeIds)
-    }
+    this.excludeIds.set(parameters.excludeIds ? new Set(parameters.excludeIds) : new Set())
   }
 
-  protected override passesClientSideFilters(product: PRODUCT, externalParameters: Partial<ProductSearchParameters>): boolean {
+  protected override passesClientSideFilters(product: PRODUCT): boolean {
     if (!this.productFilterHelper.matchesSearchText(product)) return false
     if (!this.filterForm.valid) return true
 
@@ -62,7 +60,6 @@ export abstract class ProductFilterService<PRODUCT extends BaseProduct>
         && this.productFilterHelper.belongsToSelectedCategories(product, this.getProductGroupIdsForCategories)
         && this.productFilterHelper.hasAllSelectedTags(product)
         && this.productFilterHelper.matchesSelectedStatus(product)
-        && this.productPassesExternalParameters(product, externalParameters)
     )
   }
 
@@ -70,12 +67,5 @@ export abstract class ProductFilterService<PRODUCT extends BaseProduct>
     return this.productGroupService.selectAll()
       .filter(pg => pg.categoryId && categoryIds.has(pg.categoryId))
       .map(pg => String(pg.id))
-  }
-
-  private productPassesExternalParameters(product: PRODUCT, externalParameters: Partial<ProductSearchParameters>): boolean {
-    if (externalParameters.excludeIds) {
-      return !externalParameters.excludeIds.includes(product.id)
-    }
-    return true
   }
 }

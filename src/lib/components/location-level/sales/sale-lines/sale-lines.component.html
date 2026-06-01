@@ -1,97 +1,33 @@
 @if (canAddOrEditProducts()) {
-  <rts-product-lookup (productSelected)="addSaleLine($event)" [selectedProductIds]="selectedProductIds()"/>
+  <rts-sale-product-lookup
+    (productSelected)="sendLineRequest($event)"
+    [templateRef]="saleProductLookup"
+    [selectedProductIds]="selectedProductIds()">
+  </rts-sale-product-lookup>
+
+  <ng-template #saleProductLookup let-product>
+    <div class="flex flex-column gap-1">
+      {{ product | productLabel }}
+      <small class="block fle gap-2 info-message">
+        Available: {{ product.quantityAvailable }}
+
+        @if (product.quantityReserved) {
+          ({{product.quantityOnHand}} on hand, {{product.quantityReserved}} reserved)
+        }
+      </small>
+    </div>
+  </ng-template>
 }
 
-<p-table [value]="saleLines()" dataKey="referenceNumber">
+<div class="flex gap-3 mb-2">
+  <span class="font-medium text-xl">Sale Lines</span>
+  <p-badge [value]="saleLines().length" severity="info"/>
+</div>
 
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Product</th>
-      <th style="min-width: 250px">Units</th>
-      <th>Quantity</th>
-      <th>Unit Price</th>
-      <th>Total</th>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="body" let-line>
-    <tr>
-      <td>{{ line | productLabel }}</td>
-
-      <td [pEditableColumn]="line.unitId"
-          pEditableColumnField="unitId"
-          [pEditableColumnDisabled]="!canAddOrEditProducts()">
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <p-select [options]="line.baseUnitId | alternativeUnitsFinder"
-                      appendTo="body"
-                      class="col-10 p-0"
-                      [(ngModel)]="line.unitId">
-            </p-select>
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{ line.unitId | fullUnitDescription }}
-          </ng-template>
-        </p-cellEditor>
-        <small class="block info-message">
-          {{ line.unitId | buildConversionContext : line | unitConversionDescriptor }}
-        </small>
-      </td>
-
-      <td [pEditableColumn]="line.quantity"
-          pEditableColumnField="quantity"
-          [pEditableColumnDisabled]="!canAddOrEditProducts()">
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <p-inputNumber
-              [min]="0"
-              [maxFractionDigits]="2"
-              [(ngModel)]="line.quantity"
-              (ngModelChange)="completeEditingLine()">
-            </p-inputNumber>
-          </ng-template>
-
-          <ng-template pTemplate="output">
-            {{ line.quantity }}
-          </ng-template>
-        </p-cellEditor>
-
-        <small class="block info-message">
-          {{ line.unitId | buildConversionContext : line : line.quantity | convertToTargetUnitForDisplay }}
-        </small>
-      </td>
-
-      <td [pEditableColumn]="line.unitPrice"
-          pEditableColumnField="unitPrice"
-          [pEditableColumnDisabled]="!canAddOrEditProducts()">
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <p-inputNumber
-              [min]="0"
-              [maxFractionDigits]="2"
-              [(ngModel)]="line.unitPrice"
-              (ngModelChange)="completeEditingLine()">
-            </p-inputNumber>
-          </ng-template>
-
-          <ng-template pTemplate="output">
-            {{ line.unitPrice | currency }}
-          </ng-template>
-        </p-cellEditor>
-
-        <small class="block info-message">
-          {{ line.unitId | buildConversionContext : line : line.unitPrice | convertToTargetUnitAsCurrency }}
-        </small>
-      </td>
-
-      @let lineTotal = line.lineTotal || (line.quantity * line.unitPrice);
-      <td>
-        {{ lineTotal | currency }}
-      </td>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="emptymessage">
-    <tr rts-empty-row [colspan]="5" [message]="emptySaleLinesMessage()"></tr>
-  </ng-template>
-</p-table>
+<rts-loading-container [loading]="unitConversionGraphIsLoading()" loadingText="Loading sale lines...">
+  @if (canAddOrEditProducts()) {
+    <rts-editable-sale-lines [saleLines]="saleLines()"/>
+  } @else {
+    <rts-read-only-sale-lines [saleLines]="saleLines()"/>
+  }
+</rts-loading-container>

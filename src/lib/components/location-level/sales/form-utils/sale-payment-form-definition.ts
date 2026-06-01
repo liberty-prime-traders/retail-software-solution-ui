@@ -1,4 +1,4 @@
-import {applyWhen, required, schema} from '@angular/forms/signals'
+import {required, schema} from '@angular/forms/signals'
 
 export namespace SalePaymentFormDefinition {
 
@@ -22,10 +22,9 @@ export namespace SalePaymentFormDefinition {
     required(path.paymentMethodId)
     required(path.amount)
 
-    applyWhen(
+    required(
       path.paymentDate,
-      ({ valueOf }) => !valueOf(path.useNowForDate),
-      (paymentDatePath) => { required(paymentDatePath) }
+      {when: ({valueOf}) => !valueOf(path.useNowForDate)}
     )
   })
 }

@@ -1,0 +1,127 @@
+<div class="p-2 flex flex-column gap-4 scrollable"
+     id="editable-sale-lines"
+     rtsAutoStretch="editable-sale-lines">
+
+  @for (line of saleLines(); track line.locationProductId; let index = $index) {
+    @let touched = line | saleLineHasChanged;
+    @let formFieldRow = saleLinesFieldTree[index];
+
+    <p-card>
+      <div class="flex flex-column gap-2">
+        <div class="flex gap-4 justify-content-between">
+          <div class="flex gap-4 align-items-center">
+            <p-badge [value]="index + 1" severity="secondary"/>
+
+            @if (touched) {
+              <i class="pi pi-exclamation-triangle error-message" pTooltip="Unconfirmed Changes"></i>
+            } @else if (formFieldRow().invalid()) {
+              <i class="pi pi-exclamation-triangle error-message" pTooltip="Invalid Values Detected"></i>
+            }
+
+            <span class="font-medium">{{ line.productLabel }}</span>
+
+            @if (line.quantityAvailable != null) {
+              <small class="info-message">
+                Available: {{ line.quantityAvailable }} {{ line.baseUnitId | fullUnitDescription : line.quantityAvailable }}
+              </small>
+            }
+          </div>
+
+          <div class="flex info-message gap-2 align-items-center">
+            <small>{{ line.unitPrice | currency }}/{{ line.unitId | unitLabelSingular }}</small>
+
+            @if (line.unitId !== line.baseUnitId && line.unitPrice > 0) {
+              <div>&bullet;</div>
+
+              <small class="block ">
+                {{ line.unitId | buildConversionContext : line : line.unitPrice | convertToTargetUnitAsCurrency }}
+              </small>
+            }
+          </div>
+        </div>
+
+        <p-divider/>
+
+        <div class="flex justify-content-between align-items-center gap-1">
+          <div style="min-width: 250px">
+            <p-ifta-label>
+              <p-select [options]="line.baseUnitId | alternativeUnitsFinder"
+                        appendTo="body"
+                        class="col-10 p-0"
+                        [formField]="formFieldRow.unitId">
+              </p-select>
+              <label>Units</label>
+            </p-ifta-label>
+            <small class="block info-message">
+              {{ line.unitId | buildConversionContext : line | unitConversionDescriptor }}
+            </small>
+          </div>
+
+          <div>
+            <p-input-group>
+              <p-inputgroup-addon>
+                <span> {{line.unitId | unitCode}}</span>
+              </p-inputgroup-addon>
+
+              <p-ifta-label>
+                <p-inputNumber
+                  [min]="0"
+                  [maxFractionDigits]="2"
+                  [formField]="formFieldRow.quantity">
+                </p-inputNumber>
+                <label>Quantity</label>
+              </p-ifta-label>
+            </p-input-group>
+            <small class="block info-message">
+              {{ line.unitId | buildConversionContext : line : line.quantity | convertToTargetUnitForDisplay }}
+            </small>
+          </div>
+
+          <div>
+            <p-input-group>
+              <p-inputgroup-addon>
+                KES
+              </p-inputgroup-addon>
+              <p-ifta-label>
+                <p-inputNumber
+                  [min]="0"
+                  [maxFractionDigits]="2"
+                  [formField]="formFieldRow.unitPriceOverride">
+                </p-inputNumber>
+                <label>Cashier's Price</label>
+              </p-ifta-label>
+            </p-input-group>
+            <small class="block info-message">
+              {{ line.unitId | buildConversionContext : line : line.unitPriceOverride | convertToTargetUnitAsCurrency }}
+            </small>
+          </div>
+
+          <span class="font-medium">{{ line.lineTotal | currency }}</span>
+
+          <div class="flex gap-3 justify-content-center">
+            <p-button icon="pi pi-times"
+                      severity="danger"
+                      rounded
+                      text
+                      (onClick)="removeSaleLine(line)">
+            </p-button>
+
+            @if (touched) {
+              <p-button icon="pi pi-check"
+                        text
+                        class="pulse primary-color border-round"
+                        rounded
+                        (onClick)="sendLineRequest()">
+              </p-button>
+            }
+          </div>
+
+        </div>
+      </div>
+
+    </p-card>
+
+  } @empty {
+    <p class="info-message text-center py-3">No Sale lines added yet.</p>
+  }
+</div>

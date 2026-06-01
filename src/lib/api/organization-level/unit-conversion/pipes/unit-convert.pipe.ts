@@ -21,7 +21,8 @@ export class UnitFactorResolver implements PipeTransform {
   private readonly unitConversionService = inject(UnitConversionService)
 
   transform(sourceUnitId: string, targetUnitId: string): number {
-    return this.unitConversionService.resolveFactor({sourceUnitId, targetUnitId, value: 0}) ?? 0
+    const context: ConversionContext = {sourceUnitId, targetUnitId, value: 0, conversionFactor: 1}
+    return this.unitConversionService.resolveFactor(context) ?? 0
   }
 }
 
@@ -58,5 +59,14 @@ export class UnitCurrencyPipe implements PipeTransform {
 
   transform(conversionContext: ConversionContext): string {
     return this.unitConversionService.convertToTargetUnitAsCurrency(conversionContext)
+  }
+}
+
+@Pipe({name: 'unitLabelSingular', standalone: true})
+export class UnitLabelPipe implements PipeTransform {
+  private readonly unitConversionService = inject(UnitConversionService)
+
+  transform(unitId: string): string {
+    return this.unitConversionService.getUnitLabelSingular(unitId)
   }
 }

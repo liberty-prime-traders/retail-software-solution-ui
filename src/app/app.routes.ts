@@ -40,8 +40,10 @@ const secureRoutes: Routes = [
   }
 ]
 
+export const OKTA_CALLBACK_ROUTE = 'login/callback'
+
 const appChildRoutes: Routes = [
-  {path: 'login/callback', component: OktaCallbackComponent},
+  {path: OKTA_CALLBACK_ROUTE, component: OktaCallbackComponent},
   {
     path: 'secure',
     canActivate: [OktaAuthGuard],

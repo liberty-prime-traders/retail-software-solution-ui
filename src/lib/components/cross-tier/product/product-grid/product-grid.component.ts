@@ -6,7 +6,7 @@ import {Skeleton} from 'primeng/skeleton'
 import {Table, TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
 import {TableLazyLoadEvent} from 'primeng/types/table'
-import {BaseProduct} from '../../../../api/cross-tier/product/base-product.model'
+import {ProductDetail} from '../../../../api/cross-tier/product/product-detail.model'
 import {ProductSearchParameters} from '../../../../api/cross-tier/product/product-search-parameters.model'
 import {ProductStatus} from '../../../../api/cross-tier/product/product-status.enum'
 import {SchemaLevel} from '../../../../api/platform-level/table-registry/schema-level.enum'
@@ -41,7 +41,7 @@ import {ProductFilterService} from '../product-filter.service'
     NullishToZeroPipe
   ]
 })
-export class ProductGridComponent<PRODUCT extends BaseProduct> {
+export class ProductGridComponent<PRODUCT extends ProductDetail> {
   private readonly productSearchService = inject(PaginatedBaseService<PRODUCT, ProductSearchParameters>)
   readonly productFilterService = inject(ProductFilterService<PRODUCT>)
 
@@ -72,4 +72,9 @@ export class ProductGridComponent<PRODUCT extends BaseProduct> {
   onRowCollapse(): void {
     this.rowIsExpanded.set(false)
   }
+
+  onProductUpdated() {
+    this.productFilterService.reloadClientSideFilteredEntities()
+  }
+  
 }

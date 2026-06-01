@@ -1,4 +1,4 @@
-import {AfterViewInit, computed, DestroyRef, Directive, ElementRef, inject, input} from '@angular/core'
+import {AfterViewInit, computed, DestroyRef, Directive, ElementRef, HostListener, inject, input} from '@angular/core'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {tap} from 'rxjs/operators'
 import {stretchVisibleElement} from '../../utils/display-manips'
@@ -10,6 +10,7 @@ export class AutoStretchDirective implements AfterViewInit {
   readonly elementId = input('', {alias: 'rtsAutoStretch'})
   readonly useMinHeight = input(false)
   readonly padding = input<number|undefined>(undefined)
+  readonly stopBefore = input<string>()
 
   private readonly el = inject(ElementRef<HTMLElement>)
   private readonly autoStretchService = inject(AutoStretchService)
@@ -32,7 +33,13 @@ export class AutoStretchDirective implements AfterViewInit {
     ).subscribe()
   }
 
-  private stretch(): void {
-    setTimeout(() => stretchVisibleElement(this.targetId(), this.useMinHeight(), this.effectivePadding()), 0)
+  @HostListener('window:resize')
+  stretch(): void {
+    setTimeout(() =>
+      stretchVisibleElement(
+        this.targetId(), this.useMinHeight(), this.effectivePadding(), this.stopBefore()
+      ),
+      0
+    )
   }
 }

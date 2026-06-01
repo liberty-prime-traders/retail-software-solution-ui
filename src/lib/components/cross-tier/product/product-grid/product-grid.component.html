@@ -79,11 +79,11 @@
       <tr>
         @if (isOrganizationLevel()){
           <td colspan="8" class="filled-background">
-            <rts-organization-product-form [product]="product"/>
+            <rts-organization-product-form [product]="product" (productUpdated)="onProductUpdated()"/>
           </td>
         } @else if (isLocationLevel()) {
           <td colspan="8" class="filled-background">
-            <rts-location-product-form [locationProduct]="product"/>
+            <rts-location-product-form [locationProduct]="product" (productUpdated)="onProductUpdated()"/>
           </td>
         }
       </tr>

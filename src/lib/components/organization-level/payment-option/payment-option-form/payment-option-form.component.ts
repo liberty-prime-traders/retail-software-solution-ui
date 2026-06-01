@@ -14,6 +14,7 @@ import {RtsTreeNode} from '../../../../utils/types/rts-tree-node'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {PaymentOptionFormDefinition} from './payment-option-form.definition'
 
 @Component({
@@ -26,7 +27,8 @@ import {PaymentOptionFormDefinition} from './payment-option-form.definition'
     InputText,
     TreeSelect,
     FormsModule,
-    NgClass
+    NgClass,
+    LoadingContainerComponent
   ]
 })
 export class PaymentOptionFormComponent extends BaseFormComponent<PaymentOptionService> implements OnInit {
@@ -63,7 +65,9 @@ export class PaymentOptionFormComponent extends BaseFormComponent<PaymentOptionS
   override ngOnInit() {
     super.ngOnInit()
     if (this.isChartOfAccountsEnabled()) {
-      this.accountTreesService.fetch()
+      this.accountTreesService.fetchRequest({
+        callbacks: {onSuccess: () => this.linkedAccount.set(this.findOriginalLinkedAccount())}
+      })
     }
   }
 

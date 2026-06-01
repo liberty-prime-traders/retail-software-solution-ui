@@ -1,5 +1,6 @@
 export enum TaxTrigger {
   SALE = 'SALE',
+  SALE_VOID = 'SALE_VOID',
   SALE_RETURN = 'SALE_RETURN',
   CREDIT_NOTE = 'CREDIT_NOTE',
   DELIVERY = 'DELIVERY',

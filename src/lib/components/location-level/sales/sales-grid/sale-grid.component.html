@@ -2,6 +2,7 @@
   <p-table [value]="sales()"
            [loading]="loading()"
            sortField="referenceNumber"
+           [scrollable]="true"
            scrollHeight="flex"
            dataKey="id">
 
@@ -13,9 +14,11 @@
       <tr>
         <th>Reference</th>
         <th>Customer</th>
-        <th>Sale Total</th>
         <th>Sale Status</th>
         <th>Payment Status</th>
+        <th>Sub Total</th>
+        <th>Grand Total</th>
+        <th>Total Paid</th>
         <th>Sold By</th>
         <th>Date Sold</th>
         <th style="width: 5rem"></th>
@@ -25,8 +28,7 @@
     <ng-template pTemplate="body" let-sale>
       <tr>
         <td>{{sale.referenceNumber | nullSafe}}</td>
-        <td>{{ sale.contactName | nullSafe }}</td>
-        <td>{{ sale.saleTotal | currency }}</td>
+        <td>{{sale.contactName | nullSafe}}</td>
 
         <td>
           <p-tag [value]="sale.status | prettifyEnum"
@@ -39,7 +41,9 @@
                  [severity]="sale.paymentStatus | paymentStatusSeverity">
           </p-tag>
         </td>
-
+        <td>{{ sale.subtotal | currency }}</td>
+        <td>{{ sale.grandTotal | currency | nullSafe }}</td>
+        <td>{{ sale.totalPaid | currency }}</td>
         <td>{{ sale.soldBy | nullSafe }}</td>
         <td>{{ sale.dateSold | date | nullSafe }}</td>
 

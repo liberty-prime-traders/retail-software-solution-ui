@@ -11,7 +11,7 @@
              sortField="name"
              #paymentOptionsTable
              scrollHeight="flex"
-             scrollable="true"
+             [scrollable]="true"
              [globalFilterFields]="['name', 'description', 'createdBy']"
              (onRowExpand)="rowIsExpanded.set(true)"
              (onRowCollapse)="rowIsExpanded.set(false)"

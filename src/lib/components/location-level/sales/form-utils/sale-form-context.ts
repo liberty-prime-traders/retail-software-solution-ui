@@ -1,61 +1,66 @@
 import {computed, inject, Injectable, signal} from '@angular/core'
 import {form} from '@angular/forms/signals'
-import {SalePayment} from '../../../../api/location-level/sale-payment/sale-payment.model'
-import {calculateTotalPaid, Sale} from '../../../../api/location-level/sale/sale.model'
-import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
-import {SaleFormVisibilityContext} from '../sale-form-visibility.context'
+import {ProductForSale} from '../../../../api/location-level/product-lookup/product-for-sale.model'
+import {defaultSaleSession} from '../../../../api/location-level/sale_session/sale-session-default.value'
+import {
+  SaleSessionLineAddRequest,
+  SaleSessionLineUpdateRequest
+} from '../../../../api/location-level/sale_session/sale-session-requests.model'
+import {SaleSession} from '../../../../api/location-level/sale_session/sale-session.model'
+import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {SaleFormDefinition} from './sale-form.definition'
+import {SaleLineFormDefinition} from './sale-line-form.definition'
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class SaleFormContext {
 
-  private readonly zonedDatesService = inject(ZonedDatesService)
-  private readonly saleFormVisibilityContext = inject(SaleFormVisibilityContext)
+  private readonly saleSessionService = inject(SaleSessionService)
 
-  private readonly _originalSale = signal<Sale | null>(null)
-  readonly originalSale = this._originalSale.asReadonly()
+  private readonly _saleSession = signal<SaleSession>(defaultSaleSession())
+  private readonly _productIdsForTouchedLines = signal(new Set<string>())
+
+  readonly currentContactId = computed(() => this.saleSession().contactId)
+  readonly saleSession = this._saleSession.asReadonly()
   private readonly saleFormValue = signal(SaleFormDefinition.createDefault())
+  readonly productIdsForTouchedLines = this._productIdsForTouchedLines.asReadonly()
+  readonly saleLines = computed(() => this.saleFormValue().saleLines)
+  readonly payments = computed(() => this.saleSession().salePayments)
+
   readonly saleForm = form(this.saleFormValue, SaleFormDefinition.saleFormSchema)
-  readonly saleLines = computed(() => this.saleFormValue().lines)
-  readonly orderTotal = computed(() => this.saleFormValue().orderTotal)
-  readonly totalPaid = computed(() => this.saleFormValue().totalPaid)
-  readonly balanceDue = computed(() => this.saleFormValue().balanceDue)
-  readonly payments = signal<Partial<SalePayment>[]>([])
 
-  recalculateTotals() {
-    const orderTotal = this.saleFormValue().lines.reduce(
-      (sum, line) => sum + (line.quantity * line.unitPrice), 0
+  readonly loadSession = (session: SaleSession) => {
+    this._saleSession.set(session)
+    this._productIdsForTouchedLines.set(new Set<string>())
+    this.saleForm().reset(SaleFormDefinition.convertToFormModel(session))
+  }
+
+  sendLineRequest(newProduct?: ProductForSale) {
+    this.saleSessionService.updateSaleLines(
+      {
+        additions: this.getLinesToAdd(newProduct),
+        updates: this.getLinesToUpdate()
+      },
+      {onSuccess: this.loadSession}
     )
-    const totalPaid = calculateTotalPaid(this.payments())
-    this.saleForm.orderTotal().value.set(orderTotal)
-    this.saleForm.totalPaid().value.set(totalPaid)
-    this.saleForm.balanceDue().value.set(orderTotal - totalPaid)
   }
 
-  addPayment(payment: Partial<SalePayment>) {
-    this.payments.update(payments => [payment, ...payments])
-    this.recalculateTotals()
-  }
-
-  removePayment(fakeId?: number) {
-    if (fakeId !== undefined) {
-      this.payments.update(payments => payments.filter(p => p.fakeId !== fakeId))
-      this.recalculateTotals()
+  private getLinesToAdd(newProduct?: ProductForSale): SaleSessionLineAddRequest[] {
+    if (newProduct) {
+      return [{locationProductId: newProduct.id, quantity: 1}]
     }
+    return []
   }
 
-  initializeForm(sale: Sale | null) {
-    this._originalSale.set(sale)
-    this.saleForm().reset(SaleFormDefinition.convertToFormModel(sale))
-    this.payments.set(sale?.payments ?? [])
-    if (sale) {
-      this.saleFormVisibilityContext.showForm()
-    }
-  }
-
-  getSavableFormValue(): Partial<Sale> {
-    return SaleFormDefinition.convertToBackendModel(
-      this.saleFormValue(), this.payments(), this.zonedDatesService
-    )
+  private getLinesToUpdate(): SaleSessionLineUpdateRequest[] {
+    return this.saleLines()
+      .filter(SaleLineFormDefinition.hasChanged)
+      .map(saleLine => {
+        return {
+          identity: saleLine.identity,
+          unitId: saleLine.unitId,
+          quantity: saleLine.quantity,
+          unitPriceOverride: saleLine.unitPriceOverride
+        }
+      })
   }
 }

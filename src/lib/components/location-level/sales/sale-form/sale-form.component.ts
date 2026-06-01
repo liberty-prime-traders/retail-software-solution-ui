@@ -1,80 +1,99 @@
 import {Component, computed, inject, OnInit} from '@angular/core'
 import {FormField} from '@angular/forms/signals'
-import {Card} from 'primeng/card'
 import {Select} from 'primeng/select'
 import {ToggleButton} from 'primeng/togglebutton'
-import {SaleStatus} from '../../../../api/location-level/sale/sale-status.enum'
-import {Sale} from '../../../../api/location-level/sale/sale.model'
-import {SaleService} from '../../../../api/location-level/sale/sale.service'
+import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
+import {
+  UnsavedCartsSummaryService
+} from '../../../../api/location-level/unsaved-carts-summary/unsaved-carts-summary.service'
 import {ContactService} from '../../../../api/organization-level/contact/contact.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
-import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {SaleFormContext} from '../form-utils/sale-form-context'
+import {SaleFormMode} from '../form-utils/sale-form-mode.enum'
+import {SaleFormNavigator} from '../form-utils/sale-form-navigator'
 import {SaleFormHeaderComponent} from '../sale-form-header/sale-form-header.component'
+import {SaleFormSummaryComponent} from '../sale-form-summary/sale-form-summary.component'
 import {SaleLinesComponent} from '../sale-lines/sale-lines.component'
-import {SaleSummaryComponent} from '../sale-summary/sale-summary.component'
+import {UnsavedCartsComponent} from '../unsaved-carts/unsaved-carts.component'
 
 @Component({
   selector: 'rts-new-sale',
   templateUrl: 'sale-form.component.html',
   styleUrl: 'sale-form.component.scss',
   imports: [
-    Card,
     FormField,
     FormFieldComponent,
     Select,
     ToggleButton,
-    SaleSummaryComponent,
+    SaleFormSummaryComponent,
     SaleLinesComponent,
     LoadingContainerComponent,
-    FormButtonsComponent,
     AutoStretchDirective,
     NullSafePipe,
-    SaleFormHeaderComponent
+    SaleFormHeaderComponent,
+    UnsavedCartsComponent
   ]
 })
 export class SaleFormComponent extends HasSubscriptionComponent implements OnInit {
 
   private readonly contactService = inject(ContactService)
   private readonly context = inject(SaleFormContext)
-  private readonly saleService = inject(SaleService)
+  private readonly navigator = inject(SaleFormNavigator)
+  private readonly saleSessionService = inject(SaleSessionService)
+  private readonly saleSessionSummaryService = inject(UnsavedCartsSummaryService)
 
   private static readonly WalkInCustomerId = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
-  readonly saleIsLoading = this.saleService.selectLoading
   readonly customers = this.contactService.customers
   readonly saleForm = this.context.saleForm
-  readonly originalSaleRecord = this.context.originalSale
-  readonly saleStatus = computed(() => this.originalSaleRecord()?.status)
+  readonly saleSession = this.context.saleSession
+  readonly currentContactId = computed(() => this.context.currentContactId())
+  private readonly sessionIsPersisted = computed(() => !!this.saleSession().id)
+
+  readonly showUnsavedCarts = computed(() => this.navigator.mode() === SaleFormMode.PICKER)
+
+  readonly sessionIsLoading = computed(() =>
+    this.saleSessionService.selectLoading() || this.saleSessionSummaryService.selectLoading()
+  )
 
   readonly canEditCustomer = computed(() =>
-    !this.originalSaleRecord() || this.originalSaleRecord()?.status === SaleStatus.DRAFT
-  )
-
-  readonly canVoidSale = computed(() =>
-    this.saleStatus() && [SaleStatus.DRAFT, SaleStatus.CONFIRMED].includes(this.saleStatus()!)
-  )
-
-  readonly voidSaleLabel = computed(() =>
-    this.saleStatus() === SaleStatus.DRAFT ? 'Discard Draft' : 'Void Sale'
+    !this.sessionIsPersisted() || this.saleSession().uiOptions.canMakeChangesToTheSale
   )
 
   ngOnInit() {
     this.contactService.fetch()
   }
 
-  voidSale() {
-    this.saleService.voidSale(this.context.originalSale()?.id!, {onSuccess: this.onSuccessfulSave})
+  onCustomerChange() {
+    if (!this.currentContactId()) {
+      this.startNewSession();
+    } else {
+      this.saleSessionService.updateHeader(
+        {contactId: this.saleForm.contactId().value()},
+        {onSuccess: this.context.loadSession}
+      )
+    }
   }
 
-  private readonly onSuccessfulSave = (savedSale: Sale) => {
-    this.context.initializeForm(savedSale)
+  private startNewSession() {
+    this.saleSessionService.startNewSession(
+      {contactId: this.saleForm.contactId().value()},
+      {onSuccess: this.context.loadSession}
+    );
   }
 
   respondToWalkInCustomer(walkInCustomer: boolean) {
-    this.saleForm.contactId().value.set(walkInCustomer ? SaleFormComponent.WalkInCustomerId : '')
+    const newId = walkInCustomer ? SaleFormComponent.WalkInCustomerId : '';
+    const wasEmpty = !this.currentContactId();
+    this.saleForm.contactId().value.set(newId);
+    if (walkInCustomer && wasEmpty) {
+      this.startNewSession();
+    } else {
+      this.onCustomerChange();
+    }
   }
+
 }
