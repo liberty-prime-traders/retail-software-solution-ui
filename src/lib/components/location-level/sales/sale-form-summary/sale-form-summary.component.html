@@ -1,0 +1,45 @@
+<p-card class="border-noround h-full shadow-none">
+  <div class="flex h-full flex-column gap-3 pb-3">
+
+    @let canAddPayments = canAddPaymentsToSale();
+
+    <p-tabs value="summary" class="flex-grow-1" (valueChange)="onTabChange()">
+      <p-tablist>
+        <p-tab value="summary">Summary</p-tab>
+        <p-tab value="payments">
+          Payments
+          <p-badge [value]="paymentsCount()" severity="success" size="small"/>
+        </p-tab>
+      </p-tablist>
+
+      <p-tabpanels>
+        <p-tabpanel value="summary">
+          @if (canAddPayments) {
+            <rts-sale-payment-form/>
+          }
+          <div class="flex flex-column gap-3 px-3">
+            @if (canAddPaymentsToSale()) {
+              <rts-error-summary
+                [signalFormErrors]="saleForm().errorSummary()"
+                [regularErrorMessages]="failureMessages()"
+                [fieldMap]="saleFormFieldMap">
+              </rts-error-summary>
+              <p-divider/>
+
+            } @else {
+              <rts-error-summary [regularErrorMessages]="failureMessages()"/>
+            }
+
+            <rts-sale-totals/>
+          </div>
+        </p-tabpanel>
+
+        <p-tabpanel value="payments">
+          <rts-sale-payments-grid/>
+        </p-tabpanel>
+
+      </p-tabpanels>
+
+    </p-tabs>
+  </div>
+</p-card>

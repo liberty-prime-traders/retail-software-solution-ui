@@ -1,42 +1,37 @@
 import {Component, computed, inject, OnInit} from '@angular/core'
 import {FormField} from '@angular/forms/signals'
-import {Card} from 'primeng/card'
 import {Select} from 'primeng/select'
 import {ToggleButton} from 'primeng/togglebutton'
+import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {
   UnsavedCartsSummaryService
 } from '../../../../api/location-level/unsaved-carts-summary/unsaved-carts-summary.service'
-import {SaleStatus} from '../../../../api/location-level/sale-summary/sale-status.enum'
-import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {ContactService} from '../../../../api/organization-level/contact/contact.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
-import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
 import {HasSubscriptionComponent} from '../../../reusable/has-subscription.component'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {SaleFormContext} from '../form-utils/sale-form-context'
 import {SaleFormMode} from '../form-utils/sale-form-mode.enum'
 import {SaleFormNavigator} from '../form-utils/sale-form-navigator'
-import {UnsavedCartsComponent} from '../unsaved-carts/unsaved-carts.component'
 import {SaleFormHeaderComponent} from '../sale-form-header/sale-form-header.component'
+import {SaleFormSummaryComponent} from '../sale-form-summary/sale-form-summary.component'
 import {SaleLinesComponent} from '../sale-lines/sale-lines.component'
-import {SaleSummaryComponent} from '../sale-form-summary/sale-summary.component'
+import {UnsavedCartsComponent} from '../unsaved-carts/unsaved-carts.component'
 
 @Component({
   selector: 'rts-new-sale',
   templateUrl: 'sale-form.component.html',
   styleUrl: 'sale-form.component.scss',
   imports: [
-    Card,
     FormField,
     FormFieldComponent,
     Select,
     ToggleButton,
-    SaleSummaryComponent,
+    SaleFormSummaryComponent,
     SaleLinesComponent,
     LoadingContainerComponent,
-    FormButtonsComponent,
     AutoStretchDirective,
     NullSafePipe,
     SaleFormHeaderComponent,
@@ -55,7 +50,6 @@ export class SaleFormComponent extends HasSubscriptionComponent implements OnIni
   readonly customers = this.contactService.customers
   readonly saleForm = this.context.saleForm
   readonly saleSession = this.context.saleSession
-  readonly saleStatus = computed(() => this.saleSession().saleStatus)
   readonly currentContactId = computed(() => this.context.currentContactId())
   private readonly sessionIsPersisted = computed(() => !!this.saleSession().id)
 
@@ -67,14 +61,6 @@ export class SaleFormComponent extends HasSubscriptionComponent implements OnIni
 
   readonly canEditCustomer = computed(() =>
     !this.sessionIsPersisted() || this.saleSession().uiOptions.canMakeChangesToTheSale
-  )
-
-  readonly canVoidSale = computed(() =>
-    this.sessionIsPersisted() && [SaleStatus.DRAFT, SaleStatus.CONFIRMED].includes(this.saleStatus())
-  )
-
-  readonly voidSaleLabel = computed(() =>
-    this.saleStatus() === SaleStatus.DRAFT ? 'Discard Draft' : 'Void Sale'
   )
 
   ngOnInit() {
@@ -110,7 +96,4 @@ export class SaleFormComponent extends HasSubscriptionComponent implements OnIni
     }
   }
 
-  voidSale() {
-    //this.saleSessionService.voidSale(this.context.saleSession()?.id!, {onSuccess: this.context.loadSession})
-  }
 }

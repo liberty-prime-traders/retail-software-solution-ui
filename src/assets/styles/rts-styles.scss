@@ -38,8 +38,12 @@ form, .form-container  {
 }
 
 .scrollable {
-  overflow-y: auto;
+  overflow: auto;
   padding-right: 5px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 $positions: left right center top bottom;

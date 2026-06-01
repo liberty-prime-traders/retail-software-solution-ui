@@ -4,9 +4,10 @@ import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {InputText} from 'primeng/inputtext'
 import {Tag} from 'primeng/tag'
-import {SalePayment, SaleSession} from '../../../../api/location-level/sale_session/sale-session.model'
-import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
-import {SaleFormContext} from '../form-utils/sale-form-context'
+import {SalePayment, SaleSession} from '../../../../../api/location-level/sale_session/sale-session.model'
+import {SaleSessionService} from '../../../../../api/location-level/sale_session/sale-session.service'
+import {AutoStretchDirective} from '../../../../reusable/auto-stretch.directive'
+import {SaleFormContext} from '../../form-utils/sale-form-context'
 
 @Component({
   selector: 'rts-sale-payments-grid',
@@ -18,7 +19,8 @@ import {SaleFormContext} from '../form-utils/sale-form-context'
     DatePipe,
     CurrencyPipe,
     NgClass,
-    InputText
+    InputText,
+    AutoStretchDirective
   ]
 })
 export class SalePaymentsGridComponent {

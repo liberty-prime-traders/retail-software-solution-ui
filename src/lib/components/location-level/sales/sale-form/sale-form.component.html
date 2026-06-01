@@ -4,7 +4,7 @@
     <rts-open-sale-sessions />
 
   } @else {
-    <div class="flex flex-column" id="sale-form" rtsAutoStretch="sale-form" [useMinHeight]="true">
+    <div class="flex flex-column" id="sale-form" rtsAutoStretch="sale-form" [padding]="0">
       <rts-sale-form-header/>
 
       <div class="flex flex-grow-1">
@@ -37,28 +37,9 @@
           </rts-form-field>
 
           <rts-sale-lines class="p-3 flex-grow-1"/>
-
-          @if (canVoidSale()) {
-            <p-card class="border-noround pb-3">
-              <rts-forms-buttons
-                [hideSave]="true"
-                [hideReset]="true"
-                (delete)="voidSale()"
-                contentClass=""
-                deleteInProgressMessage="Processing request..."
-                deleteWarning="All payments have been voided, and products have not been expended"
-                [deleteLabel]="voidSaleLabel()">
-              </rts-forms-buttons>
-            </p-card>
-          }
         </div>
 
-        <rts-sale-payment-summary
-          class="col-3 p-0"
-          id="sale-payment-summary"
-          rtsAutoStretch="sale-payment-summary"
-          [useMinHeight]="true">
-        </rts-sale-payment-summary>
+        <rts-sale-form-summary class="col-3 p-0"/>
       </div>
     </div>
   }
