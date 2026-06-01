@@ -55,6 +55,8 @@ export interface SaleLine extends ProductQuantities {
   conversionFactor: number
   unitPrice: number
   lineTotal: number
+  unitPriceOverride: number
+  netUnitPrice: number
 }
 
 export enum AdjustmentDirection {

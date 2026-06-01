@@ -61,3 +61,12 @@ export class UnitCurrencyPipe implements PipeTransform {
     return this.unitConversionService.convertToTargetUnitAsCurrency(conversionContext)
   }
 }
+
+@Pipe({name: 'unitLabelSingular', standalone: true})
+export class UnitLabelPipe implements PipeTransform {
+  private readonly unitConversionService = inject(UnitConversionService)
+
+  transform(unitId: string): string {
+    return this.unitConversionService.getUnitLabelSingular(unitId)
+  }
+}

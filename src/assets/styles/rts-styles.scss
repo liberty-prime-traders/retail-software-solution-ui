@@ -38,9 +38,8 @@ form, .form-container  {
 }
 
 .scrollable {
-  min-height: 0;
   overflow-y: auto;
-  flex: 1;
+  padding-right: 5px;
 }
 
 $positions: left right center top bottom;

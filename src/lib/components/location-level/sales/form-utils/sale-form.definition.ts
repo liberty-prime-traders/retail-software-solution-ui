@@ -1,4 +1,3 @@
-import {Signal} from '@angular/core'
 import {
   applyEach,
   applyWhen,
@@ -45,39 +44,38 @@ export namespace SaleFormDefinition {
     saleStatus: SaleStatus.DRAFT
   })
 
-  export const createSaleFormSchema = (productIdsForTouchedLines: Signal<Set<string>>) =>
-    schema<SaleFormModel>((salePath) => {
-      applyEach(salePath.saleLines, (linePath) => {
-        applyWhen(
-          linePath,
-          ({valueOf}) => valueOf(salePath.saleStatus) === SaleStatus.DRAFT,
-          SaleLineFormDefinition.createSaleLineSchema(productIdsForTouchedLines)
-        )
-      })
-
-      minLength(salePath.saleLines, 1, {message: 'Sale must have at least one line'})
-      
-      required(
-        salePath.contactId,
-        {when: ({valueOf}) => !valueOf(salePath.walkInCustomer)}
+  export const saleFormSchema = schema<SaleFormModel>((salePath) => {
+    applyEach(salePath.saleLines, (linePath) => {
+      applyWhen(
+        linePath,
+        ({valueOf}) => valueOf(salePath.saleStatus) === SaleStatus.DRAFT,
+        SaleLineFormDefinition.saleLineSchema
       )
+    })
 
-      disabled(
-        salePath.contactId,
-        ({valueOf}: RootFieldContext<string>) => !!valueOf(salePath.walkInCustomer)
-      )
+    minLength(salePath.saleLines, 1, {message: 'Sale must have at least one line'})
 
-      max(
-        salePath.balance,
-        ({valueOf}) => valueOf(salePath.walkInCustomer) ? 0 : valueOf(salePath.payableTotal),
-        {message: 'Walk-in customers must pay in full'}
-      )
+    required(
+      salePath.contactId,
+      {when: ({valueOf}) => !valueOf(salePath.walkInCustomer)}
+    )
 
-      max(
-        salePath.paymentTotal,
-        ({valueOf}) => valueOf(salePath.payableTotal),
-        {message: 'Total paid cannot exceed order total'}
-      )
+    disabled(
+      salePath.contactId,
+      ({valueOf}: RootFieldContext<string>) => !!valueOf(salePath.walkInCustomer)
+    )
+
+    max(
+      salePath.balance,
+      ({valueOf}) => valueOf(salePath.walkInCustomer) ? 0 : valueOf(salePath.payableTotal),
+      {message: 'Walk-in customers must pay in full'}
+    )
+
+    max(
+      salePath.paymentTotal,
+      ({valueOf}) => valueOf(salePath.payableTotal),
+      {message: 'Total paid cannot exceed order total'}
+    )
   })
 
   export const convertToFormModel = (sale: SaleSession): SaleFormModel => {

@@ -15,6 +15,7 @@ import {SalePaymentsGridComponent} from '../sale-payments-grid/sale-payments-gri
 @Component({
   selector: 'rts-sale-payment-summary',
   templateUrl: 'sale-summary.component.html',
+  styleUrl: 'sale-summary.component.scss',
   imports: [
     Button,
     Card,

@@ -26,13 +26,13 @@ export class UnitConversionService {
   }
 
   convertToTargetUnitAsCurrency(ctx: ConversionContext): string {
-    if (ctx.value === 0) return '$0.00'
+    if (ctx.value === 0) return 'KES 0.00'
     const converted = this.convertPerUnit(ctx)
     if (converted === null) return '_'
     return `${this.transformToCurrency(converted)}/${this.getUnitLabelSingular(ctx.targetUnitId)}`
   }
 
-  private getUnitLabelSingular(unitId: string): string {
+  getUnitLabelSingular(unitId: string): string {
     return this.graphService.getUnitLabel(unitId, UnitPluralDerivation.SINGULAR)
   }
 
@@ -41,7 +41,7 @@ export class UnitConversionService {
   }
 
   private transformToCurrency(value: number): string {
-    return this.currencyPipe.transform(value, 'KES') ?? '_'
+    return this.currencyPipe.transform(value, 'KES ') ?? '_'
   }
 
   private applyConversion(

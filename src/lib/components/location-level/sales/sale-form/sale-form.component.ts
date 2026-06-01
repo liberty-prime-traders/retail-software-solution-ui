@@ -21,7 +21,7 @@ import {SaleFormNavigator} from '../form-utils/sale-form-navigator'
 import {UnsavedCartsComponent} from '../unsaved-carts/unsaved-carts.component'
 import {SaleFormHeaderComponent} from '../sale-form-header/sale-form-header.component'
 import {SaleLinesComponent} from '../sale-lines/sale-lines.component'
-import {SaleSummaryComponent} from '../sale-summary/sale-summary.component'
+import {SaleSummaryComponent} from '../sale-form-summary/sale-summary.component'
 
 @Component({
   selector: 'rts-new-sale',

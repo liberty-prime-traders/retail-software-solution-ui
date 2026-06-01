@@ -21,7 +21,8 @@ export interface SaleSessionLineAddRequest {
 export interface SaleSessionLineUpdateRequest {
   identity: SessionIdentity,
   quantity: number,
-  unitId: string
+  unitId: string,
+  unitPriceOverride: number | null
 }
 
 export interface SaleSessionAdjustmentAddRequest {

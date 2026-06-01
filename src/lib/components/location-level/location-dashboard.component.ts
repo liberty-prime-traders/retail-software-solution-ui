@@ -35,7 +35,7 @@ export class LocationDashboardComponent {
     {label: 'Purchases', icon: 'pi pi-truck', routerLink: 'purchases'},
     {label: 'Sales', icon: 'pi pi-receipt', routerLink: 'sales'},
     {label: 'Expenses', icon: 'pi pi-money-bill'},
-    {label: 'Inventory', icon: 'pi pi-box'}
+    {label: 'Fixtures', icon: 'pi pi-box'}
   ]
 
   private readonly adminTasksMenuItems: MenuItem[] = [

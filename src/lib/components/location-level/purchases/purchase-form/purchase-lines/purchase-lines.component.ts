@@ -15,8 +15,8 @@ import {
   AlternativeUnitsFinderPipe
 } from '../../../../../api/organization-level/unit-conversion/pipes/alternative-units-finder.pipe'
 import {
-  FullUnitDescriptionPipe
-} from '../../../../../api/organization-level/unit-conversion/pipes/full-unit-description.pipe'
+  UnitDescriptionPipe
+} from '../../../../../api/organization-level/unit-conversion/pipes/unit-description.pipe'
 import {
   ConversionContextPipe,
   UnitConversionDescriptorPipe,
@@ -47,7 +47,7 @@ import PurchaseLineModel = PurchaseLineFormDefinition.PurchaseLineModel
     Select,
     NgClass,
     AlternativeUnitsFinderPipe,
-    FullUnitDescriptionPipe,
+    UnitDescriptionPipe,
     UnitConvertPipe,
     UnitCurrencyPipe,
     UnitConversionDescriptorPipe,
