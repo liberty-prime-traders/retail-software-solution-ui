@@ -1,0 +1,47 @@
+<rts-loading-container [loading]="loading()" loadingText="Saving...">
+  <div class="flex flex-column gap-2" id="stock-transfer-detail" rtsAutoStretch="stock-transfer-detail">
+    <div class="flex align-items-center gap-2">
+      <span class="font-semibold w-10rem">Reference Number</span>
+      <span>{{ transfer()?.summary?.referenceNumber | nullSafe }}</span>
+    </div>
+
+    <div class="flex align-items-center gap-2">
+      <span class="font-semibold w-10rem">Status</span>
+      <p-tag class="w-fit" [value]="transfer()?.dispatch?.status | prettifyEnum"
+             [severity]="transfer()?.dispatch?.status | stockTransferStatusSeverity">
+      </p-tag>
+    </div>
+
+    <div class="flex align-items-center gap-2">
+      <span class="font-semibold w-10rem">Source</span>
+      <span>{{ transfer()?.summary?.sourceLocationName | nullSafe }}</span>
+    </div>
+
+    <div class="flex align-items-center gap-2">
+      <span class="font-semibold w-10rem">Destination</span>
+      <span>{{ transfer()?.summary?.destinationLocationName | nullSafe }}</span>
+    </div>
+
+    <div class="flex align-items-center gap-2">
+      <span class="font-semibold w-10rem">Notes</span>
+      <span>{{ transfer()?.dispatch?.notes | nullSafe }}</span>
+    </div>
+
+    <rts-error-summary [regularErrorMessages]="failureMessages()"/>
+  </div>
+
+  @if (isDraft()) {
+    <div class="floating bottom right flex gap-2">
+      <p-button label="Cancel Transfer"
+                icon="pi pi-times"
+                severity="danger"
+                (click)="cancelTransfer()">
+      </p-button>
+
+      <p-button label="Dispatch"
+                icon="pi pi-send"
+                (click)="dispatchTransfer()">
+      </p-button>
+    </div>
+  }
+</rts-loading-container>

@@ -1,0 +1,5 @@
+@if (context.isNew()) {
+  <rts-location-stock-transfer-create-form (transferCreated)="onTransferCreated($event)"/>
+} @else {
+  <rts-location-stock-transfer-detail/>
+}

@@ -27,7 +27,7 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
     return this.fetchRequest(apiRequest)
   }
 
-  fetchRequest(apiRequest: ApiGetRequestModel<RESPONSE, FetchParams>): Subscription | undefined {
+  fetchRequest(apiRequest: ApiGetRequestModel<RESPONSE>): Subscription | undefined {
     if (!this.shouldMakeCall()) {
       return undefined
     }

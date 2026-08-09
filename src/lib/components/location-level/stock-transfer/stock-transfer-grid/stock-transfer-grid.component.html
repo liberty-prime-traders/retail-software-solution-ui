@@ -1,0 +1,49 @@
+<div id="stock-transfer-grid" rtsAutoStretch="stock-transfer-grid">
+  <p-table [value]="stockTransfers()"
+           [loading]="loading()"
+           sortField="referenceNumber"
+           [sortOrder]="-1"
+           scrollHeight="flex"
+           dataKey="referenceNumber">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Reference</th>
+        <th>Source</th>
+        <th>Destination</th>
+        <th>Status</th>
+        <th>Lines</th>
+        <th>Dispatched Cost</th>
+        <th>Dispatched At</th>
+        <th>Dispatched By</th>
+        <th style="width: 5rem"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-stockTransfer>
+      <tr>
+        <td>{{ stockTransfer.referenceNumber | nullSafe }}</td>
+        <td>{{ stockTransfer.sourceLocationName | nullSafe }}</td>
+        <td>{{ stockTransfer.destinationLocationName | nullSafe }}</td>
+        <td>
+          <p-tag [value]="stockTransfer.status | prettifyEnum"
+                 [severity]="stockTransfer.status | stockTransferStatusSeverity">
+          </p-tag>
+        </td>
+        <td>{{ stockTransfer.lineCount | nullSafe }}</td>
+        <td>{{ stockTransfer.totalDispatchedCost | currency | nullSafe }}</td>
+        <td>{{ stockTransfer.dispatchedAt | date | nullSafe }}</td>
+        <td>{{ stockTransfer.dispatchedBy | nullSafe }}</td>
+        <td>
+          <p-button icon="pi pi-pen-to-square"
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading()"
+                    (onClick)="onEditTransfer(stockTransfer)">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</div>

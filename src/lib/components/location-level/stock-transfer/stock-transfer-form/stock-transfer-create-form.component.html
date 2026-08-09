@@ -1,0 +1,39 @@
+<rts-loading-container [loading]="loading()" loadingText="Creating...">
+  <form class="flex flex-column">
+    <rts-form-field [required]="true" label="Destination" for="destinationLocationId">
+      <p-select id="destinationLocationId"
+                class="flex-grow-1"
+                [filter]="true"
+                [options]="locations()"
+                optionLabel="name"
+                optionValue="id"
+                [formField]="stockTransferCreateForm.destinationLocationId"
+                placeholder="Select a destination location">
+      </p-select>
+    </rts-form-field>
+
+    <rts-form-field label="Notes" for="notes">
+      <textarea id="notes"
+                pInputText
+                class="flex-grow-1"
+                [formField]="stockTransferCreateForm.notes"
+                rows="4"
+                placeholder="Notes">
+      </textarea>
+    </rts-form-field>
+
+
+    <div class="flex justify-content-around">
+      <rts-error-summary [signalFormErrors]="stockTransferCreateForm().errorSummary()"
+                         [fieldMap]="fieldMap"
+                         [regularErrorMessages]="failureMessages()">
+      </rts-error-summary>
+
+      <p-button label="Create Draft"
+                icon="pi pi-save"
+                (click)="createTransfer()"
+                [disabled]="stockTransferCreateForm().invalid()">
+      </p-button>
+    </div>
+  </form>
+</rts-loading-container>

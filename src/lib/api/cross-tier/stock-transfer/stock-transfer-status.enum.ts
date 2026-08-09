@@ -1,0 +1,6 @@
+export enum StockTransferStatus {
+  DRAFT = 'DRAFT',
+  DISPATCHED = 'DISPATCHED',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED'
+}

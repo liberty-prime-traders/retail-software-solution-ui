@@ -1,4 +1,5 @@
-import {required, schema} from '@angular/forms/signals'
+import {pattern, required, schema} from '@angular/forms/signals'
+import {Patterns} from '../../../../utils/patterns'
 
 export namespace SalePaymentFormDefinition {
 
@@ -21,6 +22,7 @@ export namespace SalePaymentFormDefinition {
   export const salePaymentFormSchema = schema<SalePaymentFormModel>((path) => {
     required(path.paymentMethodId)
     required(path.amount)
+    pattern(path.paymentMethodId, Patterns.UUID)
 
     required(
       path.paymentDate,
