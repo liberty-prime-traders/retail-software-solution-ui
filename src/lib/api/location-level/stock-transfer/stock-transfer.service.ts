@@ -4,9 +4,7 @@ import {Subscription} from 'rxjs'
 import {StockTransferSummaryService} from '../../cross-tier/stock-transfer/stock-transfer-summary.service'
 import {ApiCallbacks} from '../../util/base-api/api-callbacks'
 import {BaseService} from '../../util/base-api/base.service'
-import {StockTransferCreateDto} from './stock-transfer-create.dto'
-import {StockTransferLineInsertDto} from './stock-transfer-line-insert.dto'
-import {StockTransferLineUpdateDto} from './stock-transfer-line-update.dto'
+import {StockTransferCreateRequest, StockTransferLineRequest} from './stock-transfer-requests.model'
 import {StockTransferResponse} from './stock-transfer-response.model'
 import {StockTransferStore} from './stock-transfer.store'
 
@@ -19,7 +17,7 @@ export class StockTransferService extends BaseService<StockTransferResponse> {
     super(store)
   }
 
-  createTransfer(body: StockTransferCreateDto, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
+  createTransfer(body: StockTransferCreateRequest, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'draft'})
     return this.post(body as any, this.withSummarySync(callbacks))
   }
@@ -40,31 +38,24 @@ export class StockTransferService extends BaseService<StockTransferResponse> {
 
   private readonly withSummarySync = (callbacks?: ApiCallbacks<StockTransferResponse>) =>
     this.applyInternalCallBacks(
-      {onSuccess: (response: StockTransferResponse) => this.stockTransferSummaryService.applyResponse(response.summary)},
+      {
+        onSuccess: (response: StockTransferResponse) =>
+          this.stockTransferSummaryService.applyResponse(response.summary)
+      },
       callbacks
     )
 
-  addLine(
-    orderRef: string,
-    body: StockTransferLineInsertDto,
+  applyLineChanges(
+    orderRef: EntityId,
+    body: StockTransferLineRequest,
     callbacks?: ApiCallbacks<StockTransferResponse>
   ): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'lines'})
-    return this.postRequest({body: body as any, callbacks, id: orderRef})
+    return this.putRequest({body: body as any, callbacks: this.withSummarySync(callbacks), id: orderRef})
   }
 
-  updateLine(
-    orderRef: string,
-    lineRef: string,
-    body: StockTransferLineUpdateDto,
-    callbacks?: ApiCallbacks<StockTransferResponse>
-  ): Subscription {
-    this.patchApiRequestConfig({urlSuffix: `lines/${lineRef}`})
-    return this.putRequest({body: body as any, callbacks, id: orderRef})
-  }
-
-  removeLine(orderRef: string, lineRef: string, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: `${orderRef}/lines/remove/${lineRef}`})
-    return this.putRequest({callbacks, id: orderRef})
+  removeLine(orderRef: EntityId, lineRef: string, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
+    this.patchApiRequestConfig({urlSuffix: `lines/remove/${lineRef}`})
+    return this.putRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
   }
 }

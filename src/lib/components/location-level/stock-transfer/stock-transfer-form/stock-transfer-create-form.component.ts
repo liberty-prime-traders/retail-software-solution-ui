@@ -3,7 +3,7 @@ import {FormField, form} from '@angular/forms/signals'
 import {Button} from 'primeng/button'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
-import {StockTransferCreateDto} from '../../../../api/location-level/stock-transfer/stock-transfer-create.dto'
+import {StockTransferCreateRequest} from '../../../../api/location-level/stock-transfer/stock-transfer-requests.model'
 import {StockTransferResponse} from '../../../../api/location-level/stock-transfer/stock-transfer-response.model'
 import {StockTransferService} from '../../../../api/location-level/stock-transfer/stock-transfer.service'
 import {LocationService} from '../../../../api/organization-level/location/location.service'
@@ -40,7 +40,6 @@ export class StockTransferCreateFormComponent implements OnInit {
   )
 
   readonly loading = this.stockTransferService.selectLoading
-  readonly failureMessages = this.stockTransferService.selectFailureMessages
   readonly fieldMap = StockTransferCreateFormDefinition.fieldMap
 
   private readonly stockTransferCreateFormValue =
@@ -54,7 +53,7 @@ export class StockTransferCreateFormComponent implements OnInit {
   }
 
   createTransfer() {
-    const body: StockTransferCreateDto = this.stockTransferCreateFormValue()
+    const body: StockTransferCreateRequest = this.stockTransferCreateFormValue()
     this.stockTransferService.createTransfer(body, {onSuccess: (response) => this.transferCreated.emit(response)})
   }
 }

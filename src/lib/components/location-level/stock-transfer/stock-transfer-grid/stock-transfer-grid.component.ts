@@ -1,5 +1,5 @@
 import {CurrencyPipe, DatePipe} from '@angular/common'
-import {Component, inject} from '@angular/core'
+import {Component, computed, inject} from '@angular/core'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
 import {Button} from 'primeng/button'
@@ -33,7 +33,9 @@ export class StockTransferGridComponent {
   protected readonly context = inject(StockTransferFormContext)
 
   readonly stockTransfers = this.stockTransferSummaryService.selectAll
-  readonly loading = this.stockTransferSummaryService.selectLoading
+  readonly loading = computed(() =>
+    this.stockTransferSummaryService.selectLoading() || this.stockTransferService.selectLoading()
+  )
 
   onEditTransfer(summary: StockTransferSummary) {
     this.stockTransferService.loadTransfer(summary.referenceNumber, {

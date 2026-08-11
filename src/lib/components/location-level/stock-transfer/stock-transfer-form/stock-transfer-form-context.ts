@@ -4,13 +4,16 @@ import {StockTransferResponse} from '../../../../api/location-level/stock-transf
 
 @Injectable()
 export class StockTransferFormContext {
-
   private readonly selectedTransfer = signal<StockTransferResponse | null>(null)
   readonly formIsVisible = signal(false)
 
+  private readonly _hasPendingLineEdits = signal(false)
+  readonly hasPendingLineEdits = this._hasPendingLineEdits.asReadonly()
+
   readonly transfer = this.selectedTransfer.asReadonly()
   readonly orderRef = computed(() => this.selectedTransfer()?.summary.referenceNumber)
-  readonly status = computed(() => this.selectedTransfer()?.dispatch.status)
+  readonly status = computed(() => this.selectedTransfer()?.summary.status)
+  readonly perspective = computed(() => this.selectedTransfer()?.perspective)
   readonly isNew = computed(() => !this.selectedTransfer())
   readonly isDraft = computed(() => this.status() === StockTransferStatus.DRAFT)
 
@@ -26,5 +29,9 @@ export class StockTransferFormContext {
 
   hideForm() {
     this.formIsVisible.set(false)
+  }
+
+  setHasPendingLineEdits(hasPendingLineEdits: boolean) {
+    this._hasPendingLineEdits.set(hasPendingLineEdits)
   }
 }

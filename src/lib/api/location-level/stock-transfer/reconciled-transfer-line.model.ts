@@ -7,4 +7,5 @@ export interface ReconciledTransferLine {
   conversionFactor: number
   unitCost?: number
   quantityReceived?: number
+  totalCost: number
 }
