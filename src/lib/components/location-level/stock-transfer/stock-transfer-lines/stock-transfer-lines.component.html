@@ -1,6 +1,6 @@
 <div class="flex flex-column gap-4">
   @if (canManageLines()) {
-    <rts-sale-product-lookup (productSelected)="sendLineRequest($event)"/>
+    <rts-available-product-lookup (productSelected)="sendLineRequest($event)"/>
   }
 
   <p-table [value]="lines()"
@@ -27,7 +27,12 @@
 
     <ng-template pTemplate="body" let-line>
       <tr>
-        <td>{{ line.productLabel }}</td>
+        <td class="flex flex-column gap-1">
+          {{ line.productLabel }}
+          <small class="info-message">
+            Available: {{ line.quantityAvailable | nullSafe }} {{ line.baseUnitId | fullUnitDescription : line.quantityAvailable }}
+          </small>
+        </td>
 
         @if (canManageLines()) {
           <td>
@@ -54,7 +59,28 @@
         @if (!isDraft()) {
           <td>{{ line.unitCost | currency | nullSafe }}</td>
           <td>{{ line.totalCost | currency | nullSafe }}</td>
-          <td>{{ line.quantityReceived | nullSafe }}</td>
+          <td>
+            @if (perspective() === StockTransferPerspective.OUTGOING) {
+              <p-badge [value]="line.quantityReceived ? line.quantityReceived : 'Pending'"
+                       [severity]="line.quantityReceived ? 'success' : 'secondary'">
+              </p-badge>
+
+            } @else if (perspective() === StockTransferPerspective.INCOMING) {
+              <div class="flex gap-2 align-items-center">
+                @if (line.quantityReceived) {
+                  <p-chip [label]="line.quantityReceived" icon="pi pi-check" class="success-medium"/>
+                }
+
+                @if (isDraft()) {
+                  <p-button [label]="line.quantityReceived ? 'Undo' : 'Confirm'"
+                            [icon]="line.quantityReceived ? 'pi pi-undo' : 'pi pi-check'"
+                            (onClick)="line.quantityReceived ? undoLineConfirmation(line) : confirmLine(line)"
+                            [severity]="line.quantityReceived ? 'secondary' : 'primary'">
+                  </p-button>
+                }
+              </div>
+            }
+          </td>
         }
 
         @if (canManageLines()) {

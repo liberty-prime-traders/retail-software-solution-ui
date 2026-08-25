@@ -1,11 +1,13 @@
 import {CurrencyPipe} from '@angular/common'
 import {Component, computed, effect, inject, linkedSignal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
+import {Badge} from 'primeng/badge'
 import {Button} from 'primeng/button'
+import {Chip} from 'primeng/chip'
 import {InputNumber} from 'primeng/inputnumber'
 import {Select} from 'primeng/select'
 import {TableModule} from 'primeng/table'
-import {ProductForSale} from '../../../../api/location-level/product-lookup/product-for-sale.model'
+import {ProductWithAvailability} from '../../../../api/location-level/product-lookup/product-with-availability.model'
 import {StockTransferPerspective} from '../../../../api/location-level/stock-transfer/stock-transfer-perspective.enum'
 import {
   StockTransferLineAddRequest,
@@ -22,8 +24,8 @@ import {
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
 import {
-  SaleProductLookupComponent
-} from '../../location-product-lookup/sale-product-lookup/sale-product-lookup.component'
+  AvailableProductLookupComponent
+} from '../../location-product-lookup/available-product-lookup/available-product-lookup.component'
 import {StockTransferFormContext} from '../stock-transfer-form/stock-transfer-form-context'
 import {StockTransferLineFormDefinition} from './stock-transfer-line-form.definition'
 import {StockTransferLineHasChangedPipe} from './stock-transfer-line-has-changed.pipe'
@@ -44,7 +46,9 @@ import StockTransferLineFormModel = StockTransferLineFormDefinition.StockTransfe
     UnitDescriptionPipe,
     EmptyRowComponent,
     StockTransferLineHasChangedPipe,
-    SaleProductLookupComponent
+    AvailableProductLookupComponent,
+    Badge,
+    Chip
   ]
 })
 export class StockTransferLinesComponent {
@@ -52,7 +56,9 @@ export class StockTransferLinesComponent {
   private readonly unitConversionGraphService = inject(UnitConversionGraphService)
   protected readonly context = inject(StockTransferFormContext)
 
+  readonly StockTransferPerspective = StockTransferPerspective
   readonly isDraft = this.context.isDraft
+  readonly perspective = this.context.perspective
 
   readonly canManageLines = computed(() =>
     this.isDraft() && this.context.perspective() === StockTransferPerspective.OUTGOING
@@ -82,7 +88,7 @@ export class StockTransferLinesComponent {
     this.unitConversionGraphIsLoading() ? 'Loading ...' : 'No lines added yet.'
   )
 
-  sendLineRequest(newProduct?: ProductForSale) {
+  sendLineRequest(newProduct?: ProductWithAvailability) {
     const orderRef = this.context.orderRef()
     if (!orderRef) return
     this.stockTransferService.applyLineChanges(
@@ -95,7 +101,7 @@ export class StockTransferLinesComponent {
     )
   }
 
-  private getLinesToAdd(newProduct?: ProductForSale): StockTransferLineAddRequest[] {
+  private getLinesToAdd(newProduct?: ProductWithAvailability): StockTransferLineAddRequest[] {
     if (!newProduct) return []
     return [{locationProductId: newProduct.id, quantityDispatched: 1}]
   }
@@ -122,11 +128,35 @@ export class StockTransferLinesComponent {
 
   removeLine(line: StockTransferLineFormModel) {
     const orderRef = this.context.orderRef()
-    if (!orderRef) return
-    this.stockTransferService.removeLine(
-      orderRef,
-      line.dispatchLineRef,
-      {onSuccess: (response) => this.context.viewTransfer(response)}
-    )
+    if (orderRef) {
+      this.stockTransferService.removeLine(
+        orderRef,
+        line.dispatchLineRef,
+        {onSuccess: (response) => this.context.viewTransfer(response)}
+      )
+    }
   }
+
+  confirmLine(line: StockTransferLineFormModel) {
+    const orderRef = this.context.orderRef()
+    if (orderRef) {
+      this.stockTransferService.confirmLine(
+        orderRef,
+        line.dispatchLineRef,
+        {onSuccess: (response) => this.context.viewTransfer(response)}
+      )
+    }
+  }
+
+  undoLineConfirmation(line: StockTransferLineFormModel) {
+    const orderRef = this.context.orderRef()
+    if (orderRef) {
+      this.stockTransferService.undoLineConfirmation(
+        orderRef,
+        line.dispatchLineRef,
+        {onSuccess: (response) => this.context.viewTransfer(response)}
+      )
+    }
+  }
+
 }

@@ -8,4 +8,5 @@ export interface ReconciledTransferLine {
   unitCost?: number
   quantityReceived?: number
   totalCost: number
+  quantityAvailable?: number
 }

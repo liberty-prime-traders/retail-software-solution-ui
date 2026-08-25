@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, signal} from '@angular/core'
 import {form} from '@angular/forms/signals'
-import {ProductForSale} from '../../../../api/location-level/product-lookup/product-for-sale.model'
+import {ProductWithAvailability} from '../../../../api/location-level/product-lookup/product-with-availability.model'
 import {defaultSaleSession} from '../../../../api/location-level/sale_session/sale-session-default.value'
 import {
   SaleSessionLineAddRequest,
@@ -17,12 +17,10 @@ export class SaleFormContext {
   private readonly saleSessionService = inject(SaleSessionService)
 
   private readonly _saleSession = signal<SaleSession>(defaultSaleSession())
-  private readonly _productIdsForTouchedLines = signal(new Set<string>())
 
   readonly currentContactId = computed(() => this.saleSession().contactId)
   readonly saleSession = this._saleSession.asReadonly()
   private readonly saleFormValue = signal(SaleFormDefinition.createDefault())
-  readonly productIdsForTouchedLines = this._productIdsForTouchedLines.asReadonly()
   readonly saleLines = computed(() => this.saleFormValue().saleLines)
   readonly payments = computed(() => this.saleSession().salePayments)
 
@@ -30,11 +28,10 @@ export class SaleFormContext {
 
   readonly loadSession = (session: SaleSession) => {
     this._saleSession.set(session)
-    this._productIdsForTouchedLines.set(new Set<string>())
     this.saleForm().reset(SaleFormDefinition.convertToFormModel(session))
   }
 
-  sendLineRequest(newProduct?: ProductForSale) {
+  sendLineRequest(newProduct?: ProductWithAvailability) {
     this.saleSessionService.updateSaleLines(
       {
         additions: this.getLinesToAdd(newProduct),
@@ -44,7 +41,7 @@ export class SaleFormContext {
     )
   }
 
-  private getLinesToAdd(newProduct?: ProductForSale): SaleSessionLineAddRequest[] {
+  private getLinesToAdd(newProduct?: ProductWithAvailability): SaleSessionLineAddRequest[] {
     if (newProduct) {
       return [{locationProductId: newProduct.id, quantity: 1}]
     }

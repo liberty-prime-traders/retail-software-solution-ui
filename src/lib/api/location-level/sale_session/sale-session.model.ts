@@ -1,6 +1,6 @@
 import {CalculationMethod} from '../../platform-level/tax-type/calculation-method.enum'
 import {BaseModel} from '../../util/base-api/base.model'
-import {ProductQuantities} from '../product-lookup/product-for-sale.model'
+import {ProductQuantities} from '../product-lookup/product-with-availability.model'
 import {PaymentStatus} from '../purchase/payment-status.enum'
 import {SaleStatus} from '../sale-summary/sale-status.enum'
 
@@ -17,7 +17,6 @@ export interface SaleSession extends BaseModel {
   notes: string
   saleStatus: SaleStatus
   paymentStatus: PaymentStatus
-  showActiveUserWarning: boolean
   saleLines: SaleLine[]
   saleAdjustments: SaleAdjustment[]
   salePayments: SalePayment[]
@@ -28,6 +27,8 @@ export interface SaleSession extends BaseModel {
 export interface SaleSessionUiOptions {
   canMakeChangesToTheSale: boolean
   canAddPaymentsToSale: boolean
+  showActiveUserWarning: boolean
+  showUnreservedChangesWarning: boolean
 }
 
 export interface SessionIdentity {

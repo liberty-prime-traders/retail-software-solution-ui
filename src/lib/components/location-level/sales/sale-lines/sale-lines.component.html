@@ -1,22 +1,8 @@
 @if (canAddOrEditProducts()) {
-  <rts-sale-product-lookup
+  <rts-available-product-lookup
     (productSelected)="sendLineRequest($event)"
-    [templateRef]="saleProductLookup"
     [selectedProductIds]="selectedProductIds()">
-  </rts-sale-product-lookup>
-
-  <ng-template #saleProductLookup let-product>
-    <div class="flex flex-column gap-1">
-      {{ product | productLabel }}
-      <small class="block fle gap-2 info-message">
-        Available: {{ product.quantityAvailable }}
-
-        @if (product.quantityReserved) {
-          ({{product.quantityOnHand}} on hand, {{product.quantityReserved}} reserved)
-        }
-      </small>
-    </div>
-  </ng-template>
+  </rts-available-product-lookup>
 }
 
 <div class="flex gap-3 mb-2">

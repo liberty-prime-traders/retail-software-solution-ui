@@ -10,4 +10,5 @@ export interface StockTransferSummary extends BaseModel {
   totalDispatchedCost?: number
   dispatchedAt?: string
   dispatchedBy?: string
+  notes?: string
 }

@@ -29,6 +29,10 @@ form, .form-container  {
   color: theme.$infoColor;
 }
 
+.warning-message {
+  color: theme.$warningColor;
+}
+
 .filled-background {
   background-color: theme.$globalBackground;
 }
@@ -77,6 +81,12 @@ $positions: left right center top bottom;
   }
 }
 
+.success {
+  &-medium {
+    background-color: theme.$mediumSuccess !important;
+  }
+}
+
 .money {
   font-family: monospace;
 }
@@ -86,7 +96,7 @@ $positions: left right center top bottom;
 }
 
 .money-out {
-  color: theme.$moneyOut
+  color: theme.$moneyOut;
 }
 
 .zero-balance {

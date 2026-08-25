@@ -2,33 +2,44 @@
   <div id="stock-transfer-detail" class="flex flex-column gap-5" rtsAutoStretch="stock-transfer-detail">
     <div class="flex gap-3 flex-wrap pl-3">
       <rts-form-field label="Reference Number" [layout]="FormFieldLayout.COMPACT">
-        <span class="white-space-nowrap">{{ transfer()?.summary?.referenceNumber | nullSafe }}</span>
+        <span class="white-space-nowrap">{{ transferSummary()?.referenceNumber | nullSafe }}</span>
       </rts-form-field>
 
       <rts-form-field label="Status" [layout]="FormFieldLayout.COMPACT">
-        <p-tag class="w-fit" [value]="transfer()?.dispatch?.status | prettifyEnum"
-               [severity]="transfer()?.dispatch?.status | stockTransferStatusSeverity">
+        <p-tag class="w-fit" [value]="transferSummary()?.status | prettifyEnum"
+               [severity]="transferSummary()?.status | stockTransferStatusSeverity">
         </p-tag>
       </rts-form-field>
 
       <rts-form-field label="Source" [layout]="FormFieldLayout.COMPACT">
-        <span class="white-space-nowrap">{{ transfer()?.summary?.sourceLocationName | nullSafe }}</span>
+        <span class="white-space-nowrap">{{ transferSummary()?.sourceLocationName | nullSafe }}</span>
       </rts-form-field>
 
       <rts-form-field label="Destination" [layout]="FormFieldLayout.COMPACT">
-        <span class="white-space-nowrap">{{ transfer()?.summary?.destinationLocationName | nullSafe }}</span>
+        <span class="white-space-nowrap">{{ transferSummary()?.destinationLocationName | nullSafe }}</span>
       </rts-form-field>
 
       <rts-form-field label="Notes" [layout]="FormFieldLayout.COMPACT">
-        <span class="white-space-nowrap">{{ transfer()?.dispatch?.notes | nullSafe }}</span>
+        <span class="white-space-nowrap">{{ transferSummary()?.notes | nullSafe }}</span>
       </rts-form-field>
     </div>
+
+    @if (transferSummary()?.dispatchedAt) {
+      <div class="flex gap-3 flex-wrap pl-3">
+        <rts-form-field label="Dispatched By" [layout]="FormFieldLayout.COMPACT">
+          <span class="white-space-nowrap">{{ transferSummary()?.dispatchedBy | nullSafe }}</span>
+        </rts-form-field>
+
+        <rts-form-field label="Dispatched At" [layout]="FormFieldLayout.COMPACT">
+          <span class="white-space-nowrap">{{ transferSummary()?.dispatchedAt | date | nullSafe }}</span>
+        </rts-form-field>
+      </div>
+    }
 
     <rts-location-stock-transfer-lines/>
   </div>
 
-
-  @if (isDraft()) {
+  @if ((isDraft() || isDispatched()) && perspective() === StockTransferPerspective.OUTGOING) {
     <div class="floating bottom right flex flex-column align-items-end gap-2">
       @if (hasPendingLineEdits()) {
         <small class="error-message">Confirm or discard the pending line edits before dispatching.</small>
@@ -41,14 +52,25 @@
                   (click)="cancelTransfer()">
         </p-button>
 
-        <span [pTooltip]="hasPendingLineEdits() ? 'Confirm or discard the pending line edits first' : ''">
+        @if(isDraft()) {
           <p-button label="Dispatch"
                     icon="pi pi-send"
                     [disabled]="hasPendingLineEdits()"
                     (click)="dispatchTransfer()">
           </p-button>
-        </span>
+        }
       </div>
     </div>
   }
+
+  @if (showCompleteTransferButton()) {
+    <p-button
+      label="Complete Transfer"
+      class="floating bottom right"
+      icon="pi pi-arrow-right"
+      severity="success"
+      (click)="completeTransfer()">
+    </p-button>
+  }
+
 </rts-loading-container>

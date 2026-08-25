@@ -29,7 +29,7 @@ export class StockTransferService extends BaseService<StockTransferResponse> {
 
   cancelTransfer(orderRef: EntityId, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'cancel'})
-    return this.putRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
+    return this.postRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
   }
 
   loadTransfer(orderRef: EntityId, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription | undefined {
@@ -51,11 +51,31 @@ export class StockTransferService extends BaseService<StockTransferResponse> {
     callbacks?: ApiCallbacks<StockTransferResponse>
   ): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'lines'})
-    return this.putRequest({body: body as any, callbacks: this.withSummarySync(callbacks), id: orderRef})
+    return this.postRequest({body: body as any, callbacks: this.withSummarySync(callbacks), id: orderRef})
   }
 
   removeLine(orderRef: EntityId, lineRef: string, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
     this.patchApiRequestConfig({urlSuffix: `lines/remove/${lineRef}`})
-    return this.putRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
+    return this.postRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
   }
+
+  confirmLine(orderRef: EntityId, lineRef: string, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
+    this.patchApiRequestConfig({urlSuffix: `lines/confirm/${lineRef}`})
+    return this.postRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
+  }
+
+  undoLineConfirmation(
+    orderRef: EntityId,
+    lineRef: string,
+    callbacks?: ApiCallbacks<StockTransferResponse>
+  ): Subscription | undefined {
+    this.patchApiRequestConfig({urlSuffix: `lines/unconfirm/${lineRef}`})
+    return this.deleteRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
+  }
+
+  completeTransfer(receiptRef: EntityId, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
+    this.patchApiRequestConfig({urlSuffix: `complete`})
+    return this.postRequest({callbacks: this.withSummarySync(callbacks), id: receiptRef})
+  }
+
 }

@@ -1,0 +1,26 @@
+<rts-form-field label="Search Products">
+  <p-select [options]="productOptions()"
+            [loading]="dependenciesLoading()"
+            [filter]="true"
+            (onFilter)="pushToSearch($event.filter)"
+            (onClick)="emitSelectedProduct(productSelect.value); productSelect.clear()"
+            #productSelect
+            class="w-full"
+            dataKey="value">
+
+    <ng-template let-product pTemplate="item">
+      @if (productsMap().get(product.value); as selectedProduct) {
+        <div class="flex flex-column gap-1">
+          {{ selectedProduct | productLabel }}
+          <small class="block flex gap-2 info-message">
+            Available: {{ selectedProduct.quantityAvailable }}
+
+            @if (selectedProduct.quantityReserved) {
+              ({{ selectedProduct.quantityOnHand }} on hand, {{ selectedProduct.quantityReserved }} reserved)
+            }
+          </small>
+        </div>
+      }
+    </ng-template>
+  </p-select>
+</rts-form-field>

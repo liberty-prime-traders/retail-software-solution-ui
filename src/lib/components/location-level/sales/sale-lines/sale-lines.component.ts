@@ -2,15 +2,14 @@ import {Component, computed, inject} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Badge} from 'primeng/badge'
 import {TableModule} from 'primeng/table'
-import {ProductForSale} from '../../../../api/location-level/product-lookup/product-for-sale.model'
+import {ProductWithAvailability} from '../../../../api/location-level/product-lookup/product-with-availability.model'
 import {
   UnitConversionGraphService
 } from '../../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
-import {ProductLabelPipe} from '../../../../utils/pipes/product-label.pipe'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {
-  SaleProductLookupComponent
-} from '../../location-product-lookup/sale-product-lookup/sale-product-lookup.component'
+  AvailableProductLookupComponent
+} from '../../location-product-lookup/available-product-lookup/available-product-lookup.component'
 import {SaleFormContext} from '../form-utils/sale-form-context'
 import {EditableSaleLinesComponent} from './editable-sale-lines/editable-sale-lines.component'
 import {ReadOnlySaleLinesComponent} from './read-only-sale-lines/read-only-sale-lines.component'
@@ -22,8 +21,7 @@ import {ReadOnlySaleLinesComponent} from './read-only-sale-lines/read-only-sale-
   imports: [
     TableModule,
     FormsModule,
-    SaleProductLookupComponent,
-    ProductLabelPipe,
+    AvailableProductLookupComponent,
     Badge,
     EditableSaleLinesComponent,
     ReadOnlySaleLinesComponent,
@@ -49,7 +47,7 @@ export class SaleLinesComponent {
     this.saleLines().map(l => l.locationProductId)
   )
 
-  sendLineRequest(newProduct?: ProductForSale) {
+  sendLineRequest(newProduct?: ProductWithAvailability) {
     this.context.sendLineRequest(newProduct)
   }
 
