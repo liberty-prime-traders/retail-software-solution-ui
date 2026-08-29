@@ -9,5 +9,5 @@ export interface UnitValue extends BaseModel{
   baseUnit?: string
   systemDefined: boolean
   baseUnitName?: string
-  conversionFactor?: number
+  unitsOfBasePerUnit?: number
 }

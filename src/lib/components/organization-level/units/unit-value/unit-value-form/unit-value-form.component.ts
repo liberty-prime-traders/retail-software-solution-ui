@@ -1,7 +1,6 @@
-import {Component, computed, inject, input, output} from '@angular/core'
-import {FormBuilder, ReactiveFormsModule, ValidatorFn, Validators} from '@angular/forms'
+import {Component, effect, inject, input, output, signal} from '@angular/core'
+import {FormField, form} from '@angular/forms/signals'
 import {EntityId} from '@ngrx/signals/entities'
-import {isNil} from 'lodash-es'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
@@ -10,17 +9,18 @@ import {UnitValueService} from '../../../../../api/organization-level/unit-value
 import {BaseFormComponent} from '../../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
+import {UnitValueFormDefinition} from './unit-value-form.definition'
 
 @Component({
   selector: 'rts-unit-value-form',
   templateUrl: 'unit-value-form.component.html',
   imports: [
-    ReactiveFormsModule,
     InputText,
     FormButtonsComponent,
     FormFieldComponent,
     Select,
-    InputNumber
+    InputNumber,
+    FormField
   ]
 })
 export class UnitValueFormComponent extends BaseFormComponent<UnitValueService> {
@@ -29,50 +29,41 @@ export class UnitValueFormComponent extends BaseFormComponent<UnitValueService> 
   readonly baseUnitOptions = input<Array<UnitValue>>([])
 
   private readonly unitValueService = inject(UnitValueService)
-  private readonly formBuilder = inject(FormBuilder)
   protected readonly apiService = this.unitValueService
 
   readonly unitValueCreated = output<UnitValue>()
 
-  readonly unitValueForm = computed(() => this.formBuilder.nonNullable.group({
-    id: this.unitValue()?.id,
-    name: [this.unitValue()?.name, Validators.required],
-    code: [this.unitValue()?.code, Validators.required],
-    description: this.unitValue()?.description,
-    baseUnit: this.unitValue()?.baseUnit,
-    conversionFactor: this.unitValue()?.conversionFactor
-  }, {validators: this.getDependentFieldsValidator()}))
+  readonly unitValueFormValue = signal<UnitValueFormDefinition.UnitValueFormModel>(
+    UnitValueFormDefinition.defaultUnitValueFormModel
+  )
+
+  readonly unitValueForm = form(this.unitValueFormValue, UnitValueFormDefinition.unitValueFormSchema)
+  readonly unitValueFormFields = UnitValueFormDefinition.fieldMap
+
+  constructor() {
+    super()
+    effect(() => {
+      this.unitValueFormValue.set(UnitValueFormDefinition.convertToFormModel(this.unitValue()))
+    })
+  }
 
   resetForm() {
-    this.unitValueForm().reset()
+    this.unitValueFormValue.set(UnitValueFormDefinition.convertToFormModel(this.unitValue()))
   }
 
   upsertUnitValue() {
     const updatedUnitValue: Partial<UnitValue> = {
-      ...this.unitValueForm().getRawValue(),
+      ...UnitValueFormDefinition.convertToBackendModel(this.unitValueFormValue()),
       unitGroupId: this.unitGroupId()
     }
-    if (isNil(updatedUnitValue.id)) {
-      this.unitValueService.post(updatedUnitValue, {onSuccess: (saved) => this.unitValueCreated.emit(saved)})
-    } else {
+    if (updatedUnitValue.id) {
       this.unitValueService.put(updatedUnitValue)
+    } else {
+      this.unitValueService.post(updatedUnitValue, {onSuccess: (saved) => this.unitValueCreated.emit(saved)})
     }
   }
 
   deleteUnitValue() {
     this.unitValueService.delete(this.unitValue()?.id)
-  }
-
-  private getDependentFieldsValidator(): ValidatorFn {
-    return (formGroup) => {
-      const baseUnit = formGroup.get('baseUnit')?.value
-      const conversionFactor = formGroup.get('conversionFactor')?.value
-      const oneOfTheFieldsIsEmpty = isNil(baseUnit) || isNil(conversionFactor)
-      const oneOfTheFieldsIsNotEmpty = !isNil(baseUnit) || !isNil(conversionFactor)
-      if (oneOfTheFieldsIsEmpty && oneOfTheFieldsIsNotEmpty) {
-        return {required: true}
-      }
-      return null
-    }
   }
 }

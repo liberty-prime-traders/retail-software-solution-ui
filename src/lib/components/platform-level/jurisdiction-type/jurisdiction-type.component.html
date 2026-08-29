@@ -1,6 +1,10 @@
 <div class="flex flex-column gap-4 flex-grow-1" id="jurisdictionTypes" [rtsAutoStretch]="'jurisdictionTypes'">
   @if (addingIsActive()) {
-    <rts-new-form-cancel-button (onCancel)="setAddingActiveFalse()"/>
+    <div class="flex justify-content-between align-items-center">
+      <span class="text-lg font-medium">Add Jurisdiction Type</span>
+      <rts-new-form-cancel-button (onCancel)="setAddingActiveFalse()"/>
+    </div>
+
     <rts-jurisdiction-type-form (jurisdictionTypeCreated)="closeAddRow()"/>
 
   } @else {
