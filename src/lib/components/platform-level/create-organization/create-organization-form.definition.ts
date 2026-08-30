@@ -1,5 +1,6 @@
 import {pattern, required, schema} from '@angular/forms/signals'
 import {Organization} from '../../../api/platform-level/organization/organization.model'
+import {Patterns} from '../../../utils/patterns'
 
 export namespace CreateOrganizationFormDefinition {
   export interface CreateOrganizationFormModel {
@@ -27,13 +28,7 @@ export namespace CreateOrganizationFormDefinition {
     required(path.name)
     required(path.subdomain)
     required(path.passCode)
-
-    const uuidSegment = '[0-9a-fA-F]'
-    pattern(
-      path.passCode,
-      new RegExp(`^${uuidSegment}{8}-${uuidSegment}{4}-${uuidSegment}{4}-${uuidSegment}{4}-${uuidSegment}{12}$`),
-      {message: 'Pass Code must be a valid UUID'}
-    )
+    pattern(path.passCode, Patterns.UUID, {message: 'Pass Code must be a valid UUID'})
   })
 
   export const convertToBackendModel = (formValue: CreateOrganizationFormModel): Partial<Organization> => ({

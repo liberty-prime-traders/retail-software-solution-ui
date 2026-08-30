@@ -38,6 +38,7 @@
 
   @if (canMakeChangesToTheSale()) {
     <p-divider/>
+
     <div class="flex gap-2 justify-content-end">
       <p-button
         label="Save Draft"
@@ -55,5 +56,12 @@
         (onClick)="completeSale()">
       </p-button>
     </div>
+
+    @if (saleSession().uiOptions.showUnreservedChangesWarning) {
+      <div class="flex gap-2 warning-message align-items-center">
+        <i class="pi pi-info-circle"></i>
+        <span>Some products have updated quantities but NO stock has been reserved. You may 'Save Draft' to reserve it.</span>
+      </div>
+    }
   }
 </div>
