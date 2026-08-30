@@ -1,6 +1,6 @@
 import {PaymentStatus} from '../purchase/payment-status.enum'
 import {SaleStatus} from '../sale-summary/sale-status.enum'
-import {SaleSession, SessionIdentity} from './sale-session.model'
+import {SaleSession} from './sale-session.model'
 
 export const defaultSaleSession = (): SaleSession => {
   return {
@@ -19,7 +19,6 @@ export const defaultSaleSession = (): SaleSession => {
     paymentStatus: PaymentStatus.UNPAID,
     dateSold: '',
     notes: '',
-    showActiveUserWarning: false,
     saleLines: [],
     saleAdjustments: [],
     salePayments: [],
@@ -36,11 +35,8 @@ export const defaultSaleSession = (): SaleSession => {
     uiOptions: {
       canMakeChangesToTheSale: false,
       canAddPaymentsToSale: false,
+      showActiveUserWarning: false,
+      showUnreservedChangesWarning: false
     },
   }
 }
-
-export const defaultSessionIdentity = (): SessionIdentity => ({
-  id: '',
-  transientId: '',
-})

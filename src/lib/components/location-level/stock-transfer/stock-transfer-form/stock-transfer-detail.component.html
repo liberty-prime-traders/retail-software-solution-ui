@@ -1,0 +1,76 @@
+<rts-loading-container [loading]="loading()" loadingText="Saving...">
+  <div id="stock-transfer-detail" class="flex flex-column gap-5" rtsAutoStretch="stock-transfer-detail">
+    <div class="flex gap-3 flex-wrap pl-3">
+      <rts-form-field label="Reference Number" [layout]="FormFieldLayout.COMPACT">
+        <span class="white-space-nowrap">{{ transferSummary()?.referenceNumber | nullSafe }}</span>
+      </rts-form-field>
+
+      <rts-form-field label="Status" [layout]="FormFieldLayout.COMPACT">
+        <p-tag class="w-fit" [value]="transferSummary()?.status | prettifyEnum"
+               [severity]="transferSummary()?.status | stockTransferStatusSeverity">
+        </p-tag>
+      </rts-form-field>
+
+      <rts-form-field label="Source" [layout]="FormFieldLayout.COMPACT">
+        <span class="white-space-nowrap">{{ transferSummary()?.sourceLocationName | nullSafe }}</span>
+      </rts-form-field>
+
+      <rts-form-field label="Destination" [layout]="FormFieldLayout.COMPACT">
+        <span class="white-space-nowrap">{{ transferSummary()?.destinationLocationName | nullSafe }}</span>
+      </rts-form-field>
+
+      <rts-form-field label="Notes" [layout]="FormFieldLayout.COMPACT">
+        <span class="white-space-nowrap">{{ transferSummary()?.notes | nullSafe }}</span>
+      </rts-form-field>
+    </div>
+
+    @if (transferSummary()?.dispatchedAt) {
+      <div class="flex gap-3 flex-wrap pl-3">
+        <rts-form-field label="Dispatched By" [layout]="FormFieldLayout.COMPACT">
+          <span class="white-space-nowrap">{{ transferSummary()?.dispatchedBy | nullSafe }}</span>
+        </rts-form-field>
+
+        <rts-form-field label="Dispatched At" [layout]="FormFieldLayout.COMPACT">
+          <span class="white-space-nowrap">{{ transferSummary()?.dispatchedAt | date | nullSafe }}</span>
+        </rts-form-field>
+      </div>
+    }
+
+    <rts-location-stock-transfer-lines/>
+  </div>
+
+  @if ((isDraft() || isDispatched()) && perspective() === StockTransferPerspective.OUTGOING) {
+    <div class="floating bottom right flex flex-column align-items-end gap-2">
+      @if (hasPendingLineEdits()) {
+        <small class="error-message">Confirm or discard the pending line edits before dispatching.</small>
+      }
+
+      <div class="flex gap-2">
+        <p-button label="Cancel Transfer"
+                  icon="pi pi-times"
+                  severity="danger"
+                  (click)="cancelTransfer()">
+        </p-button>
+
+        @if(isDraft()) {
+          <p-button label="Dispatch"
+                    icon="pi pi-send"
+                    [disabled]="hasPendingLineEdits()"
+                    (click)="dispatchTransfer()">
+          </p-button>
+        }
+      </div>
+    </div>
+  }
+
+  @if (showCompleteTransferButton()) {
+    <p-button
+      label="Complete Transfer"
+      class="floating bottom right"
+      icon="pi pi-arrow-right"
+      severity="success"
+      (click)="completeTransfer()">
+    </p-button>
+  }
+
+</rts-loading-container>

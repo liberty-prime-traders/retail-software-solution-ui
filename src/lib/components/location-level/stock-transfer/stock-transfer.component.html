@@ -1,0 +1,18 @@
+<div class="flex align-items-center justify-content-between">
+  <h3 class="font-bold">Stock Transfers</h3>
+  @if (formIsVisible()) {
+    <p-button label="Back to Stock Transfers" (click)="hideForm()" icon="pi pi-arrow-left" severity="secondary"/>
+  } @else {
+    <p-button label="New Transfer" (click)="startNewTransfer()" icon="pi pi-plus"/>
+  }
+</div>
+
+@if (formIsVisible()) {
+  <rts-location-stock-transfer-form/>
+} @else {
+  <div class="pt-3">
+    <rts-location-stock-transfer-grid/>
+  </div>
+}
+
+<rts-error-summary class="floating bottom left" [regularErrorMessages]="failureMessages()"/>

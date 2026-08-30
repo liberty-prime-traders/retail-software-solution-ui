@@ -34,6 +34,7 @@ export class LocationDashboardComponent {
     {label: 'Products', icon: 'pi pi-objects-column', routerLink: 'products'},
     {label: 'Purchases', icon: 'pi pi-truck', routerLink: 'purchases'},
     {label: 'Sales', icon: 'pi pi-receipt', routerLink: 'sales'},
+    {label: 'Stock Transfers', icon: 'pi pi-send', routerLink: 'stock-transfer'},
     {label: 'Expenses', icon: 'pi pi-money-bill'},
     {label: 'Fixtures', icon: 'pi pi-box'}
   ]
