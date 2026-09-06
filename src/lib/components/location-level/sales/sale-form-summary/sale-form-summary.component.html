@@ -1,6 +1,5 @@
 <p-card class="border-noround h-full shadow-none">
-  <div class="flex h-full flex-column gap-3 pb-3">
-
+  <div class="flex flex-column gap-3 pb-3">
     @let canAddPayments = canAddPaymentsToSale();
 
     <p-tabs value="summary" class="flex-grow-1" (valueChange)="onTabChange()">
@@ -14,23 +13,29 @@
 
       <p-tabpanels>
         <p-tabpanel value="summary">
-          @if (canAddPayments) {
-            <rts-sale-payment-form/>
-          }
-          <div class="flex flex-column gap-3 px-3">
-            @if (canAddPaymentsToSale()) {
-              <rts-error-summary
-                [signalFormErrors]="saleForm().errorSummary()"
-                [regularErrorMessages]="failureMessages()"
-                [fieldMap]="saleFormFieldMap">
-              </rts-error-summary>
-              <p-divider/>
+          <div class="scrollable"
+               id="sale-form-summary"
+               [padding]="30"
+               rtsAutoStretch="sale-form-summary">
 
-            } @else {
-              <rts-error-summary [regularErrorMessages]="failureMessages()"/>
+            @if (canAddPayments) {
+              <rts-sale-payment-form/>
             }
+            <div class="flex flex-column gap-3 px-3">
+              @if (canAddPaymentsToSale()) {
+                <rts-error-summary
+                  [signalFormErrors]="saleForm().errorSummary()"
+                  [regularErrorMessages]="failureMessages()"
+                  [fieldMap]="saleFormFieldMap">
+                </rts-error-summary>
+                <p-divider/>
 
-            <rts-sale-totals/>
+              } @else {
+                <rts-error-summary [regularErrorMessages]="failureMessages()"/>
+              }
+
+              <rts-sale-totals/>
+            </div>
           </div>
         </p-tabpanel>
 

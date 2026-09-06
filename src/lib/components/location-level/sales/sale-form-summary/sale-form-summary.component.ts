@@ -4,6 +4,7 @@ import {Card} from 'primeng/card'
 import {Divider} from 'primeng/divider'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
 import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
+import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {AutoStretchService} from '../../../reusable/auto-stretch.service'
 import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
 import {SaleFormContext} from '../form-utils/sale-form-context'
@@ -28,7 +29,8 @@ import {SaleTotalsComponent} from './sale-totals/sale-totals.component'
     Badge,
     Divider,
     ErrorSummaryComponent,
-    SaleTotalsComponent
+    SaleTotalsComponent,
+    AutoStretchDirective
   ]
 })
 export class SaleFormSummaryComponent {

@@ -1,0 +1,28 @@
+<rts-loading-container [loading]="loading()">
+  <div class="p-2 flex flex-column gap-4">
+    <p-message severity="warn" icon="pi pi-exclamation-triangle">
+      <ul>
+        <li>Changes may take a few seconds to reflect across the system</li>
+        <li>The provided value overwrites the current opening balance of ({{account()?.openingBalance | currency}})</li>
+        <li>All changes to the opening balance are tracked and displayed under update history</li>
+      </ul>
+    </p-message>
+
+    <rts-form-field label="Amount" >
+      <p-input-number
+        [maxFractionDigits]="2"
+        [min]="0"
+        #newAmount
+        mode="currency"
+        [currency]="currencyCodeProviderService.currencyCode"
+        placeholder="e.g. 15.00">
+      </p-input-number>
+    </rts-form-field>
+
+    <div class="flex justify-content-between">
+      <rts-error-summary [regularErrorMessages]="failureMessages()"/>
+      <p-button label="Save" (click)="updateOpeningBalance(newAmount.value)"/>
+    </div>
+  </div>
+
+</rts-loading-container>

@@ -85,11 +85,32 @@ export class Multimap<V extends BaseModel> {
 
   patch(key: string, collection: readonly V[]): Multimap<V> {
     if (collection.length === 0) return this
-    const collectionIds = new Set(collection.map(v => v.id))
-    const merged = this.get(key)
-      .filter(it => !collectionIds.has(it.id))
-      .concat(collection)
-    return this.set(key, merged)
+    const collectionIds = new Set(collection.map(v => LibertyCollections.identityOf(v)))
+    const bucketByEntityId = this.buildReverseLookup()
+    const staleIdsByKey = new Map<string, string[]>()
+
+    for (const id of collectionIds) {
+      const bucketHoldingCurrentId = bucketByEntityId.get(id)
+      if (bucketHoldingCurrentId && bucketHoldingCurrentId !== key) {
+        staleIdsByKey.set(bucketHoldingCurrentId, [...(staleIdsByKey.get(bucketHoldingCurrentId) ?? []), id])
+      }
+    }
+
+    return this.updateMap(m => {
+      staleIdsByKey.forEach((ids, staleKey) => {
+        const idsToRemove = new Set(ids)
+        const filtered = (m.get(staleKey) ?? []).filter(v => !idsToRemove.has(LibertyCollections.identityOf(v)))
+        filtered.length ? m.set(staleKey, filtered) : m.delete(staleKey)
+      })
+      const merged = LibertyCollections.deduplicateArray(
+        (m.get(key) ?? []).filter(it => !collectionIds.has(LibertyCollections.identityOf(it))).concat(collection)
+      )
+      if (merged.length === 0) {
+        m.delete(key)
+      } else {
+        m.set(key, merged)
+      }
+    })
   }
 
   deleteById(key: string, id: EntityId): Multimap<V> {
@@ -120,6 +141,14 @@ export class Multimap<V extends BaseModel> {
     mutator(newMap)
     this.map.set(newMap)
     return this
+  }
+
+  private buildReverseLookup(): Map<string, string> {
+    const index = new Map<string, string>()
+    for (const [key, values] of this.map()) {
+      for (const v of values) index.set(LibertyCollections.identityOf(v), key)
+    }
+    return index
   }
 
 }

@@ -1,4 +1,4 @@
-import {DestroyRef, inject, Injectable, OnInit, signal} from '@angular/core'
+import {DestroyRef, inject, Injectable, signal} from '@angular/core'
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import {NavigationEnd, Router} from '@angular/router'
 import {tap} from 'rxjs/operators'
