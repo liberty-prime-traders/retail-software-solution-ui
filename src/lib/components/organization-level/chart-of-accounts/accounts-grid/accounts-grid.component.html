@@ -1,0 +1,113 @@
+<div class="flex flex-column gap-4" id="chart-of-accounts" rtsAutoStretch="chart-of-accounts">
+
+  @if (addingIsActive()) {
+    <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info" class="align-self-end"/>
+    <rts-account-form (accountCreated)="closeAddRow()"/>
+
+  } @else {
+    <p-table [loading]="loading()"
+             dataKey="id"
+             rowExpandMode="single"
+             scrollHeight="flex"
+             [scrollable]="true"
+             sortField="code"
+             #accountsTable
+             [globalFilterFields]="['displayName', 'accountType']"
+             (onRowExpand)="rowIsExpanded.set(true)"
+             (onRowCollapse)="rowIsExpanded.set(false)"
+             [value]="accounts()">
+
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between align-items-center">
+          <h3 class="font-bold">Chart of Accounts</h3>
+
+          <rts-grid-filter [dataTable]="accountsTable"/>
+
+          <div class="flex gap-1 align-items-center">
+            <p-toggle-switch [(ngModel)]="showEditButtons"/>
+            <span>Enable Editing</span>
+          </div>
+
+          <p-button (click)="addingIsActive.set(true)"
+                    [disabled]="loading() || addingIsActive()"
+                    label="+ Add Account"
+                    rounded
+                    severity="secondary">
+          </p-button>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="displayName">Name <p-sortIcon field="displayName"/></th>
+          <th pSortableColumn="accountType">Type <p-sortIcon field="accountType"/></th>
+          <th pSortableColumn="currentBalance">Balance <p-sortIcon field="currentBalance"/></th>
+          <th pSortableColumn="openingBalance">Opening Balance <p-sortIcon field="openingBalance"/></th>
+          <th pSortableColumn="parentAccount">Parent Account <p-sortIcon field="parentAccount"/></th>
+          @if (showEditButtons()) {
+            <th style="width: 5rem"></th>
+          }
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-account let-expanded="expanded">
+        <tr [ngClass]="{ 'expanded-row': expanded, 'strike-through': !account.accountIsActive }">
+          <td>{{ account.displayName }}</td>
+          <td>{{ account.accountType | prettifyEnum }}</td>
+          <td>
+            <rts-money [amount]="account.currentBalance" [balanceSignal]="account.balanceSignal"/>
+          </td>
+          <td>
+            <div class="flex gap-2 align-items-center">
+              <rts-money [amount]="account.openingBalance"/>
+
+              <p-button [icon]="showEditButtons() ? 'pi pi-pencil' : 'pi pi-history'"
+                        (click)="togglePopup(account)"
+                        rounded
+                        size="small"
+                        severity="secondary">
+              </p-button>
+            </div>
+
+          </td>
+          <td>{{ account.parentAccount | nullSafe }}</td>
+
+          @if (showEditButtons()) {
+            <td>
+              @if (!account.accountIsSystemMaintained) {
+                <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
+                          rounded
+                          severity="secondary"
+                          [disabled]="loading() || addingIsActive()"
+                          [pRowToggler]="account">
+                </p-button>
+              }
+            </td>
+          }
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="expandedrow" let-account>
+        <tr>
+          <td colspan="9" class="filled-background">
+            <rts-account-form [account]="account"/>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr rts-empty-row [colspan]="9" message="No Accounts Found"></tr>
+      </ng-template>
+    </p-table>
+  }
+</div>
+
+@if (showPopup()) {
+  <p-dialog [header]="popUpHeader()" [(visible)]="showPopup" [modal]="true">
+    @if (popupReason() === AccountPopUpReason.SHOW_OPENING_BALANCE_HISTORY) {
+      <rts-opening-balance-history [accountCode]="poppedUpAccount()!.code"/>
+    } @else {
+      <rts-opening-balance-edit [account]="poppedUpAccount()" [(showDialog)]="showPopup"/>
+    }
+  </p-dialog>
+}

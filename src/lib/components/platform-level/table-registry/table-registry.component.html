@@ -16,6 +16,15 @@
         <div class="flex justify-content-between align-items-center">
           <h3>Table Registry</h3>
           <rts-grid-filter [dataTable]="registryTable"/>
+
+          <p-button
+            label="Validate All"
+            icon="pi pi-check"
+            rounded
+            severity="success"
+            [disabled]="loading()"
+            (onClick)="validateAllTables()">
+          </p-button>
         </div>
       </ng-template>
 

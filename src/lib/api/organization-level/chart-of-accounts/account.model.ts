@@ -16,6 +16,7 @@ export interface Account extends BaseModel {
   parentAccountCode?: string
   parentAccount?: string,
   balanceSignal: BalanceSignal
+  openingBalance: number
 }
 
 export const toAccountTreeNodes = (accounts: Account[]): TreeNode<Account>[] => {

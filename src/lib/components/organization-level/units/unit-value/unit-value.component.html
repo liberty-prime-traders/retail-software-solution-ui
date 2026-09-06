@@ -11,7 +11,7 @@
     <p-table [loading]="loading() && !addingIsActive()"
              rowExpandMode="single"
              dataKey="id"
-             sortField="conversionFactor"
+             sortField="unitsOfBasePerUnit"
              #unitValuesTable
              [globalFilterFields]="['name', 'code', 'description', 'baseUnitName']"
              (onRowExpand)="rowIsExpanded.set(true)"
@@ -47,9 +47,9 @@
             Base Unit
             <p-sortIcon field="baseUnitName"></p-sortIcon>
           </th>
-          <th pSortableColumn="conversionFactor">
+          <th pSortableColumn="unitsOfBasePerUnit">
             Multiplier
-            <p-sortIcon field="conversionFactor"></p-sortIcon>
+            <p-sortIcon field="unitsOfBasePerUnit"></p-sortIcon>
           </th>
           <th pSortableColumn="description">
             Description
@@ -63,7 +63,7 @@
           <td>{{unitvalue?.name | nullSafe}}</td>
           <td>{{unitvalue?.code | nullSafe}}</td>
           <td>{{unitvalue?.baseUnitName | nullSafe}}</td>
-          <td>{{unitvalue?.conversionFactor | nullSafe}}</td>
+          <td>{{unitvalue?.unitsOfBasePerUnit | nullSafe}}</td>
           <td>{{unitvalue?.description | nullSafe}}</td>
           <td>
             @if (!unitvalue.systemDefined) {

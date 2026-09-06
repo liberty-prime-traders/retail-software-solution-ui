@@ -50,6 +50,7 @@ export class OrganizationLaunchService {
     } else {
       this.sessionContextService.selectOrganization(launchResponse.organization)
       this.proceedToSelectedOrganization()
+      this.router.navigate(['/secure/manage-organization']).then()
     }
   }
 
@@ -57,7 +58,6 @@ export class OrganizationLaunchService {
     if (this.sessionContextService.selectedOrganization()){
       this.userContextService.checkOrganizationAdminStatus()
       this.locationService.fetch()
-      this.router.navigate(['/secure/manage-organization']).then()
     }
   }
 }

@@ -36,9 +36,21 @@
     <span class="money irregular-balance">{{ saleSession().totals.balance | currency }}</span>
   </div>
 
-  @if (canMakeChangesToTheSale()) {
-    <p-divider/>
+  <p-divider/>
 
+  <div class="flex gap-4">
+    <div class="flex">
+      <p-divider layout="vertical" class="p-0 m-0 mr-1"/>
+      <p-button label="Additional Expenses" text size="small"/>
+    </div>
+
+    <div class="flex">
+      <p-divider layout="vertical" class="p-0 m-0 mr-1"/>
+      <p-button label="Delivery" text size="small"/>
+    </div>
+  </div>
+
+  @if (canMakeChangesToTheSale()) {
     <div class="flex gap-2 justify-content-end">
       <p-button
         label="Save Draft"

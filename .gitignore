@@ -43,4 +43,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.claude
+# Claude Code: settings.json and commands/ are shared and committed;
+# only the personal local-override file and scratch dir are ignored.
+.claude/settings.local.json
+.claude-local/

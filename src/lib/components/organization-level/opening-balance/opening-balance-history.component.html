@@ -1,0 +1,33 @@
+<div id="opening-balance-history" rtsAutoStretch="opening-balance-history">
+  <p-table [value]="openingBalanceRevisions()"
+           [loading]="loading()"
+           dataKey="referenceNumber"
+           sortField="changedAt"
+           [sortOrder]="-1">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Reference Number</th>
+        <th>Changed By</th>
+        <th>Changed On</th>
+        <th>Amount</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-revision>
+      <tr>
+        <td>{{ revision.referenceNumber }}</td>
+        <td>{{ revision.changedBy }}</td>
+        <td>{{ revision.changedAt | date }}</td>
+        <td>
+          <rts-money [amount]="revision.amount"/>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr rts-empty-row [colspan]="4" message="Opening balance has not been recorded yet"></tr>
+    </ng-template>
+
+  </p-table>
+</div>

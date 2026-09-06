@@ -1,5 +1,6 @@
 import {NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
+import {MessageService} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {TableModule} from 'primeng/table'
@@ -29,6 +30,7 @@ import {TableRegistryFormComponent} from './table-registry-form/table-registry-f
   ]
 })
 export class TableRegistryComponent extends ExpandableGridComponent<TableRegistryService> {
+  private readonly messageService = inject(MessageService)
   private readonly tableRegistryService = inject(TableRegistryService)
   protected readonly apiService = this.tableRegistryService
 
@@ -36,5 +38,17 @@ export class TableRegistryComponent extends ExpandableGridComponent<TableRegistr
 
   validateTable(registryId: string) {
     this.tableRegistryService.validateRegistry(registryId)
+  }
+
+  validateAllTables() {
+    this.tableRegistryService.validateAllRegistries({
+      onFail: () => {
+        this.messageService.add({
+          severity:'error',
+          summary: 'Validation Failed',
+          detail: 'Failed to validate all tables.'
+        });
+      }
+    })
   }
 }

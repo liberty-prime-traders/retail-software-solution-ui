@@ -6,11 +6,13 @@ import {Organization} from '../../api/platform-level/organization/organization.m
 import {NavigationScope} from '../../components/welcome/top-navigation/navigation-scope.model'
 import {LocalStorageKey} from '../types/local-storage-key.enum'
 import {LocalStorageService} from './local-storage.service'
+import {RoutingContextService} from './routing-context.service'
 
 @Injectable({providedIn: 'root'})
 export class SessionContextService {
   private readonly localStorageService = inject(LocalStorageService)
   private readonly router = inject(Router)
+  private readonly routingContextService = inject(RoutingContextService)
 
   private readonly _selectedScope = signal<NavigationScope>(NavigationScope.LANDING)
   private readonly _selectedOrganization = signal<Organization | null>(null)
@@ -36,7 +38,15 @@ export class SessionContextService {
   }
 
   private navigateToInitialScope() {
-    if (window.location.pathname.includes(OKTA_CALLBACK_ROUTE)) return
+    if (window.location.pathname.includes(OKTA_CALLBACK_ROUTE)) {
+      return
+    }
+
+    if (this.routingContextService.hasReturnTo()) {
+      this.routingContextService.navigateToReturnTo()
+      return
+    }
+
     if (this.selectedLocation()) {
       if (this.selectedLocation()) {
         this.router.navigate(['/secure/location-dashboard']).then()

@@ -1,6 +1,9 @@
 <div class="flex flex-column gap-4 flex-grow-1" id="taxTypes" rtsAutoStretch="taxTypes">
   @if (addingIsActive()) {
-    <rts-new-form-cancel-button (onCancel)="setAddingActiveFalse()"/>
+    <div class="flex justify-content-between align-items-center">
+      <span class="text-lg font-medium">Add Tax Type</span>
+      <rts-new-form-cancel-button (onCancel)="setAddingActiveFalse()"/>
+    </div>
     <rts-tax-type-form (taxTypeCreated)="closeAddRow()"/>
 
   } @else {
