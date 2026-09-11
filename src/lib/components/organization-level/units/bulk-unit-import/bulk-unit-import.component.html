@@ -1,0 +1,37 @@
+<div class="flex gap-4">
+  <rts-form-field
+    label="Provide the generated JSON payload"
+    for="input-payload"
+    class="flex-grow-1"
+    contentClass="w-full"
+    [layout]="FormFieldLayout.VERTICAL"
+    [required]="true">
+
+    <div class="flex flex-column gap-4">
+      <textarea id="input-payload"
+                pInputText
+                [(ngModel)]="jsonPayload"
+                class="w-full"
+                rows="20">
+      </textarea>
+
+      <p-button label="Execute Upload"
+                (onClick)="uploadUnits()"
+                [disabled]="!jsonPayload() || jsonPayload().trim().length === 0"
+                icon="pi pi-arrow-right"
+                severity="success">
+      </p-button>
+    </div>
+  </rts-form-field>
+
+  @if (errorDetails()) {
+    <p-divider layout="vertical"/>
+
+    <div class="flex flex-column">
+      <rts-error-summary [regularErrorMessages]="errorDetails()"/>
+    </div>
+  }
+</div>
+
+
+

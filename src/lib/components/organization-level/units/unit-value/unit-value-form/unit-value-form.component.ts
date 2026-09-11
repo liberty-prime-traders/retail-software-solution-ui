@@ -1,5 +1,5 @@
 import {Component, effect, inject, input, output, signal} from '@angular/core'
-import {FormField, form} from '@angular/forms/signals'
+import {form, FormField} from '@angular/forms/signals'
 import {EntityId} from '@ngrx/signals/entities'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
@@ -27,25 +27,21 @@ export class UnitValueFormComponent extends BaseFormComponent<UnitValueService> 
   readonly unitValue = input<UnitValue>()
   readonly unitGroupId = input<EntityId>()
   readonly baseUnitOptions = input<Array<UnitValue>>([])
+  readonly unitValueCreated = output<UnitValue>()
 
   private readonly unitValueService = inject(UnitValueService)
   protected readonly apiService = this.unitValueService
-
-  readonly unitValueCreated = output<UnitValue>()
 
   readonly unitValueFormValue = signal<UnitValueFormDefinition.UnitValueFormModel>(
     UnitValueFormDefinition.defaultUnitValueFormModel
   )
 
+  private readonly unitValueFormValueEffect =     effect(() => {
+    this.unitValueFormValue.set(UnitValueFormDefinition.convertToFormModel(this.unitValue()))
+  })
+
   readonly unitValueForm = form(this.unitValueFormValue, UnitValueFormDefinition.unitValueFormSchema)
   readonly unitValueFormFields = UnitValueFormDefinition.fieldMap
-
-  constructor() {
-    super()
-    effect(() => {
-      this.unitValueFormValue.set(UnitValueFormDefinition.convertToFormModel(this.unitValue()))
-    })
-  }
 
   resetForm() {
     this.unitValueFormValue.set(UnitValueFormDefinition.convertToFormModel(this.unitValue()))
