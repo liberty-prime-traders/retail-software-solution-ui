@@ -1,5 +1,17 @@
 import {NgClass} from '@angular/common'
-import {Component, computed, inject, Input, model, OnInit, output, Signal, signal} from '@angular/core'
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  Input,
+  model,
+  OnInit,
+  output,
+  Signal,
+  signal,
+  untracked
+} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {form, FormField} from '@angular/forms/signals'
 import {PrimeTemplate} from 'primeng/api'
@@ -21,7 +33,7 @@ import {TagService} from '../../../../api/organization-level/tag/tag.service'
 import {UnitGroupService} from '../../../../api/organization-level/unit-group/unitgroup.service'
 import {UnitValue} from '../../../../api/organization-level/unit-value/unitvalue.model'
 import {UnitValueService} from '../../../../api/organization-level/unit-value/unitvalue.service'
-import {SelectItem, ToSelectItemOptions, toSelectItems} from '../../../../utils/types/select-item.type'
+import {ToSelectItemOptions, toSelectItems} from '../../../../utils/types/select-item.type'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
@@ -70,10 +82,11 @@ export class OrganizationProductFormComponent extends BaseFormComponent<Organiza
   }
 
   readonly originalProduct = signal<OrganizationProduct|undefined>(undefined)
-
+  private readonly selectedBaseUnitGroupId = computed(() => this.productFormValue().baseUnitGroupId)
   private readonly productTags = this.tagService.productTags
-
+  readonly unitGroups = this.unitGroupService.selectAll
   readonly selectedTags = model<Partial<Tag>[]>([])
+  readonly unitValues: Signal<Array<UnitValue>> = this.unitValueService.selectForGroup(this.selectedBaseUnitGroupId)
 
   readonly originalTagIds = computed(() =>
     new Set(this.originalProduct()?.activeTags?.map(tag => String(tag.id)) ?? [])
@@ -113,16 +126,9 @@ export class OrganizationProductFormComponent extends BaseFormComponent<Organiza
     return toSelectItems<ProductCategory, ProductGroup>(productGroups, this.productGroupDropdownConfig, productCategories)
   })
 
-  readonly unitValues: Signal<Array<SelectItem<UnitValue>>> = computed(() => {
-    const result: Array<SelectItem<UnitValue>> = []
-    this.unitValueService.selectAllAsMap().forEach((values, key) => {
-      result.push({
-        label: this.unitGroupService.selectForId(key)?.name ?? '',
-        value: key,
-        items: values.map(value => ({label: value.name ?? '', value: value.id}) )
-      })
-    })
-    return result
+  private refetchUnitsForGroup = effect(() => {
+    const unitGroupId = this.productFormValue().baseUnitGroupId
+    untracked(() => this.unitValueService.refetch(unitGroupId))
   })
 
   readonly productForm = form(this.productFormValue, OrganizationProductFormDefinition.productFormSchema)
@@ -132,7 +138,6 @@ export class OrganizationProductFormComponent extends BaseFormComponent<Organiza
     super.ngOnInit()
     this.productGroupService.fetch()
     this.unitGroupService.fetch()
-    this.unitValueService.fetch()
     this.tagService.fetch()
     this.productCategoryService.fetch()
   }

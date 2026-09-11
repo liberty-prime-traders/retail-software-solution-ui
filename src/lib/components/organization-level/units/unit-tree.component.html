@@ -1,80 +1,92 @@
-<p-block-ui [blocked]="loading()"/>
+<rts-loading-container [loading]="loading()">
+  <div id="unitTree" [rtsAutoStretch]="'unitTree'">
+    <div class="flex align-items-center justify-content-between mb-3">
+      <h3 class="font-bold">Units</h3>
 
-<div id="unitTree" [rtsAutoStretch]="'unitTree'">
-  <div class="flex align-items-center justify-content-between mb-3">
-    <h3 class="font-bold">Units</h3>
+      <div class="flex gap-4">
+        <p-button (onClick)="toggleBulkImport()"
+                  [disabled]="loading()"
+                  rounded
+                  severity="secondary"
+                  [icon]="showBulkImportScreen() ? 'pi pi-times' : 'pi pi-upload'"
+                  [label]="showBulkImportScreen() ? 'Close Bulk Import' : 'Bulk Import Units'">
+        </p-button>
 
-    <p-button (click)="setAddingActiveTrue()"
-              [disabled]="loading() || addingIsActive()"
-              label="+ Add Unit Group"
-              rounded severity="secondary">
-    </p-button>
-  </div>
+        <p-button (click)="setAddingActiveTrue()" rounded [disabled]="loading() || addingIsActive()" label="+ Add Unit Group"/>
+      </div>
 
-  <p-divider/>
+    </div>
 
-  @if (unitGroups().length < 1 && !addingIsActive()) {
-    <ng-container *ngTemplateOutlet="noUnitGroups"/>
+    <p-divider/>
 
-  } @else {
-    <div class="flex gap-3">
-      <div class="col-3">
-        <div class="p-2 mb-1 surface-border">
-          <input type="text"
-                 [(ngModel)]="searchTerm"
-                 placeholder="Search..."
-                 class="w-full p-inputtext p-component"/>
-        </div>
+    @if (showBulkImportScreen()) {
+      <rts-bulk-unit-import (successfulUpload)="toggleBulkImport()"/>
 
-        @if (filteredUnits().length < 1) {
-          <ng-container *ngTemplateOutlet="noUnitGroups"/>
+    } @else if (unitGroups().length < 1 && !addingIsActive()) {
+      <ng-container *ngTemplateOutlet="noUnitGroups"/>
 
-        } @else {
-          <div class="overflow-auto" style="max-height: 600px;">
-            @for (unit of filteredUnits(); track unit.id) {
-              <div (click)="selectUnit(unit)"
-                   class="p-3 cursor-pointer hover:surface-400"
-                   [ngClass]="{'bg-bluegray-100': selectedUnitGroup()?.id === unit.id}">
+    } @else {
+      <div class="flex gap-3">
+        <div class="col-3">
+          <div class="p-2 mb-1 surface-border">
+            <input type="text"
+                   [(ngModel)]="searchTerm"
+                   placeholder="Search..."
+                   class="w-full p-inputtext p-component"/>
+          </div>
 
-                <div class="flex justify-content-between align-items-center">
-                  <div class="flex flex-column">
-                    <span class="font-medium truncate w-12rem">{{ unit.name }}</span>
-                    <small>{{ unit.description }}</small>
+          @if (filteredUnits().length < 1) {
+            <ng-container *ngTemplateOutlet="noUnitGroups"/>
+
+          } @else {
+            <div class="overflow-auto" style="max-height: 600px;">
+              @for (unit of filteredUnits(); track unit.id) {
+                <div (click)="selectUnit(unit)"
+                     class="p-3 cursor-pointer hover:surface-400"
+                     [ngClass]="{'bg-bluegray-100': selectedUnitGroup()?.id === unit.id}">
+
+                  <div class="flex justify-content-between align-items-center">
+                    <div class="flex flex-column">
+                      <span class="font-medium truncate w-12rem">{{ unit.name }}</span>
+                      <small>{{ unit.description }}</small>
+                    </div>
                   </div>
                 </div>
-              </div>
-            }
-          </div>
-        }
-      </div>
-
-      <p-divider layout="vertical" />
-
-      <div class="flex flex-column gap-4 flex-grow-1">
-
-        @if (addingIsActive()) {
-          <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info"/>
-          <rts-unit-group-form (unitGroupCreated)="unitGroupCreated($event)"/>
-        } @else if (selectedUnitGroup()) {
-          @if (!selectedUnitGroup()?.systemDefined) {
-            <p-accordion>
-              <p-accordion-panel value="0">
-                <p-accordion-header>Edit {{selectedUnitGroup()?.name ?? 'Unit'}}</p-accordion-header>
-                <p-accordion-content>
-                  <rts-unit-group-form [unitGroup]="selectedUnitGroup()"/>
-                </p-accordion-content>
-              </p-accordion-panel>
-            </p-accordion>
+              }
+            </div>
           }
+        </div>
 
-          <rts-unit-value [unitGroup]="selectedUnitGroup()!" class="flex-grow-1"/>
-        } @else {
-          <span>Select a unit to see its details</span>
-        }
+        <p-divider layout="vertical" />
+
+        <div class="flex flex-column gap-4 flex-grow-1">
+
+          @if (addingIsActive()) {
+            <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info"/>
+            <rts-unit-group-form (unitGroupCreated)="unitGroupCreated($event)"/>
+
+          } @else if (selectedUnitGroup()) {
+            @if (!selectedUnitGroup()?.systemDefined) {
+              <p-accordion>
+                <p-accordion-panel value="0">
+                  <p-accordion-header>Edit unit group - {{selectedUnitGroup()?.name ?? 'Unit'}}</p-accordion-header>
+                  <p-accordion-content>
+                    <rts-unit-group-form [unitGroup]="selectedUnitGroup()"/>
+                  </p-accordion-content>
+                </p-accordion-panel>
+              </p-accordion>
+            }
+
+            <rts-unit-value [unitGroup]="selectedUnitGroup()!" class="flex-grow-1"/>
+          } @else {
+            <span>Select a unit to see its details</span>
+          }
+        </div>
       </div>
-    </div>
-  }
-</div>
+    }
+  </div>
+</rts-loading-container>
+
 
 <ng-template #noUnitGroups>
   <div class="text-center py-4">

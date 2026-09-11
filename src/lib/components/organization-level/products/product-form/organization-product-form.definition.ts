@@ -1,4 +1,4 @@
-import {required, schema} from '@angular/forms/signals'
+import {disabled, required, schema} from '@angular/forms/signals'
 import {OrganizationProduct} from '../../../../api/organization-level/product/organization-product.model'
 
 export namespace OrganizationProductFormDefinition {
@@ -7,6 +7,7 @@ export namespace OrganizationProductFormDefinition {
     productName: string
     description: string
     productGroupId: string
+    baseUnitGroupId: string
     baseUnitId: string
     tagsToAdd: Set<string>
     tagsToRemove: Set<string>
@@ -26,6 +27,7 @@ export namespace OrganizationProductFormDefinition {
     productName: '',
     description: '',
     productGroupId: '',
+    baseUnitGroupId: '',
     baseUnitId: '',
     tagsToAdd: new Set<string>(),
     tagsToRemove: new Set<string>()
@@ -35,6 +37,7 @@ export namespace OrganizationProductFormDefinition {
     required(path.productName)
     required(path.productGroupId)
     required(path.baseUnitId, {when: ({valueOf}) => !valueOf(path.id)})
+    disabled(path.baseUnitId, ({valueOf}) => !valueOf(path.baseUnitGroupId))
   })
 
   export const convertToFormModel = (product?: OrganizationProduct): ProductFormModel => ({
@@ -42,6 +45,7 @@ export namespace OrganizationProductFormDefinition {
     productName: product?.productName ?? '',
     description: product?.description ?? '',
     productGroupId: product?.productGroupId ?? '',
+    baseUnitGroupId: '',
     baseUnitId: product?.baseUnitId ?? '',
     tagsToAdd: new Set<string>(),
     tagsToRemove: new Set<string>()

@@ -129,6 +129,10 @@ export class Multimap<V extends BaseModel> {
     return this.updateMap(newMap => newMap.delete(key))
   }
 
+  clear(): Multimap<V> {
+    return this.updateMap(newMap => newMap.clear())
+  }
+
   merge(other: Multimap<V>): Multimap<V> {
     for (const [k, v] of other.map()) {
       this.patch(k, v)

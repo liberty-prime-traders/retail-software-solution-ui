@@ -21,13 +21,25 @@
   </rts-form-field>
 
   @if (!originalProduct()) {
+    <rts-form-field [required]="true" label="Base Unit Group" for="baseUnitGroupId" [labelColumnSize]="labelSize">
+      <p-select id="baseUnitGroupId"
+                class="flex-grow-1"
+                [options]="unitGroups()"
+                filterBy="name"
+                optionLabel="name"
+                optionValue="id"
+                [filter]="true"
+                [formField]="productForm.baseUnitGroupId"
+                placeholder="Select a Unit Group" >
+      </p-select>
+    </rts-form-field>
+
     <rts-form-field [required]="true" label="Base Unit" for="baseUnitId" [labelColumnSize]="labelSize">
       <p-select id="baseUnitId"
                 class="flex-grow-1"
                 [options]="unitValues()"
-                [group]="true"
-                filterBy="label"
-                [filter]="true"
+                optionLabel="name"
+                optionValue="id"
                 [formField]="productForm.baseUnitId"
                 placeholder="Select a Unit" >
       </p-select>

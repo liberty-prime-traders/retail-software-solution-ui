@@ -2,13 +2,14 @@ import {NgClass, NgTemplateOutlet} from '@angular/common'
 import {Component, computed, effect, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion'
-import {BlockUI} from 'primeng/blockui'
 import {Button} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {UnitGroup} from '../../../api/organization-level/unit-group/unitgroup.model'
 import {UnitGroupService} from '../../../api/organization-level/unit-group/unitgroup.service'
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
+import {LoadingContainerComponent} from '../../reusable/loading-container/loading-container.component'
+import {BulkUnitImportComponent} from './bulk-unit-import/bulk-unit-import.component'
 import {UnitGroupFormComponent} from './unit-group-form/unit-group-form.component'
 import {UnitValueComponent} from './unit-value/unit-value.component'
 
@@ -28,8 +29,9 @@ import {UnitValueComponent} from './unit-value/unit-value.component'
     AccordionPanel,
     AccordionHeader,
     AccordionContent,
-    BlockUI,
-    AutoStretchDirective
+    AutoStretchDirective,
+    BulkUnitImportComponent,
+    LoadingContainerComponent
   ]
 })
 export class UnitTreeComponent extends GridWithAddButtonComponent<UnitGroupService> implements OnInit {
@@ -41,6 +43,7 @@ export class UnitTreeComponent extends GridWithAddButtonComponent<UnitGroupServi
   private readonly selectedUnitGroupStash = signal<UnitGroup|undefined>(undefined)
   readonly selectedUnitGroup = model<UnitGroup| undefined>(undefined)
   private readonly canMakeInitialSelection = signal(true)
+  readonly showBulkImportScreen = model(false)
 
   private readonly makeInitialSelection = effect(() => {
     const firstUnitGroup = this.unitGroups().at(0)
@@ -76,5 +79,9 @@ export class UnitTreeComponent extends GridWithAddButtonComponent<UnitGroupServi
   unitGroupCreated(saved: UnitGroup) {
     this.setAddingActiveFalse()
     this.selectedUnitGroup.set(saved)
+  }
+
+  toggleBulkImport() {
+    this.showBulkImportScreen.set(!this.showBulkImportScreen())
   }
 }
