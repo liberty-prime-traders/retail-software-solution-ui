@@ -1,15 +1,17 @@
-import {AsyncPipe, NgClass, NgOptimizedImage} from '@angular/common'
+import {NgClass, NgOptimizedImage} from '@angular/common'
 import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {RouterLink, RouterOutlet} from '@angular/router'
+import {RouterOutlet} from '@angular/router'
 import {NgxResizeObserverModule} from 'ngx-resize-observer'
 import {PrimeTemplate} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {Splitter} from 'primeng/splitter'
 import {Tooltip} from 'primeng/tooltip'
-import {RtsOktaService} from '../../utils/services/rts-okta.service'
+import {AuthenticationService} from '../../api/platform-level/authentication/authentication.service'
 import {SessionContextService} from '../../utils/services/session-context.service'
+import {GoogleAuthComponent} from '../auth/google/google-auth.component'
 import {AutoStretchService} from '../reusable/auto-stretch.service'
+import {LoadingContainerComponent} from '../reusable/loading-container/loading-container.component'
 import {LocationNavContentComponent} from './top-navigation/location-nav-content/location-nav-content.component'
 import {LocationPillConfig, OrganizationPillConfig, PlatformPillConfig} from './top-navigation/navigation-scope.model'
 import {
@@ -28,8 +30,6 @@ import {
   imports: [
     RouterOutlet,
     Button,
-    RouterLink,
-    AsyncPipe,
     FormsModule,
     Tooltip,
     NgxResizeObserverModule,
@@ -40,18 +40,21 @@ import {
     OrganizationNavContentComponent,
     LocationNavContentComponent,
     UserAccountNavContentComponent,
-    NgClass
+    NgClass,
+    GoogleAuthComponent,
+    LoadingContainerComponent
   ]
 })
 export class WelcomeComponent implements OnInit {
-  private readonly rtsOktaService = inject(RtsOktaService)
+  private readonly authenticationService = inject(AuthenticationService)
   readonly sessionContextService = inject(SessionContextService)
   private readonly autoStretchService = inject(AutoStretchService)
 
   readonly darkMode = model(false)
   readonly fullScreen = signal(false)
 
-  readonly isLoggedIn$ = this.rtsOktaService.loggedIn$
+  readonly isAuthenticating = this.authenticationService.isAuthenticating
+  readonly isLoggedIn = this.authenticationService.isLoggedIn
   readonly PlatformPillConfig = PlatformPillConfig
   readonly OrganizationPillConfig = OrganizationPillConfig
   readonly LocationPillConfig = LocationPillConfig

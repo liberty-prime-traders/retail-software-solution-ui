@@ -28,6 +28,8 @@ export class LocationNavContentComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.locationService.fetch()
+    if (this.sessionContextService.selectedOrganization()) {
+      this.locationService.fetch()
+    }
   }
 }

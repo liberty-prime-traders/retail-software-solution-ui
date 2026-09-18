@@ -10,7 +10,7 @@ import {
 import {OrganizationService} from '../../../../api/platform-level/organization/organization.service'
 import {parseError} from '../../../../utils/errors'
 import {SessionContextService} from '../../../../utils/services/session-context.service'
-import {UserContextService} from '../../../../utils/services/user-context.service'
+import {UserContextService} from '../../../../utils/services/auth/user-context.service'
 
 @Injectable()
 export class OrganizationLaunchService {

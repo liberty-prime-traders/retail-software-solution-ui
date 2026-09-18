@@ -1,4 +1,5 @@
 export interface ApiRequestConfig {
   upsertOnSuccess?: boolean
-  urlSuffix?: string
+  urlSuffix: string
+  urlPrefix: string
 }

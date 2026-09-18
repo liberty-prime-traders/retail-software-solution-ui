@@ -17,10 +17,13 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
   readonly selectProcessingStatus
   readonly selectFailureMessages
   readonly selectCount: Signal<number>
+
   private readonly defaultApiRequestConfig: ApiRequestConfig = {
     upsertOnSuccess: false,
-    urlSuffix: ''
+    urlSuffix: '',
+    urlPrefix: 'secured/'
   }
+
   protected readonly apiRequestConfig = signal<ApiRequestConfig>(this.defaultApiRequestConfig)
 
   protected constructor(protected readonly store: BaseStore<RESPONSE>) {
@@ -50,7 +53,8 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     const idPath = id ? `/${id}` : ''
     const urlSuffix = this.apiRequestConfig().urlSuffix
     const suffixPath = urlSuffix ? `/${urlSuffix}` : ''
-    return `/secured/${this.store.basePath}${idPath}${suffixPath}`
+    const urlPrefix = this.apiRequestConfig().urlPrefix
+    return `/${urlPrefix}${this.store.basePath}${idPath}${suffixPath}`
   }
 
   protected setProcessingStatus(processingStatus: ProcessingStatus): void {

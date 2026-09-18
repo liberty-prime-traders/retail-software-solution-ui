@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router'
-import {OktaAuthGuard, OktaCallbackComponent} from '@okta/okta-angular'
+import {UnauthenticatedComponent} from '../lib/components/auth/unauthenticated.component'
 import {LocationDashboardComponent} from '../lib/components/location-level/location-dashboard.component'
 import {OrganizationDashboardComponent} from '../lib/components/organization-level/organization-dashboard.component'
 import {
@@ -12,6 +12,7 @@ import {PublicComponent} from '../lib/components/public/public.component'
 import {CanViewLocation} from './route-guards/can-view-location'
 import {CanViewOrganization} from './route-guards/can-view-organization'
 import {CanViewPlatformOrganization} from './route-guards/can-view-platform.guard'
+import {AuthenticatedGuard} from './route-guards/is-authenticated'
 import {locationRoutes} from './routes/location-level.routes'
 import {orgManagementRoutes} from './routes/org-level.routes'
 import {platformManagementRoutes} from './routes/platform-level.routes'
@@ -40,23 +41,21 @@ const secureRoutes: Routes = [
   }
 ]
 
-export const OKTA_CALLBACK_ROUTE = 'login/callback'
+export const SECURE_ROUTE = 'secure'
+export const LOGGED_OUT_ROUTE = 'logged-out'
 
 const appChildRoutes: Routes = [
-  {path: OKTA_CALLBACK_ROUTE, component: OktaCallbackComponent},
+  {path: LOGGED_OUT_ROUTE, component: UnauthenticatedComponent},
   {
-    path: 'secure',
-    canActivate: [OktaAuthGuard],
-    canActivateChild: [OktaAuthGuard],
+    path: SECURE_ROUTE,
+    canActivate: [AuthenticatedGuard],
+    canActivateChild: [AuthenticatedGuard],
     children: secureRoutes
   },
   {path: '', component: PublicComponent, pathMatch: 'full'}
 ]
 
 export const appRoutes: Routes = [
-  {
-    path: '',
-    children: appChildRoutes
-  },
+  {path: '', children: appChildRoutes},
   {path: '**', redirectTo: ''}
 ]

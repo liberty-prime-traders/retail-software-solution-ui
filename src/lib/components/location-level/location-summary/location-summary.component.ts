@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core'
-import {UserContextService} from '../../../utils/services/user-context.service'
+import {UserContextService} from '../../../utils/services/auth/user-context.service'
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 
 @Component({

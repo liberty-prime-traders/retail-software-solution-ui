@@ -75,7 +75,6 @@ export class ScopePillComponent {
     }
 
     this.router.navigate([this.config().routerLink]).then()
-
   }
 
   private showPopOver(event: MouseEvent) {

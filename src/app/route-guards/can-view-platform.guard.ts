@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core'
 import {CanActivate, Router} from '@angular/router'
 import {NavigationScope} from '../../lib/components/welcome/top-navigation/navigation-scope.model'
 import {SessionContextService} from '../../lib/utils/services/session-context.service'
-import {UserContextService} from '../../lib/utils/services/user-context.service'
+import {UserContextService} from '../../lib/utils/services/auth/user-context.service'
 
 @Injectable({providedIn: 'root'})
 export class CanViewPlatformOrganization implements CanActivate {
