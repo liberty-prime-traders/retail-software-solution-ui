@@ -4,11 +4,9 @@ import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {RouterLink} from '@angular/router'
 import {Card} from 'primeng/card'
 import {InputText} from 'primeng/inputtext'
-import {SysUserService} from '../../../api/platform-level/sys-user/sys-user.service'
-import {RtsOktaService} from '../../../utils/services/rts-okta.service'
+import {UserContextService} from '../../../utils/services/auth/user-context.service'
 import {SessionContextService} from '../../../utils/services/session-context.service'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
-import {UserRole} from '../../../utils/types/user-role.enum'
 import {ErrorSummaryComponent} from '../../reusable/error-summary/error-summary.component'
 import {FormButtonsComponent} from '../../reusable/form-buttons/form-buttons.component'
 import {HasSubscriptionComponent} from '../../reusable/has-subscription.component'
@@ -31,15 +29,14 @@ import {
   ]
 })
 export class LandingComponent extends HasSubscriptionComponent implements OnInit {
-  private readonly userService = inject(SysUserService)
+
   private readonly sessionContextService = inject(SessionContextService)
   private readonly organizationLaunchService = inject(OrganizationLaunchService)
-
-  private readonly rtsOktaService = inject(RtsOktaService)
-  readonly hasCreateRole$ = this.rtsOktaService.hasRole$(UserRole.ROLE_CREATE_ORGANIZATION)
+  private readonly userContextService = inject(UserContextService)
 
   readonly ProcessingStatus = ProcessingStatus
 
+  readonly hasCreateRole = this.userContextService.hasCreateRole
   readonly errorMessages = this.organizationLaunchService.errorMessages
   readonly launchingInProgress = this.organizationLaunchService.launchingInProgress
 
@@ -48,7 +45,6 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
   )
 
   ngOnInit() {
-    this.userService.post()
     if (this.sessionContextService.selectedScope()) {
       this.organizationLaunchService.launchOrganization(
         this.sessionContextService.selectedOrganization()?.subdomain

@@ -9,9 +9,8 @@ import {Select} from 'primeng/select'
 import {ToggleSwitch} from 'primeng/toggleswitch'
 import {darkModeSelector} from '../../../../../app/app.preset'
 import {DEFAULT_TIMEZONE, TIMEZONES} from '../../../../api/util/timezone.model'
+import {UserContextService} from '../../../../utils/services/auth/user-context.service'
 import {LocalStorageService} from '../../../../utils/services/local-storage.service'
-import {RtsOktaService} from '../../../../utils/services/rts-okta.service'
-import {UserContextService} from '../../../../utils/services/user-context.service'
 import {LocalStorageKey} from '../../../../utils/types/local-storage-key.enum'
 
 @Component({
@@ -29,12 +28,11 @@ import {LocalStorageKey} from '../../../../utils/types/local-storage-key.enum'
 })
 export class UserAccountNavContentComponent {
   readonly userContextService = inject(UserContextService)
-  private readonly rtsOktaService = inject(RtsOktaService)
   private readonly router = inject(Router)
   private readonly localStorageService = inject(LocalStorageService)
 
   readonly TIMEZONES = TIMEZONES
-  
+
   readonly darkMode = signal(this.localStorageService.getItem<boolean>(LocalStorageKey.DARK_MODE) ?? false)
 
   readonly selectedTimeZone = signal(
@@ -42,7 +40,8 @@ export class UserAccountNavContentComponent {
   )
 
   logout() {
-    this.router.navigateByUrl('/').then(() => this.rtsOktaService.signOut())
+    this.userContextService.signOut()
+    this.router.navigateByUrl('/').then()
   }
 
   private readonly updateDarkMode = effect(() => {

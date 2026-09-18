@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common'
 import {Component, inject} from '@angular/core'
-import {Router, RouterLink} from '@angular/router'
+import {ActivatedRoute, Router, RouterLink} from '@angular/router'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {TableModule} from 'primeng/table'
@@ -34,6 +34,7 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
 export class MyJoinRequestsComponent extends BaseGridComponent<MyJoinRequestService> {
   private readonly joinRequestService = inject(MyJoinRequestService)
   private readonly router = inject(Router)
+  private readonly activatedRoute = inject(ActivatedRoute)
   readonly apiService = this.joinRequestService
 
   readonly myJoinRequests = this.joinRequestService.selectAll
@@ -43,6 +44,6 @@ export class MyJoinRequestsComponent extends BaseGridComponent<MyJoinRequestServ
   readonly ProcessingStatus = ProcessingStatus
 
   goBack() {
-    this.router.navigate(['/landing']).then()
+    this.router.navigate(['..'], {relativeTo: this.activatedRoute}).then()
   }
 }

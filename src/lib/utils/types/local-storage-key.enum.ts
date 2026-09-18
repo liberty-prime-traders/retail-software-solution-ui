@@ -4,4 +4,5 @@ export enum LocalStorageKey {
   TIMEZONE = 'timezone',
   DARK_MODE = 'darkMode',
   RETURN_TO_URL = 'returnToUrl',
+  SESSION_TOKEN = 'sessionToken',
 }

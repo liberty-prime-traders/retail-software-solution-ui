@@ -5,7 +5,7 @@ import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
 import {OrgFeatureService} from '../../api/organization-level/org-feature/org-feature.service'
-import {UserContextService} from '../../utils/services/user-context.service'
+import {UserContextService} from '../../utils/services/auth/user-context.service'
 import {OrganizationLaunchService} from '../welcome/top-navigation/organization-nav-content/organization-launch.service'
 
 @Component({

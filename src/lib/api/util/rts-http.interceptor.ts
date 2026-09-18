@@ -1,38 +1,40 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http'
 import {inject, Injectable} from '@angular/core'
 import {environment} from '@environments/environment'
-import {mergeMap, Observable, throwError} from 'rxjs'
-import {RtsOktaService} from '../../utils/services/rts-okta.service'
+import {Observable} from 'rxjs'
+import {UserContextService} from '../../utils/services/auth/user-context.service'
 import {SessionContextService} from '../../utils/services/session-context.service'
 
 @Injectable()
 export class RtsHttpInterceptor implements HttpInterceptor {
-  private readonly rtsOktaService = inject(RtsOktaService)
+  private readonly userContextService = inject(UserContextService)
   private readonly sessionContextService = inject(SessionContextService)
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const resultingRequest = this.withBaseUrl(req)
     if (!req.url.startsWith('/secured')) {
-      return next.handle(req)
+      return next.handle(resultingRequest)
     }
+    const sessionToken = this.userContextService.token()
+    return next.handle(this.withAuthHeaders(resultingRequest, sessionToken))
+  }
+
+  private withAuthHeaders(req: HttpRequest<any>, token: string|null): HttpRequest<any> {
     const organization = this.sessionContextService.selectedOrganization()
     const location = this.sessionContextService.selectedLocation()
 
-    return this.rtsOktaService.accessToken$.pipe(
-      mergeMap(accessToken => {
-        if (!accessToken?.accessToken) {
-          console.error('No access token available')
-          return throwError(() => 'Access token missing')
-        }
-        req = req.clone({
-          url: `${environment.BASE_URL}${req.url}`,
-          setHeaders: {
-            'Authorization': `Bearer ${accessToken.accessToken}`,
-            'X-ORGANIZATION-ID': organization?.id?.toString() ?? '',
-            'X-LOCATION-ID': location?.id?.toString() ?? ''
-          }
-        })
-        return next.handle(req)
-      })
-    )
+    return req.clone({
+      setHeaders: {
+        'Authorization': `Bearer ${token}`,
+        'X-ORGANIZATION-ID': organization?.id?.toString() ?? '',
+        'X-LOCATION-ID': location?.id?.toString() ?? ''
+      }
+    })
+  }
+
+  private withBaseUrl(req: HttpRequest<any>): HttpRequest<any> {
+    return req.clone({
+      url: `${environment.BASE_URL}${req.url}`
+    })
   }
 }
