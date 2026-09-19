@@ -1,0 +1,73 @@
+<p-table [loading]="loading()"
+         dataKey="id"
+         sortField="user"
+         #userTable
+         scrollHeight="600px"
+         [scrollable]="true"
+         [value]="organizationUsers()"
+         [globalFilterFields]="['user']"
+         [(selection)]="selectedOrganizationUsers">
+
+  <ng-template pTemplate="caption">
+    <div class="flex justify-content-between align-items-center">
+      <h3>Organization Users</h3>
+
+      <div class="flex justify-content-end gap-6 mb-3 align-items-center">
+        <p-button
+          icon="pi pi-user-minus"
+          label="Terminate Selected Users"
+          variant="text"
+          severity="danger"
+          [loading]="loading()"
+          [disabled]="loading() || selectedOrganizationUsers().length === 0"
+          (click)="terminateSelectedUsers()">
+        </p-button>
+
+        <rts-grid-filter [dataTable]="userTable" margin="m-0"/>
+
+        <ng-content/>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 4rem"></th>
+      <th pSortableColumn="fullName">Name
+        <p-sortIcon field="fullName"></p-sortIcon>
+      </th>
+      <th pSortableColumn="email">Email
+        <p-sortIcon field="email"></p-sortIcon>
+      </th>
+      <th pSortableColumn="active">Active
+        <p-sortIcon field="active"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-organizationUser>
+    @let userIsActive = organizationUser.active;
+
+    <tr [pSelectableRow]="organizationUser" [ngClass]="{'inactive font-light' : !userIsActive}">
+      <td>
+        @if (userIsActive) {
+          <p-tableCheckbox [value]="organizationUser"/>
+        }
+      </td>
+      <td>
+        {{ organizationUser.fullName | nullSafe }}
+      </td>
+      <td>{{ organizationUser.email  }}</td>
+      <td>
+        <p-tag [value]="userIsActive ? 'Active' : 'Inactive'"
+               [severity]="userIsActive ? 'success' : 'danger'"
+               [rounded]="true">
+        </p-tag>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr rts-empty-row [colspan]="4" message="No users found"></tr>
+  </ng-template>
+</p-table>

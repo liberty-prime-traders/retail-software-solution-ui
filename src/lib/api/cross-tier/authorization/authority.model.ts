@@ -40,7 +40,7 @@ export interface UserAccessDetail extends BaseModel {
 }
 
 export interface AuthorityAssignmentRequest {
-  users: EntityId[]
+  userIds: EntityId[]
   roles: UserRole[]
   permissions: UserPermission[]
 }

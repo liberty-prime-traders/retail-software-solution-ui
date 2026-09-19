@@ -9,9 +9,7 @@ import {Tag} from 'primeng/tag'
 import {PurchaseDeliveryService} from '../../../../../api/location-level/delivery/purchase-delivery.service'
 import {PurchaseService} from '../../../../../api/location-level/purchase/purchase.service'
 import {ContactService} from '../../../../../api/organization-level/contact/contact.service'
-import {
-  OrganizationUserService
-} from '../../../../../api/organization-level/organization_user/organization-user.service'
+import {OrgMembershipUserService} from '../../../../../api/organization-level/membership/org-membership-user.service'
 import {PrettifyEnumPipe} from '../../../../../utils/pipes/prettify-enum.pipe'
 import {ErrorSummaryComponent} from '../../../../reusable/error-summary/error-summary.component'
 import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
@@ -42,7 +40,7 @@ import {PurchaseGeneralFieldsFormDefinition} from '../form-utils/purchase-genera
 export class PurchaseFormGeneralFieldsComponent implements OnInit {
   private readonly purchaseFormContext = inject(PurchaseFormContext)
   private readonly contactService = inject(ContactService)
-  private readonly organizationUserService = inject(OrganizationUserService)
+  private readonly orgMembershipUserService = inject(OrgMembershipUserService)
   private readonly purchaseService = inject(PurchaseService)
   private readonly purchaseDeliveryService = inject(PurchaseDeliveryService)
 
@@ -52,7 +50,7 @@ export class PurchaseFormGeneralFieldsComponent implements OnInit {
   readonly generalFieldsForm = this.purchaseForm.generalFields
   readonly purchaseFormFields = PurchaseGeneralFieldsFormDefinition.fieldMap
   readonly suppliers = this.contactService.suppliers
-  readonly users = this.organizationUserService.selectAll
+  readonly users = this.orgMembershipUserService.selectAll
   readonly isDraftOrNew = this.purchaseFormContext.isDraftOrNew
 
   readonly apiErrors = computed(() => {
@@ -64,9 +62,7 @@ export class PurchaseFormGeneralFieldsComponent implements OnInit {
 
   ngOnInit() {
     this.contactService.fetch()
-    this.organizationUserService.fetch()
   }
-
 
   saveNotes() {
     if(!this.isDraftOrNew()) {

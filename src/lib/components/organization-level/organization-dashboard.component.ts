@@ -4,6 +4,7 @@ import {MenuItem} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
+import {OrgMembershipUserService} from '../../api/organization-level/membership/org-membership-user.service'
 import {OrgFeatureService} from '../../api/organization-level/org-feature/org-feature.service'
 import {UserContextService} from '../../utils/services/auth/user-context.service'
 import {OrganizationLaunchService} from '../welcome/top-navigation/organization-nav-content/organization-launch.service'
@@ -22,6 +23,7 @@ export class OrganizationDashboardComponent implements OnInit {
   private readonly userContextService = inject(UserContextService)
   private readonly orgFeatureService = inject(OrgFeatureService)
   private readonly organizationLaunchService = inject(OrganizationLaunchService)
+  private readonly orgMembershipUserService = inject(OrgMembershipUserService)
 
   private readonly organizationHomeMenuItems: MenuItem[] = [
     {label: 'Summary', icon: 'pi pi-home', routerLink: 'summary'}
@@ -106,6 +108,7 @@ export class OrganizationDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.orgFeatureService.fetch()
+    this.orgMembershipUserService.fetch()
     this.organizationLaunchService.proceedToSelectedOrganization()
   }
 }

@@ -1,40 +1,30 @@
-import {NgClass} from '@angular/common'
-import {Component, inject, OnInit, signal} from '@angular/core'
+import {Component, signal} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
-import {AuthorityService} from '../../../api/cross-tier/authorization/authority.service'
 import {SchemaLevel} from '../../../api/platform-level/table-registry/schema-level.enum'
-import {NullishToZeroPipe} from '../../../utils/pipes/nullish-to-zero.pipe'
-import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
-import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
-import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
-import {ExpandableGridComponent} from '../../reusable/expandable-grid.component'
-import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
-import {AuthorityHolderComponent} from './authority-holder.component'
+import {AuthorityAssignmentComponent} from '../../cross-tier/authority-assignment/authority-assignment.component'
+import {PlatformAuthoritiesComponent} from './platform-authorities.component'
 
 @Component({
   selector: 'rts-access-control',
   templateUrl: './access-control.component.html',
   imports: [
     TableModule,
-    Button,
-    EmptyRowComponent,
-    GridFilterComponent,
-    NgClass,
-    AutoStretchDirective,
-    PrettifyEnumPipe,
-    AuthorityHolderComponent,
-    NullishToZeroPipe
+    AuthorityAssignmentComponent,
+    PlatformAuthoritiesComponent,
+    Button
   ]
 })
-export class AccessControlComponent extends ExpandableGridComponent<AuthorityService> implements OnInit {
-  private readonly authorityService = inject(AuthorityService)
-  readonly apiService = this.authorityService
+export class AccessControlComponent {
 
-  readonly authorities = this.authorityService.selectForGroup(signal(SchemaLevel.PLATFORM))
+  readonly showAuthorityAssignmentScreen = signal(false)
+  readonly SchemaLevel = SchemaLevel
 
-  override ngOnInit() {
-    this.authorityService.getForPlatform()
+  cancelAuthorityAssignment() {
+    this.showAuthorityAssignmentScreen.set(false)
   }
 
+  openAuthorityAssignment() {
+    this.showAuthorityAssignmentScreen.set(true)
+  }
 }

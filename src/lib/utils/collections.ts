@@ -3,6 +3,8 @@ import {BaseModel} from '../api/util/base-api/base.model'
 
 export namespace LibertyCollections {
 
+  export declare type OrArray<T> = T | T[]
+
   // some models don't carry a real id from the backend
   // and use referenceNumber as their identity instead
   export const identityOf = <V extends BaseModel>(v: V): string =>

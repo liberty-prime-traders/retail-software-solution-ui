@@ -5,5 +5,5 @@ export interface MembershipUserSummary extends BaseModel {
   fullName?: string
   email?: string
   membershipCount: number
-  status: boolean
+  active: boolean
 }

@@ -31,7 +31,7 @@ import {AuthorizationPassFormDefinition} from './authorization-pass-form.definit
 export class AuthorizationPassFormComponent extends BaseFormComponent<AuthorizationPassService> implements OnInit {
 
   private readonly authorizationPassService = inject(AuthorizationPassService)
-  private readonly sysUserService = inject(PlatformSysUserService)
+  private readonly platformSysUserService = inject(PlatformSysUserService)
   protected readonly apiService = this.authorizationPassService
   private readonly zonedDatesService = inject(ZonedDatesService)
 
@@ -46,7 +46,7 @@ export class AuthorizationPassFormComponent extends BaseFormComponent<Authorizat
   readonly passFormFields = AuthorizationPassFormDefinition.fieldMap
   readonly isCreatingNewPass = computed(() => !this.pass()?.id)
   readonly canRevoke = computed(() => this.pass()?.passStatus === PassStatus.ACTIVE)
-  readonly sysUsers = this.sysUserService.selectAll
+  readonly sysUsers = this.platformSysUserService.selectAll
 
   readonly PassType = PassType
   readonly tomorrow = this.getTomorrow()

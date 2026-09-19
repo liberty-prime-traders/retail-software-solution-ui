@@ -1,9 +1,19 @@
-import {Injectable} from '@angular/core'
+import {inject, Injectable, signal} from '@angular/core'
 import {CredentialResponse} from 'google-one-tap'
+import {LocalStorageService} from '../local-storage.service'
+import {LocalStorageKey} from '../../types/local-storage-key.enum'
 
 @Injectable({providedIn: 'root'})
 export class RtsGoogleAuthService {
   private static readonly CLIENT_ID = '1041984457184-rk441ulgoosac3l6k9neifd3hh6g5ikd.apps.googleusercontent.com'
+
+  // TODO: swap localStorage for a Cookie ASAP - localStorage is not appropriate for storing auth credentials
+  private readonly localStorageService = inject(LocalStorageService)
+
+  private readonly _storedCredential = signal<string | null>(
+    this.localStorageService.getItem<string>(LocalStorageKey.GOOGLE_CREDENTIAL)
+  )
+  readonly storedCredential = this._storedCredential.asReadonly()
 
   async initialize(
     button: HTMLElement,
@@ -17,7 +27,10 @@ export class RtsGoogleAuthService {
       use_fedcm_for_button: true,
       button_auto_select: true,
       client_id: RtsGoogleAuthService.CLIENT_ID,
-      callback: (response: CredentialResponse) => onCredential(response.credential),
+      callback: (response: CredentialResponse) => {
+        this.setStoredCredential(response.credential)
+        onCredential(response.credential)
+      },
     })
 
     // @ts-ignore
@@ -29,6 +42,16 @@ export class RtsGoogleAuthService {
       size: 'large',
       logo_alignment: 'left'
     })
+  }
+
+  clearStoredCredential(): void {
+    this._storedCredential.set(null)
+    this.localStorageService.removeItem(LocalStorageKey.GOOGLE_CREDENTIAL)
+  }
+
+  private setStoredCredential(credential: string): void {
+    this._storedCredential.set(credential)
+    this.localStorageService.setItem(LocalStorageKey.GOOGLE_CREDENTIAL, credential)
   }
 
   private waitForGoogle(timeout = 10_000): Promise<void> {
