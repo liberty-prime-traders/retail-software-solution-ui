@@ -18,6 +18,7 @@ export class ManagePlatformComponent {
   private readonly homeMenuItems: MenuItem[] = [
     {label: 'Organizations', icon: 'pi pi-home', routerLink: 'organizations'},
     {label: 'Passes', icon: 'pi pi-id-card', routerLink: 'authorization-passes'},
+    {label: 'Access Control', icon: 'pi pi-lock', routerLink: 'access-control'},
   ]
 
   private readonly legalMenuItems: MenuItem[] = [

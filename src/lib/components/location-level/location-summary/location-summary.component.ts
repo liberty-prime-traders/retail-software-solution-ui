@@ -11,5 +11,5 @@ import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 })
 export class LocationSummaryComponent {
   private readonly userContextService = inject(UserContextService)
-  readonly userFullName = this.userContextService.displayName
+  readonly userFullName = this.userContextService.userFullName
 }

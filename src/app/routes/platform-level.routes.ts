@@ -1,4 +1,5 @@
 import {Routes} from '@angular/router'
+import {AccessControlComponent} from '../../lib/components/platform-level/access-control/access-control.component'
 import {
   AuthorizationPassComponent
 } from '../../lib/components/platform-level/authorization-pass/authorization-pass.component'
@@ -38,6 +39,7 @@ export const platformManagementRoutes: Routes = [
   {path: 'jurisdictions', component: JurisdictionComponent},
   {path: 'tax-types', component: TaxTypeComponent},
   {path: 'platform-features', component: PlatformFeatureComponent},
+  {path: 'access-control', component: AccessControlComponent},
   {
     path: 'db-migrations',
     component: DbMigrationComponent,

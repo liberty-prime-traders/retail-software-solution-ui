@@ -1,0 +1,64 @@
+<div class="flex flex-column gap-4 flex-grow-1" id="accessControl" rtsAutoStretch="accessControl">
+  <p-table [loading]="loading()"
+           rowExpandMode="single"
+           dataKey="name"
+           scrollHeight="flex"
+           [scrollable]="true"
+           sortField="name"
+           #accessControlTable
+           [globalFilterFields]="['name', 'type']"
+           (onRowExpand)="rowIsExpanded.set(true)"
+           (onRowCollapse)="rowIsExpanded.set(false)"
+           [value]="authorities()">
+
+    <ng-template pTemplate="caption">
+      <div class="flex justify-content-between align-items-center">
+        <h3 class="font-bold">Access Control</h3>
+        <rts-grid-filter [dataTable]="accessControlTable"/>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 5rem"></th>
+        <th pSortableColumn="name">Name
+          <p-sortIcon field="name"/>
+        </th>
+        <th pSortableColumn="type">Type
+          <p-sortIcon field="type"/>
+        </th>
+        <th pSortableColumn="holderCount">Users
+          <p-sortIcon field="holderCount"/>
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-authority let-expanded="expanded">
+      <tr [ngClass]="{ 'expanded-row': expanded }">
+        <td>
+          <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-angle-right'"
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading()"
+                    [pRowToggler]="authority">
+          </p-button>
+        </td>
+        <td>{{ authority?.name | prettifyEnum }}</td>
+        <td>{{ authority?.type | prettifyEnum }}</td>
+        <td>{{ authority?.holderCount | nullishToZero }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="expandedrow" let-authority>
+      <tr>
+        <td colspan="4" class="filled-background">
+          <rts-authority-holder [authority]="authority"/>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr rts-empty-row [colspan]="4" message="No Authorities Were Found"></tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -20,6 +20,7 @@ export const withBaseStore = <ENTITY extends BaseModel>(selectId: SelectEntityId
   withState<BaseState>(createInitialState()),
   withEntities<ENTITY>(),
   withProps((store) => ({
+    selectId,
     selectFirst: computed(() => store.entities()[0])
   })),
   withMethods((store) => ({

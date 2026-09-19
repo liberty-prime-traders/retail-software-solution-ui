@@ -1,7 +1,7 @@
 import {computed, Injectable} from '@angular/core'
 import {Subscription} from 'rxjs'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
-import {UserRole} from '../../../utils/types/user-role.enum'
+import {UserRole} from '../../cross-tier/authorization/user-role.enum'
 import {ApiCallbacks} from '../../util/base-api/api-callbacks'
 import {BaseService} from '../../util/base-api/base.service'
 import {AuthenticationStore} from './authentication.store'

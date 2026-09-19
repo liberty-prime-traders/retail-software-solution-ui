@@ -1,6 +1,6 @@
-import {UserRole} from '../../../utils/types/user-role.enum'
+import {UserRole} from '../../cross-tier/authorization/user-role.enum'
 import {BaseModel} from '../../util/base-api/base.model'
-import {SysUser} from '../sys-user/sys-user.model'
+import {PlatformSysUser} from '../sys-user/platform-sys-user.model'
 
 export enum IdentityProvider {
   GOOGLE = 'GOOGLE'
@@ -9,7 +9,7 @@ export enum IdentityProvider {
 export interface LoginResponse extends BaseModel {
   sessionToken: string
   verifiedRoles: UserRole[]
-  user: SysUser
+  user: PlatformSysUser
 }
 
 export interface LoginRequest {

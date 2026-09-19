@@ -3,7 +3,7 @@
 
   <p-popover #preferences>
     <div class="flex flex-column">
-      <span class="block font-semibold">{{ userContextService.displayName() }}</span>
+      <span class="block font-semibold">{{ userContextService.userFullName() }}</span>
       <small class="block info-message">{{ userContextService.emailAddress() }}</small>
     </div>
 

@@ -13,6 +13,7 @@ export interface BaseStore<ENTITY extends BaseModel> {
 	processingStatus: Signal<ProcessingStatus>
 	failureMessages: Signal<string[]>
 	basePath: string
+  selectId: (entity: ENTITY) => EntityId
   selectForId: (id: EntityId) => ENTITY | undefined
 	setAll: (entities: ENTITY[]) => void
 	upsert: (entity: ENTITY) => void

@@ -87,7 +87,11 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
   }
 
   protected getHttpParams(params: FetchParams): HttpParams {
-    return new HttpParams()
+    return this.appendHttpParams(new HttpParams(), params)
+  }
+
+  protected appendHttpParams(httpParams: HttpParams, params: FetchParams): HttpParams {
+    return httpParams
   }
 
   protected getPathSuffix(params: FetchParams): string {
