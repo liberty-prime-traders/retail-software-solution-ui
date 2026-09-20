@@ -28,6 +28,7 @@
       {{ originalLocationProduct()?.stockBalance | nullishToZero }} {{ originalLocationProduct()?.baseUnit }}s
 
       <button pButton
+              type="button"
               text
               (click)="showStockHistory.set(true)">
         View History
@@ -52,7 +53,6 @@
                      (save)="updateLocationProduct()"
                      (resetAction)="resetForm()">
   </rts-forms-buttons>
-
 </form>
 
 @if (showStockHistory()) {

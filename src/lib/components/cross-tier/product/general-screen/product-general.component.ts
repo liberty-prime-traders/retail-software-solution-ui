@@ -12,7 +12,9 @@ import {ProductSearchParameters} from '../../../../api/cross-tier/product/produc
 import {SchemaLevel} from '../../../../api/platform-level/table-registry/schema-level.enum'
 import {PaginatedBaseService} from '../../../../api/util/paginated-api/paginated-base.service'
 import {SessionContextService} from '../../../../utils/services/session-context.service'
+import {BulkProductImportComponent} from '../../../organization-level/products/bulk-product-import/bulk-product-import.component'
 import {OrganizationProductFormComponent} from '../../../organization-level/products/product-form/organization-product-form.component'
+import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {HasFilteredDataComponent} from '../../../reusable/has-filtered-data.component'
 import {SearchComponent} from '../../../reusable/search.component'
 import {ProductFilterComponent} from '../filter-screen/product-filter.component'
@@ -28,13 +30,15 @@ import {ProductGridComponent} from '../product-grid/product-grid.component'
     BlockUIModule,
     FormsModule,
     ButtonDirective,
+    BulkProductImportComponent,
     OrganizationProductFormComponent,
     ProductFilterComponent,
     SearchComponent,
     Message,
     NgClass,
     ProductFilterComponent,
-    ProductGridComponent
+    ProductGridComponent,
+    AutoStretchDirective
   ]
 })
 export class ProductGeneralComponent<PRODUCT extends ProductDetail> extends HasFilteredDataComponent {
@@ -53,6 +57,7 @@ export class ProductGeneralComponent<PRODUCT extends ProductDetail> extends HasF
 
   readonly addingIsActive = signal(false)
   readonly rowIsExpanded = signal<boolean>(false)
+  readonly showBulkImportScreen = signal(false)
 
   readonly $initializeClientSideFilter = effect(() => {
     if (this.productSearchService.requireClientSideFilter()) {
@@ -74,6 +79,15 @@ export class ProductGeneralComponent<PRODUCT extends ProductDetail> extends HasF
 
   setAddingActiveFalse() {
     this.addingIsActive.set(false)
+    this.productFilterService.reloadClientSideFilteredEntities()
+  }
+
+  toggleBulkImport() {
+    this.showBulkImportScreen.set(!this.showBulkImportScreen())
+  }
+
+  finishBulkImport() {
+    this.showBulkImportScreen.set(false)
     this.productFilterService.reloadClientSideFilteredEntities()
   }
 }

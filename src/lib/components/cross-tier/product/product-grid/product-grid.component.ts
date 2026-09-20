@@ -20,6 +20,7 @@ import {
   OrganizationProductFormComponent
 } from '../../../organization-level/products/product-form/organization-product-form.component'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
+import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {ProductFilterService} from '../product-filter.service'
 
 @Component({
@@ -38,7 +39,8 @@ import {ProductFilterService} from '../product-filter.service'
     Skeleton,
     AutoStretchDirective,
     CurrencyPipe,
-    NullishToZeroPipe
+    NullishToZeroPipe,
+    LoadingContainerComponent
   ]
 })
 export class ProductGridComponent<PRODUCT extends ProductDetail> {
@@ -76,5 +78,5 @@ export class ProductGridComponent<PRODUCT extends ProductDetail> {
   onProductUpdated() {
     this.productFilterService.reloadClientSideFilteredEntities()
   }
-  
+
 }

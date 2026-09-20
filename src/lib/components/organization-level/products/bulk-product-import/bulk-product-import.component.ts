@@ -3,10 +3,8 @@ import {FormsModule} from '@angular/forms'
 import {ButtonDirective} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {InputText} from 'primeng/inputtext'
-import {UnitBulkUploadService} from '../../../../api/organization-level/unit-group/unit-bulk-upload.service'
-import {
-  UnitGroupBulkUploadRequest
-} from '../../../../api/organization-level/unit-group/unit-group-bulk-upload-request.dto'
+import {ProductBulkUploadRequest} from '../../../../api/organization-level/product/product-bulk-upload-request.dto'
+import {ProductBulkUploadService} from '../../../../api/organization-level/product/product-bulk-upload.service'
 import {parseError} from '../../../../utils/errors'
 import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
 import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
@@ -14,7 +12,7 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 
 @Component({
-  selector: 'rts-bulk-unit-import',
+  selector: 'rts-bulk-product-import',
   imports: [
     FormFieldComponent,
     InputText,
@@ -24,25 +22,25 @@ import {LoadingContainerComponent} from '../../../reusable/loading-container/loa
     Divider,
     LoadingContainerComponent
   ],
-  templateUrl: 'bulk-unit-import.component.html'
+  templateUrl: 'bulk-product-import.component.html'
 })
-export class BulkUnitImportComponent {
+export class BulkProductImportComponent {
 
-  private readonly unitBulkUploadService = inject(UnitBulkUploadService)
+  private readonly productBulkUploadService = inject(ProductBulkUploadService)
 
   readonly successfulUpload = output()
   readonly jsonPayload = model<string>('')
   readonly errorDetails = signal<string[]>([])
   readonly errorsFound = computed(() => this.errorDetails().length > 0)
-  readonly uploadInProgress = this.unitBulkUploadService.selectLoading
+  readonly uploadInProgress = this.productBulkUploadService.selectLoading
 
   readonly FormFieldLayout = FormFieldLayout
 
-  uploadUnits() {
+  uploadProducts() {
     if (this.jsonPayload()) {
       this.errorDetails.set([])
-      this.unitBulkUploadService.uploadUnits(
-        JSON.parse(this.jsonPayload()) as UnitGroupBulkUploadRequest,
+      this.productBulkUploadService.uploadProducts(
+        JSON.parse(this.jsonPayload()) as ProductBulkUploadRequest,
         {
           onSuccess: () => this.successfulUpload.emit(),
           onFail: (error) => {

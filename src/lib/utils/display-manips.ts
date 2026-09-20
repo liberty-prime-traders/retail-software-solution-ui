@@ -9,6 +9,7 @@ export const stretchVisibleElement =
         el.style.minHeight = `${desiredHeight}px`
       } else {
         el.style.height = `${desiredHeight}px`
+        el.classList.add('scrollable')
       }
     }
   }

@@ -1,97 +1,97 @@
-<div [id]="schemaLevel() + '-productLines'" [rtsAutoStretch]="schemaLevel() + '-productLines'">
-  <p-table [value]="products()"
-           (onRowExpand)="onRowExpand()"
-           (onRowCollapse)="onRowCollapse()"
-           (onLazyLoad)="onLazyLoad($event)"
-           [lazy]="true"
-           rowExpandMode="single"
-           dataKey="id"
-           scrollHeight="flex"
-           [scrollable]="true"
-           [rows]="20"
-           [virtualScroll]="!productFilterService.requireClientSideFilter()"
-           [virtualScrollItemSize]="65">
+<rts-loading-container [loading]="loading()">
+  <div [id]="schemaLevel() + '-productLines'" [rtsAutoStretch]="schemaLevel() + '-productLines'">
+    <p-table [value]="products()"
+             (onRowExpand)="onRowExpand()"
+             (onRowCollapse)="onRowCollapse()"
+             (onLazyLoad)="onLazyLoad($event)"
+             [lazy]="true"
+             rowExpandMode="single"
+             dataKey="id"
+             scrollHeight="flex"
+             [scrollable]="true"
+             [rows]="20"
+             [virtualScroll]="!productFilterService.requireClientSideFilter()"
+             [virtualScrollItemSize]="65">
 
-    <ng-template #header>
-      <tr>
-        <th>Reference</th>
-        <th>Product Name</th>
-        <th>Product Group</th>
-        <th>Base Unit</th>
-        <th>Stock Balance</th>
-
-        @if (isLocationLevel()) {
-          <th>Last Purchase Price</th>
-        }
-
-        <th>Description</th>
-
-        @if (isOrganizationLevel()) {
-          <th>Tags</th>
-        }
-
-        <th style="width: 5rem"></th>
-      </tr>
-    </ng-template>
-
-    <ng-template #body let-product let-expanded="expanded">
-      @if (product?.placeholder) {
+      <ng-template #header>
         <tr>
-          <td style="height: 65px" colspan="8">
-            <p-skeleton class="h-full"/>
-          </td>
+          <th>Reference</th>
+          <th>Product Name</th>
+          <th>Product Group</th>
+          <th>Base Unit</th>
+          <th>Stock Balance</th>
+
+          @if (isLocationLevel()) {
+            <th>Last Purchase Price</th>
+          }
+
+          <th>Description</th>
+
+          @if (isOrganizationLevel()) {
+            <th>Tags</th>
+          }
+
+          <th style="width: 5rem"></th>
         </tr>
-      } @else {
-        <tr style="height: 65px"
-            [ngClass]="{
+      </ng-template>
+
+      <ng-template #body let-product let-expanded="expanded">
+        @if (product?.placeholder) {
+          <tr>
+            <td style="height: 65px" colspan="8">
+              <p-skeleton class="h-full"/>
+            </td>
+          </tr>
+        } @else {
+          <tr style="height: 65px"
+              [ngClass]="{
           'opacity-60': product.status !== ProductStatus.ACTIVE,
           'expanded-row': expanded
         }">
-          <td>{{ product?.referenceNumber | nullSafe }}</td>
-          <td>{{ product?.productName | nullSafe }}</td>
-          <td>{{ product?.productGroupName | nullSafe }}</td>
-          <td>{{ product?.baseUnit | nullSafe }}</td>
-          <td>{{ product?.stockBalance | nullishToZero }}</td>
+            <td>{{ product?.referenceNumber | nullSafe }}</td>
+            <td>{{ product?.productName | nullSafe }}</td>
+            <td>{{ product?.productGroupName | nullSafe }}</td>
+            <td>{{ product?.baseUnit | nullSafe }}</td>
+            <td>{{ product?.stockBalance | nullishToZero }}</td>
 
-          @if (isLocationLevel()) {
-            <td>{{ product?.lastPurchasePrice | nullishToZero | currency }}</td>
-          }
+            @if (isLocationLevel()) {
+              <td>{{ product?.lastPurchasePrice | nullishToZero | currency }}</td>
+            }
 
-          <td>{{ product?.description | nullSafe }}</td>
-          @if (isOrganizationLevel()) {
+            <td>{{ product?.description | nullSafe }}</td>
+            @if (isOrganizationLevel()) {
+              <td>
+                <ng-container *ngTemplateOutlet="tagTemplate; context: { $implicit: product }"/>
+              </td>
+            }
             <td>
-              <ng-container *ngTemplateOutlet="tagTemplate; context: { $implicit: product }"/>
+              <button pButton
+                      rounded
+                      severity="secondary"
+                      [pRowToggler]="product">
+                <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+              </button>
+            </td>
+          </tr>
+        }
+      </ng-template>
+
+      <ng-template #expandedrow let-product>
+        <tr>
+          @if (isOrganizationLevel()){
+            <td colspan="8" class="filled-background">
+              <rts-organization-product-form [product]="product" (productUpdated)="onProductUpdated()"/>
+            </td>
+          } @else if (isLocationLevel()) {
+            <td colspan="8" class="filled-background">
+              <rts-location-product-form [locationProduct]="product" (productUpdated)="onProductUpdated()"/>
             </td>
           }
-          <td>
-            <button pButton
-                    rounded
-                    severity="secondary"
-                    [disabled]="loading()"
-                    [pRowToggler]="product">
-              <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
-            </button>
-          </td>
         </tr>
-      }
-    </ng-template>
-
-    <ng-template #expandedrow let-product>
-      <tr>
-        @if (isOrganizationLevel()){
-          <td colspan="8" class="filled-background">
-            <rts-organization-product-form [product]="product" (productUpdated)="onProductUpdated()"/>
-          </td>
-        } @else if (isLocationLevel()) {
-          <td colspan="8" class="filled-background">
-            <rts-location-product-form [locationProduct]="product" (productUpdated)="onProductUpdated()"/>
-          </td>
-        }
-      </tr>
-    </ng-template>
-  </p-table>
-
-</div>
+      </ng-template>
+    </p-table>
+  </div>
+</rts-loading-container>
 
 <ng-template #tagTemplate let-product>
   @let tags = product.activeTags;

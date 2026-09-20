@@ -10,6 +10,7 @@ import {SeedDataApplierService} from '../../../api/organization-level/org-profil
 import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
 import {SessionContextService} from '../../../utils/services/session-context.service'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
+import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {FormButtonsComponent} from '../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../reusable/form-field/form-field.component'
 import {LoadingContainerComponent} from '../../reusable/loading-container/loading-container.component'
@@ -25,7 +26,8 @@ import {LoadingContainerComponent} from '../../reusable/loading-container/loadin
     FormButtonsComponent,
     FormFieldComponent,
     Divider,
-    LoadingContainerComponent
+    LoadingContainerComponent,
+    AutoStretchDirective
   ],
   standalone: true
 })
