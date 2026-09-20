@@ -1,7 +1,8 @@
 @if (showAuthorityAssignmentScreen()) {
   <rts-authority-assignment
     [schemaLevel]="SchemaLevel.PLATFORM"
-    (cancel)="cancelAuthorityAssignment()">
+    (cancel)="cancelAuthorityAssignment()"
+    (assign)="onAuthoritiesAssigned()">
   </rts-authority-assignment>
 } @else {
   <rts-platform-authorities>

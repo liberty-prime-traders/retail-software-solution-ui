@@ -1,0 +1,29 @@
+<div class="flex gap-3">
+  <div class="flex gap-1 col-3">
+    <div class="flex flex-column gap-2 ">
+      <p-chip [label]="role() | prettifyEnum" class="w-fit"/>
+      <span class="info-message text-sm">Since {{grantedRole().grantedAt | date}}</span>
+    </div>
+
+    <p-button icon="pi pi-times"
+              [text]="true"
+              severity="danger"
+              size="small"
+              (click)="removePermission()">
+  </p-button>
+  </div>
+
+  <p-divider layout="vertical"/>
+
+  <rts-loading-container [loading]="permissionsLoading()">
+    <div class="flex gap-2 flex-wrap">
+      @for (permission of permissions(); track permission.permission) {
+        <p-tag [value]="permission.permission | prettifyEnum" severity="success" [rounded]="true"/>
+      } @empty {
+        @if (!permissionsLoading()) {
+          <span>No permissions</span>
+        }
+      }
+    </div>
+  </rts-loading-container>
+</div>

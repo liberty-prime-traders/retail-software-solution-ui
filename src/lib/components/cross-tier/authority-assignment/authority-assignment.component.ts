@@ -21,6 +21,7 @@ import {PlatformSysUserService} from '../../../api/platform-level/sys-user/platf
 import {SchemaLevel} from '../../../api/platform-level/table-registry/schema-level.enum'
 import {parseError} from '../../../utils/errors'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
+import {LoadingContainerComponent} from '../../reusable/loading-container/loading-container.component'
 
 interface AssignableUser {
   id: EntityId
@@ -40,7 +41,8 @@ interface AssignableUser {
     InputIcon,
     InputText,
     NgTemplateOutlet,
-    PrettifyEnumPipe
+    PrettifyEnumPipe,
+    LoadingContainerComponent
   ]
 })
 export class AuthorityAssignmentComponent {
@@ -101,7 +103,7 @@ export class AuthorityAssignmentComponent {
     }
   })
 
-  readonly loading = computed(() => {
+  readonly usersLoading = computed(() => {
     switch (this.schemaLevel()) {
       case SchemaLevel.ORGANIZATION:
         return this.organizationUserService.selectLoading()
@@ -111,6 +113,8 @@ export class AuthorityAssignmentComponent {
         return this.platformUserService.selectLoading()
     }
   })
+
+  readonly authoritiesLoading = this.authorityService.selectLoading
 
   readonly availableUsers = computed(() => {
     const search = this.searchTerm().trim().toLowerCase()
@@ -161,20 +165,11 @@ export class AuthorityAssignmentComponent {
   }
 
   submit() {
-    this.authorizationModifierService.assignAuthorities(this.getAssignmentPayload(), this.schemaLevel(), {
-      onSuccess: () => {
-        this.messageService.add({
-          severity:'success', summary: 'Success', detail: 'Authorities assigned successfully'
-        })
-        setTimeout(() => window.location.reload(), 1000)
-      },
-      onFail: (error) => {
-        this.messageService.add({
-          severity:'error',
-          summary: 'Failed to assign authorities',
-          detail: parseError(error)[0] || 'An unknown error occurred'
-        })
-      }
+    const request = this.getAssignmentPayload()
+
+    this.authorizationModifierService.assignAuthorities(request, this.schemaLevel(), {
+      onSuccess: () => this.onAssignSuccess(request),
+      onFail: (error) => this.onAssignFailed(error)
     })
   }
 
@@ -184,5 +179,26 @@ export class AuthorityAssignmentComponent {
       roles: this.selectedRoles(),
       permissions: this.selectedPermissions()
     }
+  }
+
+  private onAssignSuccess(request: AuthorityAssignmentRequest) {
+    this.messageService.add({
+      severity: 'success', summary: 'Success', detail: 'Authorities assigned successfully'
+    })
+
+    this.selectedUsers.set([])
+    this.selectedRoles.set([])
+    this.selectedPermissions.set([])
+    this.searchTerm.set('')
+
+    this.assign.emit(request)
+  }
+
+  private onAssignFailed(error: unknown) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Failed to assign authorities',
+      detail: parseError(error)[0] || 'An unknown error occurred'
+    })
   }
 }

@@ -1,13 +1,14 @@
 <p-card>
   <div class="flex flex-column gap-2">
 
-    <p-button label="Cancel Authority Modification" icon="pi pi-times" class="p-button-text" (onClick)="cancel.emit()"/>
+    <p-button label="Cancel Authority Modification" icon="pi pi-times" (onClick)="cancel.emit()"/>
 
     <p-divider/>
 
     <div class="flex gap-4 flex-wrap">
       <ng-container *ngTemplateOutlet="assignableList; context: {
         items: availableUsers(),
+        loading: usersLoading(),
         label: userLabel,
         emptyMessage: 'No users available',
         searchable: true,
@@ -22,6 +23,7 @@
 
       <ng-container *ngTemplateOutlet="assignableList; context: {
         items: availableRoles(),
+        loading: authoritiesLoading(),
         label: authorityLabel,
         title: 'Roles',
         emptyMessage: 'No roles available',
@@ -33,6 +35,7 @@
 
       <ng-container *ngTemplateOutlet="assignableList; context: {
         items: availablePermissions(),
+        loading: authoritiesLoading(),
         label: authorityLabel,
         title: 'Permissions',
         emptyMessage: 'No permissions available',
@@ -86,6 +89,7 @@
 
 <ng-template #assignableList
              let-items="items"
+             let-loading="loading"
              let-label="label"
              let-title="title"
              let-emptyMessage="emptyMessage"
@@ -96,39 +100,41 @@
   <div class="flex-grow-1 flex flex-column gap-2" style="min-width: 200px">
     <span class="font-bold">{{ title }}</span>
 
-    <p-data-view [value]="items" [emptyMessage]="emptyMessage">
-      @if (searchable) {
-        <ng-template #header>
-          <p-icon-field>
-            <p-inputicon>
-              <i class="pi pi-search"></i>
-            </p-inputicon>
-            <input pInputText
-                   type="text"
-                   class="w-full"
-                   #searchInput
-                   [placeholder]="searchPlaceholder"
-                   (input)="onSearch(searchInput.value)" />
-          </p-icon-field>
-        </ng-template>
-      }
-
-      <ng-template #list let-listItems>
-        @for (item of listItems; track trackByFn(item)) {
-          <div class="flex flex-column">
-            <div class="flex align-items-center justify-content-between gap-2 p-2">
-              <span>{{ label(item) }}</span>
-              <p-button icon="pi pi-plus" rounded severity="secondary" (onClick)="add(item)"/>
-            </div>
-            <p-divider class="m-0"/>
-          </div>
+    <rts-loading-container [loading]="loading">
+      <p-data-view [value]="items" [emptyMessage]="emptyMessage">
+        @if (searchable) {
+          <ng-template #header>
+            <p-icon-field>
+              <p-inputicon>
+                <i class="pi pi-search"></i>
+              </p-inputicon>
+              <input pInputText
+                     type="text"
+                     class="w-full"
+                     #searchInput
+                     [placeholder]="searchPlaceholder"
+                     (input)="onSearch(searchInput.value)" />
+            </p-icon-field>
+          </ng-template>
         }
-      </ng-template>
 
-      <ng-template #emptymessage>
-        <div class="h-2rem"></div>
-        <span class="p-2 text-lg">{{ emptyMessage }}</span>
-      </ng-template>
-    </p-data-view>
+        <ng-template #list let-listItems>
+          @for (item of listItems; track trackByFn(item)) {
+            <div class="flex flex-column">
+              <div class="flex align-items-center justify-content-between gap-2 p-2">
+                <span>{{ label(item) }}</span>
+                <p-button icon="pi pi-plus" rounded severity="secondary" (onClick)="add(item)"/>
+              </div>
+              <p-divider class="m-0"/>
+            </div>
+          }
+        </ng-template>
+
+        <ng-template #emptymessage>
+          <div class="h-2rem"></div>
+          <span class="p-2 text-lg">{{ emptyMessage }}</span>
+        </ng-template>
+      </p-data-view>
+    </rts-loading-container>
   </div>
 </ng-template>

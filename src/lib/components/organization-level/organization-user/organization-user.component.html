@@ -1,17 +1,1 @@
-<div id="organization-users" rtsAutoStretch="organization-users">
-  @if (showAuthorityAssignmentScreen()) {
-    <rts-authority-assignment
-      [schemaLevel]="SchemaLevel.ORGANIZATION"
-      (cancel)="cancelAuthorityAssignment()">
-    </rts-authority-assignment>
-  } @else {
-    <rts-organization-membership>
-      <p-button
-        label="Assign Authority"
-        icon="pi pi-plus"
-        class="mb-3"
-        (click)="openAuthorityAssignment()">
-      </p-button>
-    </rts-organization-membership>
-  }
-</div>
+<rts-user-management [schemaLevel]="SchemaLevel.ORGANIZATION"/>

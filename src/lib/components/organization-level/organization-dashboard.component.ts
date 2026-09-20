@@ -85,20 +85,23 @@ export class OrganizationDashboardComponent implements OnInit {
   })
 
   readonly menuItems: Signal<MenuItem[]> = computed(() => {
-    const menuItems = [
+    const menuItems: MenuItem[] = [
       {label: 'Home', items: this.organizationHomeMenuItems},
       {label: 'Products', items: this.productSettingsMenuItems},
+      {separator: true},
       {label: 'Business Settings', items: this.businessSettingsMenuItems},
     ]
 
     const financeItems = this.financialSettingsMenuItems()
     const showFinance = financeItems.some(item => item.visible !== false)
     if (showFinance) {
-      menuItems.push({label: 'Finance', items:financeItems})
+      menuItems.push({separator: true})
+      menuItems.push({label: 'Finance', items:financeItems, expanded: false})
     }
 
     if (this.userContextService.isOrganizationAdmin()) {
-      menuItems.push({label: 'Admin Settings', items: this.orgAdminSettings})
+      menuItems.push({separator: true})
+      menuItems.push({label: 'Admin Settings', toggleable: true, items: this.orgAdminSettings})
     }
 
     return menuItems

@@ -24,4 +24,18 @@ export class AuthorizationModifierService {
         first()
       ).subscribe()
   }
+
+  revokeAuthorities(request: AuthorityAssignmentRequest,
+                     schemaLevel: SchemaLevel,
+                     apiCallbacks: ApiCallbacks<void>): Subscription {
+    return this.httpClient.delete<void>(`${this.baseUrl}/${schemaLevel.toLowerCase()}`, {body: request})
+      .pipe(
+        tap(() => apiCallbacks.onSuccess?.()),
+        catchError((error) => {
+          apiCallbacks.onFail?.(error)
+          return throwError(() => error)
+        }),
+        first()
+      ).subscribe()
+  }
 }

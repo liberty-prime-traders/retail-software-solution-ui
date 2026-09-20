@@ -45,6 +45,10 @@ export abstract class MultimapBaseService<RESPONSE extends BaseModel> extends Ba
     return super.refetch(key)
   }
 
+  evict(key: EntityId): void {
+    this.cache.delete(String(key))
+  }
+
   invalidateAll(): void {
     this.cache.clear()
     this.resetStoreAndClearCache()

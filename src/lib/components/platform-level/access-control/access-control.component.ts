@@ -1,6 +1,7 @@
-import {Component, signal} from '@angular/core'
+import {Component, inject, signal} from '@angular/core'
 import {Button} from 'primeng/button'
 import {TableModule} from 'primeng/table'
+import {AuthorityService} from '../../../api/cross-tier/authorization/authority.service'
 import {SchemaLevel} from '../../../api/platform-level/table-registry/schema-level.enum'
 import {AuthorityAssignmentComponent} from '../../cross-tier/authority-assignment/authority-assignment.component'
 import {PlatformAuthoritiesComponent} from './platform-authorities.component'
@@ -16,6 +17,7 @@ import {PlatformAuthoritiesComponent} from './platform-authorities.component'
   ]
 })
 export class AccessControlComponent {
+  private readonly authorityService = inject(AuthorityService)
 
   readonly showAuthorityAssignmentScreen = signal(false)
   readonly SchemaLevel = SchemaLevel
@@ -26,5 +28,10 @@ export class AccessControlComponent {
 
   openAuthorityAssignment() {
     this.showAuthorityAssignmentScreen.set(true)
+  }
+
+  onAuthoritiesAssigned() {
+    this.authorityService.forceRefetch(SchemaLevel.PLATFORM)
+    this.cancelAuthorityAssignment()
   }
 }

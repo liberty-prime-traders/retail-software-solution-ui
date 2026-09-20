@@ -40,7 +40,8 @@ export class LocationDashboardComponent {
   ]
 
   private readonly adminTasksMenuItems: MenuItem[] = [
-    {label: 'Sync', icon: 'pi pi-sync', routerLink: 'sync'}
+    {label: 'Sync', icon: 'pi pi-sync', routerLink: 'sync'},
+    {label: 'Users', icon: 'pi pi-users', routerLink: 'users'}
   ]
 
   readonly menuItems: MenuItem[] = [

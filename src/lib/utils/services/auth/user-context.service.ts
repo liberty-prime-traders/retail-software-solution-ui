@@ -22,7 +22,7 @@ export class UserContextService {
   readonly emailAddress = computed(() => this.loggedInUser()?.email ?? '')
   readonly token = computed(() => this.loginResponse()?.sessionToken ?? '')
   readonly isPlatformAdmin = this.hasRole(UserRole.PLATFORM_ADMIN)
-  readonly hasCreateRole = signal(true) //this.hasRole(UserRole.CREATE_ORGANIZATION)
+  readonly hasCreateRole = this.hasRole(UserRole.CREATE_ORGANIZATION)
   readonly initials = computed(() =>  this.loggedInUser()?.initials ?? '')
 
   hasRole(role: UserRole): Signal<boolean> {

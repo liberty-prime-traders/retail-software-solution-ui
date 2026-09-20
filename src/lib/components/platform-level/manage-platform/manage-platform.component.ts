@@ -42,8 +42,11 @@ export class ManagePlatformComponent implements OnInit {
 
   readonly menuItems: MenuItem[] = [
     {label: 'Home', items: this.homeMenuItems},
+    {separator: true},
     {label: 'Legal', items: this.legalMenuItems},
+    {separator: true},
     {label: 'Config', items: this.configMenuItems},
+    {separator: true},
     {label: 'Database', items: this.databaseConfigs}
   ]
 

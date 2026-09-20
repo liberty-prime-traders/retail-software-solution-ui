@@ -1,0 +1,70 @@
+<rts-loading-container [loading]="loading()">
+<p-tabs value="membership">
+  <p-tablist>
+    <p-tab value="membership">Membership history</p-tab>
+    <p-tab value="roles">Roles</p-tab>
+    <p-tab value="addOns">Add-ons</p-tab>
+  </p-tablist>
+
+  <p-tabpanels>
+    <p-tabpanel value="membership">
+      <div class="flex flex-column gap-2">
+        @for (membership of accessDetail()?.memberships | orderBy:'since':'desc'; track membership.id) {
+          <div class="flex align-items-center gap-2">
+            <span>{{ membership.since | date }}</span>
+            <i class="pi pi-arrow-right"></i>
+            @if (membership.until) {
+              <span>{{ membership.until | date }}</span>
+            } @else {
+              <span class="text-green-500 font-semibold">present</span>
+            }
+          </div>
+        } @empty {
+          @if (!loading()) {
+            <span>No membership history found</span>
+          }
+        }
+      </div>
+    </p-tabpanel>
+
+    <p-tabpanel value="roles">
+      <div class="flex flex-column gap-3">
+        @for (grantedRole of accessDetail()?.roles; track grantedRole.role) {
+          <rts-role-permissions [grantedRole]="grantedRole" (revoke)="revokeRole($event)"/>
+          <p-divider/>
+        } @empty {
+          @if (!loading()) {
+            <span>No roles assigned</span>
+          }
+        }
+      </div>
+    </p-tabpanel>
+
+    <p-tabpanel value="addOns">
+      <div class="flex gap-2 flex-wrap">
+        @for (addOn of accessDetail()?.addOnPermissions; track addOn.permission) {
+          <div class="flex align-items-center justify-content-between gap-1">
+            <div class="flex flex-column gap-1">
+              <p-tag [value]="addOn.permission | prettifyEnum" class="w-fit" severity="info" [rounded]="true"/>
+              <span class="info-message text-sm">Since {{addOn.grantedAt | date}}</span>
+            </div>
+
+            <p-button icon="pi pi-times"
+                      [text]="true"
+                      severity="danger"
+                      size="small"
+                      (click)="revokePermission(addOn.permission)">
+            </p-button>
+
+            <p-divider layout="vertical"/>
+          </div>
+        } @empty {
+          @if (!loading()) {
+            <span>No add-on permissions</span>
+          }
+        }
+      </div>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
+</rts-loading-container>

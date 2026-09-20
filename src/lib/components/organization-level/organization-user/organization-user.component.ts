@@ -1,30 +1,22 @@
-import {Component, signal} from '@angular/core'
-import {Button} from 'primeng/button'
+import {Component} from '@angular/core'
+import {MembershipUserService} from '../../../api/cross-tier/authorization/membership-user.service'
+import {UserAccessDetailService} from '../../../api/cross-tier/authorization/user-access-detail.service'
+import {OrgUserAccessDetailService} from '../../../api/organization-level/authorization/org-user-access-detail.service'
+import {OrgMembershipUserService} from '../../../api/organization-level/membership/org-membership-user.service'
 import {SchemaLevel} from '../../../api/platform-level/table-registry/schema-level.enum'
-import {AuthorityAssignmentComponent} from '../../cross-tier/authority-assignment/authority-assignment.component'
-import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
-import {OrganizationMembershipComponent} from './organization-membership.component'
+import {UserManagementComponent} from '../../cross-tier/user-management/user-management.component'
 
 @Component({
   selector: 'rts-organization-user',
   templateUrl: 'organization-user.component.html',
   imports: [
-    AuthorityAssignmentComponent,
-    OrganizationMembershipComponent,
-    Button,
-    AutoStretchDirective
+    UserManagementComponent
+  ],
+  providers: [
+    {provide: MembershipUserService, useExisting: OrgMembershipUserService},
+    {provide: UserAccessDetailService, useExisting: OrgUserAccessDetailService}
   ]
 })
 export class OrganizationUserComponent {
-
-  readonly showAuthorityAssignmentScreen = signal(false)
   readonly SchemaLevel = SchemaLevel
-
-  cancelAuthorityAssignment() {
-    this.showAuthorityAssignmentScreen.set(false)
-  }
-
-  openAuthorityAssignment() {
-    this.showAuthorityAssignmentScreen.set(true)
-  }
 }
