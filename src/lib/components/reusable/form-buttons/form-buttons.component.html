@@ -3,6 +3,7 @@
     @if (!hideDelete()) {
       <div class="flex gap-2 flex-grow-1">
         <button pButton
+                type="button"
                 [severity]="deleteSeverity()"
                 (click)="deleteIsActive.set(true)"
                 [disabled]="disableDelete() || deleteIsActive() || processingIsUnderway()">
@@ -13,8 +14,8 @@
           <div class="flex-grow-1 flex justify-content-center">
             <div class="flex gap-1 align-items-center">
               <p-message severity="warn">{{deleteWarning()}}</p-message>
-              <button pButton size="small" severity="danger" (click)="confirmDelete()">Yes</button>
-              <button pButton size="small" severity="primary" (click)="deleteIsActive.set(false)">No</button>
+              <button pButton type="button" size="small" severity="danger" (click)="confirmDelete()">Yes</button>
+              <button pButton type="button" size="small" severity="primary" (click)="deleteIsActive.set(false)">No</button>
             </div>
           </div>
         }
@@ -43,6 +44,7 @@
 
         @if (!hideReset()) {
           <button pButton
+                  type="button"
                   severity="secondary"
                   (click)="confirmReset()"
                   [disabled]="disableReset() || processingIsUnderway()">
@@ -53,6 +55,7 @@
 
         @if (!hideSave()) {
           <button pButton
+                  type="button"
                   severity="primary"
                   (click)="confirmSave()"
                   [disabled]="disableSave() || processingIsUnderway()">

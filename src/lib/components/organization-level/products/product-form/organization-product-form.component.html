@@ -74,7 +74,7 @@
     </p-panel>
 
     @if (productIsInactive()) {
-      <button pButton (click)="reactivateProduct()" severity="success">Reactivate</button>
+      <button pButton type="button" (click)="reactivateProduct()" severity="success">Reactivate</button>
 
     } @else {
       <rts-forms-buttons [disableReset]="!productForm().dirty"

@@ -28,6 +28,7 @@
       {{ originalLocationProduct()?.stockBalance | nullishToZero }} {{ originalLocationProduct()?.baseUnit }}s
 
       <button pButton
+              type="button"
               text
               (click)="showStockHistory.set(true)">
         View History
