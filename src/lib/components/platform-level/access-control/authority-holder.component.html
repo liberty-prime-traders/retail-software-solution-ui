@@ -1,0 +1,25 @@
+<p-table [value]="authorityHolders()"
+         [loading]="loading()"
+         sortField="grantedOn"
+         [sortOrder]="-1">
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th>User</th>
+      <th>Granted On</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-holder>
+    <tr>
+      <td>{{ holder.fullName | nullSafe }}</td>
+      <td>{{ holder.grantedOn | date }}</td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr rts-empty-row message="No users have been assigned this authority" [colspan]="2"></tr>
+  </ng-template>
+
+</p-table>
+

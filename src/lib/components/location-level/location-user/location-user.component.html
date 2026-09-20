@@ -1,0 +1,16 @@
+@if (showPullFromOrgScreen()) {
+  <rts-pull-from-org-user
+    (cancel)="hidePullFromOrgScreen()"
+    (pulled)="hidePullFromOrgScreen()">
+  </rts-pull-from-org-user>
+
+} @else {
+  <rts-user-management [schemaLevel]="SchemaLevel.LOCATION">
+    <p-button
+      label="Add Users"
+      icon="pi pi-user-plus"
+      severity="secondary"
+      (click)="openPullFromOrgScreen()">
+    </p-button>
+  </rts-user-management>
+}

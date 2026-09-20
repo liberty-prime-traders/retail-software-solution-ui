@@ -1,7 +1,8 @@
-import {Component} from '@angular/core'
+import {Component, inject, OnInit} from '@angular/core'
 import {RouterOutlet} from '@angular/router'
 import {MenuItem} from 'primeng/api'
 import {Menu} from 'primeng/menu'
+import {PlatformSysUserService} from '../../../api/platform-level/sys-user/platform-sys-user.service'
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 
 @Component({
@@ -13,11 +14,14 @@ import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
     AutoStretchDirective
   ]
 })
-export class ManagePlatformComponent {
+export class ManagePlatformComponent implements OnInit {
+
+  private readonly platformUserService = inject(PlatformSysUserService)
 
   private readonly homeMenuItems: MenuItem[] = [
     {label: 'Organizations', icon: 'pi pi-home', routerLink: 'organizations'},
     {label: 'Passes', icon: 'pi pi-id-card', routerLink: 'authorization-passes'},
+    {label: 'Access Control', icon: 'pi pi-lock', routerLink: 'access-control'},
   ]
 
   private readonly legalMenuItems: MenuItem[] = [
@@ -38,8 +42,15 @@ export class ManagePlatformComponent {
 
   readonly menuItems: MenuItem[] = [
     {label: 'Home', items: this.homeMenuItems},
+    {separator: true},
     {label: 'Legal', items: this.legalMenuItems},
+    {separator: true},
     {label: 'Config', items: this.configMenuItems},
+    {separator: true},
     {label: 'Database', items: this.databaseConfigs}
   ]
+
+  ngOnInit() {
+    this.platformUserService.fetch()
+  }
 }

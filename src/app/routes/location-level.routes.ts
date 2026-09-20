@@ -3,6 +3,7 @@ import {
   LocationProductComponent
 } from '../../lib/components/location-level/location-products/location-product.component'
 import {LocationSummaryComponent} from '../../lib/components/location-level/location-summary/location-summary.component'
+import {LocationUserComponent} from '../../lib/components/location-level/location-user/location-user.component'
 import {PurchaseComponent} from '../../lib/components/location-level/purchases/purchase.component'
 import {SaleGridComponent} from '../../lib/components/location-level/sales/sales-grid/sale-grid.component'
 import {StockTransferComponent} from '../../lib/components/location-level/stock-transfer/stock-transfer.component'
@@ -14,5 +15,6 @@ export const locationRoutes: Routes = [
   {path: 'purchases', component: PurchaseComponent},
   {path: 'sync', component: SyncComponent},
   {path: 'sales', component: SaleGridComponent},
-  {path: 'stock-transfer', component: StockTransferComponent}
+  {path: 'stock-transfer', component: StockTransferComponent},
+  {path: 'users', component: LocationUserComponent}
 ]

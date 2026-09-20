@@ -1,5 +1,8 @@
 <p-card>
-  <p>Public Information</p>
+  <div class="flex gap-2 justify-content-between">
+    <p>Public Information</p>
+    <rts-google-auth/>
+  </div>
 
   @if (screenSizeService.isMobileLandScape$ | async) {
     📱 Mobile Landscape View

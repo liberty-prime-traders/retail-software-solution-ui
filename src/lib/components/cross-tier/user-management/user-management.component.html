@@ -1,0 +1,21 @@
+<div id="user-management" rtsAutoStretch="user-management">
+  @if (showAuthorityAssignmentScreen()) {
+    <rts-authority-assignment
+      [schemaLevel]="schemaLevel()"
+      (cancel)="hideAuthorityAssignment()"
+      (assign)="onAuthoritiesAssigned($event)">
+    </rts-authority-assignment>
+  } @else {
+    <rts-membership [schemaLevel]="schemaLevel()">
+      <div class="flex align-items-center gap-2 mb-3">
+        <ng-content/>
+
+        <p-button
+          label="Assign Authority"
+          icon="pi pi-plus"
+          (click)="openAuthorityAssignment()">
+        </p-button>
+      </div>
+    </rts-membership>
+  }
+</div>

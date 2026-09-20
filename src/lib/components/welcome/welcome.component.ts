@@ -9,7 +9,6 @@ import {Splitter} from 'primeng/splitter'
 import {Tooltip} from 'primeng/tooltip'
 import {AuthenticationService} from '../../api/platform-level/authentication/authentication.service'
 import {SessionContextService} from '../../utils/services/session-context.service'
-import {GoogleAuthComponent} from '../auth/google/google-auth.component'
 import {AutoStretchService} from '../reusable/auto-stretch.service'
 import {LoadingContainerComponent} from '../reusable/loading-container/loading-container.component'
 import {LocationNavContentComponent} from './top-navigation/location-nav-content/location-nav-content.component'
@@ -41,7 +40,6 @@ import {
     LocationNavContentComponent,
     UserAccountNavContentComponent,
     NgClass,
-    GoogleAuthComponent,
     LoadingContainerComponent
   ]
 })

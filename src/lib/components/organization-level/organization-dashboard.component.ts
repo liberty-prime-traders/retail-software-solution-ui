@@ -4,6 +4,7 @@ import {MenuItem} from 'primeng/api'
 import {Button} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
+import {OrgMembershipUserService} from '../../api/organization-level/membership/org-membership-user.service'
 import {OrgFeatureService} from '../../api/organization-level/org-feature/org-feature.service'
 import {UserContextService} from '../../utils/services/auth/user-context.service'
 import {OrganizationLaunchService} from '../welcome/top-navigation/organization-nav-content/organization-launch.service'
@@ -22,6 +23,7 @@ export class OrganizationDashboardComponent implements OnInit {
   private readonly userContextService = inject(UserContextService)
   private readonly orgFeatureService = inject(OrgFeatureService)
   private readonly organizationLaunchService = inject(OrganizationLaunchService)
+  private readonly orgMembershipUserService = inject(OrgMembershipUserService)
 
   private readonly organizationHomeMenuItems: MenuItem[] = [
     {label: 'Summary', icon: 'pi pi-home', routerLink: 'summary'}
@@ -83,20 +85,23 @@ export class OrganizationDashboardComponent implements OnInit {
   })
 
   readonly menuItems: Signal<MenuItem[]> = computed(() => {
-    const menuItems = [
+    const menuItems: MenuItem[] = [
       {label: 'Home', items: this.organizationHomeMenuItems},
       {label: 'Products', items: this.productSettingsMenuItems},
+      {separator: true},
       {label: 'Business Settings', items: this.businessSettingsMenuItems},
     ]
 
     const financeItems = this.financialSettingsMenuItems()
     const showFinance = financeItems.some(item => item.visible !== false)
     if (showFinance) {
-      menuItems.push({label: 'Finance', items:financeItems})
+      menuItems.push({separator: true})
+      menuItems.push({label: 'Finance', items:financeItems, expanded: false})
     }
 
     if (this.userContextService.isOrganizationAdmin()) {
-      menuItems.push({label: 'Admin Settings', items: this.orgAdminSettings})
+      menuItems.push({separator: true})
+      menuItems.push({label: 'Admin Settings', toggleable: true, items: this.orgAdminSettings})
     }
 
     return menuItems
@@ -106,6 +111,7 @@ export class OrganizationDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.orgFeatureService.fetch()
+    this.orgMembershipUserService.fetch()
     this.organizationLaunchService.proceedToSelectedOrganization()
   }
 }

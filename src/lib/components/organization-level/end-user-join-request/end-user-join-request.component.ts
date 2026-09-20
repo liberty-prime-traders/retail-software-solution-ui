@@ -9,7 +9,7 @@ import {EndUserJoinRequest} from '../../../api/organization-level/end-user-join-
 import {
   EndUserJoinRequestService
 } from '../../../api/organization-level/end-user-join-request/end-user-join-request.service'
-import {OrganizationUserService} from '../../../api/organization-level/organization_user/organization-user.service'
+import {OrgMembershipUserService} from '../../../api/organization-level/membership/org-membership-user.service'
 import {JoinRequestStatus} from '../../../api/util/join-request/join-request-status.enum'
 import {JoinRequestStatusSeverityPipe} from '../../../utils/pipes/join-request-status-severity.pipe'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
@@ -36,7 +36,7 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
 export class EndUserJoinRequestComponent implements OnInit {
   private readonly joinRequestService = inject(EndUserJoinRequestService)
   private readonly messageService = inject(MessageService)
-  private readonly organizationUserService = inject(OrganizationUserService)
+  private readonly orgMembershipUserService = inject(OrgMembershipUserService)
 
   readonly loading = this.joinRequestService.selectLoading
   readonly joinRequests = this.joinRequestService.selectAll
@@ -56,7 +56,7 @@ export class EndUserJoinRequestComponent implements OnInit {
       if (this.userMadeAtLeastOneApiRequest()) {
         if (this.processingStatus() === ProcessingStatus.SUCCESS) {
           this.selectedJoinRequests.set([])
-          this.organizationUserService.resetStoreAndClearCache()
+          this.orgMembershipUserService.resetStoreAndClearCache()
         } else if (this.processingStatus() === ProcessingStatus.FAILURE) {
           this.onFailure()
         }

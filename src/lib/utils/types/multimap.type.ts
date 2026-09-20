@@ -8,23 +8,29 @@ export declare type OrMultimap<V extends BaseModel> = (V | Multimap<V>) & BaseMo
 
 export class Multimap<V extends BaseModel> {
   private readonly map = signal(new Map<string, V[]>())
+  private readonly selectId: (entity: V) => EntityId
 
-  constructor(initial?: object, deduplicated = false) {
+  constructor(initial?: object, deduplicated = false, selectId: (entity: V) => EntityId = LibertyCollections.identityOf) {
+    this.selectId = selectId
     if (!initial) {
       this.map.set(new Map())
     } else if (!Multimap.isAssignableFrom(initial)) {
       throw new Error('Invalid initial value for Multimap: must be object with array values')
     } else {
-      this.map.set(Multimap.createFromObject(initial, deduplicated))
+      this.map.set(Multimap.createFromObject(initial, deduplicated, selectId))
     }
   }
 
-  static createFromObject<T extends BaseModel>(obj: unknown, deduplicated = false): Map<string, T[]> {
+  static createFromObject<T extends BaseModel>(
+    obj: unknown,
+    deduplicated = false,
+    selectId: (entity: T) => EntityId = LibertyCollections.identityOf
+  ): Map<string, T[]> {
     const objRecord = obj as Record<string, T>
     const result = new Map<string, T[]>()
     for (const [key, value] of Object.entries(objRecord)) {
       if (Array.isArray(value)) {
-        const effectiveValue = deduplicated ? LibertyCollections.deduplicateArray(value as T[]) : [...(value as T[])]
+        const effectiveValue = deduplicated ? LibertyCollections.deduplicateArray(value as T[], selectId) : [...(value as T[])]
         result.set(key, effectiveValue)
       } else {
         result.set(key, [value])
@@ -61,12 +67,12 @@ export class Multimap<V extends BaseModel> {
     return this.map().has(key)
   }
 
-  hasEntry(key: string, id: V['id']): boolean {
-    return (this.map().get(key) ?? []).some(v => v.id === id)
+  hasEntry(key: string, id: EntityId): boolean {
+    return (this.map().get(key) ?? []).some(v => this.selectId(v) === id)
   }
 
   set(key: string, values: V[]): Multimap<V> {
-    const unique = LibertyCollections.deduplicateArray(values)
+    const unique = LibertyCollections.deduplicateArray(values, this.selectId)
     return this.updateMap(m => {
       if (unique.length === 0) {
         m.delete(key)
@@ -85,9 +91,9 @@ export class Multimap<V extends BaseModel> {
 
   patch(key: string, collection: readonly V[]): Multimap<V> {
     if (collection.length === 0) return this
-    const collectionIds = new Set(collection.map(v => LibertyCollections.identityOf(v)))
+    const collectionIds = new Set(collection.map(v => this.selectId(v)))
     const bucketByEntityId = this.buildReverseLookup()
-    const staleIdsByKey = new Map<string, string[]>()
+    const staleIdsByKey = new Map<string, EntityId[]>()
 
     for (const id of collectionIds) {
       const bucketHoldingCurrentId = bucketByEntityId.get(id)
@@ -99,11 +105,12 @@ export class Multimap<V extends BaseModel> {
     return this.updateMap(m => {
       staleIdsByKey.forEach((ids, staleKey) => {
         const idsToRemove = new Set(ids)
-        const filtered = (m.get(staleKey) ?? []).filter(v => !idsToRemove.has(LibertyCollections.identityOf(v)))
+        const filtered = (m.get(staleKey) ?? []).filter(v => !idsToRemove.has(this.selectId(v)))
         filtered.length ? m.set(staleKey, filtered) : m.delete(staleKey)
       })
       const merged = LibertyCollections.deduplicateArray(
-        (m.get(key) ?? []).filter(it => !collectionIds.has(LibertyCollections.identityOf(it))).concat(collection)
+        (m.get(key) ?? []).filter(it => !collectionIds.has(this.selectId(it))).concat(collection),
+        this.selectId
       )
       if (merged.length === 0) {
         m.delete(key)
@@ -115,7 +122,7 @@ export class Multimap<V extends BaseModel> {
 
   deleteById(key: string, id: EntityId): Multimap<V> {
     const existing = this.get(key)
-    const filtered = existing.filter(v => v.id !== id)
+    const filtered = existing.filter(v => this.selectId(v) !== id)
     return this.updateMap(newMap => {
       if (filtered.length > 0) {
         newMap.set(key, filtered)
@@ -147,10 +154,10 @@ export class Multimap<V extends BaseModel> {
     return this
   }
 
-  private buildReverseLookup(): Map<string, string> {
-    const index = new Map<string, string>()
+  private buildReverseLookup(): Map<EntityId, string> {
+    const index = new Map<EntityId, string>()
     for (const [key, values] of this.map()) {
-      for (const v of values) index.set(LibertyCollections.identityOf(v), key)
+      for (const v of values) index.set(this.selectId(v), key)
     }
     return index
   }

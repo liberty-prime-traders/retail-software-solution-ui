@@ -1,0 +1,16 @@
+@if (showAuthorityAssignmentScreen()) {
+  <rts-authority-assignment
+    [schemaLevel]="SchemaLevel.PLATFORM"
+    (cancel)="cancelAuthorityAssignment()"
+    (assign)="onAuthoritiesAssigned()">
+  </rts-authority-assignment>
+} @else {
+  <rts-platform-authorities>
+    <p-button
+      label="Assign Authority"
+      icon="pi pi-plus"
+      class="mb-3"
+      (click)="openAuthorityAssignment()">
+    </p-button>
+  </rts-platform-authorities>
+}

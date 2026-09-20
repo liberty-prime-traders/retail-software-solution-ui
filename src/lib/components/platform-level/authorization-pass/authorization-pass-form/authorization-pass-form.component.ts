@@ -7,7 +7,7 @@ import {AuthorizationPass} from '../../../../api/platform-level/authorization-pa
 import {AuthorizationPassService} from '../../../../api/platform-level/authorization-pass/authorization-pass.service'
 import {PassStatus} from '../../../../api/platform-level/authorization-pass/pass-status.enum'
 import {PassType} from '../../../../api/platform-level/authorization-pass/pass-type.enum'
-import {SysUserService} from '../../../../api/platform-level/sys-user/sys-user.service'
+import {PlatformSysUserService} from '../../../../api/platform-level/sys-user/platform-sys-user.service'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
@@ -31,7 +31,7 @@ import {AuthorizationPassFormDefinition} from './authorization-pass-form.definit
 export class AuthorizationPassFormComponent extends BaseFormComponent<AuthorizationPassService> implements OnInit {
 
   private readonly authorizationPassService = inject(AuthorizationPassService)
-  private readonly sysUserService = inject(SysUserService)
+  private readonly platformSysUserService = inject(PlatformSysUserService)
   protected readonly apiService = this.authorizationPassService
   private readonly zonedDatesService = inject(ZonedDatesService)
 
@@ -46,7 +46,7 @@ export class AuthorizationPassFormComponent extends BaseFormComponent<Authorizat
   readonly passFormFields = AuthorizationPassFormDefinition.fieldMap
   readonly isCreatingNewPass = computed(() => !this.pass()?.id)
   readonly canRevoke = computed(() => this.pass()?.passStatus === PassStatus.ACTIVE)
-  readonly sysUsers = this.sysUserService.selectAll
+  readonly sysUsers = this.platformSysUserService.selectAll
 
   readonly PassType = PassType
   readonly tomorrow = this.getTomorrow()

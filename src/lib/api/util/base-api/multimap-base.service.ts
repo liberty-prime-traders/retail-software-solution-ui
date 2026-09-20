@@ -4,13 +4,14 @@ import {EntityId} from '@ngrx/signals/entities'
 import {get, groupBy} from 'lodash-es'
 import {Subscription} from 'rxjs'
 import {Multimap} from '../../../utils/types/multimap.type'
+import {FetchParams} from './api-get-request.model'
 import {BaseModel} from './base.model'
 import {BaseService} from './base.service'
 
 export abstract class MultimapBaseService<RESPONSE extends BaseModel> extends BaseService<RESPONSE> {
 
   protected abstract keyPath: keyof RESPONSE
-  private readonly cache = new Multimap<RESPONSE>()
+  private readonly cache = new Multimap<RESPONSE>(undefined, false, (entity) => this.store.selectId(entity))
 
   readonly selectAllAsMap = computed(() =>
     this.cache.asMap()
@@ -24,20 +25,28 @@ export abstract class MultimapBaseService<RESPONSE extends BaseModel> extends Ba
       return this.cache.get(String(key())) ?? []
     })
 
-  override getHttpParams(key: string): HttpParams {
-    return new HttpParams().setNonNull(String(this.keyPath), key)
+  override appendHttpParams(httpParams: HttpParams, params: FetchParams): HttpParams {
+    return httpParams.setNonNull(String(this.keyPath), params)
   }
 
-  override refetch(key: EntityId | undefined) {
+  override refetch(params: EntityId | undefined | FetchParams) {
+    let key = params
+    if (typeof key === 'object') {
+      key = get(params, this.keyPath)
+    }
     if (!key || this.cache.has(String(key))) {
       return undefined
     }
-    return super.refetch(key)
+    return super.refetch(params)
   }
 
   forceRefetch(key: EntityId): Subscription | undefined {
     this.cache.delete(String(key))
     return super.refetch(key)
+  }
+
+  evict(key: EntityId): void {
+    this.cache.delete(String(key))
   }
 
   invalidateAll(): void {
