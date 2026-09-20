@@ -1,6 +1,6 @@
 import {NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {JurisdictionService} from '../../../api/platform-level/jurisdiction/jurisdiction.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
@@ -17,7 +17,7 @@ import {JurisdictionFormComponent} from './jurisdiction-form/jurisdiction-form.c
   imports: [
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     JurisdictionFormComponent,
     GridFilterComponent,
     EmptyRowComponent,

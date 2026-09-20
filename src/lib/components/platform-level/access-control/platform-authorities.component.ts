@@ -1,6 +1,6 @@
 import {NgClass} from '@angular/common'
 import {Component, inject, OnInit, signal} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {AuthorityService} from '../../../api/cross-tier/authorization/authority.service'
 import {SchemaLevel} from '../../../api/platform-level/table-registry/schema-level.enum'
@@ -17,7 +17,7 @@ import {AuthorityHolderComponent} from './authority-holder.component'
   templateUrl: './platform-authorities.component.html',
   imports: [
     TableModule,
-    Button,
+    ButtonDirective,
     EmptyRowComponent,
     GridFilterComponent,
     NgClass,
@@ -34,7 +34,7 @@ export class PlatformAuthoritiesComponent extends ExpandableGridComponent<Author
   readonly authorities = this.authorityService.selectForGroup(signal(SchemaLevel.PLATFORM))
 
   override ngOnInit() {
-    this.authorityService.getForPlatform()
+    this.authorityService.refetch(SchemaLevel.PLATFORM)
   }
 
 }

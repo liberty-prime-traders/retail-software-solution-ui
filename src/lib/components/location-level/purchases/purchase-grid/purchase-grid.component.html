@@ -6,7 +6,7 @@
            scrollHeight="flex"
            dataKey="id">
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th>Reference</th>
         <th>Supplier</th>
@@ -19,7 +19,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-purchase>
+    <ng-template #body let-purchase>
       <tr>
         <td>{{ purchase.referenceNumber | nullSafe }}</td>
         <td>{{ purchase.supplierName | nullSafe }}</td>
@@ -37,12 +37,13 @@
           </p-tag>
         </td>
         <td>
-          <p-button icon="pi pi-pen-to-square"
-                    rounded
-                    severity="secondary"
-                    [disabled]="loading()"
-                    (onClick)="onEditPurchase(purchase)">
-          </p-button>
+          <button pButton
+                  rounded
+                  severity="secondary"
+                  [disabled]="loading()"
+                  (click)="onEditPurchase(purchase)">
+            <i class="pi pi-pen-to-square"></i>
+          </button>
         </td>
       </tr>
     </ng-template>

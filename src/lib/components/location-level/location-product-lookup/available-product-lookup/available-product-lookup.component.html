@@ -8,7 +8,7 @@
             class="w-full"
             dataKey="value">
 
-    <ng-template let-product pTemplate="item">
+    <ng-template let-product #item>
       @if (productsMap().get(product.value); as selectedProduct) {
         <div class="flex flex-column gap-1">
           {{ selectedProduct | productLabel }}

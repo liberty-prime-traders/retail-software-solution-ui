@@ -8,15 +8,15 @@
 
     @if (canAddDeliveries()) {
       <div class="flex justify-content-end">
-        <p-button label="Record Delivery"
-                  icon="pi pi-plus"
-                  (click)="showNewDeliveryForm.set(true)">
-        </p-button>
+        <button pButton
+                (click)="showNewDeliveryForm.set(true)">
+          <i class="pi pi-plus"></i> Record Delivery
+        </button>
       </div>
     }
 
     <p-table [value]="deliveries()" dataKey="id" sortField="referenceNumber">
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th style="width: 3rem"></th>
           <th>Reference Number</th>
@@ -26,15 +26,16 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-delivery let-expanded="expanded">
+      <ng-template #body let-delivery let-expanded="expanded">
         <tr [ngClass]="{'expanded-row': expanded}">
           <td>
-            <p-button type="button"
-                      text
-                      rounded
-                      [pRowToggler]="delivery"
-                      [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
-            </p-button>
+            <button pButton
+                    type="button"
+                    text
+                    rounded
+                    [pRowToggler]="delivery">
+              <i [class]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+            </button>
           </td>
           <td>{{ delivery.referenceNumber }}</td>
           <td>{{ delivery.deliveredAt | date  }}</td>
@@ -43,7 +44,7 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="expandedrow" let-delivery>
+      <ng-template #expandedrow let-delivery>
         <tr>
           <td colspan="6" class="filled-background p-4">
             <rts-delivery-subgrid [delivery]="delivery"/>
@@ -51,7 +52,7 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="emptymessage">
+      <ng-template #emptymessage>
         <tr [colspan]="6" rts-empty-row message="No deliveries recorded yet"></tr>
       </ng-template>
 

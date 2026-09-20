@@ -15,12 +15,14 @@
                 rows="20">
       </textarea>
 
-      <p-button label="Execute Upload"
-                (onClick)="uploadUnits()"
-                [disabled]="!jsonPayload() || jsonPayload().trim().length === 0"
-                icon="pi pi-arrow-right"
-                severity="success">
-      </p-button>
+      <button pButton
+              class="w-fit"
+              (click)="uploadUnits()"
+              [disabled]="!jsonPayload() || jsonPayload().trim().length === 0"
+              severity="success">
+        <i class="pi pi-arrow-right"></i>
+        Execute Upload
+      </button>
     </div>
   </rts-form-field>
 

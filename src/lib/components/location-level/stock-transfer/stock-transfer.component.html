@@ -1,9 +1,9 @@
 <div class="flex align-items-center justify-content-between">
   <h3 class="font-bold">Stock Transfers</h3>
   @if (formIsVisible()) {
-    <p-button label="Back to Stock Transfers" (click)="hideForm()" icon="pi pi-arrow-left" severity="secondary"/>
+    <button pButton (click)="hideForm()" severity="secondary"><i class="pi pi-arrow-left"></i> Back to Stock Transfers</button>
   } @else {
-    <p-button label="New Transfer" (click)="startNewTransfer()" icon="pi pi-plus"/>
+    <button pButton (click)="startNewTransfer()"><i class="pi pi-plus"></i> New Transfer</button>
   }
 </div>
 

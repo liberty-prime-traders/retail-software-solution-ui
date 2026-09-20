@@ -8,7 +8,7 @@
          [globalFilterFields]="['user']"
          [(selection)]="selectedOrganizationAdmins">
 
-  <ng-template pTemplate="caption">
+  <ng-template #caption>
     <div class="flex justify-content-between align-items-center">
       <h3>Organization Admins</h3>
       <div class="flex justify-content-end gap-6 mb-3 align-items-center">
@@ -25,25 +25,25 @@
     </div>
   </ng-template>
 
-  <ng-template pTemplate="header">
+  <ng-template #header>
     <tr>
       <th style="width: 4rem"></th>
       <th pSortableColumn="user">Name
-        <p-sortIcon field="user"></p-sortIcon>
+        <p-sort-icon field="user"></p-sort-icon>
       </th>
       <th pSortableColumn="startOn">Start On
-        <p-sortIcon field="startOn"></p-sortIcon>
+        <p-sort-icon field="startOn"></p-sort-icon>
       </th>
       <th pSortableColumn="endOn">End On
-        <p-sortIcon field="endOn"></p-sortIcon>
+        <p-sort-icon field="endOn"></p-sort-icon>
       </th>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-organizationAdmin>
+  <ng-template #body let-organizationAdmin>
     <tr [pSelectableRow]="organizationAdmin">
       <td>
-        <p-tableCheckbox [value]="organizationAdmin" />
+        <p-table-checkbox [value]="organizationAdmin" />
       </td>
       <td>{{ organizationAdmin?.user | nullSafe }}</td>
       <td>{{ organizationAdmin?.startOn | date  }}</td>

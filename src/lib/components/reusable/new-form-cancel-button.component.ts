@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, Component, output} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 
 @Component({
   selector: 'rts-new-form-cancel-button',
   imports: [
-    Button
+    ButtonDirective
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
@@ -14,12 +14,12 @@ import {Button} from 'primeng/button'
     }
   `,
   template: `
-    <p-button (click)="onCancel.emit()"
-              id="new-form-cancel-button"
-              label="Cancel"
-              icon="pi pi-times"
-              severity="info">
-    </p-button>
+    <button pButton
+            (click)="onCancel.emit()"
+            id="new-form-cancel-button"
+            severity="info">
+      <i class="pi pi-times"></i> Cancel
+    </button>
   `
 })
 export class NewFormCancelButtonComponent {

@@ -1,6 +1,6 @@
 import {CurrencyPipe, DatePipe, NgClass} from '@angular/common'
 import {Component, computed, inject, signal} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {PurchaseStatus} from '../../../../../../api/location-level/purchase/purchase-status.enum'
 import {EmptyRowComponent} from '../../../../../reusable/empty-row/empty-row.component'
@@ -13,7 +13,7 @@ import {DeliverySubgridComponent} from '../delivery-subgrid/delivery-subgrid.com
   templateUrl: 'delivery-grid.component.html',
   imports: [
     TableModule,
-    Button,
+    ButtonDirective,
     CurrencyPipe,
     EmptyRowComponent,
     DeliveryFormComponent,

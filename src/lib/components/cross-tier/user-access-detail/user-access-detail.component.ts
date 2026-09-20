@@ -1,7 +1,7 @@
 import {DatePipe} from '@angular/common'
 import {Component, computed, effect, inject, input, untracked} from '@angular/core'
 import {MessageService} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
 import {Tag} from 'primeng/tag'
@@ -27,7 +27,7 @@ import {RolePermissionsComponent} from '../role-permissions/role-permissions.com
     TabPanels,
     Tabs,
     Tag,
-    Button,
+    ButtonDirective,
     DatePipe,
     OrderByPipe,
     PrettifyEnumPipe,

@@ -9,20 +9,18 @@
          [globalFilterFields]="['fullName', 'email']"
          [(selection)]="selectedUsers">
 
-  <ng-template pTemplate="caption">
+  <ng-template #caption>
     <div class="flex justify-content-between align-items-center">
       <h3>{{ title() }}</h3>
 
       <div class="flex justify-content-end gap-6 mb-3 align-items-center">
-        <p-button
-          icon="pi pi-user-minus"
-          label="Terminate Selected Users"
-          variant="text"
-          severity="danger"
-          [loading]="loading()"
-          [disabled]="loading() || selectedUsers().length === 0"
-          (click)="terminateSelectedUsers()">
-        </p-button>
+        <button pButton
+                variant="text"
+                severity="danger"
+                [disabled]="loading() || selectedUsers().length === 0"
+                (click)="terminateSelectedUsers()">
+          <i class="pi pi-user-minus"></i> Terminate Selected Users
+        </button>
 
         <rts-grid-filter [dataTable]="userTable" margin="m-0"/>
 
@@ -31,30 +29,30 @@
     </div>
   </ng-template>
 
-  <ng-template pTemplate="header">
+  <ng-template #header>
     <tr>
       <th style="width: 4rem"></th>
       <th pSortableColumn="fullName">Name
-        <p-sortIcon field="fullName"></p-sortIcon>
+        <p-sort-icon field="fullName"></p-sort-icon>
       </th>
       <th pSortableColumn="email">Email
-        <p-sortIcon field="email"></p-sortIcon>
+        <p-sort-icon field="email"></p-sort-icon>
       </th>
       <th pSortableColumn="active">Active
-        <p-sortIcon field="active"></p-sortIcon>
+        <p-sort-icon field="active"></p-sort-icon>
       </th>
       <th style="width: 4rem"></th>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-user let-expanded="expanded">
+  <ng-template #body let-user let-expanded="expanded">
     @let userIsActive = user.active;
 
     <tr [pSelectableRow]="user"
         [ngClass]="{'inactive font-light' : !userIsActive, 'expanded-row': expanded}">
       <td>
         @if (userIsActive) {
-          <p-tableCheckbox [value]="user"/>
+          <p-table-checkbox [value]="user"/>
         }
       </td>
       <td>
@@ -68,16 +66,17 @@
         </p-tag>
       </td>
       <td>
-        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-angle-left'"
-                  rounded
-                  severity="secondary"
-                  [pRowToggler]="user">
-        </p-button>
+        <button pButton
+                rounded
+                severity="secondary"
+                [pRowToggler]="user">
+          <i [class]="expanded ? 'pi pi-times' : 'pi pi-angle-left'"></i>
+        </button>
       </td>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="expandedrow" let-user>
+  <ng-template #expandedrow let-user>
     <tr>
       <td colspan="5" class="filled-background">
         <rts-user-access-detail [userId]="user.userId" [schemaLevel]="schemaLevel()"/>
@@ -85,7 +84,7 @@
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="emptymessage">
+  <ng-template #emptymessage>
     <tr rts-empty-row [colspan]="5" message="No users found"></tr>
   </ng-template>
 </p-table>

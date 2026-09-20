@@ -1,11 +1,11 @@
 import {Component, model} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 
 @Component({
   selector: 'rts-add-row',
   templateUrl: 'add-row.component.html',
   imports: [
-    Button
+    ButtonDirective,
   ]
 })
 export class AddRowComponent {

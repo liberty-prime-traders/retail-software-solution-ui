@@ -9,7 +9,7 @@
             dataKey="value">
 
     @if (templateRef()) {
-      <ng-template let-product pTemplate="item">
+      <ng-template let-product #item>
         <ng-container *ngTemplateOutlet="templateRef(); context: {$implicit: productsMap().get(product.value)}"/>
       </ng-template>
     }

@@ -35,12 +35,12 @@
               }
 
               @if (!isVoided) {
-                <p-button
-                  [icon]="isBeingVoided ? 'pi pi-minus' : 'pi pi-times'"
-                  text
-                  [severity]="isBeingVoided ? 'contrast' : payment.identity.transientId == null ? 'danger' : 'primary'"
-                  (onClick)="removePayment(payment)">
-                </p-button>
+                <button pButton
+                        text
+                        [severity]="isBeingVoided ? 'contrast' : payment.identity.transientId == null ? 'danger' : 'primary'"
+                        (click)="removePayment(payment)">
+                  <i [class]="isBeingVoided ? 'pi pi-minus' : 'pi pi-times'"></i>
+                </button>
               }
             </div>
 
@@ -66,12 +66,12 @@
             @if (isBeingVoided) {
               <div class="flex flex-column gap-3">
                 <textarea rows="2" pInputText #voidReason class="w-full"></textarea>
-                <p-button
-                  label="Void Payment"
-                  severity="danger"
-                  [disabled]="!voidReason.value"
-                  (onClick)="confirmVoidPayment(voidReason.value)">
-                </p-button>
+                <button pButton
+                        severity="danger"
+                        [disabled]="!voidReason.value"
+                        (click)="confirmVoidPayment(voidReason.value)">
+                  Void Payment
+                </button>
               </div>
             }
           </div>

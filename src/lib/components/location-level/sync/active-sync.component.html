@@ -8,14 +8,14 @@
                [severity]="log.status | syncStatusSeverity"/>
       </div>
       @if (syncInProgress() && log.status !== SyncStatus.CANCELLATION_REQUESTED) {
-        <p-button label="Cancel"
-                  icon="pi pi-times"
-                  severity="secondary"
-                  [outlined]="true"
-                  size="small"
-                  [disabled]="loading()"
-                  (onClick)="cancelSync()">
-        </p-button>
+        <button pButton
+                severity="secondary"
+                [outlined]="true"
+                size="small"
+                [disabled]="loading()"
+                (click)="cancelSync()">
+          <i class="pi pi-times"></i> Cancel
+        </button>
       }
     </div>
 

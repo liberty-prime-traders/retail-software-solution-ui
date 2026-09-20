@@ -1,6 +1,6 @@
 import {CurrencyPipe, DatePipe} from '@angular/common'
 import {Component, computed, inject, OnInit} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
 import {SaleSummary} from '../../../../api/location-level/sale-summary/sale-summary.model'
@@ -18,7 +18,7 @@ import {SaleStatusSeverityPipe} from '../sale-status-severity.pipe'
   templateUrl: 'sale-grid.component.html',
   imports: [
     TableModule,
-    Button,
+    ButtonDirective,
     Tag,
     NullSafePipe,
     PrettifyEnumPipe,

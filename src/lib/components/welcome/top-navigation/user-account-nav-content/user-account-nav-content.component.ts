@@ -2,7 +2,7 @@ import {Component, effect, inject, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Router} from '@angular/router'
 import {Avatar} from 'primeng/avatar'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {Popover} from 'primeng/popover'
 import {Select} from 'primeng/select'
@@ -18,7 +18,7 @@ import {LocalStorageKey} from '../../../../utils/types/local-storage-key.enum'
   imports: [
     Avatar,
     Popover,
-    Button,
+    ButtonDirective,
     Divider,
     ToggleSwitch,
     FormsModule,

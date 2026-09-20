@@ -2,7 +2,7 @@ import {CurrencyPipe} from '@angular/common'
 import {Component, computed, effect, inject, linkedSignal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {Badge} from 'primeng/badge'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Chip} from 'primeng/chip'
 import {InputNumber} from 'primeng/inputnumber'
 import {Select} from 'primeng/select'
@@ -37,7 +37,7 @@ import StockTransferLineFormModel = StockTransferLineFormDefinition.StockTransfe
   imports: [
     TableModule,
     FormsModule,
-    Button,
+    ButtonDirective,
     InputNumber,
     Select,
     CurrencyPipe,

@@ -20,51 +20,52 @@
              (onRowCollapse)="rowIsExpanded.set(false)"
              [value]="jurisdictionTypes()">
 
-      <ng-template pTemplate="caption">
+      <ng-template #caption>
         <div class="flex justify-content-between align-items-center">
           <h3 class="font-bold">Jurisdiction Types</h3>
 
           <rts-grid-filter [dataTable]="jurisdictionTypesTable"/>
 
-          <p-button (click)="setAddingActiveTrue()"
-                    [disabled]="loading() || addingIsActive()"
-                    label="+ Add Jurisdiction Type"
-                    rounded
-                    severity="secondary">
-          </p-button>
+          <button pButton (click)="setAddingActiveTrue()"
+                  [disabled]="loading() || addingIsActive()"
+                  rounded
+                  severity="secondary">
+            + Add Jurisdiction Type
+          </button>
         </div>
       </ng-template>
 
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th>Reference</th>
           <th pSortableColumn="name">Name
-            <p-sortIcon field="name"/>
+            <p-sort-icon field="name"/>
           </th>
           <th pSortableColumn="description">Description
-            <p-sortIcon field="description"/>
+            <p-sort-icon field="description"/>
           </th>
           <th style="width: 5rem"></th>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-jurisdictionType let-expanded="expanded">
+      <ng-template #body let-jurisdictionType let-expanded="expanded">
         <tr [ngClass]="{ 'expanded-row': expanded }">
           <td>{{ jurisdictionType?.referenceNumber | nullSafe }}</td>
           <td>{{ jurisdictionType?.name | nullSafe }}</td>
           <td>{{ jurisdictionType?.description | nullSafe }}</td>
           <td>
-            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                      rounded
-                      severity="secondary"
-                      [disabled]="loading() || addingIsActive()"
-                      [pRowToggler]="jurisdictionType">
-            </p-button>
+            <button pButton
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading() || addingIsActive()"
+                    [pRowToggler]="jurisdictionType">
+              <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+            </button>
           </td>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="expandedrow" let-jurisdictionType>
+      <ng-template #expandedrow let-jurisdictionType>
         <tr>
           <td colspan="4" class="filled-background">
             <rts-jurisdiction-type-form [jurisdictionType]="jurisdictionType"/>
@@ -72,7 +73,7 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="emptymessage">
+      <ng-template #emptymessage>
         <tr rts-empty-row [colspan]="4" message="No Jurisdiction Types Were Found"></tr>
       </ng-template>
     </p-table>

@@ -22,7 +22,7 @@
   </rts-form-field>
 
   <rts-form-field label="Multiplier" [required]="unitValueForm.unitsOfBasePerUnit().required()" for="unitsOfBasePerUnit">
-    <p-inputNumber id="unitsOfBasePerUnit" [maxFractionDigits]="3" [formField]="unitValueForm.unitsOfBasePerUnit" />
+    <p-input-number id="unitsOfBasePerUnit" [maxFractionDigits]="3" [formField]="unitValueForm.unitsOfBasePerUnit" />
   </rts-form-field>
 
   <rts-forms-buttons [disableReset]="!unitValueForm().dirty()"

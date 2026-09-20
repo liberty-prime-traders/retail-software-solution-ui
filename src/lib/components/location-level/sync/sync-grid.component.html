@@ -8,7 +8,7 @@
     sortField="createdOn"
     [sortOrder]="-1">
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th>Mode</th>
         <th>Status</th>
@@ -22,7 +22,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-log>
+    <ng-template #body let-log>
       <tr>
         <td>{{ log.syncMode | prettifyEnum }}</td>
         <td>

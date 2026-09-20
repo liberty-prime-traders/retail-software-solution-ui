@@ -39,25 +39,25 @@
 
   @if (isDraftOrNew()) {
     <div class="floating bottom right flex gap-2">
-      <p-button label="Reset"
-                icon="pi pi-times"
-                severity="secondary"
-                (click)="resetForm()"
-                [disabled]="!purchaseForm().dirty()">
-      </p-button>
+      <button pButton
+              severity="secondary"
+              (click)="resetForm()"
+              [disabled]="!purchaseForm().dirty()">
+        <i class="pi pi-times"></i> Reset
+      </button>
 
-      <p-button label="Place Order"
-                icon="pi pi-send"
-                severity="secondary"
-                (click)="placeOrder()"
-                [disabled]="purchaseForm().invalid() || !canPlaceOrder() || isEditingLines()">
-      </p-button>
+      <button pButton
+              severity="secondary"
+              (click)="placeOrder()"
+              [disabled]="purchaseForm().invalid() || !canPlaceOrder() || isEditingLines()">
+        <i class="pi pi-send"></i> Place Order
+      </button>
 
-      <p-button label="Save Draft"
-                icon="pi pi-save"
-                (click)="saveDraft()"
-                [disabled]="purchaseForm().invalid() || isEditingLines()">
-      </p-button>
+      <button pButton
+              (click)="saveDraft()"
+              [disabled]="purchaseForm().invalid() || isEditingLines()">
+        <i class="pi pi-save"></i> Save Draft
+      </button>
     </div>
     }
 </rts-loading-container>

@@ -2,19 +2,19 @@
   <div class="flex justify-content-between gap-2">
     @if (!hideDelete()) {
       <div class="flex gap-2 flex-grow-1">
-        <p-button [label]="deleteLabel()"
-                  [icon]="deleteIcon()"
-                  [severity]="deleteSeverity()"
-                  (click)="deleteIsActive.set(true)"
-                  [disabled]="disableDelete() || deleteIsActive() || processingIsUnderway()">
-        </p-button>
+        <button pButton
+                [severity]="deleteSeverity()"
+                (click)="deleteIsActive.set(true)"
+                [disabled]="disableDelete() || deleteIsActive() || processingIsUnderway()">
+          <i [class]="deleteIcon()"></i> {{ deleteLabel() }}
+        </button>
 
         @if (deleteIsActive()) {
           <div class="flex-grow-1 flex justify-content-center">
             <div class="flex gap-1 align-items-center">
               <p-message severity="warn">{{deleteWarning()}}</p-message>
-              <p-button label="Yes" size="small" severity="danger" (click)="confirmDelete()"/>
-              <p-button label="No" size="small" severity="primary" (click)="deleteIsActive.set(false)"/>
+              <button pButton size="small" severity="danger" (click)="confirmDelete()">Yes</button>
+              <button pButton size="small" severity="primary" (click)="deleteIsActive.set(false)">No</button>
             </div>
           </div>
         }
@@ -42,21 +42,22 @@
         }
 
         @if (!hideReset()) {
-          <p-button [label]="resetLabel()"
-                    icon="pi pi-times"
-                    severity="secondary"
-                    (click)="confirmReset()"
-                    [disabled]="disableReset() || processingIsUnderway()">
-          </p-button>
+          <button pButton
+                  severity="secondary"
+                  (click)="confirmReset()"
+                  [disabled]="disableReset() || processingIsUnderway()">
+            <i class="pi pi-times"></i>
+            {{resetLabel()}}
+          </button>
         }
 
         @if (!hideSave()) {
-          <p-button [label]="saveLabel()"
-                    icon="pi pi-check"
-                    severity="primary"
-                    (click)="confirmSave()"
-                    [disabled]="disableSave() || processingIsUnderway()">
-          </p-button>
+          <button pButton
+                  severity="primary"
+                  (click)="confirmSave()"
+                  [disabled]="disableSave() || processingIsUnderway()">
+            <i class="pi pi-check"></i> {{ saveLabel() }}
+          </button>
         }
       </div>
     }

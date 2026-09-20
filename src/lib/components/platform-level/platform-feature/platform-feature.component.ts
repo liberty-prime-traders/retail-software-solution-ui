@@ -1,6 +1,6 @@
 import {NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {PlatformFeatureService} from '../../../api/platform-level/platform-feature/platform-feature.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
@@ -17,7 +17,7 @@ import {PlatformFeatureFormComponent} from './platform-feature-form/platform-fea
   imports: [
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     PlatformFeatureFormComponent,
     GridFilterComponent,
     EmptyRowComponent,

@@ -1,28 +1,29 @@
 <div class="flex flex-column gap-3">
   <div class="flex justify-content-between align-items-center">
     <h3 class="m-0">Add Users From Organization</h3>
-    <p-button label="Cancel" icon="pi pi-times" severity="secondary" (onClick)="cancel.emit()"/>
+    <button pButton severity="secondary" (click)="cancel.emit()">
+      <i class="pi pi-times"></i>
+      Cancel
+    </button>
   </div>
 
-  <p-multiSelect
+  <p-select
     [options]="availableOrgUsers()"
     [filter]="false"
     optionLabel="fullName"
     optionValue="userId"
+    [multiple]="true"
     [loading]="orgUsersLoading()"
     emptyFilterMessage="No users available"
-    display="chip"
     class="w-full"
     [(ngModel)]="selectedUserIds">
-  </p-multiSelect>
+  </p-select>
 
   <div class="flex justify-content-end">
-    <p-button
-      label="Add Selected Users"
-      icon="pi pi-download"
-      [loading]="pulling()"
-      [disabled]="pulling() || selectedUserIds().length === 0"
-      (onClick)="pullSelectedUsers()">
-    </p-button>
+    <button pButton
+            [disabled]="pulling() || selectedUserIds().length === 0"
+            (click)="pullSelectedUsers()">
+      <i class="pi pi-download"></i> Add Selected Users
+    </button>
   </div>
 </div>

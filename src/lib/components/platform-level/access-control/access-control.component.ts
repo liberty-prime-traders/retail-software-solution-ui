@@ -1,5 +1,5 @@
 import {Component, inject, signal} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {AuthorityService} from '../../../api/cross-tier/authorization/authority.service'
 import {SchemaLevel} from '../../../api/platform-level/table-registry/schema-level.enum'
@@ -13,7 +13,7 @@ import {PlatformAuthoritiesComponent} from './platform-authorities.component'
     TableModule,
     AuthorityAssignmentComponent,
     PlatformAuthoritiesComponent,
-    Button
+    ButtonDirective
   ]
 })
 export class AccessControlComponent {
@@ -31,7 +31,7 @@ export class AccessControlComponent {
   }
 
   onAuthoritiesAssigned() {
-    this.authorityService.forceRefetch(SchemaLevel.PLATFORM)
+    this.authorityService.refetch(SchemaLevel.PLATFORM)
     this.cancelAuthorityAssignment()
   }
 }

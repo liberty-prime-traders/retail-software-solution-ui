@@ -11,7 +11,7 @@
            (onRowCollapse)="rowIsExpanded.set(false)"
            [value]="authorities()">
 
-    <ng-template pTemplate="caption">
+    <ng-template #caption>
       <div class="flex justify-content-between align-items-center">
         <h3 class="font-bold">Access Control</h3>
         <rts-grid-filter [dataTable]="accessControlTable"/>
@@ -19,30 +19,31 @@
       </div>
     </ng-template>
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th style="width: 5rem"></th>
         <th pSortableColumn="name">Name
-          <p-sortIcon field="name"/>
+          <p-sort-icon field="name"/>
         </th>
         <th pSortableColumn="type">Type
-          <p-sortIcon field="type"/>
+          <p-sort-icon field="type"/>
         </th>
         <th pSortableColumn="holderCount">Users
-          <p-sortIcon field="holderCount"/>
+          <p-sort-icon field="holderCount"/>
         </th>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-authority let-expanded="expanded">
+    <ng-template #body let-authority let-expanded="expanded">
       <tr [ngClass]="{ 'expanded-row': expanded }">
         <td>
-          <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-angle-right'"
-                    rounded
-                    severity="secondary"
-                    [disabled]="loading()"
-                    [pRowToggler]="authority">
-          </p-button>
+          <button pButton
+                  rounded
+                  severity="secondary"
+                  [disabled]="loading()"
+                  [pRowToggler]="authority">
+            <i [class]="expanded ? 'pi pi-times' : 'pi pi-angle-right'"></i>
+          </button>
         </td>
         <td>{{ authority?.name | prettifyEnum }}</td>
         <td>{{ authority?.type | prettifyEnum }}</td>
@@ -50,7 +51,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="expandedrow" let-authority>
+    <ng-template #expandedrow let-authority>
       <tr>
         <td colspan="4" class="filled-background">
           <rts-authority-holder [authority]="authority"/>
@@ -58,7 +59,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="emptymessage">
+    <ng-template #emptymessage>
       <tr rts-empty-row [colspan]="4" message="No Authorities Were Found"></tr>
     </ng-template>
   </p-table>

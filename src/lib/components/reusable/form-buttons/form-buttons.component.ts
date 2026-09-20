@@ -1,7 +1,7 @@
 import {Component, computed, input, model, output, signal} from '@angular/core'
 import {FieldState} from '@angular/forms/signals'
 import {ConfirmationService} from 'primeng/api'
-import {ButtonModule, ButtonSeverity} from 'primeng/button'
+import {ButtonDirective, ButtonSeverity} from 'primeng/button'
 import {ConfirmDialogModule} from 'primeng/confirmdialog'
 import {Message} from 'primeng/message'
 import {ProgressSpinner} from 'primeng/progressspinner'
@@ -15,7 +15,7 @@ import {ErrorSummaryComponent} from '../error-summary/error-summary.component'
   templateUrl: 'form-buttons.component.html',
   providers: [ConfirmationService],
   imports: [
-    ButtonModule,
+    ButtonDirective,
     ConfirmDialogModule,
     ProgressSpinner,
     Tag,

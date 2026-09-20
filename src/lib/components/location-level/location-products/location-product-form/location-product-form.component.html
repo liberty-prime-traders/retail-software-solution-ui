@@ -27,10 +27,11 @@
     <div class="flex gap-2 align-items-center">
       {{ originalLocationProduct()?.stockBalance | nullishToZero }} {{ originalLocationProduct()?.baseUnit }}s
 
-      <p-button label="View History"
-                text
-                (click)="showStockHistory.set(true)">
-      </p-button>
+      <button pButton
+              text
+              (click)="showStockHistory.set(true)">
+        View History
+      </button>
     </div>
   </rts-form-field>
 

@@ -6,11 +6,8 @@
   </rts-authority-assignment>
 } @else {
   <rts-platform-authorities>
-    <p-button
-      label="Assign Authority"
-      icon="pi pi-plus"
-      class="mb-3"
-      (click)="openAuthorityAssignment()">
-    </p-button>
+    <button pButton class="mb-3" (click)="openAuthorityAssignment()">
+      <i class="pi pi-plus"></i> Assign Authority
+    </button>
   </rts-platform-authorities>
 }

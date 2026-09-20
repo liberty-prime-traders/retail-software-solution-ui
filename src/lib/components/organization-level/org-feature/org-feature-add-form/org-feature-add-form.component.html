@@ -2,21 +2,23 @@
   <div class="flex gap-4">
     <div class="flex col-6 flex-column gap-3">
       <div class="flex gap-5 align-items-center">
-        <p-multi-select [options]="availableFeatures()"
-                        optionLabel="label"
-                        optionValue="value"
-                        appendTo="body"
-                        [(ngModel)]="selectedFeatures"
-                        placeholder="Select features to activate"
-                        class="col-9">
-        </p-multi-select>
+        <p-select [options]="availableFeatures()"
+                  optionLabel="label"
+                  optionValue="value"
+                  appendTo="body"
+                  [multiple]="true"
+                  [(ngModel)]="selectedFeatures"
+                  placeholder="Select features to activate"
+                  class="col-9">
+        </p-select>
 
-        <p-button label="Confirm Selection"
-                  severity="secondary"
-                  rounded
-                  [disabled]="selectedFeatures().length < 1"
-                  (click)="confirmSelection()">
-        </p-button>
+        <button pButton
+                severity="secondary"
+                rounded
+                [disabled]="selectedFeatures().length < 1"
+                (click)="confirmSelection()">
+          Confirm Selection
+        </button>
       </div>
 
       <div class="flex flex-column">
@@ -24,21 +26,23 @@
           <div class="flex p-0 col-12 gap-2 align-items-center">
             <span class="flex-grow-1">{{ feature | prettifyEnum }}</span>
 
-            <p-button icon="pi pi-times"
-                      severity="danger"
-                      rounded
-                      text
-                      (click)="removeFeature(feature)">
-            </p-button>
+            <button pButton
+                    severity="danger"
+                    rounded
+                    text
+                    (click)="removeFeature(feature)">
+              <i class="pi pi-times"></i>
+            </button>
           </div>
         }
       </div>
 
       @if (featuresToActivate().length > 0) {
         <div class="flex justify-content-end">
-          <p-button label="Activate All"
-                    (click)="activate()">
-          </p-button>
+          <button pButton
+                  (click)="activate()">
+            Activate All
+          </button>
         </div>
       }
     </div>

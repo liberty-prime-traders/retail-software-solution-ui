@@ -1,6 +1,5 @@
 import {DatePipe} from '@angular/common'
 import {Component, input} from '@angular/core'
-import {PrimeTemplate} from 'primeng/api'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
 import {LocationMigration} from '../../../../../api/platform-level/db-migration/location-migration.model'
@@ -14,7 +13,6 @@ import {MigrationStatusSeverityPipe} from '../migration-status-severity.pipe'
     DatePipe,
     MigrationStatusSeverityPipe,
     PrettifyEnumPipe,
-    PrimeTemplate,
     TableModule,
     Tag
   ]

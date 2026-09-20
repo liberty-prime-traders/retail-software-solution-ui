@@ -2,7 +2,7 @@ import {CurrencyPipe, DatePipe} from '@angular/common'
 import {Component, computed, inject} from '@angular/core'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {StockTransferSummary} from '../../../../api/cross-tier/stock-transfer/stock-transfer-summary.model'
 import {StockTransferSummaryService} from '../../../../api/cross-tier/stock-transfer/stock-transfer-summary.service'
 import {StockTransferService} from '../../../../api/location-level/stock-transfer/stock-transfer.service'
@@ -19,7 +19,7 @@ import {StockTransferStatusSeverityPipe} from '../stock-transfer-status-severity
     AutoStretchDirective,
     TableModule,
     Tag,
-    Button,
+    ButtonDirective,
     NullSafePipe,
     PrettifyEnumPipe,
     StockTransferStatusSeverityPipe,

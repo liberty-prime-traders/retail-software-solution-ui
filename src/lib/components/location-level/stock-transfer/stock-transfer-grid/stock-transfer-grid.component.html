@@ -6,7 +6,7 @@
            scrollHeight="flex"
            dataKey="referenceNumber">
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th>Reference</th>
         <th>Source</th>
@@ -20,7 +20,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-stockTransfer>
+    <ng-template #body let-stockTransfer>
       <tr>
         <td>{{ stockTransfer.referenceNumber | nullSafe }}</td>
         <td>{{ stockTransfer.sourceLocationName | nullSafe }}</td>
@@ -35,12 +35,13 @@
         <td>{{ stockTransfer.dispatchedAt | date | nullSafe }}</td>
         <td>{{ stockTransfer.dispatchedBy | nullSafe }}</td>
         <td>
-          <p-button icon="pi pi-pen-to-square"
-                    rounded
-                    severity="secondary"
-                    [disabled]="loading()"
-                    (onClick)="onEditTransfer(stockTransfer)">
-          </p-button>
+          <button pButton
+                  rounded
+                  severity="secondary"
+                  [disabled]="loading()"
+                  (click)="onEditTransfer(stockTransfer)">
+            <i class="pi pi-pen-to-square"></i>
+          </button>
         </td>
       </tr>
     </ng-template>

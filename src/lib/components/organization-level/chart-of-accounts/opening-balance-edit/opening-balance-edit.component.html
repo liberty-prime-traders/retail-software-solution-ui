@@ -21,7 +21,7 @@
 
     <div class="flex justify-content-between">
       <rts-error-summary [regularErrorMessages]="failureMessages()"/>
-      <p-button label="Save" (click)="updateOpeningBalance(newAmount.value)"/>
+      <button pButton (click)="updateOpeningBalance(newAmount.value())">Save</button>
     </div>
   </div>
 

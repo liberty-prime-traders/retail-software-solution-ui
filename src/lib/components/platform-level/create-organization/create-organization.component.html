@@ -23,14 +23,14 @@
           <input id="subdomain" pInputText [formField]="organizationForm.subdomain" (keyup)="resetDomainVerification()"/>
         </rts-form-field>
 
-        <p-button label="Verify"
-                  class="col-3 p-0 align-self-end field"
-                  outlined="true"
-                  severity="info"
-                  (click)="verifyDomain()"
-                  [loading]="reservedSubdomainIsLoading()"
-                  [disabled]="!canVerifyDomain()">
-        </p-button>
+        <button pButton
+                class="col-3 p-0 align-self-end field"
+                outlined="true"
+                severity="info"
+                (click)="verifyDomain()"
+                [disabled]="!canVerifyDomain()">
+          Verify
+        </button>
       </div>
 
       @if (domainVerified()) {
@@ -61,12 +61,13 @@
       </rts-form-field>
 
       <div class="flex justify-content-between">
-        <p-button label="Cancel"
-                  class="mt-4 px-4"
-                  severity="secondary"
-                  routerLink=".."
-                  (click)="cancel()">
-        </p-button>
+        <button pButton
+                class="mt-4 px-4"
+                severity="secondary"
+                routerLink=".."
+                (click)="cancel()">
+          Cancel
+        </button>
 
         <rts-forms-buttons [disableReset]="!organizationForm().dirty"
                            [disableSave]="organizationForm().invalid() || !organizationForm().dirty"

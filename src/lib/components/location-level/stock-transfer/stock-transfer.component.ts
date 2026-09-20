@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {StockTransferSummaryService} from '../../../api/cross-tier/stock-transfer/stock-transfer-summary.service'
 import {StockTransferService} from '../../../api/location-level/stock-transfer/stock-transfer.service'
 import {ErrorSummaryComponent} from '../../reusable/error-summary/error-summary.component'
@@ -13,7 +13,7 @@ import {StockTransferGridComponent} from './stock-transfer-grid/stock-transfer-g
   templateUrl: 'stock-transfer.component.html',
   providers: [StockTransferFormContext],
   imports: [
-    Button,
+    ButtonDirective,
     StockTransferGridComponent,
     StockTransferFormComponent,
     ErrorSummaryComponent

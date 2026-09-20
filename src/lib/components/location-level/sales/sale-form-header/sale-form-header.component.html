@@ -1,10 +1,9 @@
 <p-card class="border-noround">
   <div class="flex align-items-center gap-4 pr-6">
-    <p-button
-      label="Back"
-      icon="pi pi-chevron-left"
-      (onClick)="hideSaleForm()">
-    </p-button>
+    <button pButton
+            (click)="hideSaleForm()">
+      <i class="pi pi-chevron-left"></i> Back
+    </button>
 
     @let originalSale = saleSession();
     @if (originalSale.referenceNumber) {

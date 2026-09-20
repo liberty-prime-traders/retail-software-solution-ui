@@ -1,7 +1,7 @@
 import {NgTemplateOutlet} from '@angular/common'
 import {Component, computed, inject, input, output, signal} from '@angular/core'
 import {form, FormField, required} from '@angular/forms/signals'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {InputText} from 'primeng/inputtext'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
 import {PurchaseService} from '../../../../api/location-level/purchase/purchase.service'
@@ -20,7 +20,7 @@ import {KafkaEventLogComponent} from '../../kafka-event-log/kafka-event-log.comp
   selector: 'rts-supplier-payment-expanded-row',
   templateUrl: 'payment-expanded-row.component.html',
   imports: [
-    Button,
+    ButtonDirective,
     FormButtonsComponent,
     FormFieldComponent,
     FormField,

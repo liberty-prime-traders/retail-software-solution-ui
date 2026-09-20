@@ -1,7 +1,7 @@
 import {DatePipe} from '@angular/common'
 import {Component, inject} from '@angular/core'
 import {ActivatedRoute, Router, RouterLink} from '@angular/router'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {TableModule} from 'primeng/table'
 import {TagModule} from 'primeng/tag'
@@ -25,7 +25,7 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
     GridFilterComponent,
     TagModule,
     Card,
-    Button,
+    ButtonDirective,
     RouterLink,
     EmptyRowComponent,
     PrettifyEnumPipe

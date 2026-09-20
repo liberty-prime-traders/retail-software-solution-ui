@@ -1,7 +1,7 @@
 import {NgClass} from '@angular/common'
 import {Component, computed, effect, inject, input, untracked} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Ripple} from 'primeng/ripple'
 import {TableModule} from 'primeng/table'
 import {UnitGroup} from '../../../../api/organization-level/unit-group/unitgroup.model'
@@ -18,7 +18,7 @@ import {UnitValueFormComponent} from './unit-value-form/unit-value-form.componen
   imports: [
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     UnitValueFormComponent,
     NullSafePipe,
     GridFilterComponent,

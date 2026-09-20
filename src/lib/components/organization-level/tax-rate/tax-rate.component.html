@@ -16,42 +16,42 @@
              (onRowCollapse)="rowIsExpanded.set(false)"
              [value]="taxRates()">
 
-      <ng-template pTemplate="caption">
+      <ng-template #caption>
         <div class="flex justify-content-between align-items-center">
           <h3 class="font-bold">Tax Rates</h3>
 
           <rts-grid-filter [dataTable]="taxRatesTable"/>
 
-          <p-button (click)="setAddingActiveTrue()"
-                    [disabled]="loading() || addingIsActive()"
-                    label="+ Add Tax Rate"
-                    rounded
-                    severity="secondary">
-          </p-button>
+          <button pButton (click)="setAddingActiveTrue()"
+                  [disabled]="loading() || addingIsActive()"
+                  rounded
+                  severity="secondary">
+            + Add Tax Rate
+          </button>
         </div>
       </ng-template>
 
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th>Reference</th>
           <th pSortableColumn="taxLabel">Tax Type
-            <p-sortIcon field="taxLabel"/>
+            <p-sort-icon field="taxLabel"/>
           </th>
           <th pSortableColumn="name">Name
-            <p-sortIcon field="name"/>
+            <p-sort-icon field="name"/>
           </th>
           <th>Value</th>
           <th pSortableColumn="startDate">Start Date
-            <p-sortIcon field="startDate"/>
+            <p-sort-icon field="startDate"/>
           </th>
           <th pSortableColumn="endDate">End Date
-            <p-sortIcon field="endDate"/>
+            <p-sort-icon field="endDate"/>
           </th>
           <th style="width: 5rem"></th>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-taxRate let-expanded="expanded">
+      <ng-template #body let-taxRate let-expanded="expanded">
         <tr [ngClass]="{'expanded-row': expanded}">
           <td>{{ taxRate?.referenceNumber | nullSafe }}</td>
           <td>{{ taxRate?.taxLabel | nullSafe }}</td>
@@ -68,17 +68,18 @@
           <td>{{ taxRate?.startDate | nullSafe }}</td>
           <td>{{ taxRate?.endDate | nullSafe }}</td>
           <td>
-            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                      rounded
-                      severity="secondary"
-                      [disabled]="loading() || addingIsActive()"
-                      [pRowToggler]="taxRate">
-            </p-button>
+            <button pButton
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading() || addingIsActive()"
+                    [pRowToggler]="taxRate">
+              <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+            </button>
           </td>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="expandedrow" let-taxRate>
+      <ng-template #expandedrow let-taxRate>
         <tr>
           <td colspan="8" class="filled-background">
             <rts-tax-rate-edit-form [taxRate]="taxRate"/>
@@ -86,7 +87,7 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="emptymessage">
+      <ng-template #emptymessage>
         <tr rts-empty-row [colspan]="8" message="No Tax Rates Were Found"></tr>
       </ng-template>
     </p-table>

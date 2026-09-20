@@ -26,16 +26,16 @@
 
 
   <rts-form-field label="Locations to Migrate" for="locationIdsToMigrate">
-    <p-multiSelect
+    <p-select
       id="locationIdsToMigrate"
       formControlName="locationIdsToMigrate"
       [options]="locations()"
       optionLabel="name"
       optionValue="id"
-      display="chip"
+      [multiple]="true"
       [showClear]="true"
       [loading]="loadingLocations()">
-    </p-multiSelect>
+    </p-select>
   </rts-form-field>
 
   <rts-forms-buttons

@@ -3,7 +3,7 @@ import {Component, computed, inject, OnInit, signal, Signal} from '@angular/core
 import {apply, form, FormField} from '@angular/forms/signals'
 import {EntityId} from '@ngrx/signals/entities'
 import {MenuItem} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {DatePicker} from 'primeng/datepicker'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
@@ -27,7 +27,7 @@ import {SalePaymentFormDefinition} from '../../form-utils/sale-payment-form-defi
     LoadingContainerComponent,
     SelectButton,
     Menu,
-    Button,
+    ButtonDirective,
     FormFieldComponent,
     InputNumber,
     InputText,

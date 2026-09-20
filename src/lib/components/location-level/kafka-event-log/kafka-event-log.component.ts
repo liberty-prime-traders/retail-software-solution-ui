@@ -2,7 +2,7 @@ import {DatePipe} from '@angular/common'
 import {Component, effect, inject, input, OnDestroy, signal, untracked} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {MessageService} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {EventProcessingLogStatus} from '../../../api/location-level/kafka-event-log/kafka-event-log.model'
 import {KafkaEventLogService} from '../../../api/location-level/kafka-event-log/kafka-event-log.service'
@@ -15,7 +15,7 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
   templateUrl: 'kafka-event-log.component.html',
   imports: [
     TableModule,
-    Button,
+    ButtonDirective,
     DatePipe,
     NullSafePipe,
     EmptyRowComponent,

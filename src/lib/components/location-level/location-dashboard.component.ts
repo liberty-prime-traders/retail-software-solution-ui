@@ -2,7 +2,7 @@ import {CdkDrag} from '@angular/cdk/drag-drop'
 import {Component, inject, signal} from '@angular/core'
 import {RouterOutlet} from '@angular/router'
 import {MenuItem} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
 import {SaleFormNavigator} from './sales/form-utils/sale-form-navigator'
@@ -13,7 +13,7 @@ import {SaleFormComponent} from './sales/sale-form/sale-form.component'
   selector: 'rts-private',
   imports: [
     RouterOutlet,
-    Button,
+    ButtonDirective,
     Menu,
     Card,
     SaleFormComponent,

@@ -2,7 +2,7 @@ import {NgTemplateOutlet} from '@angular/common'
 import {Component, computed, inject, input, output, signal} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {MessageService} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Chip} from 'primeng/chip'
 import {DataView} from 'primeng/dataview'
@@ -32,7 +32,7 @@ interface AssignableUser {
   selector: 'rts-authority-assignment',
   templateUrl: 'authority-assignment.component.html',
   imports: [
-    Button,
+    ButtonDirective,
     Chip,
     Card,
     DataView,

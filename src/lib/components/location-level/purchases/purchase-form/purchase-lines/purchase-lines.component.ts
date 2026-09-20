@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms'
 import {EntityId} from '@ngrx/signals/entities'
 import {SortMeta} from 'primeng/api'
 import {AutoCompleteModule} from 'primeng/autocomplete'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {InputNumber} from 'primeng/inputnumber'
 import {Select} from 'primeng/select'
 import {TableModule} from 'primeng/table'
@@ -43,7 +43,7 @@ import PurchaseLineModel = PurchaseLineFormDefinition.PurchaseLineModel
     CurrencyPipe,
     ProductLabelPipe,
     InputNumber,
-    Button,
+    ButtonDirective,
     Select,
     NgClass,
     AlternativeUnitsFinderPipe,

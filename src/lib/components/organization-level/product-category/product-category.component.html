@@ -1,6 +1,6 @@
 <div class="flex flex-column gap-4 flex-grow-1" id="productCategories" rtsAutoStretch="productCategories">
   @if (addingIsActive()) {
-    <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info" class="align-self-end"/>
+    <button pButton (click)="setAddingActiveFalse()" severity="info" class="align-self-end"><i class="pi pi-times"></i> Cancel</button>
     <rts-product-category-form (productCategoryCreated)="closeAddRow()"/>
 
   } @else {
@@ -16,55 +16,56 @@
              (onRowCollapse)="rowIsExpanded.set(false)"
              [value]="productCategories()">
 
-      <ng-template pTemplate="caption">
+      <ng-template #caption>
         <div class="flex justify-content-between align-items-center">
           <h3 class="font-bold">Product Categories</h3>
 
           <rts-grid-filter [dataTable]="productCategoriesTable"/>
 
-          <p-button (click)="setAddingActiveTrue()"
-                    [disabled]="loading() || addingIsActive()"
-                    label="+ Add Product Category"
-                    rounded
-                    severity="secondary">
-          </p-button>
+          <button pButton (click)="setAddingActiveTrue()"
+                  [disabled]="loading() || addingIsActive()"
+                  rounded
+                  severity="secondary">
+            + Add Product Category
+          </button>
         </div>
       </ng-template>
 
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th>Reference</th>
           <th pSortableColumn="categoryName">Product Category Name
-            <p-sortIcon field="categoryName"></p-sortIcon>
+            <p-sort-icon field="categoryName"></p-sort-icon>
           </th>
           <th pSortableColumn="description">Description
-            <p-sortIcon field="description"></p-sortIcon>
+            <p-sort-icon field="description"></p-sort-icon>
           </th>
           <th pSortableColumn="createdBy">Created By
-            <p-sortIcon field="createdBy"></p-sortIcon>
+            <p-sort-icon field="createdBy"></p-sort-icon>
           </th>
           <th style="width: 5rem"></th>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-productCategory let-expanded="expanded">
+      <ng-template #body let-productCategory let-expanded="expanded">
         <tr [ngClass]="{ 'expanded-row': expanded }">
           <td>{{ productCategory?.referenceNumber | nullSafe }}</td>
           <td>{{ productCategory?.categoryName | nullSafe }}</td>
           <td>{{ productCategory?.description | nullSafe }}</td>
           <td>{{ productCategory?.createdBy | nullSafe }}</td>
           <td>
-            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                      rounded
-                      severity="secondary"
-                      [disabled]="loading() || addingIsActive()"
-                      [pRowToggler]="productCategory">
-            </p-button>
+            <button pButton
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading() || addingIsActive()"
+                    [pRowToggler]="productCategory">
+              <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+            </button>
           </td>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="expandedrow" let-productCategory>
+      <ng-template #expandedrow let-productCategory>
         <tr>
           <td colspan="5" class="filled-background">
             <rts-product-category-form [productCategory]="productCategory"/>
@@ -72,7 +73,7 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="emptymessage">
+      <ng-template #emptymessage>
         <tr rts-empty-row [colspan]="5" message="No Product Categories Were Found"></tr>
       </ng-template>
     </p-table>

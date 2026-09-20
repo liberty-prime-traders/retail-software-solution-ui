@@ -1,7 +1,7 @@
 import {CurrencyPipe, NgClass, NgTemplateOutlet} from '@angular/common'
 import {Component, computed, inject, input, signal, viewChild} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Skeleton} from 'primeng/skeleton'
 import {Table, TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
@@ -29,7 +29,7 @@ import {ProductFilterService} from '../product-filter.service'
     FormsModule,
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     NgClass,
     Tag,
     NgTemplateOutlet,

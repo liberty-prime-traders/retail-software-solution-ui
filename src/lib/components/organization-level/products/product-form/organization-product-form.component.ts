@@ -14,9 +14,8 @@ import {
 } from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {form, FormField} from '@angular/forms/signals'
-import {PrimeTemplate} from 'primeng/api'
 import {BlockUI} from 'primeng/blockui'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {InputText} from 'primeng/inputtext'
 import {Panel} from 'primeng/panel'
 import {PickList} from 'primeng/picklist'
@@ -54,8 +53,7 @@ import {ProductFormTagDisplayComponent} from './tag-display.component'
     NgClass,
     FormsModule,
     PickList,
-    PrimeTemplate,
-    Button,
+    ButtonDirective,
     BlockUI
   ]
 })

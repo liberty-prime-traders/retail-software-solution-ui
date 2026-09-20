@@ -11,48 +11,49 @@
           (onRowExpand)="rowIsExpanded.set(true)"
           (onRowCollapse)="rowIsExpanded.set(false)">
 
-  <ng-template pTemplate="caption">
+  <ng-template #caption>
     <div class="flex justify-content-between align-items-center">
       <h3>Job Titles</h3>
       <rts-grid-filter [dataTable]="jobTitlesTable"/>
     </div>
   </ng-template>
 
-  <ng-template pTemplate="header">
+  <ng-template #header>
     <tr>
       <th pSortableColumn="value">
         Value
-        <p-sortIcon field="value"></p-sortIcon>
+        <p-sort-icon field="value"></p-sort-icon>
       </th>
       <th pSortableColumn="createdBy">
         Created By
-        <p-sortIcon field="createdBy"></p-sortIcon>
+        <p-sort-icon field="createdBy"></p-sort-icon>
       </th>
       <th pSortableColumn="usageCount">
         Usage Count
-        <p-sortIcon field="usageCount"></p-sortIcon>
+        <p-sort-icon field="usageCount"></p-sort-icon>
       </th>
       <th style="width: 5rem"></th>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-jobTitle let-expanded="expanded">
+  <ng-template #body let-jobTitle let-expanded="expanded">
     <tr [ngClass]="{ 'expanded-row': expanded }">
       <td>{{ jobTitle?.value | nullSafe }}</td>
       <td>{{ jobTitle?.createdBy | nullSafe }}</td>
       <td>{{ jobTitle?.usageCount | nullSafe }}</td>
       <td>
-        <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                  rounded
-                  severity="secondary"
-                  [disabled]="loading() || addingIsActive()"
-                  [pRowToggler]="jobTitle" >
-        </p-button>
+        <button pButton
+                rounded
+                severity="secondary"
+                [disabled]="loading() || addingIsActive()"
+                [pRowToggler]="jobTitle">
+          <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+        </button>
       </td>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="expandedrow" let-jobTitle>
+  <ng-template #expandedrow let-jobTitle>
     <tr>
       <td colspan="5" class="filled-background">
         <rts-job-title-form [jobTitle]="jobTitle" />
@@ -60,7 +61,7 @@
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="emptymessage">
+  <ng-template #emptymessage>
     <tr rts-empty-row [colspan]="5" message="No Job Titles Were Found"></tr>
   </ng-template>
 </p-table>

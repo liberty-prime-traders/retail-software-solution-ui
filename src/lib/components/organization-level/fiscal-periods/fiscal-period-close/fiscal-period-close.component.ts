@@ -1,5 +1,5 @@
 import {Component, computed, inject, input, signal} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Message} from 'primeng/message'
 import {FiscalPeriod} from '../../../../api/organization-level/fiscal-period/fiscal-period.model'
 import {FiscalPeriodService} from '../../../../api/organization-level/fiscal-period/fiscal-period.service'
@@ -11,7 +11,7 @@ import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summa
   selector: 'rts-fiscal-period-close',
   imports: [
     Message,
-    Button,
+    ButtonDirective,
     ErrorSummaryComponent
   ],
   templateUrl: 'fiscal-period-close.component.html'

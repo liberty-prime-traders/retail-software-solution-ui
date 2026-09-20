@@ -1,6 +1,6 @@
 import {NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {TaxTypeService} from '../../../api/platform-level/tax-type/tax-type.service'
 import {JoinEnumPipe} from '../../../utils/pipes/join-enum.pipe'
@@ -19,7 +19,7 @@ import {TaxTypeFormComponent} from './tax-type-form/tax-type-form.component'
   imports: [
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     TaxTypeFormComponent,
     GridFilterComponent,
     EmptyRowComponent,

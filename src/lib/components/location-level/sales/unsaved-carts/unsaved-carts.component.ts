@@ -1,6 +1,6 @@
 import {CurrencyPipe, DatePipe} from '@angular/common'
 import {Component, computed, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {
   UnsavedCartsSummaryService
@@ -17,7 +17,7 @@ import {SaleFormNavigator} from '../form-utils/sale-form-navigator'
     TableModule,
     DatePipe,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     CurrencyPipe,
     ErrorSummaryComponent
   ]

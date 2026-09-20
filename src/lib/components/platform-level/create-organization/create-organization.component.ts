@@ -2,7 +2,7 @@ import {Component, computed, effect, inject, OnInit, signal} from '@angular/core
 import {form, FormField} from '@angular/forms/signals'
 import {ActivatedRoute, Router, RouterLink} from '@angular/router'
 import {BlockUI} from 'primeng/blockui'
-import {ButtonModule} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {CardModule} from 'primeng/card'
 import {InputTextModule} from 'primeng/inputtext'
 import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
@@ -18,7 +18,7 @@ import {CreateOrganizationFormDefinition} from './create-organization-form.defin
   selector: 'rts-create-organization',
   templateUrl: 'create-organization.component.html',
   imports: [
-    ButtonModule,
+    ButtonDirective,
     InputTextModule,
     CardModule,
     FormButtonsComponent,

@@ -2,6 +2,5 @@
 export const environment = {
   production: false,
   BASE_URL: 'http://localhost:8080',
-  OKTA_DOMAIN: 'okta.liberty-solutions.ezra-home.me/oauth2/default',
-  OKTA_CLIENT_ID: '0oalvd1d040vGQxKj5d7'
+  PRIME_LICENCE_KEY: 'eyJpZCI6IjZkZWZjZmY1LTNhNTItNDdiNi1iMTQwLWY0NWJkZGMyYmFjYSIsInByb2R1Y3QiOiJwcmltZXVpIiwidGllciI6ImNvbW11bml0eSIsInR5cGUiOiJkZXYiLCJpYXQiOjE3ODk4NzU2NTksImV4cCI6MTgyMTQxMTY1OX0.mjsBijoY5FlIH7INNyRpTaTfVJ_adU9h_Azh62vCVhVXEuNpENNuQb1miFcGWN2oklvzWYtibCWOufu9MgSsAg'
 }

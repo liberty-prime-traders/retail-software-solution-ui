@@ -12,12 +12,13 @@
                        class="col-9">
         </p-tree-select>
 
-        <p-button label="Confirm Selection"
-                  severity="secondary"
-                  rounded
-                  [disabled]="selectedTaxNodes().length < 1"
-                  (click)="confirmSelection()">
-        </p-button>
+        <button pButton
+                severity="secondary"
+                rounded
+                [disabled]="selectedTaxNodes().length < 1"
+                (click)="confirmSelection()">
+          Confirm Selection
+        </button>
       </div>
 
       <div class="flex flex-column gap-3">
@@ -30,8 +31,8 @@
                              [loading]="accountTreesLoading()"
                              #payableTreeSelect
                              appendTo="body"
-                             [invalid]="!payableTreeSelect.value"
-                             (onNodeSelect)="onPayableChange(row.jurisdictionTaxTypeId, payableTreeSelect.value)"
+                             [invalid]="!payableTreeSelect._value"
+                             (onNodeSelect)="onPayableChange(row.jurisdictionTaxTypeId, $event.node)"
                              placeholder="Payable Account"
                              class="col-4 p-0">
               </p-tree-select>
@@ -41,9 +42,8 @@
                   <p-tree-select [options]="recoverableAccounts()"
                                  [loading]="accountTreesLoading()"
                                  appendTo="body"
-                                 [invalid]="!payableTreeSelect.value"
-                                 #recoverableTreeSelect
-                                 (onNodeSelect)="onRecoverableChange(row.jurisdictionTaxTypeId, recoverableTreeSelect.value)"
+                                 [invalid]="!payableTreeSelect._value"
+                                 (onNodeSelect)="onRecoverableChange(row.jurisdictionTaxTypeId, $event.node)"
                                  placeholder="Recoverable Account"
                                  [fluid]="true">
                   </p-tree-select>
@@ -51,19 +51,20 @@
               </div>
             }
 
-            <p-button icon="pi pi-times"
-                      severity="danger"
-                      rounded
-                      text
-                      (click)="removeRow(row.jurisdictionTaxTypeId)">
-            </p-button>
+            <button pButton
+                    severity="danger"
+                    rounded
+                    text
+                    (click)="removeRow(row.jurisdictionTaxTypeId)">
+              <i class="pi pi-times"></i>
+            </button>
           </div>
         }
       </div>
 
       @if (taxTypesToAdd().length > 0) {
         <div class="flex justify-content-end">
-          <p-button label="Save All" [disabled]="!canSave()" (click)="saveAll()"/>
+          <button pButton [disabled]="!canSave()" (click)="saveAll()">Save All</button>
         </div>
       }
 

@@ -2,7 +2,7 @@ import {NgClass, NgTemplateOutlet} from '@angular/common'
 import {Component, computed, effect, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {UnitGroup} from '../../../api/organization-level/unit-group/unitgroup.model'
 import {UnitGroupService} from '../../../api/organization-level/unit-group/unitgroup.service'
@@ -17,7 +17,7 @@ import {UnitValueComponent} from './unit-value/unit-value.component'
   selector: 'rts-unit-tree',
   templateUrl: 'unit-tree.component.html',
   imports: [
-    Button,
+    ButtonDirective,
     Divider,
     ReactiveFormsModule,
     FormsModule,

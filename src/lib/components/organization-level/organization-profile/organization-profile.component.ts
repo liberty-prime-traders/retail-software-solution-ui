@@ -2,7 +2,7 @@
 import {Component, effect, inject, OnInit} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
 import {MessageService} from 'primeng/api'
-import {ButtonModule} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {CardModule} from 'primeng/card'
 import {Divider} from 'primeng/divider'
 import {InputTextModule} from 'primeng/inputtext'
@@ -12,18 +12,20 @@ import {SessionContextService} from '../../../utils/services/session-context.ser
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {FormButtonsComponent} from '../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../reusable/form-field/form-field.component'
+import {LoadingContainerComponent} from '../../reusable/loading-container/loading-container.component'
 
 @Component({
   selector: 'rts-update-organization',
   templateUrl: 'organization-profile.component.html',
   imports: [
     ReactiveFormsModule,
-    ButtonModule,
+    ButtonDirective,
     InputTextModule,
     CardModule,
     FormButtonsComponent,
     FormFieldComponent,
-    Divider
+    Divider,
+    LoadingContainerComponent
   ],
   standalone: true
 })

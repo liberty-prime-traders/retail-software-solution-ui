@@ -12,14 +12,14 @@
 
   <p-table [value]="myUnsavedCarts()" [loading]="gridLoading()" dataKey="id">
 
-    <ng-template pTemplate="caption">
+    <ng-template #caption>
       <div class="flex justify-content-end gap-4">
-        <p-button label="Exit" severity="secondary" icon="pi pi-times" (onClick)="hideSaleForm()"/>
-        <p-button label="Start New Sale Anyway" icon="pi pi-plus" (onClick)="proceedToNewSession()"/>
+        <button pButton severity="secondary" (click)="hideSaleForm()"><i class="pi pi-times"></i> Exit</button>
+        <button pButton (click)="proceedToNewSession()"><i class="pi pi-plus"></i> Start New Sale Anyway</button>
       </div>
     </ng-template>
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th>Created By</th>
         <th>Created On</th>
@@ -33,7 +33,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-session>
+    <ng-template #body let-session>
       <tr>
         <td>{{ session.createdBy }}</td>
         <td>{{ session.createdAt | date }}</td>
@@ -44,20 +44,20 @@
         <td>{{ session.payableTotal | currency }}</td>
 
         <td>
-          <p-button
-            icon="pi pi-trash"
-            severity="danger"
-            text
-            (onClick)="discardSession(session.id)">
-          </p-button>
+          <button pButton
+                  severity="danger"
+                  text
+                  (click)="discardSession(session.id)">
+            <i class="pi pi-trash"></i>
+          </button>
         </td>
 
         <td>
-          <p-button
-            icon="pi pi-arrow-right"
-            text
-            (onClick)="resumeSession(session.id)">
-          </p-button>
+          <button pButton
+                  text
+                  (click)="resumeSession(session.id)">
+            <i class="pi pi-arrow-right"></i>
+          </button>
         </td>
       </tr>
     </ng-template>

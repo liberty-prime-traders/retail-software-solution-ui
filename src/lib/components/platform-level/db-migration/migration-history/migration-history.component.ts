@@ -1,7 +1,7 @@
 import {DatePipe, NgClass} from '@angular/common'
 import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {DatePicker} from 'primeng/datepicker'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
@@ -17,7 +17,6 @@ import {MigrationStatusSeverityPipe} from './migration-status-severity.pipe'
   selector: 'rts-migration-history',
   imports: [
     TableModule,
-    Button,
     Tag,
     MigrationStatusSeverityPipe,
     DatePipe,
@@ -28,7 +27,8 @@ import {MigrationStatusSeverityPipe} from './migration-status-severity.pipe'
     Tooltip,
     NgClass,
     LocationMigrationGridComponent,
-    AutoStretchDirective
+    AutoStretchDirective,
+    ButtonDirective
   ],
   templateUrl: './migration-history.component.html'
 })

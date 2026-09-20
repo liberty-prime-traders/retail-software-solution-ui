@@ -1,7 +1,7 @@
 import {DatePipe} from '@angular/common'
 import {Component, inject, OnInit} from '@angular/core'
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Message} from 'primeng/message'
 import {ProgressBar} from 'primeng/progressbar'
 import {Tag} from 'primeng/tag'
@@ -17,7 +17,7 @@ import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
   selector: 'rts-active-sync',
   templateUrl: 'active-sync.component.html',
   imports: [
-    Button,
+    ButtonDirective,
     Tag,
     ProgressBar,
     Message,

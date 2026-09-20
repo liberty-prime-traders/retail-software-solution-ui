@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
-import {UserRole} from '../../cross-tier/authorization/user-role.enum'
-import {MultimapBaseService} from '../../util/base-api/multimap-base.service'
+import {UserRole} from '../user-role.enum'
+import {MultimapBaseService} from '../../../util/base-api/multimap-base.service'
 import {StandalonePermission} from './standalone-permission.model'
 import {StandalonePermissionStore} from './standalone-permission.store'
 
