@@ -1,4 +1,4 @@
-import {Component, inject, model, output, signal} from '@angular/core'
+import {Component, computed, inject, model, output, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {ButtonDirective} from 'primeng/button'
 import {Divider} from 'primeng/divider'
@@ -11,6 +11,7 @@ import {parseError} from '../../../../utils/errors'
 import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
 import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 
 @Component({
   selector: 'rts-bulk-unit-import',
@@ -20,7 +21,8 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
     FormsModule,
     ButtonDirective,
     ErrorSummaryComponent,
-    Divider
+    Divider,
+    LoadingContainerComponent
   ],
   templateUrl: 'bulk-unit-import.component.html'
 })
@@ -31,6 +33,8 @@ export class BulkUnitImportComponent {
   readonly successfulUpload = output()
   readonly jsonPayload = model<string>('')
   readonly errorDetails = signal<string[]>([])
+  readonly errorsFound = computed(() => this.errorDetails().length > 0)
+  readonly uploadInProgress = this.unitBulkUploadService.selectLoading
 
   readonly FormFieldLayout = FormFieldLayout
 

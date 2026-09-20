@@ -1,18 +1,30 @@
-<div class="flex flex-column gap-3">
+<div class="flex flex-column gap-3" id="products-grid" rtsAutoStretch="products-grid">
   <div class="flex align-items-center justify-content-between">
     @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
       <span class="font-bold">{{organizationName()}} Products</span>
-
     } @else if (schemaLevel() === SchemaLevel.LOCATION) {
       <span class="font-bold">{{locationName()}} Products</span>
     }
 
     @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
-      <button pButton (click)="setAddingActiveTrue()"
-              [disabled]="addingIsActive() || showAdvancedFilter()"
-              rounded severity="secondary">
-        + Add product
-      </button>
+      <div class="flex gap-4">
+        <button pButton
+                (click)="toggleBulkImport()"
+                [disabled]="addingIsActive() || showAdvancedFilter()"
+                rounded
+                severity="secondary">
+          <i [class]="showBulkImportScreen() ? 'pi pi-times' : 'pi pi-upload'"></i>
+          {{ showBulkImportScreen() ? 'Close Bulk Import' : 'Bulk Import Products' }}
+        </button>
+
+        <button pButton
+                (click)="setAddingActiveTrue()"
+                [disabled]="addingIsActive() || showAdvancedFilter() || showBulkImportScreen()"
+                rounded
+                severity="secondary">
+          + Add product
+        </button>
+      </div>
     }
   </div>
 
@@ -35,8 +47,13 @@
     }
 
     <div class="flex flex-column gap-4 flex-grow-1">
-      @if (addingIsActive()) {
-        <button pButton (click)="setAddingActiveFalse()" severity="info"><i class="pi pi-times"></i> Cancel</button>
+      @if (showBulkImportScreen()) {
+        <rts-bulk-product-import (successfulUpload)="finishBulkImport()"/>
+      }
+      @else if (addingIsActive()) {
+        <button pButton (click)="setAddingActiveFalse()" severity="info" class="w-fit">
+          <i class="pi pi-times"></i> Cancel
+        </button>
         <rts-organization-product-form (productCreated)="setAddingActiveFalse()"/>
       }
       @else {

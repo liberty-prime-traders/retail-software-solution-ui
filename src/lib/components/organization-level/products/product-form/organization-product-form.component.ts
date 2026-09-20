@@ -14,7 +14,6 @@ import {
 } from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {form, FormField} from '@angular/forms/signals'
-import {BlockUI} from 'primeng/blockui'
 import {ButtonDirective} from 'primeng/button'
 import {InputText} from 'primeng/inputtext'
 import {Panel} from 'primeng/panel'
@@ -36,6 +35,7 @@ import {ToSelectItemOptions, toSelectItems} from '../../../../utils/types/select
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {OrganizationProductFormDefinition} from './organization-product-form.definition'
 import {ProductFormTagDisplayComponent} from './tag-display.component'
 
@@ -54,7 +54,7 @@ import {ProductFormTagDisplayComponent} from './tag-display.component'
     FormsModule,
     PickList,
     ButtonDirective,
-    BlockUI
+    LoadingContainerComponent
   ]
 })
 export class OrganizationProductFormComponent extends BaseFormComponent<OrganizationProductService> implements OnInit {

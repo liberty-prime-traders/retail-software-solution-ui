@@ -1,97 +1,97 @@
-<p-block-ui [blocked]="dependenciesLoading()"/>
+<rts-loading-container [loading]="dependenciesLoading()">
+  <form class="flex flex-column gap-2" [ngClass]="productFormValue().id ? '' : 'filled-background'" >
+    @let labelSize = originalProduct() ? 3 : 2;
 
-<form class="flex flex-column gap-2" [ngClass]="productFormValue().id ? '' : 'filled-background'" >
-  @let labelSize = originalProduct() ? 3 : 2;
+    <rts-form-field [required]="true" label="Product Name" for="productName" [labelColumnSize]="labelSize">
+      <input id="productName" class="flex-grow-1" pInputText [formField]="productForm.productName" />
+    </rts-form-field>
 
-  <rts-form-field [required]="true" label="Product Name" for="productName" [labelColumnSize]="labelSize">
-    <input id="productName" class="flex-grow-1" pInputText [formField]="productForm.productName" />
-  </rts-form-field>
-
-  <rts-form-field [required]="true" label="Product Group" for="productGroupId"  [labelColumnSize]="labelSize">
-    <p-select id="productGroupId"
-              class="flex-grow-1"
-              [options]="productGroups()"
-              [group]="true"
-              filterBy="label"
-              [showClear]="true"
-              [filter]="true"
-              [formField]="productForm.productGroupId"
-              placeholder="Select a Product Group" >
-    </p-select>
-  </rts-form-field>
-
-  @if (!originalProduct()) {
-    <rts-form-field [required]="true" label="Base Unit Group" for="baseUnitGroupId" [labelColumnSize]="labelSize">
-      <p-select id="baseUnitGroupId"
+    <rts-form-field [required]="true" label="Product Group" for="productGroupId"  [labelColumnSize]="labelSize">
+      <p-select id="productGroupId"
                 class="flex-grow-1"
-                [options]="unitGroups()"
-                filterBy="name"
-                optionLabel="name"
-                optionValue="id"
+                [options]="productGroups()"
+                [group]="true"
+                filterBy="label"
+                [showClear]="true"
                 [filter]="true"
-                [formField]="productForm.baseUnitGroupId"
-                placeholder="Select a Unit Group" >
+                [formField]="productForm.productGroupId"
+                placeholder="Select a Product Group" >
       </p-select>
     </rts-form-field>
 
-    <rts-form-field [required]="true" label="Base Unit" for="baseUnitId" [labelColumnSize]="labelSize">
-      <p-select id="baseUnitId"
-                class="flex-grow-1"
-                [options]="unitValues()"
-                optionLabel="name"
-                optionValue="id"
-                [formField]="productForm.baseUnitId"
-                placeholder="Select a Unit" >
-      </p-select>
+    @if (!originalProduct()) {
+      <rts-form-field [required]="true" label="Base Unit Group" for="baseUnitGroupId" [labelColumnSize]="labelSize">
+        <p-select id="baseUnitGroupId"
+                  class="flex-grow-1"
+                  [options]="unitGroups()"
+                  filterBy="name"
+                  optionLabel="name"
+                  optionValue="id"
+                  [filter]="true"
+                  [formField]="productForm.baseUnitGroupId"
+                  placeholder="Select a Unit Group" >
+        </p-select>
+      </rts-form-field>
+
+      <rts-form-field [required]="true" label="Base Unit" for="baseUnitId" [labelColumnSize]="labelSize">
+        <p-select id="baseUnitId"
+                  class="flex-grow-1"
+                  [options]="unitValues()"
+                  optionLabel="name"
+                  optionValue="id"
+                  [formField]="productForm.baseUnitId"
+                  placeholder="Select a Unit" >
+        </p-select>
+      </rts-form-field>
+    }
+
+    <rts-form-field  label="Description" for="description" [labelColumnSize]="labelSize">
+      <input id="description" pInputText [formField]="productForm.description" />
     </rts-form-field>
-  }
 
-  <rts-form-field  label="Description" for="description" [labelColumnSize]="labelSize">
-    <input id="description" pInputText [formField]="productForm.description" />
-  </rts-form-field>
+    <p-panel class="m-4" header="Assign tags to product" toggleable [collapsed]="true">
+      <p-pick-list
+        [source]="availableTags()"
+        [(target)]="selectedTags"
+        [dragdrop]="true"
+        metaKeySelection
+        [keepSelection]="true"
+        dataKey="id"
+        [showSourceControls]="false"
+        [showTargetControls]="false"
+        (onMoveToTarget)="onTagMove()"
+        (onMoveToSource)="onTagMove()"
+        (onMoveAllToTarget)="onTagMove()"
+        (onMoveAllToSource)="onTagMove()"
+        [responsive]="true"
+        class="p-2"
+        filterBy="tagName"
+        breakpoint="1400px">
+        <ng-template let-item #item>
+          <rts-tag-display [currentTag]="item" [productFormValue]="productFormValue()"/>
+        </ng-template>
+      </p-pick-list>
+    </p-panel>
 
-  <p-panel class="m-4" header="Assign tags to product" toggleable [collapsed]="true">
-    <p-pick-list
-      [source]="availableTags()"
-      [(target)]="selectedTags"
-      [dragdrop]="true"
-      metaKeySelection
-      [keepSelection]="true"
-      dataKey="id"
-      [showSourceControls]="false"
-      [showTargetControls]="false"
-      (onMoveToTarget)="onTagMove()"
-      (onMoveToSource)="onTagMove()"
-      (onMoveAllToTarget)="onTagMove()"
-      (onMoveAllToSource)="onTagMove()"
-      [responsive]="true"
-      class="p-2"
-      filterBy="tagName"
-      breakpoint="1400px">
-      <ng-template let-item #item>
-        <rts-tag-display [currentTag]="item" [productFormValue]="productFormValue()"/>
-      </ng-template>
-    </p-pick-list>
-  </p-panel>
+    @if (productIsInactive()) {
+      <button pButton (click)="reactivateProduct()" severity="success">Reactivate</button>
 
-  @if (productIsInactive()) {
-    <button pButton (click)="reactivateProduct()" severity="success">Reactivate</button>
+    } @else {
+      <rts-forms-buttons [disableReset]="!productForm().dirty"
+                         [disableSave]="productForm().invalid() || !productForm().dirty"
+                         [hideDelete]="!originalProduct()?.id"
+                         [signalForm]="productForm()"
+                         [fieldMap]="productFormFields"
+                         [processingStatus]="processingStatus()"
+                         [failureMessages]="failureMessages()"
+                         deleteLabel="Deactivate"
+                         deleteWarning="Confirm Deactivation of Product?"
+                         deleteInProgressMessage="Deactivating Product..."
+                         (delete)="deactivateProduct()"
+                         (save)="upsertProduct()"
+                         (resetAction)="resetForm()">
+      </rts-forms-buttons>
+    }
 
-  } @else {
-    <rts-forms-buttons [disableReset]="!productForm().dirty"
-                       [disableSave]="productForm().invalid() || !productForm().dirty"
-                       [hideDelete]="!originalProduct()?.id"
-                       [signalForm]="productForm()"
-                       [fieldMap]="productFormFields"
-                       [processingStatus]="processingStatus()"
-                       [failureMessages]="failureMessages()"
-                       deleteLabel="Deactivate"
-                       deleteWarning="Confirm Deactivation of Product?"
-                       deleteInProgressMessage="Deactivating Product..."
-                       (delete)="deactivateProduct()"
-                       (save)="upsertProduct()"
-                       (resetAction)="resetForm()">
-    </rts-forms-buttons>
-  }
-
-</form>
+  </form>
+</rts-loading-container>

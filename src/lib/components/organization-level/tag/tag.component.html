@@ -22,14 +22,15 @@
         </div>
       }
     </div>
-
   </div>
 
   <p-divider layout="vertical" />
 
   <div class="flex flex-column gap-4 flex-grow-1">
     @if (addingIsActive()) {
-      <button pButton (click)="setAddingActiveFalse()" severity="info"><i class="pi pi-times"></i> Cancel</button>
+      <button pButton (click)="setAddingActiveFalse()" severity="info" class="w-fit">
+        <i class="pi pi-times"></i> Cancel
+      </button>
       <rts-tag-form (tagCreated)="tagCreated($event)"/>
     } @else if (selectedCategory()) {
       <ng-container *ngTemplateOutlet="tagGrid"/>

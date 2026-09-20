@@ -55,7 +55,10 @@ export class UnitValueFormComponent extends BaseFormComponent<UnitValueService> 
     if (updatedUnitValue.id) {
       this.unitValueService.put(updatedUnitValue)
     } else {
-      this.unitValueService.post(updatedUnitValue, {onSuccess: (saved) => this.unitValueCreated.emit(saved)})
+      this.unitValueService.post(
+        updatedUnitValue,
+        {onSuccess: (saved) => this.unitValueCreated.emit(saved)}
+      )
     }
   }
 
