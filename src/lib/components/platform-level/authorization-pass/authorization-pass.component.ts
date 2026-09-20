@@ -1,6 +1,6 @@
 import {DatePipe, NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {AuthorizationPassService} from '../../../api/platform-level/authorization-pass/authorization-pass.service'
 import {PassStatus} from '../../../api/platform-level/authorization-pass/pass-status.enum'
@@ -18,7 +18,7 @@ import {AuthorizationPassFormComponent} from './authorization-pass-form/authoriz
   templateUrl: 'authorization-pass.component.html',
   imports: [
     TableModule,
-    Button,
+    ButtonDirective,
     NullSafePipe,
     PrettifyEnumPipe,
     NgClass,

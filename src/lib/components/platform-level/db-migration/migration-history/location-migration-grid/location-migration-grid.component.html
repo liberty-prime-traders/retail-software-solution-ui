@@ -3,28 +3,28 @@
 
   <p-table [value]="locations()" [tableStyle]="{ 'min-width': '50rem' }" class="p-datatable-striped">
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th pSortableColumn="locationName">Location
-          <p-sortIcon field="locationName"/>
+          <p-sort-icon field="locationName"/>
         </th>
         <th pSortableColumn="versionNumber">Version
-          <p-sortIcon field="versionNumber"/>
+          <p-sort-icon field="versionNumber"/>
         </th>
         <th pSortableColumn="startOn">Start Date
-          <p-sortIcon field="startOn"/>
+          <p-sort-icon field="startOn"/>
         </th>
         <th pSortableColumn="endOn">End Date
-          <p-sortIcon field="endOn"/>
+          <p-sort-icon field="endOn"/>
         </th>
         <th pSortableColumn="status">Status
-          <p-sortIcon field="status"/>
+          <p-sort-icon field="status"/>
         </th>
         <th>Message</th>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-location>
+    <ng-template #body let-location>
       <tr>
         <td>{{ location.locationName }}</td>
         <td>{{ location.versionNumber }}</td>
@@ -39,7 +39,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="emptymessage">
+    <ng-template #emptymessage>
       <tr>
         <td colspan="6">No location migrations found</td>
       </tr>

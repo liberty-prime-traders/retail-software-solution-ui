@@ -7,11 +7,11 @@
            scrollHeight="flex"
            dataKey="id">
 
-    <ng-template pTemplate="caption">
+    <ng-template #caption>
       <h3>Sales</h3>
     </ng-template>
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th>Reference</th>
         <th>Customer</th>
@@ -26,7 +26,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-sale>
+    <ng-template #body let-sale>
       <tr>
         <td>{{sale.referenceNumber | nullSafe}}</td>
         <td>{{sale.contactName | nullSafe}}</td>
@@ -49,12 +49,13 @@
         <td>{{ sale.dateSold | date | nullSafe }}</td>
 
         <td>
-          <p-button icon="pi pi-pen-to-square"
-                    rounded
-                    severity="secondary"
-                    [disabled]="loading()"
-                    (onClick)="onEditSale(sale)">
-          </p-button>
+          <button pButton
+                  rounded
+                  severity="secondary"
+                  [disabled]="loading()"
+                  (click)="onEditSale(sale)">
+            <i class="pi pi-pen-to-square"></i>
+          </button>
         </td>
       </tr>
     </ng-template>

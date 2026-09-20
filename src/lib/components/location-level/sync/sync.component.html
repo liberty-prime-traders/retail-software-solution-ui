@@ -5,12 +5,9 @@
 
     <p-select-button [(ngModel)]="selectedMode" [options]="SyncMode | enumToDropdown"/>
 
-    <p-button label="Sync"
-              icon="pi pi-sync"
-              [loading]="loading()"
-              [disabled]="syncInProgress()"
-              (onClick)="initiateSync()">
-    </p-button>
+    <button pButton [disabled]="syncInProgress()" (click)="initiateSync()">
+      <i class="pi pi-sync"></i> Sync
+    </button>
   </div>
 
   @if (errorMessages().length) {

@@ -1,6 +1,6 @@
 import {NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {OrgTaxTypeService} from '../../../api/organization-level/org-tax-type/org-tax-type.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
@@ -19,7 +19,7 @@ import {OrgTaxTypeEditFormComponent} from './org-tax-type-edit-form/org-tax-type
   imports: [
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     OrgTaxTypeAddFormComponent,
     OrgTaxTypeEditFormComponent,
     GridFilterComponent,

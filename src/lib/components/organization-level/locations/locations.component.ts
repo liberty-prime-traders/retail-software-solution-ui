@@ -1,7 +1,7 @@
 import {NgClass} from '@angular/common'
 import {Component, effect, inject, input, model} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Location} from '../../../api/organization-level/location/location.model'
 import {LocationService} from '../../../api/organization-level/location/location.service'
@@ -19,7 +19,7 @@ import {LocationFormComponent} from './location-form/location-form.component'
   templateUrl: 'locations.component.html',
   imports: [
     AddRowComponent,
-    Button,
+    ButtonDirective,
     NullSafePipe,
     NullishToZeroPipe,
     TableModule,

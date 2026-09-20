@@ -10,11 +10,10 @@
       <div class="flex align-items-center gap-2 mb-3">
         <ng-content/>
 
-        <p-button
-          label="Assign Authority"
-          icon="pi pi-plus"
-          (click)="openAuthorityAssignment()">
-        </p-button>
+        <button pButton
+                (click)="openAuthorityAssignment()">
+          <i class="pi pi-plus"></i> Assign Authority
+        </button>
       </div>
     </rts-membership>
   }

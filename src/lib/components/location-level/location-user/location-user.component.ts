@@ -1,5 +1,5 @@
 import {Component, signal} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {MembershipUserService} from '../../../api/cross-tier/authorization/membership-user.service'
 import {UserAccessDetailService} from '../../../api/cross-tier/authorization/user-access-detail.service'
 import {LocationUserAccessDetailService} from '../../../api/location-level/authorization/location-user-access-detail.service'
@@ -14,7 +14,7 @@ import {PullFromOrgUserComponent} from './pull-from-org-user.component'
   imports: [
     UserManagementComponent,
     PullFromOrgUserComponent,
-    Button
+    ButtonDirective
   ],
   providers: [
     {provide: MembershipUserService, useExisting: LocationMembershipUserService},

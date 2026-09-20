@@ -1,6 +1,6 @@
 import {CurrencyPipe, DatePipe, NgClass} from '@angular/common'
 import {Component, effect, inject, input, output, signal, untracked} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {SupplierPaymentService} from '../../../../api/location-level/supplier-payment/supplier-payment.service'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
@@ -13,7 +13,7 @@ import {PaymentFormComponent} from '../payment-form/payment-form.component'
   templateUrl: 'payment-grid.component.html',
   imports: [
     TableModule,
-    Button,
+    ButtonDirective,
     CurrencyPipe,
     DatePipe,
     NgClass,

@@ -1,7 +1,7 @@
 import {NgClass, NgTemplateOutlet} from '@angular/common'
 import {Component, computed, inject, signal} from '@angular/core'
 import {ReactiveFormsModule} from '@angular/forms'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {TableModule} from 'primeng/table'
 import {Tag} from '../../../api/organization-level/tag/tag.model'
@@ -20,7 +20,7 @@ import {TagFormComponent} from './tag-form/tag-form.component'
   imports: [
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     TagFormComponent,
     GridFilterComponent,
     EmptyRowComponent,

@@ -1,5 +1,5 @@
 <div class="flex flex-column gap-4">
-  <p-message severity="secondary" styleClass="w-full">
+  <p-message severity="secondary" class="w-full">
     Warning: This period has ended. Consider closing it to prevent accidental entries.
     Once closed, no new journal entries will be allowed for this period.
 
@@ -21,31 +21,33 @@
         }
       </p-message>
 
-      <p-button label="Yes, Close"
-                severity="danger"
-                rounded
-                [disabled]="closeInProgress()"
-                (click)="confirmClose()">
-      </p-button>
+      <button pButton
+              severity="danger"
+              rounded
+              [disabled]="closeInProgress()"
+              (click)="confirmClose()">
+        Yes, Close
+      </button>
 
-      <p-button label="Cancel"
-                severity="secondary"
-                rounded
-                (click)="cancelClose()">
-      </p-button>
+      <button pButton
+              severity="secondary"
+              rounded
+              (click)="cancelClose()">
+        Cancel
+      </button>
     </div>
 
   } @else {
     <div class="flex justify-content-end gap-2">
       <rts-error-summary [regularErrorMessages]="failureMessages()"/>
 
-      <p-button label="Close Period"
-                icon="pi pi-lock"
-                severity="warn"
-                rounded
-                [disabled]="closeInProgress()"
-                (click)="initiateClose()">
-      </p-button>
+      <button pButton
+              severity="warn"
+              rounded
+              [disabled]="closeInProgress()"
+              (click)="initiateClose()">
+        <i class="pi pi-lock"></i> Close Period
+      </button>
     </div>
   }
 </div>

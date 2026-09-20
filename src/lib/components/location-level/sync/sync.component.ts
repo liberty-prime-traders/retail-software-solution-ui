@@ -1,6 +1,6 @@
 import {Component, inject, model, OnInit} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Message} from 'primeng/message'
 import {Select} from 'primeng/select'
 import {SelectButton} from 'primeng/selectbutton'
@@ -15,7 +15,7 @@ import {SyncGridComponent} from './sync-grid.component'
   selector: 'rts-sync',
   templateUrl: 'sync.component.html',
   imports: [
-    Button,
+    ButtonDirective,
     Select,
     SelectButton,
     Message,

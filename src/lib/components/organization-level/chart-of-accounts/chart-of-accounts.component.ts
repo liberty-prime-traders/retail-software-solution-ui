@@ -2,7 +2,7 @@ import {NgTemplateOutlet} from '@angular/common'
 import {Component, computed, inject} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {MarkdownComponent} from 'ngx-markdown'
-import {ButtonModule} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
 import {TreeTableModule} from 'primeng/treetable'
@@ -26,7 +26,7 @@ import {AccountsGridComponent} from './accounts-grid/accounts-grid.component'
     NgTemplateOutlet,
     MarkdownComponent,
     TreeTableModule,
-    ButtonModule,
+    ButtonDirective,
     MoneyComponent,
     FormsModule,
     AccountsGridComponent

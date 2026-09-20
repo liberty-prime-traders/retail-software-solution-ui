@@ -7,14 +7,14 @@
   <p-tabpanels>
     <p-tabpanel value="lines">
       <p-table [value]="delivery().lines">
-        <ng-template pTemplate="header">
+        <ng-template #header>
           <tr>
             <th>Product</th>
             <th>Qty Delivered</th>
             <th>Unit Cost</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-line>
+        <ng-template #body let-line>
           <tr>
             <td>{{ line.locationProduct | productLabel }}</td>
             <td>{{ line.quantityDelivered }} {{ line.unitId | fullUnitDescription }}</td>

@@ -4,15 +4,16 @@
       <h3 class="font-bold">Units</h3>
 
       <div class="flex gap-4">
-        <p-button (onClick)="toggleBulkImport()"
-                  [disabled]="loading()"
-                  rounded
-                  severity="secondary"
-                  [icon]="showBulkImportScreen() ? 'pi pi-times' : 'pi pi-upload'"
-                  [label]="showBulkImportScreen() ? 'Close Bulk Import' : 'Bulk Import Units'">
-        </p-button>
+        <button pButton
+                (click)="toggleBulkImport()"
+                [disabled]="loading()"
+                rounded
+                severity="secondary">
+          <i [class]="showBulkImportScreen() ? 'pi pi-times' : 'pi pi-upload'"></i>
+          {{ showBulkImportScreen() ? 'Close Bulk Import' : 'Bulk Import Units' }}
+        </button>
 
-        <p-button (click)="setAddingActiveTrue()" rounded [disabled]="loading() || addingIsActive()" label="+ Add Unit Group"/>
+        <button pButton (click)="setAddingActiveTrue()" rounded [disabled]="loading() || addingIsActive()">+ Add Unit Group</button>
       </div>
 
     </div>
@@ -62,7 +63,10 @@
         <div class="flex flex-column gap-4 flex-grow-1">
 
           @if (addingIsActive()) {
-            <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info"/>
+            <button pButton (click)="setAddingActiveFalse()" severity="info" class="w-fit">
+              <i class="pi pi-times"></i>
+              Cancel
+            </button>
             <rts-unit-group-form (unitGroupCreated)="unitGroupCreated($event)"/>
 
           } @else if (selectedUnitGroup()) {

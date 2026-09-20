@@ -1,7 +1,7 @@
 import {DatePipe} from '@angular/common'
 import {Component, computed, effect, inject, model} from '@angular/core'
 import {MessageService} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {OrganizationFeatureStatus} from '../../../api/organization-level/org-feature/org-feature-status.enum'
 import {OrganizationFeature} from '../../../api/organization-level/org-feature/org-feature.model'
@@ -23,7 +23,7 @@ import {OrgFeatureAddFormComponent} from './org-feature-add-form/org-feature-add
     TableModule,
     NullSafePipe,
     PrettifyEnumPipe,
-    Button,
+    ButtonDirective,
     OrgFeatureAddFormComponent,
     GridFilterComponent,
     EmptyRowComponent,

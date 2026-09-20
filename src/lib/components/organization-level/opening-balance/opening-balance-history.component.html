@@ -5,7 +5,7 @@
            sortField="changedAt"
            [sortOrder]="-1">
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th>Reference Number</th>
         <th>Changed By</th>
@@ -14,7 +14,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-revision>
+    <ng-template #body let-revision>
       <tr>
         <td>{{ revision.referenceNumber }}</td>
         <td>{{ revision.changedBy }}</td>
@@ -25,7 +25,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="emptymessage">
+    <ng-template #emptymessage>
       <tr rts-empty-row [colspan]="4" message="Opening balance has not been recorded yet"></tr>
     </ng-template>
 

@@ -1,7 +1,7 @@
 import {CurrencyPipe} from '@angular/common'
 import {Component, inject, input, model, OnInit} from '@angular/core'
 import {MessageService} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {InputNumber} from 'primeng/inputnumber'
 import {Message} from 'primeng/message'
 import {Nullable} from 'primeng/ts-helpers'
@@ -21,9 +21,9 @@ import {LoadingContainerComponent} from '../../../reusable/loading-container/loa
     FormFieldComponent,
     CurrencyPipe,
     InputNumber,
-    Button,
     LoadingContainerComponent,
-    ErrorSummaryComponent
+    ErrorSummaryComponent,
+    ButtonDirective
   ],
   templateUrl: 'opening-balance-edit.component.html'
 })

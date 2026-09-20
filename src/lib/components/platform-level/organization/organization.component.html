@@ -9,33 +9,33 @@
          [value]="organizations()"
          [globalFilterFields]="['name', 'subdomain', 'description']">
 
-  <ng-template pTemplate="caption">
+  <ng-template #caption>
     <div class="flex justify-content-end gap-6 mb-3 align-items-center">
       <rts-grid-filter [dataTable]="organizationsTable" margin="m-0"/>
     </div>
   </ng-template>
 
-  <ng-template pTemplate="header">
+  <ng-template #header>
     <tr>
       <th pSortableColumn="name">Name
-        <p-sortIcon field="name"></p-sortIcon>
+        <p-sort-icon field="name"></p-sort-icon>
       </th>
       <th pSortableColumn="subdomain">Subdomain
-        <p-sortIcon field="subdomain"></p-sortIcon>
+        <p-sort-icon field="subdomain"></p-sort-icon>
       </th>
       <th pSortableColumn="description">Description
-        <p-sortIcon field="description"></p-sortIcon>
+        <p-sort-icon field="description"></p-sort-icon>
       </th>
       <th pSortableColumn="createdBy">Created By
-        <p-sortIcon field="createdBy"></p-sortIcon>
+        <p-sort-icon field="createdBy"></p-sort-icon>
       </th>
       <th pSortableColumn="createdOn">Created On
-        <p-sortIcon field="createdOn"></p-sortIcon>
+        <p-sort-icon field="createdOn"></p-sort-icon>
       </th>
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-organization>
+  <ng-template #body let-organization>
     <tr>
       <td>{{organization?.name | nullSafe}}</td>
       <td>{{organization?.subdomain | nullSafe}}</td>
@@ -45,7 +45,7 @@
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="emptymessage">
+  <ng-template #emptymessage>
     <tr rts-empty-row [colspan]="6" message="No organizations found"></tr>
   </ng-template>
 </p-table>

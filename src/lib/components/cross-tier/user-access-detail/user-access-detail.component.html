@@ -49,12 +49,13 @@
               <span class="info-message text-sm">Since {{addOn.grantedAt | date}}</span>
             </div>
 
-            <p-button icon="pi pi-times"
-                      [text]="true"
-                      severity="danger"
-                      size="small"
-                      (click)="revokePermission(addOn.permission)">
-            </p-button>
+            <button pButton
+                    [text]="true"
+                    severity="danger"
+                    size="small"
+                    (click)="revokePermission(addOn.permission)">
+              <i class="pi pi-times"></i>
+            </button>
 
             <p-divider layout="vertical"/>
           </div>

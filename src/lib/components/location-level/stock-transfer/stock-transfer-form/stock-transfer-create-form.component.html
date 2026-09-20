@@ -28,11 +28,11 @@
                          [fieldMap]="fieldMap">
       </rts-error-summary>
 
-      <p-button label="Create Draft"
-                icon="pi pi-save"
-                (click)="createTransfer()"
-                [disabled]="stockTransferCreateForm().invalid()">
-      </p-button>
+      <button pButton
+              (click)="createTransfer()"
+              [disabled]="stockTransferCreateForm().invalid()">
+        <i class="pi pi-save"></i> Create Draft
+      </button>
     </div>
   </form>
 </rts-loading-container>

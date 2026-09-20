@@ -1,7 +1,7 @@
 import {NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
 import {ReactiveFormsModule} from '@angular/forms'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {ProductCategoryService} from '../../../api/organization-level/product-category/product-category.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
@@ -17,7 +17,7 @@ import {ProductCategoryFormComponent} from './product-category-form/product-cate
   imports: [
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     ProductCategoryFormComponent,
     GridFilterComponent,
     EmptyRowComponent,

@@ -60,13 +60,12 @@
       </rts-form-field>
 
       <div class="flex justify-content-end">
-        <p-button
-          icon="pi pi-plus"
-          label="Add Payment"
-          class="mt-2"
-          [disabled]="paymentForm().invalid()"
-          (onClick)="addPayment()">
-        </p-button>
+        <button pButton
+                class="mt-2"
+                [disabled]="paymentForm().invalid()"
+                (click)="addPayment()">
+          <i class="pi pi-plus"></i> Add Payment
+        </button>
       </div>
     </div>
   </div>

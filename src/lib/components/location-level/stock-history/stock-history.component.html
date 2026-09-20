@@ -5,7 +5,7 @@
            sortField="recordedOn"
            [sortOrder]="-1">
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th>Recorded On</th>
         <th>Reference</th>
@@ -15,7 +15,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-history>
+    <ng-template #body let-history>
       <tr>
         <td>{{ history.recordedOn | date  }}</td>
         <td>{{ history.externalReferenceNumber | nullSafe }}</td>
@@ -32,7 +32,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="emptymessage">
+    <ng-template #emptymessage>
       <tr rts-empty-row message="No stock movements recorded yet" [colspan]="5"></tr>
     </ng-template>
 

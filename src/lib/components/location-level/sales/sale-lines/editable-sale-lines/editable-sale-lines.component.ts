@@ -2,7 +2,7 @@ import {CurrencyPipe} from '@angular/common'
 import {Component, inject, input} from '@angular/core'
 import {FormField} from '@angular/forms/signals'
 import {Badge} from 'primeng/badge'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Divider} from 'primeng/divider'
 import {IftaLabel} from 'primeng/iftalabel'
@@ -37,7 +37,7 @@ import {SaleLineHasChangedPipe} from '../sale-line-has-changed.pipe'
   imports: [
     AlternativeUnitsFinderPipe,
     Badge,
-    Button,
+    ButtonDirective,
     Card,
     ConversionContextPipe,
     CurrencyPipe,

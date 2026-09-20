@@ -5,18 +5,19 @@
   <div class="flex gap-4 mr-3 h-full relative">
     @if (showNavigation()) {
       <div class="relative">
-        <p-button icon="pi pi-bars"
-                  (onClick)="showNavigation.set(false)"
-                  size="small"
-                  severity="secondary"
-                  class="absolute position-right-5 position-top-3 z-1">
-        </p-button>
+        <button pButton
+                (click)="showNavigation.set(false)"
+                size="small"
+                severity="secondary"
+                class="absolute position-right-5 position-top-3 z-1">
+          <i class="pi pi-bars"></i>
+        </button>
         <p-menu [model]="menuItems" class="block h-full filled-background"/>
       </div>
 
     } @else {
       <div class="pl-1">
-        <p-button icon="pi pi-bars" severity="secondary" (onClick)="showNavigation.set(true)" size="small"/>
+        <button pButton severity="secondary" (click)="showNavigation.set(true)" size="small"><i class="pi pi-bars"></i></button>
       </div>
     }
 
@@ -27,13 +28,14 @@
     @if (saleFormVisibilityContext.newSaleButtonIsVisible()) {
       <div id="saleButton" class="floating bottom right flex align-items-center gap-1">
 
-        <p-button cdkDrag
-                  cdkDragRootElement="#saleButton"
-                  size="small"
-                  icon="pi pi-arrows-alt"
-                  rounded
-                  severity="success">
-        </p-button>
+        <button pButton
+                cdkDrag
+                cdkDragRootElement="#saleButton"
+                size="small"
+                rounded
+                severity="success">
+          <i class="pi pi-arrows-alt"></i>
+        </button>
 
         <a id="sale-button"
            (click)="saleFormNavigator.openForNewSale()"

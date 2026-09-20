@@ -8,7 +8,7 @@
            [sortOrder]="-1"
            [expandedRowKeys]="expandedRows()">
 
-    <ng-template pTemplate="caption">
+    <ng-template #caption>
       <div class="flex flex-wrap justify-content-between items-center gap-2 w-full">
         <div class="flex gap-2">
           <p-date-picker [(ngModel)]="dateRange"
@@ -20,51 +20,52 @@
                          [style]="{'min-width': '320px'}">
           </p-date-picker>
 
-          <p-button label="Apply Filter" icon="pi pi-refresh" text (onClick)="reloadMigrationHistory()"/>
+          <button pButton text (click)="reloadMigrationHistory()"><i class="pi pi-refresh"></i> Apply Filter</button>
         </div>
 
         @if (migrations().length > 1) {
           <div class="flex flex-wrap justify-content-end gap-2">
-            <p-button label="Expand All" icon="pi pi-plus" text (onClick)="expandAll()"/>
-            <p-button label="Collapse All" icon="pi pi-minus" text (onClick)="collapseAll()"/>
+            <button pButton text (click)="expandAll()"><i class="pi pi-plus"></i> Expand All</button>
+            <button pButton text (click)="collapseAll()"><i class="pi pi-minus"></i> Collapse All</button>
           </div>
         }
 
       </div>
     </ng-template>
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th style="width: 5rem"></th>
         <th pSortableColumn="organizationName">Organization
-          <p-sortIcon field="organizationName"/>
+          <p-sort-icon field="organizationName"/>
         </th>
         <th pSortableColumn="versionNumber">Version
-          <p-sortIcon field="versionNumber"/>
+          <p-sort-icon field="versionNumber"/>
         </th>
         <th pSortableColumn="startOn">Start Date
-          <p-sortIcon field="startOn"/>
+          <p-sort-icon field="startOn"/>
         </th>
         <th pSortableColumn="endOn">End Date
-          <p-sortIcon field="endOn"/>
+          <p-sort-icon field="endOn"/>
         </th>
         <th pSortableColumn="status">Status
-          <p-sortIcon field="status"/>
+          <p-sort-icon field="status"/>
         </th>
         <th>Message</th>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-migration let-expanded="expanded">
+    <ng-template #body let-migration let-expanded="expanded">
       <tr [ngClass]="{'expanded-row': expanded}">
         <td>
-          <p-button type="button"
-                    [pRowToggler]="migration"
-                    [text]="true"
-                    severity="secondary"
-                    [rounded]="true"
-                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
-          </p-button>
+          <button pButton
+                  type="button"
+                  [pRowToggler]="migration"
+                  [text]="true"
+                  severity="secondary"
+                  [rounded]="true">
+            <i [class]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+          </button>
         </td>
         <td>{{ migration.organizationName }}</td>
         <td>{{ migration.versionNumber }}</td>
@@ -81,7 +82,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="expandedrow" let-migration>
+    <ng-template #expandedrow let-migration>
       <tr>
         <td colspan="7" class="filled-background">
           <rts-location-migration-grid [locations]="migration.locations"/>
@@ -89,7 +90,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="emptymessage">
+    <ng-template #emptymessage>
       <tr rts-empty-row [colspan]="7" message="No DB Migrations found"></tr>
     </ng-template>
   </p-table>

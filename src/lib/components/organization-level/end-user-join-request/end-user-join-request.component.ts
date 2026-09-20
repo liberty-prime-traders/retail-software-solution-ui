@@ -2,7 +2,7 @@ import {DatePipe} from '@angular/common'
 import {Component, computed, effect, inject, model, OnInit, signal} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {MessageService} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {TagModule} from 'primeng/tag'
 import {EndUserJoinRequest} from '../../../api/organization-level/end-user-join-request/end-user-join-request.model'
@@ -29,7 +29,7 @@ import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.compon
     GridFilterComponent,
     TagModule,
     EmptyRowComponent,
-    Button,
+    ButtonDirective,
     PrettifyEnumPipe
   ]
 })

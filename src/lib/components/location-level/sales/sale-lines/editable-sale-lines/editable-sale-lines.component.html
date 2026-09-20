@@ -64,11 +64,11 @@
               </p-inputgroup-addon>
 
               <p-ifta-label>
-                <p-inputNumber
+                <p-input-number
                   [min]="0"
                   [maxFractionDigits]="2"
                   [formField]="formFieldRow.quantity">
-                </p-inputNumber>
+                </p-input-number>
                 <label>Quantity</label>
               </p-ifta-label>
             </p-input-group>
@@ -83,11 +83,11 @@
                 KES
               </p-inputgroup-addon>
               <p-ifta-label>
-                <p-inputNumber
+                <p-input-number
                   [min]="0"
                   [maxFractionDigits]="2"
                   [formField]="formFieldRow.unitPriceOverride">
-                </p-inputNumber>
+                </p-input-number>
                 <label>Cashier's Price</label>
               </p-ifta-label>
             </p-input-group>
@@ -99,20 +99,22 @@
           <span class="font-medium">{{ line.lineTotal | currency }}</span>
 
           <div class="flex gap-3 justify-content-center">
-            <p-button icon="pi pi-times"
-                      severity="danger"
-                      rounded
-                      text
-                      (onClick)="removeSaleLine(line)">
-            </p-button>
+            <button pButton
+                    severity="danger"
+                    rounded
+                    text
+                    (click)="removeSaleLine(line)">
+              <i class="pi pi-times"></i>
+            </button>
 
             @if (touched) {
-              <p-button icon="pi pi-check"
-                        text
-                        class="pulse primary-color border-round"
-                        rounded
-                        (onClick)="sendLineRequest()">
-              </p-button>
+              <button pButton
+                      text
+                      class="pulse primary-color border-round"
+                      rounded
+                      (click)="sendLineRequest()">
+                <i class="pi pi-check"></i>
+              </button>
             }
           </div>
 

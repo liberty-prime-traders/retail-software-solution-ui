@@ -1,6 +1,6 @@
 import {NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {ContactService} from '../../../api/organization-level/contact/contact.service'
 import {JoinEnumPipe} from '../../../utils/pipes/join-enum.pipe'
@@ -19,7 +19,7 @@ import {ContactNamePipe} from './contact-name.pipe'
   imports: [
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     ContactFormComponent,
     GridFilterComponent,
     EmptyRowComponent,

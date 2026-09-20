@@ -11,41 +11,42 @@
            (onRowCollapse)="rowIsExpanded.set(false)"
            [value]="platformFeatures()">
 
-    <ng-template pTemplate="caption">
+    <ng-template #caption>
       <div class="flex justify-content-between align-items-center">
         <h3 class="font-bold">Platform Features</h3>
         <rts-grid-filter [dataTable]="platformFeaturesTable"/>
       </div>
     </ng-template>
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th pSortableColumn="feature">Feature
-          <p-sortIcon field="feature"/>
+          <p-sort-icon field="feature"/>
         </th>
         <th pSortableColumn="description">Description
-          <p-sortIcon field="description"/>
+          <p-sort-icon field="description"/>
         </th>
         <th style="width: 5rem"></th>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-platformFeature let-expanded="expanded">
+    <ng-template #body let-platformFeature let-expanded="expanded">
       <tr [ngClass]="{ 'expanded-row': expanded }">
         <td>{{ platformFeature?.feature | prettifyEnum }}</td>
         <td>{{ platformFeature?.description | nullSafe }}</td>
         <td>
-          <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                    rounded
-                    severity="secondary"
-                    [disabled]="loading()"
-                    [pRowToggler]="platformFeature">
-          </p-button>
+          <button pButton
+                  rounded
+                  severity="secondary"
+                  [disabled]="loading()"
+                  [pRowToggler]="platformFeature">
+            <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+          </button>
         </td>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="expandedrow" let-platformFeature>
+    <ng-template #expandedrow let-platformFeature>
       <tr>
         <td colspan="3" class="filled-background">
           <rts-platform-feature-form [platformFeature]="platformFeature"/>
@@ -53,7 +54,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="emptymessage">
+    <ng-template #emptymessage>
       <tr rts-empty-row [colspan]="3" message="No Platform Features Were Found"></tr>
     </ng-template>
   </p-table>

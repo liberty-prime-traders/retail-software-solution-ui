@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common'
 import {Component, computed, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Tag} from 'primeng/tag'
 import {StockTransferStatus} from '../../../../api/cross-tier/stock-transfer/stock-transfer-status.enum'
 import {StockTransferPerspective} from '../../../../api/location-level/stock-transfer/stock-transfer-perspective.enum'
@@ -19,7 +19,7 @@ import {StockTransferFormContext} from './stock-transfer-form-context'
   selector: 'rts-location-stock-transfer-detail',
   templateUrl: 'stock-transfer-detail.component.html',
   imports: [
-    Button,
+    ButtonDirective,
     Tag,
     NullSafePipe,
     PrettifyEnumPipe,

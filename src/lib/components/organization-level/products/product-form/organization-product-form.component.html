@@ -50,31 +50,32 @@
     <input id="description" pInputText [formField]="productForm.description" />
   </rts-form-field>
 
-  <p-panel class="m-4" header="Assign tags to product" toggleable collapsed>
-    <p-pickList [source]="availableTags()"
-                [(target)]="selectedTags"
-                [dragdrop]="true"
-                metaKeySelection
-                [keepSelection]="true"
-                dataKey="id"
-                [showSourceControls]="false"
-                [showTargetControls]="false"
-                (onMoveToTarget)="onTagMove()"
-                (onMoveToSource)="onTagMove()"
-                (onMoveAllToTarget)="onTagMove()"
-                (onMoveAllToSource)="onTagMove()"
-                [responsive]="true"
-                class="p-2"
-                filterBy="tagName"
-                breakpoint="1400px">
-      <ng-template let-item pTemplate="item">
+  <p-panel class="m-4" header="Assign tags to product" toggleable [collapsed]="true">
+    <p-pick-list
+      [source]="availableTags()"
+      [(target)]="selectedTags"
+      [dragdrop]="true"
+      metaKeySelection
+      [keepSelection]="true"
+      dataKey="id"
+      [showSourceControls]="false"
+      [showTargetControls]="false"
+      (onMoveToTarget)="onTagMove()"
+      (onMoveToSource)="onTagMove()"
+      (onMoveAllToTarget)="onTagMove()"
+      (onMoveAllToSource)="onTagMove()"
+      [responsive]="true"
+      class="p-2"
+      filterBy="tagName"
+      breakpoint="1400px">
+      <ng-template let-item #item>
         <rts-tag-display [currentTag]="item" [productFormValue]="productFormValue()"/>
       </ng-template>
-    </p-pickList>
+    </p-pick-list>
   </p-panel>
 
   @if (productIsInactive()) {
-    <p-button label="Reactivate" (onClick)="reactivateProduct()" severity="success"/>
+    <button pButton (click)="reactivateProduct()" severity="success">Reactivate</button>
 
   } @else {
     <rts-forms-buttons [disableReset]="!productForm().dirty"

@@ -1,8 +1,7 @@
 import {NgClass} from '@angular/common'
 import {Component, computed, inject, model, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {PrimeTemplate} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Dialog} from 'primeng/dialog'
 import {TableModule} from 'primeng/table'
 import {ToggleSwitch} from 'primeng/toggleswitch'
@@ -25,13 +24,12 @@ import {OpeningBalanceEditComponent} from '../opening-balance-edit/opening-balan
   imports: [
     AccountFormComponent,
     AutoStretchDirective,
-    Button,
+    ButtonDirective,
     EmptyRowComponent,
     GridFilterComponent,
     MoneyComponent,
     NullSafePipe,
     PrettifyEnumPipe,
-    PrimeTemplate,
     TableModule,
     ToggleSwitch,
     Dialog,

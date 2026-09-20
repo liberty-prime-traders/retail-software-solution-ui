@@ -1,6 +1,6 @@
 import {NgClass} from '@angular/common'
 import {Component, inject, model, OnInit} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {ProductGroup} from '../../../api/organization-level/product-group/product-group.model'
 import {ProductGroupService} from '../../../api/organization-level/product-group/product-group.service'
@@ -17,7 +17,7 @@ import {ProductGroupFormComponent} from './product-group-form/product-group-form
   imports: [
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     ProductGroupFormComponent,
     GridFilterComponent,
     EmptyRowComponent,

@@ -2,7 +2,7 @@ import {Component, computed, inject, model, OnInit, output, signal} from '@angul
 import {FormsModule} from '@angular/forms'
 import {applyEach, form} from '@angular/forms/signals'
 import {TreeNode} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TreeSelect} from 'primeng/treeselect'
 import {AccountTreesService} from '../../../../api/organization-level/account-trees/account-trees.service'
 import {
@@ -19,7 +19,7 @@ import {OrgTaxTypeAddFormDefinition} from './org-tax-type-add-form.definition'
   selector: 'rts-org-tax-type-add-form',
   templateUrl: 'org-tax-type-add-form.component.html',
   imports: [
-    Button,
+    ButtonDirective,
     TreeSelect,
     FormsModule,
     LoadingContainerComponent

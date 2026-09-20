@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {PurchaseService} from '../../../api/location-level/purchase/purchase.service'
 import {PurchaseFormContext} from './purchase-form/form-utils/purchase-form-context'
 import {PurchaseFormComponent} from './purchase-form/purchase-form.component'
@@ -10,7 +10,7 @@ import {PurchaseGridComponent} from './purchase-grid/purchase-grid.component'
   templateUrl: 'purchase.component.html',
   providers: [PurchaseFormContext],
   imports: [
-    Button,
+    ButtonDirective,
     PurchaseGridComponent,
     PurchaseFormComponent
   ]

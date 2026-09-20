@@ -1,12 +1,12 @@
 import {DatePipe} from '@angular/common'
 import {Component, computed, effect, inject, input, output, untracked} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Chip} from 'primeng/chip'
 import {Divider} from 'primeng/divider'
 import {Tag} from 'primeng/tag'
 import {GrantedRole} from '../../../api/cross-tier/authorization/authority.model'
 import {UserRole} from '../../../api/cross-tier/authorization/user-role.enum'
-import {StandalonePermissionService} from '../../../api/platform-level/authorization/standalone-permission.service'
+import {StandalonePermissionService} from '../../../api/cross-tier/authorization/standalone-permission/standalone-permission.service'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {LoadingContainerComponent} from '../../reusable/loading-container/loading-container.component'
 
@@ -18,7 +18,7 @@ import {LoadingContainerComponent} from '../../reusable/loading-container/loadin
     Tag,
     PrettifyEnumPipe,
     Divider,
-    Button,
+    ButtonDirective,
     LoadingContainerComponent,
     DatePipe
   ]

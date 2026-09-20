@@ -9,26 +9,28 @@
   </rts-form-field>
 
   <rts-form-field label="Product Categories" for="categoryIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
-    <p-multiSelect id="categoryIds"
+    <p-select id="categoryIds"
                    class="flex-grow-1"
                    [options]="productCategories()"
                    optionLabel="categoryName"
                    optionValue="id"
+                   [multiple]="true"
                    formControlName="categoryIds"
                    placeholder="Select Product Categories" >
-    </p-multiSelect>
+    </p-select>
   </rts-form-field>
 
   @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
     <rts-form-field  label="Tags" for="tagIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
-      <p-multiSelect id="tagIds"
+      <p-select id="tagIds"
                      class="flex-grow-1"
                      [options]="productTags()"
                      optionLabel="tagName"
                      optionValue="id"
+                     [multiple]="true"
                      formControlName="tagIds"
                      placeholder="Select Tags" >
-      </p-multiSelect>
+      </p-select>
     </rts-form-field>
   }
 
@@ -47,11 +49,11 @@
   </div>
 
   <div class="flex justify-content-end pt-4">
-    <p-button label="Reset Filters"
-              (onClick)="productFilterService.resetFilters()"
-              severity="secondary"
-              icon="pi pi-filter-slash">
-    </p-button>
+    <button pButton
+            (click)="productFilterService.resetFilters()"
+            severity="secondary">
+      <i class="pi pi-filter-slash"></i> Reset Filters
+    </button>
   </div>
 
 </form>

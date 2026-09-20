@@ -2,8 +2,8 @@ import {Component, computed, inject, model, output} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {EntityId} from '@ngrx/signals/entities'
 import {MessageService} from 'primeng/api'
-import {Button} from 'primeng/button'
-import {MultiSelect} from 'primeng/multiselect'
+import {ButtonDirective} from 'primeng/button'
+import {Select} from 'primeng/select'
 import {LocationMembershipUserService} from '../../../api/location-level/membership/location-membership-user.service'
 import {OrgMembershipUserService} from '../../../api/organization-level/membership/org-membership-user.service'
 import {parseError} from '../../../utils/errors'
@@ -13,8 +13,8 @@ import {parseError} from '../../../utils/errors'
   templateUrl: 'pull-from-org-user.component.html',
   imports: [
     FormsModule,
-    MultiSelect,
-    Button
+    Select,
+    ButtonDirective
   ]
 })
 export class PullFromOrgUserComponent {

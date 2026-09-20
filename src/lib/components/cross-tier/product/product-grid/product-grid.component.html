@@ -12,7 +12,7 @@
            [virtualScroll]="!productFilterService.requireClientSideFilter()"
            [virtualScrollItemSize]="65">
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th>Reference</th>
         <th>Product Name</th>
@@ -34,7 +34,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-product let-expanded="expanded">
+    <ng-template #body let-product let-expanded="expanded">
       @if (product?.placeholder) {
         <tr>
           <td style="height: 65px" colspan="8">
@@ -64,18 +64,19 @@
             </td>
           }
           <td>
-            <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                      rounded
-                      severity="secondary"
-                      [disabled]="loading()"
-                      [pRowToggler]="product">
-            </p-button>
+            <button pButton
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading()"
+                    [pRowToggler]="product">
+              <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+            </button>
           </td>
         </tr>
       }
     </ng-template>
 
-    <ng-template pTemplate="expandedrow" let-product>
+    <ng-template #expandedrow let-product>
       <tr>
         @if (isOrganizationLevel()){
           <td colspan="8" class="filled-background">

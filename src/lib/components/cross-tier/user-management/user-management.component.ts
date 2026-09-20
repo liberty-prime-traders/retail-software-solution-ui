@@ -1,5 +1,5 @@
 import {Component, inject, input, signal} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {AuthorityAssignmentRequest} from '../../../api/cross-tier/authorization/authority.model'
 import {UserAccessDetailService} from '../../../api/cross-tier/authorization/user-access-detail.service'
 import {SchemaLevel} from '../../../api/platform-level/table-registry/schema-level.enum'
@@ -13,7 +13,7 @@ import {MembershipComponent} from '../membership/membership.component'
   imports: [
     AuthorityAssignmentComponent,
     MembershipComponent,
-    Button,
+    ButtonDirective,
     AutoStretchDirective
   ]
 })

@@ -8,12 +8,12 @@
 
     @if (canAddPayment()) {
       <div class="flex justify-content-end">
-        <p-button label="Record Payment" icon="pi pi-plus" (click)="showAddForm.set(true)"/>
+        <button pButton (click)="showAddForm.set(true)"><i class="pi pi-plus"></i> Record Payment</button>
       </div>
     }
 
     <p-table [value]="payments()" dataKey="id" sortField="referenceNumber">
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th style="width: 3rem"></th>
           <th>Reference Number</th>
@@ -25,16 +25,17 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-payment let-expanded="expanded">
+      <ng-template #body let-payment let-expanded="expanded">
         @let paymentIsVoided = !!payment.voidedReason;
         <tr [ngClass]="{'expanded-row': expanded, 'strike-through': paymentIsVoided}">
           <td>
-            <p-button type="button"
-                      text
-                      rounded
-                      [pRowToggler]="payment"
-                      [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
-            </p-button>
+            <button pButton
+                    type="button"
+                    text
+                    rounded
+                    [pRowToggler]="payment">
+              <i [class]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+            </button>
           </td>
           <td>
             <div class="flex gap-2">
@@ -52,7 +53,7 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="expandedrow" let-payment>
+      <ng-template #expandedrow let-payment>
         <tr>
           <td colspan="7" class="filled-background p-4">
             <rts-supplier-payment-expanded-row [payment]="payment"
@@ -63,7 +64,7 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="emptymessage">
+      <ng-template #emptymessage>
         <tr [colspan]="7" rts-empty-row message="No payments recorded yet"></tr>
       </ng-template>
 

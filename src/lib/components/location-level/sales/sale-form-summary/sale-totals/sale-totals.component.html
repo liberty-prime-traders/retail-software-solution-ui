@@ -41,32 +41,31 @@
   <div class="flex gap-4">
     <div class="flex">
       <p-divider layout="vertical" class="p-0 m-0 mr-1"/>
-      <p-button label="Additional Expenses" text size="small"/>
+      <button pButton text size="small">Additional Expenses</button>
     </div>
 
     <div class="flex">
       <p-divider layout="vertical" class="p-0 m-0 mr-1"/>
-      <p-button label="Delivery" text size="small"/>
+      <button pButton text size="small">Delivery</button>
     </div>
   </div>
 
   @if (canMakeChangesToTheSale()) {
     <div class="flex gap-2 justify-content-end">
-      <p-button
-        label="Save Draft"
-        text
-        severity="secondary"
-        [disabled]="saleForm().invalid()"
-        (onClick)="saveDraft()">
-      </p-button>
+      <button pButton
+              text
+              severity="secondary"
+              [disabled]="saleForm().invalid()"
+              (click)="saveDraft()">
+        Save Draft
+      </button>
 
-      <p-button
-        label="Confirm Sale"
-        icon="pi pi-check"
-        severity="success"
-        [disabled]="saleForm().invalid()"
-        (onClick)="completeSale()">
-      </p-button>
+      <button pButton
+              severity="success"
+              [disabled]="saleForm().invalid()"
+              (click)="completeSale()">
+        <i class="pi pi-check"></i> Confirm Sale
+      </button>
     </div>
 
     @if (saleSession().uiOptions.showUnreservedChangesWarning) {

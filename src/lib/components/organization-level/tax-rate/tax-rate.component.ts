@@ -1,6 +1,6 @@
 import {CurrencyPipe, NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {TaxRateService} from '../../../api/organization-level/tax-rate/tax-rate.service'
 import {CalculationMethod} from '../../../api/platform-level/tax-type/calculation-method.enum'
@@ -20,7 +20,7 @@ import {TaxRateEditFormComponent} from './tax-rate-edit-form/tax-rate-edit-form.
     NgClass,
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     TaxRateAddFormComponent,
     TaxRateEditFormComponent,
     GridFilterComponent,

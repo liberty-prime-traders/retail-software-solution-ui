@@ -1,7 +1,6 @@
 
 import {Component, inject, OnInit} from '@angular/core'
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
-import {MultiSelectModule} from 'primeng/multiselect'
 import {Select} from 'primeng/select'
 import {DbMigrationService} from '../../../../api/platform-level/db-migration/db-migration.service'
 import {DbVersionService} from '../../../../api/platform-level/db-version/db-version.service'
@@ -15,7 +14,6 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    MultiSelectModule,
     FormFieldComponent,
     FormButtonsComponent,
     Select

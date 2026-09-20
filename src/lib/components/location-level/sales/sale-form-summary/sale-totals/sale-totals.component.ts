@@ -1,6 +1,6 @@
 import {CurrencyPipe} from '@angular/common'
 import {Component, computed, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {SaleSessionService} from '../../../../../api/location-level/sale_session/sale-session.service'
 import {SaleFormContext} from '../../form-utils/sale-form-context'
@@ -10,7 +10,7 @@ import {SaleFormContext} from '../../form-utils/sale-form-context'
   templateUrl: 'sale-totals.component.html',
   imports: [
     Divider,
-    Button,
+    ButtonDirective,
     CurrencyPipe
 
   ]

@@ -49,7 +49,7 @@
 
   </p-panel>
 
-  <p-panel header="Additional Information" toggleable collapsed>
+  <p-panel header="Additional Information" toggleable [collapsed]="true">
 
     <rts-form-field label="Email" for="email">
       <input id="email" class="flex-grow-1" pInputText [formField]="contactForm.email" type="email">
@@ -64,12 +64,12 @@
     </rts-form-field>
 
     <rts-form-field label="Credit Limit" for="creditLimit">
-      <p-inputNumber id="creditLimit"
+      <p-input-number id="creditLimit"
                      class="flex-grow-1"
                      [formField]="contactForm.creditLimit"
                      currency="KES"
                      mode="currency">
-      </p-inputNumber>
+      </p-input-number>
     </rts-form-field>
 
     <rts-form-field label="Notes" for="notes">

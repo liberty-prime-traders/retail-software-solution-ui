@@ -1,6 +1,6 @@
 import {DatePipe} from '@angular/common'
 import {Component, computed, inject} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Tag} from 'primeng/tag'
 import {SaleStatus} from '../../../../api/location-level/sale-summary/sale-status.enum'
@@ -16,7 +16,7 @@ import {SaleStatusSeverityPipe} from '../sale-status-severity.pipe'
   selector: 'rts-sale-form-header',
   imports: [
     Card,
-    Button,
+    ButtonDirective,
     Tag,
     PaymentStatusSeverityPipe,
     SaleStatusSeverityPipe,

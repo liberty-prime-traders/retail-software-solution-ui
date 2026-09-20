@@ -1,6 +1,6 @@
 import {Component, computed, inject, OnInit, output, signal} from '@angular/core'
 import {FormField, form} from '@angular/forms/signals'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
 import {StockTransferCreateRequest} from '../../../../api/location-level/stock-transfer/stock-transfer-requests.model'
@@ -21,7 +21,7 @@ import {StockTransferCreateFormDefinition} from './stock-transfer-create-form.de
     FormFieldComponent,
     Select,
     InputText,
-    Button,
+    ButtonDirective,
     ErrorSummaryComponent,
     LoadingContainerComponent
   ]

@@ -1,7 +1,7 @@
 import {NgClass} from '@angular/common'
 import {Component, inject} from '@angular/core'
 import {MessageService} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {TableModule} from 'primeng/table'
 import {TableRegistryService} from '../../../api/platform-level/table-registry/table-registry.service'
@@ -18,7 +18,7 @@ import {TableRegistryFormComponent} from './table-registry-form/table-registry-f
   templateUrl: 'table-registry.component.html',
   imports: [
     TableModule,
-    Button,
+    ButtonDirective,
     NullSafePipe,
     PrettifyEnumPipe,
     EmptyRowComponent,

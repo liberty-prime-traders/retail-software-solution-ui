@@ -3,7 +3,7 @@ import {Component, computed, effect, inject, input, signal} from '@angular/core'
 import {toSignal} from '@angular/core/rxjs-interop'
 import {FormControl, FormsModule} from '@angular/forms'
 import {BlockUIModule} from 'primeng/blockui'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {Message} from 'primeng/message'
 import {TableModule} from 'primeng/table'
@@ -27,7 +27,7 @@ import {ProductGridComponent} from '../product-grid/product-grid.component'
     Divider,
     BlockUIModule,
     FormsModule,
-    Button,
+    ButtonDirective,
     OrganizationProductFormComponent,
     ProductFilterComponent,
     SearchComponent,

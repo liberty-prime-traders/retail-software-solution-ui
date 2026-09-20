@@ -20,12 +20,12 @@
                       contentClass="col-8"
                       [required]="true"
                       [layout]="FormFieldDirection.VERTICAL">
-        <p-inputNumber [formField]="paymentForm.amount"
+        <p-input-number [formField]="paymentForm.amount"
                        mode="currency"
                        currency="KES"
                        [min]="0"
                        class="w-full">
-        </p-inputNumber>
+        </p-input-number>
         <small>Balance: {{remainingAmount() | currency}}</small>
       </rts-form-field>
     </div>

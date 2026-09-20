@@ -3,7 +3,7 @@ import {Component, computed, inject, Input, output, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {form, FormField} from '@angular/forms/signals'
 import {TreeNode} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Checkbox} from 'primeng/checkbox'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
@@ -26,7 +26,7 @@ import {AccountFormDefinition} from './account-form.definition'
     FormFieldComponent,
     FormField,
     NgClass,
-    Button,
+    ButtonDirective,
     Checkbox,
     FormsModule,
     TreeSelect,

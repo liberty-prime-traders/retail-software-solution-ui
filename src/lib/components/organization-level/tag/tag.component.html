@@ -1,12 +1,12 @@
 <div class="flex align-items-center justify-content-between mb-3">
   <h3 class="font-bold">Tags</h3>
 
-  <p-button (click)="setAddingActiveTrue()"
-            [disabled]="loading()"
-            label="+ Add Tag"
-            rounded
-            severity="secondary">
-  </p-button>
+  <button pButton (click)="setAddingActiveTrue()"
+          [disabled]="loading()"
+          rounded
+          severity="secondary">
+    + Add Tag
+  </button>
 </div>
 
 <p-divider/>
@@ -29,7 +29,7 @@
 
   <div class="flex flex-column gap-4 flex-grow-1">
     @if (addingIsActive()) {
-      <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info"/>
+      <button pButton (click)="setAddingActiveFalse()" severity="info"><i class="pi pi-times"></i> Cancel</button>
       <rts-tag-form (tagCreated)="tagCreated($event)"/>
     } @else if (selectedCategory()) {
       <ng-container *ngTemplateOutlet="tagGrid"/>
@@ -52,47 +52,48 @@
             (onRowCollapse)="rowIsExpanded.set(false)"
             [value]="tags()">
 
-    <ng-template pTemplate="caption">
+    <ng-template #caption>
       <div class="flex justify-content-between align-items-center">
         <h3>{{selectedCategory() | prettifyEnum}} Tags</h3>
         <rts-grid-filter [dataTable]="tagsTable"/>
       </div>
     </ng-template>
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th pSortableColumn="tagName">Tag Name
-          <p-sortIcon field="tagName"></p-sortIcon>
+          <p-sort-icon field="tagName"></p-sort-icon>
         </th>
         <th>Category</th>
         <th pSortableColumn="description">Description
-          <p-sortIcon field="description"></p-sortIcon>
+          <p-sort-icon field="description"></p-sort-icon>
         </th>
         <th pSortableColumn="createdBy">Created By
-          <p-sortIcon field="createdBy"></p-sortIcon>
+          <p-sort-icon field="createdBy"></p-sort-icon>
         </th>
         <th style="width: 5rem"></th>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-tag let-expanded="expanded">
+    <ng-template #body let-tag let-expanded="expanded">
       <tr [ngClass]="{ 'expanded-row': expanded }">
         <td>{{ tag?.tagName | nullSafe }}</td>
         <td>{{ tag?.category | prettifyEnum | nullSafe }}</td>
         <td>{{ tag?.description | nullSafe }}</td>
         <td>{{ tag?.createdBy | nullSafe }}</td>
         <td>
-          <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                    rounded
-                    severity="secondary"
-                    [disabled]="loading() || addingIsActive()"
-                    [pRowToggler]="tag">
-          </p-button>
+          <button pButton
+                  rounded
+                  severity="secondary"
+                  [disabled]="loading() || addingIsActive()"
+                  [pRowToggler]="tag">
+            <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+          </button>
         </td>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="expandedrow" let-tag>
+    <ng-template #expandedrow let-tag>
       <tr>
         <td colspan="5" class="filled-background">
           <rts-tag-form [tag]="tag"></rts-tag-form>
@@ -100,7 +101,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="emptymessage">
+    <ng-template #emptymessage>
       <tr rts-empty-row [colspan]="5" message="No Tags Were Found"></tr>
     </ng-template>
   </p-table>

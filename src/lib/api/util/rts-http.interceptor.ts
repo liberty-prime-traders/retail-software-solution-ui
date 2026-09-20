@@ -33,6 +33,9 @@ export class RtsHttpInterceptor implements HttpInterceptor {
   }
 
   private withBaseUrl(req: HttpRequest<any>): HttpRequest<any> {
+    if (req.url.includes('assets')) {
+      return req
+    }
     return req.clone({
       url: `${environment.BASE_URL}${req.url}`
     })

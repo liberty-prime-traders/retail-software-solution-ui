@@ -1,6 +1,6 @@
 import {Component, computed, inject} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
 import {PaymentStatus} from '../../../../api/location-level/purchase/payment-status.enum'
 import {Purchase} from '../../../../api/location-level/purchase/purchase.model'
@@ -28,7 +28,7 @@ import {PurchaseLinesComponent} from './purchase-lines/purchase-lines.component'
     DeliveryGridComponent,
     PaymentGridComponent,
     AutoStretchDirective,
-    Button,
+    ButtonDirective,
     LoadingContainerComponent,
     PurchaseFormGeneralFieldsComponent
   ]

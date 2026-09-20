@@ -1,6 +1,6 @@
 import {CurrencyPipe, DatePipe, NgClass} from '@angular/common'
 import {Component, inject, signal} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {InputText} from 'primeng/inputtext'
 import {Tag} from 'primeng/tag'
@@ -13,7 +13,7 @@ import {SaleFormContext} from '../../form-utils/sale-form-context'
   selector: 'rts-sale-payments-grid',
   templateUrl: 'sale-payments-grid.component.html',
   imports: [
-    Button,
+    ButtonDirective,
     Tag,
     Card,
     DatePipe,

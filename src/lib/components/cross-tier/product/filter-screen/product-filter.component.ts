@@ -1,9 +1,9 @@
 import {Component, computed, inject, input, OnInit} from '@angular/core'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Checkbox} from 'primeng/checkbox'
 import {InputText} from 'primeng/inputtext'
-import {MultiSelect} from 'primeng/multiselect'
+import {Select} from 'primeng/select'
 import {ProductDetail} from '../../../../api/cross-tier/product/product-detail.model'
 import {ProductCategoryService} from '../../../../api/organization-level/product-category/product-category.service'
 import {ProductGroupService} from '../../../../api/organization-level/product-group/product-group.service'
@@ -23,10 +23,10 @@ import {ProductFilterService} from '../product-filter.service'
     FormsModule,
     InputText,
     ReactiveFormsModule,
-    MultiSelect,
+    Select,
     EnumToDropdownPipe,
     Checkbox,
-    Button
+    ButtonDirective
   ]
 })
 export class ProductFilterComponent<PRODUCT extends ProductDetail> implements OnInit {

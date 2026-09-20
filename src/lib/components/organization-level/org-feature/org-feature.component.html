@@ -14,39 +14,39 @@
              [value]="entities()"
              [(selection)]="selectedFeatures">
 
-      <ng-template pTemplate="caption">
+      <ng-template #caption>
         <div class="flex justify-content-between align-items-center">
           <h3 class="font-bold">Features</h3>
 
           <div class="flex gap-3 align-items-center">
             @if (allSelectedAreInactive()) {
-              <p-button label="Activate" severity="secondary" rounded (click)="activate()"/>
+              <button pButton severity="secondary" rounded (click)="activate()">Activate</button>
             }
 
             @if (allSelectedAreActive()) {
-              <p-button label="Deactivate" severity="danger" rounded (click)="deactivate()"/>
+              <button pButton severity="danger" rounded (click)="deactivate()">Deactivate</button>
             }
 
             <rts-grid-filter [dataTable]="orgFeaturesTable"/>
 
-            <p-button (click)="setAddingActiveTrue()"
-                      [disabled]="loading()"
-                      label="+ Pull More Features"
-                      rounded
-                      severity="secondary">
-            </p-button>
+            <button pButton (click)="setAddingActiveTrue()"
+                    [disabled]="loading()"
+                    rounded
+                    severity="secondary">
+              + Pull More Features
+            </button>
           </div>
         </div>
       </ng-template>
 
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th style="width: 3rem"></th>
           <th pSortableColumn="feature">Feature
-            <p-sortIcon field="feature"/>
+            <p-sort-icon field="feature"/>
           </th>
           <th pSortableColumn="status">Status
-            <p-sortIcon field="status"/>
+            <p-sort-icon field="status"/>
           </th>
           <th>Enabled By</th>
           <th>Enabled On</th>
@@ -55,10 +55,10 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-feature>
+      <ng-template #body let-feature>
         <tr [pSelectableRow]="feature">
           <td>
-            <p-tableCheckbox [value]="feature"/>
+            <p-table-checkbox [value]="feature"/>
           </td>
           <td>{{ feature?.feature | prettifyEnum }}</td>
           <td>{{ feature?.status | prettifyEnum }}</td>
@@ -69,7 +69,7 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="emptymessage">
+      <ng-template #emptymessage>
         <tr rts-empty-row [colspan]="7" message="No Features Have Been Added"></tr>
       </ng-template>
     </p-table>

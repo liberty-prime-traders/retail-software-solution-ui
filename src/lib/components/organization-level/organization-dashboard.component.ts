@@ -1,7 +1,7 @@
 import {Component, computed, inject, OnInit, signal, Signal} from '@angular/core'
 import {RouterOutlet} from '@angular/router'
 import {MenuItem} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
 import {OrgMembershipUserService} from '../../api/organization-level/membership/org-membership-user.service'
@@ -16,7 +16,7 @@ import {OrganizationLaunchService} from '../welcome/top-navigation/organization-
     RouterOutlet,
     Menu,
     Card,
-    Button
+    ButtonDirective
   ]
 })
 export class OrganizationDashboardComponent implements OnInit {
@@ -90,17 +90,16 @@ export class OrganizationDashboardComponent implements OnInit {
       {label: 'Products', items: this.productSettingsMenuItems},
       {separator: true},
       {label: 'Business Settings', items: this.businessSettingsMenuItems},
+      {separator: true},
     ]
 
     const financeItems = this.financialSettingsMenuItems()
     const showFinance = financeItems.some(item => item.visible !== false)
     if (showFinance) {
-      menuItems.push({separator: true})
-      menuItems.push({label: 'Finance', items:financeItems, expanded: false})
+      menuItems.push({label: 'Finance', items:financeItems, expanded: false, toggleable: true})
     }
 
     if (this.userContextService.isOrganizationAdmin()) {
-      menuItems.push({separator: true})
       menuItems.push({label: 'Admin Settings', toggleable: true, items: this.orgAdminSettings})
     }
 

@@ -1,7 +1,7 @@
 <div class="flex flex-column gap-4" id="chart-of-accounts" rtsAutoStretch="chart-of-accounts">
 
   @if (addingIsActive()) {
-    <p-button (click)="setAddingActiveFalse()" label="Cancel" icon="pi pi-times" severity="info" class="align-self-end"/>
+    <button pButton (click)="setAddingActiveFalse()" severity="info" class="align-self-end"><i class="pi pi-times"></i> Cancel</button>
     <rts-account-form (accountCreated)="closeAddRow()"/>
 
   } @else {
@@ -17,7 +17,7 @@
              (onRowCollapse)="rowIsExpanded.set(false)"
              [value]="accounts()">
 
-      <ng-template pTemplate="caption">
+      <ng-template #caption>
         <div class="flex justify-content-between align-items-center">
           <h3 class="font-bold">Chart of Accounts</h3>
 
@@ -28,29 +28,29 @@
             <span>Enable Editing</span>
           </div>
 
-          <p-button (click)="addingIsActive.set(true)"
-                    [disabled]="loading() || addingIsActive()"
-                    label="+ Add Account"
-                    rounded
-                    severity="secondary">
-          </p-button>
+          <button pButton (click)="addingIsActive.set(true)"
+                  [disabled]="loading() || addingIsActive()"
+                  rounded
+                  severity="secondary">
+            + Add Account
+          </button>
         </div>
       </ng-template>
 
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
-          <th pSortableColumn="displayName">Name <p-sortIcon field="displayName"/></th>
-          <th pSortableColumn="accountType">Type <p-sortIcon field="accountType"/></th>
-          <th pSortableColumn="currentBalance">Balance <p-sortIcon field="currentBalance"/></th>
-          <th pSortableColumn="openingBalance">Opening Balance <p-sortIcon field="openingBalance"/></th>
-          <th pSortableColumn="parentAccount">Parent Account <p-sortIcon field="parentAccount"/></th>
+          <th pSortableColumn="displayName">Name <p-sort-icon field="displayName"/></th>
+          <th pSortableColumn="accountType">Type <p-sort-icon field="accountType"/></th>
+          <th pSortableColumn="currentBalance">Balance <p-sort-icon field="currentBalance"/></th>
+          <th pSortableColumn="openingBalance">Opening Balance <p-sort-icon field="openingBalance"/></th>
+          <th pSortableColumn="parentAccount">Parent Account <p-sort-icon field="parentAccount"/></th>
           @if (showEditButtons()) {
             <th style="width: 5rem"></th>
           }
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-account let-expanded="expanded">
+      <ng-template #body let-account let-expanded="expanded">
         <tr [ngClass]="{ 'expanded-row': expanded, 'strike-through': !account.accountIsActive }">
           <td>{{ account.displayName }}</td>
           <td>{{ account.accountType | prettifyEnum }}</td>
@@ -61,12 +61,13 @@
             <div class="flex gap-2 align-items-center">
               <rts-money [amount]="account.openingBalance"/>
 
-              <p-button [icon]="showEditButtons() ? 'pi pi-pencil' : 'pi pi-history'"
-                        (click)="togglePopup(account)"
-                        rounded
-                        size="small"
-                        severity="secondary">
-              </p-button>
+              <button pButton
+                      (click)="togglePopup(account)"
+                      rounded
+                      size="small"
+                      severity="secondary">
+                <i [class]="showEditButtons() ? 'pi pi-pencil' : 'pi pi-history'"></i>
+              </button>
             </div>
 
           </td>
@@ -75,19 +76,20 @@
           @if (showEditButtons()) {
             <td>
               @if (!account.accountIsSystemMaintained) {
-                <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                          rounded
-                          severity="secondary"
-                          [disabled]="loading() || addingIsActive()"
-                          [pRowToggler]="account">
-                </p-button>
+                <button pButton
+                        rounded
+                        severity="secondary"
+                        [disabled]="loading() || addingIsActive()"
+                        [pRowToggler]="account">
+                  <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+                </button>
               }
             </td>
           }
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="expandedrow" let-account>
+      <ng-template #expandedrow let-account>
         <tr>
           <td colspan="9" class="filled-background">
             <rts-account-form [account]="account"/>
@@ -95,7 +97,7 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="emptymessage">
+      <ng-template #emptymessage>
         <tr rts-empty-row [colspan]="9" message="No Accounts Found"></tr>
       </ng-template>
     </p-table>

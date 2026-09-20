@@ -3,8 +3,7 @@ import {Component, inject, model, OnInit, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {RouterOutlet} from '@angular/router'
 import {NgxResizeObserverModule} from 'ngx-resize-observer'
-import {PrimeTemplate} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Splitter} from 'primeng/splitter'
 import {Tooltip} from 'primeng/tooltip'
 import {AuthenticationService} from '../../api/platform-level/authentication/authentication.service'
@@ -28,13 +27,12 @@ import {
   providers: [NgxResizeObserverModule],
   imports: [
     RouterOutlet,
-    Button,
+    ButtonDirective,
     FormsModule,
     Tooltip,
     NgxResizeObserverModule,
     NgOptimizedImage,
     Splitter,
-    PrimeTemplate,
     ScopePillComponent,
     OrganizationNavContentComponent,
     LocationNavContentComponent,

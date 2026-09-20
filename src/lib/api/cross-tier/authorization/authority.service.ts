@@ -1,5 +1,6 @@
 import {HttpParams} from '@angular/common/http'
 import {Injectable} from '@angular/core'
+import {SchemaLevel} from '../../platform-level/table-registry/schema-level.enum'
 import {MultimapBaseService} from '../../util/base-api/multimap-base.service'
 import {Authority} from './authority.model'
 import {AuthorityStore} from './authority.store'
@@ -17,22 +18,15 @@ export class AuthorityService extends MultimapBaseService<Authority>{
     return httpParams
   }
 
-  getForPlatform() {
-    this.patchApiRequestConfig({urlSuffix: 'platform'})
-    return this.doFetch()
+  override refetch(schemaLevel: SchemaLevel) {
+    const urlSuffix = schemaLevel.toLowerCase()
+    this.patchApiRequestConfig({urlSuffix})
+    return super.refetch(schemaLevel)
   }
 
-  getForOrganization() {
-    this.patchApiRequestConfig({urlSuffix: 'organization'})
-    return this.doFetch()
-  }
-
-  getForLocation() {
-    this.patchApiRequestConfig({urlSuffix: 'location'})
-    return this.doFetch()
-  }
-
-  doFetch() {
-    return this.refetch( 'dummy')
+  override forceRefetch(schemaLevel: SchemaLevel) {
+    const urlSuffix = schemaLevel.toLowerCase()
+    this.patchApiRequestConfig({urlSuffix})
+    return super.forceRefetch(schemaLevel)
   }
 }

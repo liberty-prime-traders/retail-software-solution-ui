@@ -1,7 +1,6 @@
-import {parseJson} from '@angular/cli/src/utilities/json-file'
 import {Component, inject, model, output, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Divider} from 'primeng/divider'
 import {InputText} from 'primeng/inputtext'
 import {UnitBulkUploadService} from '../../../../api/organization-level/unit-group/unit-bulk-upload.service'
@@ -19,7 +18,7 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
     FormFieldComponent,
     InputText,
     FormsModule,
-    Button,
+    ButtonDirective,
     ErrorSummaryComponent,
     Divider
   ],
@@ -39,7 +38,7 @@ export class BulkUnitImportComponent {
     if (this.jsonPayload()) {
       this.errorDetails.set([])
       this.unitBulkUploadService.uploadUnits(
-        parseJson<UnitGroupBulkUploadRequest>(this.jsonPayload()),
+        JSON.parse(this.jsonPayload()) as UnitGroupBulkUploadRequest,
         {
           onSuccess: () => this.successfulUpload.emit(),
           onFail: (error) => {

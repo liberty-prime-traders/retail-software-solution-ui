@@ -2,7 +2,7 @@ import {DatePipe, NgTemplateOutlet} from '@angular/common'
 import {Component, inject} from '@angular/core'
 import {MessageService} from 'primeng/api'
 import {Badge} from 'primeng/badge'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
 import {FiscalPeriodService} from '../../../api/organization-level/fiscal-period/fiscal-period.service'
@@ -19,7 +19,7 @@ import {FiscalPeriodFormComponent} from './fiscal-period-form/fiscal-period-form
   templateUrl: 'fiscal-periods.component.html',
   imports: [
     TableModule,
-    Button,
+    ButtonDirective,
     DatePipe,
     NullSafePipe,
     GridFilterComponent,

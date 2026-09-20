@@ -1,6 +1,6 @@
 import {NgClass} from '@angular/common'
 import {Component, inject, model, OnInit} from '@angular/core'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {JobTitle} from '../../../api/organization-level/jobtitle/jobtitle.model'
 import {JobTitleService} from '../../../api/organization-level/jobtitle/jobtitle.service'
@@ -17,7 +17,7 @@ import {JobTitleFormComponent} from './job-title-form/job-title-form.component'
   imports: [
     TableModule,
     NullSafePipe,
-    Button,
+    ButtonDirective,
     JobTitleFormComponent,
     AddRowComponent,
     GridFilterComponent,

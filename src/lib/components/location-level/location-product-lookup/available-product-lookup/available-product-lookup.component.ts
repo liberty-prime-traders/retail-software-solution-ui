@@ -1,5 +1,4 @@
 import {Component, inject} from '@angular/core'
-import {PrimeTemplate} from 'primeng/api'
 import {Select} from 'primeng/select'
 import {
   AvailableProductLookupQuickSearchService
@@ -26,8 +25,7 @@ import {AvailableProductLookupFilterService} from './available-product-lookup-fi
   imports: [
     FormFieldComponent,
     Select,
-    ProductLabelPipe,
-    PrimeTemplate
+    ProductLabelPipe
   ]
 })
 export class AvailableProductLookupComponent extends LocationProductLookupComponent<ProductWithAvailability> {

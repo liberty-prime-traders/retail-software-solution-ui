@@ -1,7 +1,7 @@
 import {NgClass} from '@angular/common'
 import {Component, computed, effect, inject, input, model, untracked} from '@angular/core'
 import {MessageService} from 'primeng/api'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
 import {AuthorityService} from '../../../api/cross-tier/authorization/authority.service'
@@ -22,7 +22,7 @@ import {UserAccessDetailComponent} from '../user-access-detail/user-access-detai
     NullSafePipe,
     GridFilterComponent,
     EmptyRowComponent,
-    Button,
+    ButtonDirective,
     Tag,
     NgClass,
     UserAccessDetailComponent
@@ -48,9 +48,7 @@ export class MembershipComponent {
     const schemaLevel = this.schemaLevel()
     untracked(() => {
       this.membershipUserService.fetch()
-      schemaLevel === SchemaLevel.LOCATION
-        ? this.authorityService.getForLocation()
-        : this.authorityService.getForOrganization()
+      this.authorityService.refetch(schemaLevel)
     })
   })
 

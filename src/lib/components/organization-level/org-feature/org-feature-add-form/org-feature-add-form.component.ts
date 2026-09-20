@@ -1,7 +1,7 @@
 import {Component, computed, inject, model, OnInit, output, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {Button} from 'primeng/button'
-import {MultiSelect} from 'primeng/multiselect'
+import {ButtonDirective} from 'primeng/button'
+import {Select} from 'primeng/select'
 import {OrganizationFeature} from '../../../../api/organization-level/org-feature/org-feature.model'
 import {OrgFeatureService} from '../../../../api/organization-level/org-feature/org-feature.service'
 import {Feature} from '../../../../api/platform-level/platform-feature/feature.enum'
@@ -12,11 +12,11 @@ import {LoadingContainerComponent} from '../../../reusable/loading-container/loa
   selector: 'rts-org-feature-add-form',
   templateUrl: 'org-feature-add-form.component.html',
   imports: [
-    Button,
-    MultiSelect,
+    ButtonDirective,
     FormsModule,
     LoadingContainerComponent,
-    PrettifyEnumPipe
+    PrettifyEnumPipe,
+    Select
   ]
 })
 export class OrgFeatureAddFormComponent implements OnInit {

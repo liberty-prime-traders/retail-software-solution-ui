@@ -12,7 +12,7 @@
            [multiSortMeta]="linesMultiSort"
            editMode="row">
 
-    <ng-template pTemplate="header">
+    <ng-template #header>
       <tr>
         <th>Product</th>
         <th>Units</th>
@@ -29,7 +29,7 @@
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-purchaseLine let-editing="editing">
+    <ng-template #body let-purchaseLine let-editing="editing">
       <tr [pEditableRow]="purchaseLine"
           [ngClass]="{'opacity-70': purchaseLine.canceledWithoutSingleDelivery}">
 
@@ -37,32 +37,32 @@
 
         @if (isDraftOrNew()) {
           <td>
-            <p-cellEditor>
-              <ng-template pTemplate="input">
+            <p-cell-editor>
+              <ng-template #input>
                 <p-select [options]="purchaseLine.baseUnitId | alternativeUnitsFinder"
                           appendTo="body"
                           class="col-10 p-0"
                           [(ngModel)]="purchaseLine.unitId">
                 </p-select>
               </ng-template>
-              <ng-template pTemplate="output">
+              <ng-template #output>
                 {{ purchaseLine.unitId | fullUnitDescription  }}
               </ng-template>
-            </p-cellEditor>
+            </p-cell-editor>
             <small class="block info-message">
               {{ purchaseLine.unitId | buildConversionContext : purchaseLine | unitConversionDescriptor }}
             </small>
           </td>
 
           <td>
-            <p-cellEditor>
-              <ng-template pTemplate="input">
-                <p-inputNumber [min]="0" [maxFractionDigits]="2" [(ngModel)]="purchaseLine.quantityOrdered"/>
+            <p-cell-editor>
+              <ng-template #input>
+                <p-input-number [min]="0" [maxFractionDigits]="2" [(ngModel)]="purchaseLine.quantityOrdered"/>
               </ng-template>
-              <ng-template pTemplate="output">
+              <ng-template #output>
                 {{ purchaseLine.quantityOrdered }}
               </ng-template>
-            </p-cellEditor>
+            </p-cell-editor>
             <small class="block info-message">
               {{
                 purchaseLine.unitId
@@ -73,14 +73,14 @@
           </td>
 
           <td>
-            <p-cellEditor>
-              <ng-template pTemplate="input">
-                <p-inputNumber [min]="0" [maxFractionDigits]="2" [(ngModel)]="purchaseLine.unitCost" />
+            <p-cell-editor>
+              <ng-template #input>
+                <p-input-number [min]="0" [maxFractionDigits]="2" [(ngModel)]="purchaseLine.unitCost" />
               </ng-template>
-              <ng-template pTemplate="output">
+              <ng-template #output>
                 {{ purchaseLine.unitCost | currency  }}
               </ng-template>
-            </p-cellEditor>
+            </p-cell-editor>
             <small class="block info-message">
               {{
                 purchaseLine.unitId
@@ -121,17 +121,17 @@
           </td>
 
           <td>
-            <p-cellEditor>
-              <ng-template pTemplate="input">
-                <p-inputNumber [min]="0"
+            <p-cell-editor>
+              <ng-template #input>
+                <p-input-number [min]="0"
                                [max]="purchaseLine.quantityYetToBeDelivered"
                                [(ngModel)]="purchaseLine.quantityCanceled">
-                </p-inputNumber>
+                </p-input-number>
               </ng-template>
-              <ng-template pTemplate="output">
+              <ng-template #output>
                 {{ purchaseLine.quantityCanceled }}
               </ng-template>
-            </p-cellEditor>
+            </p-cell-editor>
             <small class="block info-message">
               {{
                 purchaseLine.unitId
@@ -158,37 +158,40 @@
         <td>
           <div class="flex gap-1">
             @if (editing) {
-              <p-button icon="pi pi-check"
-                        text
-                        rounded
-                        pSaveEditableRow
-                        (keydown.enter)="completeEditingLine(purchaseLine)"
-                        (onClick)="completeEditingLine(purchaseLine)">
-              </p-button>
+              <button pButton
+                      text
+                      rounded
+                      pSaveEditableRow
+                      (keydown.enter)="completeEditingLine(purchaseLine)"
+                      (click)="completeEditingLine(purchaseLine)">
+                <i class="pi pi-check"></i>
+              </button>
 
-              <p-button icon="pi pi-times"
-                        text
-                        rounded
-                        pCancelEditableRow
-                        (keydown.enter)="cancelEditingLine(purchaseLine)"
-                        (onClick)="cancelEditingLine(purchaseLine)">
-              </p-button>
+              <button pButton
+                      text
+                      rounded
+                      pCancelEditableRow
+                      (keydown.enter)="cancelEditingLine(purchaseLine)"
+                      (click)="cancelEditingLine(purchaseLine)">
+                <i class="pi pi-times"></i>
+              </button>
 
             } @else if(purchaseLine.quantityYetToBeDelivered > 0) {
-              <p-button icon="pi pi-pencil"
-                        text
-                        rounded
-                        pInitEditableRow
-                        (keydown.enter)="initializeEditingLine(purchaseLine)"
-                        (onClick)="initializeEditingLine(purchaseLine)">
-              </p-button>
+              <button pButton
+                      text
+                      rounded
+                      pInitEditableRow
+                      (keydown.enter)="initializeEditingLine(purchaseLine)"
+                      (click)="initializeEditingLine(purchaseLine)">
+                <i class="pi pi-pencil"></i>
+              </button>
             }
           </div>
         </td>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="emptymessage">
+    <ng-template #emptymessage>
       <tr rts-empty-row [colspan]="isDraftOrNew() ? 7 : 9" [message]="emptyPurchaseLinesMessage()"></tr>
     </ng-template>
   </p-table>

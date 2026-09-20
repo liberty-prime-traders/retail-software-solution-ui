@@ -1,7 +1,7 @@
 import {Component, computed, inject, Input, model, output, signal} from '@angular/core'
 import {form, FormField} from '@angular/forms/signals'
 import {isNil} from 'lodash-es'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {Dialog} from 'primeng/dialog'
 import {InputNumber} from 'primeng/inputnumber'
 import {ProductStatus} from '../../../../api/cross-tier/product/product-status.enum'
@@ -23,7 +23,7 @@ import {LocationProductFormDefinition} from './location-product-form.definition'
     FormFieldComponent,
     FormField,
     NullishToZeroPipe,
-    Button,
+    ButtonDirective,
     Dialog,
     StockHistoryComponent
   ]

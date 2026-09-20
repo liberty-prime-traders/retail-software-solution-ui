@@ -1,7 +1,7 @@
 import {Component, computed, inject, output, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {form, FormField, required} from '@angular/forms/signals'
-import {Button} from 'primeng/button'
+import {ButtonDirective} from 'primeng/button'
 import {DatePicker} from 'primeng/datepicker'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
@@ -36,7 +36,7 @@ import {PurchaseFormContext} from '../../form-utils/purchase-form-context'
   templateUrl: 'delivery-form.component.html',
   imports: [
     TableModule,
-    Button,
+    ButtonDirective,
     FormFieldComponent,
     DatePicker,
     FormField,

@@ -1,6 +1,6 @@
 <div class="flex flex-column gap-4 flex-grow-1">
   @if (addingIsActive()) {
-    <p-button (click)="addingIsActive.set(false)" label="Cancel" icon="pi pi-times" severity="info" class="align-self-end"/>
+    <button pButton (click)="addingIsActive.set(false)" severity="info" class="align-self-end"><i class="pi pi-times"></i> Cancel</button>
     <rts-unit-value-form [unitGroupId]="unitGroupId()"
                          (unitValueCreated)="addingIsActive.set(false)"
                          [baseUnitOptions]="unitValues()">
@@ -18,45 +18,45 @@
              (onRowCollapse)="rowIsExpanded.set(false)"
              [value]="unitValues()">
 
-      <ng-template pTemplate="caption">
+      <ng-template #caption>
         <div class="flex justify-content-between align-items-center">
           <rts-grid-filter [dataTable]="unitValuesTable"/>
 
-          <p-button (click)="addingIsActive.set(true)"
-                    [disabled]="loading()"
-                    [label]="'+ Add Unit Value (' + unitGroup().name + ')'"
-                    rounded
-                    severity="secondary">
-          </p-button>
+          <button pButton (click)="addingIsActive.set(true)"
+                  [disabled]="loading()"
+                  rounded
+                  severity="secondary">
+            {{ '+ Add Unit Value (' + unitGroup().name + ')' }}
+          </button>
         </div>
       </ng-template>
 
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th pSortableColumn="name">
             Name
-            <p-sortIcon field="name"></p-sortIcon>
+            <p-sort-icon field="name"></p-sort-icon>
           </th>
           <th pSortableColumn="code">
             Code
-            <p-sortIcon field="code"></p-sortIcon>
+            <p-sort-icon field="code"></p-sort-icon>
           </th>
           <th pSortableColumn="baseUnitName">
             Base Unit
-            <p-sortIcon field="baseUnitName"></p-sortIcon>
+            <p-sort-icon field="baseUnitName"></p-sort-icon>
           </th>
           <th pSortableColumn="unitsOfBasePerUnit">
             Multiplier
-            <p-sortIcon field="unitsOfBasePerUnit"></p-sortIcon>
+            <p-sort-icon field="unitsOfBasePerUnit"></p-sort-icon>
           </th>
           <th pSortableColumn="description">
             Description
-            <p-sortIcon field="description"></p-sortIcon>
+            <p-sort-icon field="description"></p-sort-icon>
           </th>
           <th style="width: 5rem;"></th>
       </ng-template>
 
-      <ng-template pTemplate="body" let-unitvalue let-expanded="expanded">
+      <ng-template #body let-unitvalue let-expanded="expanded">
         <tr [ngClass]="{ 'expanded-row': expanded }">
           <td>{{unitvalue?.name | nullSafe}}</td>
           <td>{{unitvalue?.code | nullSafe}}</td>
@@ -65,20 +65,21 @@
           <td>{{unitvalue?.description | nullSafe}}</td>
           <td>
             @if (!unitvalue.systemDefined) {
-              <p-button [icon]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"
-                        rounded
-                        pRipple
-                        severity="secondary"
-                        [text]="true"
-                        [disabled]="loading() || addingIsActive()"
-                        [pRowToggler]="unitvalue">
-              </p-button>
+              <button pButton
+                      rounded
+                      pRipple
+                      severity="secondary"
+                      [text]="true"
+                      [disabled]="loading() || addingIsActive()"
+                      [pRowToggler]="unitvalue">
+                <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+              </button>
             }
           </td>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="expandedrow" let-unitvalue>
+      <ng-template #expandedrow let-unitvalue>
         <tr>
           <td colspan="6" class="filled-background">
             <rts-unit-value-form [unitValue]="unitvalue"
@@ -89,7 +90,7 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="emptymessage">
+      <ng-template #emptymessage>
         <tr rts-empty-row [colspan]="6" message="No Units Values Were Found"></tr>
       </ng-template>
     </p-table>

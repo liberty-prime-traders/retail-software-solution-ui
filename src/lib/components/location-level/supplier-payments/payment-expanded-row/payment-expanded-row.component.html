@@ -33,12 +33,13 @@
 
     } @else {
       <div class="flex flex-column gap-3">
-        <p-button label="Was this payment is recorded by mistake?"
-                  [text]="true"
-                  severity="warn"
-                  (click)="voidIsActive.set(true)"
-                  [disabled]="voidIsActive()">
-        </p-button>
+        <button pButton
+                [text]="true"
+                severity="warn"
+                (click)="voidIsActive.set(true)"
+                [disabled]="voidIsActive()">
+          Was this payment is recorded by mistake?
+        </button>
 
         @if (voidIsActive()) {
           <rts-form-field label="Void Reason"

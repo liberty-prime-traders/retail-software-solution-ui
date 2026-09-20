@@ -8,12 +8,12 @@
         <p-tab value="2">Documentation</p-tab>
       </div>
 
-      <p-button label="Refresh"
-                icon="pi pi-refresh"
-                text
-                class="align-self-center"
-                (click)="refresh()">
-      </p-button>
+      <button pButton
+              text
+              class="align-self-center"
+              (click)="refresh()">
+        <i class="pi pi-refresh"></i> Refresh
+      </button>
     </div>
   </p-tablist>
 
@@ -42,14 +42,14 @@
                   scrollHeight="flex"
                   [scrollable]="true">
 
-      <ng-template pTemplate="header">
+      <ng-template #header>
         <tr>
           <th>Account</th>
           <th>Balance</th>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-node let-rowData="rowData">
+      <ng-template #body let-node let-rowData="rowData">
         <tr [ttRow]="node">
           <td>
             <div class="flex align-items-center gap-2">
