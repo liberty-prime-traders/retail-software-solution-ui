@@ -1,0 +1,18 @@
+services:
+  rtss-ui:
+    image: ezraorina834/rtss-ui:${APP_VERSION}
+    restart: unless-stopped
+    networks:
+      - ezra-home
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rtss-ui-${ENV}.rule=Host(`rtss-ui${SUFFIX}.ezra-home.me`)"
+      - "traefik.http.routers.rtss-ui-${ENV}.entrypoints=websecure"
+      - "traefik.http.routers.rtss-ui-${ENV}.tls=true"
+      - "traefik.http.routers.rtss-ui-${ENV}.tls.certresolver=acme-cert-resolver"
+      - "traefik.http.services.rtss-ui-${ENV}.loadbalancer.server.port=80"
+
+networks:
+  ezra-home:
+    external: true
