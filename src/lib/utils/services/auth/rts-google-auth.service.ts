@@ -1,11 +1,12 @@
 import {inject, Injectable, signal} from '@angular/core'
+import {environment} from '@environments/environment'
 import {CredentialResponse} from 'google-one-tap'
 import {LocalStorageService} from '../local-storage.service'
 import {LocalStorageKey} from '../../types/local-storage-key.enum'
 
 @Injectable({providedIn: 'root'})
 export class RtsGoogleAuthService {
-  private static readonly CLIENT_ID = '1041984457184-rk441ulgoosac3l6k9neifd3hh6g5ikd.apps.googleusercontent.com'
+  private static readonly CLIENT_ID = environment.GOOGLE_CLIENT_ID
 
   // TODO: swap localStorage for a Cookie ASAP - localStorage is not appropriate for storing auth credentials
   private readonly localStorageService = inject(LocalStorageService)

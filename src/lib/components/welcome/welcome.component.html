@@ -18,9 +18,11 @@
               <img ngSrc="assets/images/logo.svg" alt="Logo" height="32" width="160" priority/>
             </ng-template>
 
-            <ng-template #panel>
-              <rts-scope-pill [config]="PlatformPillConfig"/>
-            </ng-template>
+            @if (isPlatformAdmin()) {
+              <ng-template #panel>
+                <rts-scope-pill [config]="PlatformPillConfig"/>
+              </ng-template>
+            }
 
             <ng-template #panel>
               <rts-scope-pill [config]="OrganizationPillConfig">

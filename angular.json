@@ -86,6 +86,9 @@
             },
             "development": {
               "buildTarget": "retail-software-solution-ui:build:development"
+            },
+            "test": {
+              "buildTarget": "retail-software-solution-ui:build:test"
             }
           },
           "defaultConfiguration": "development"

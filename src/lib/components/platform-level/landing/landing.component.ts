@@ -36,7 +36,7 @@ export class LandingComponent extends HasSubscriptionComponent implements OnInit
 
   readonly ProcessingStatus = ProcessingStatus
 
-  readonly hasCreateRole = this.userContextService.hasCreateRole
+  readonly canCreateOrganization = this.userContextService.canCreateOrganization
   readonly errorMessages = this.organizationLaunchService.errorMessages
   readonly launchingInProgress = this.organizationLaunchService.launchingInProgress
 
