@@ -1,5 +1,10 @@
-<rts-loading-container [loading]="isAuthenticating()" loadingText="Authenticating..." class="h-full">
-  <div class="flex flex-column h-full" (onResize)="onResize()" [ngClass]="fullScreen() ? 'gap-1' : 'gap-4'">
+<rts-loading-container [loading]="isAuthenticating()" loadingText="Authenticating...">
+  <div class="flex flex-column"
+       id="welcome-screen"
+       [padding]="0"
+       rtsAutoStretch="welcome-screen"
+       (onResize)="onResize()"
+       [ngClass]="fullScreen() ? 'gap-1' : 'gap-4'">
 
     @if (fullScreen()) {
       <div class="flex justify-content-end p-1">

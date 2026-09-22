@@ -1,51 +1,53 @@
-<form [formGroup]="migrationForm" class="flex flex-column gap-2 bg-white p-4">
-  <rts-form-field label="Organization" for="organizationId" [required]="true">
-    <p-select
-      id="organizationId"
-      formControlName="organizationId"
-      [options]="organizations()"
-      optionLabel="name"
-      optionValue="id"
-      [showClear]="true"
-      [loading]="loadingOrganizations()"
-      (onChange)="onOrganizationChange($event.value)">
-    </p-select>
-  </rts-form-field>
+<rts-loading-container [loading]="migrationInProgress()">
+  <form [formGroup]="migrationForm" class="flex flex-column gap-2 bg-white p-4">
+    <rts-form-field label="Organization" for="organizationId" [required]="true">
+      <p-select
+        id="organizationId"
+        formControlName="organizationId"
+        [options]="organizations()"
+        optionLabel="name"
+        optionValue="id"
+        [showClear]="true"
+        [loading]="loadingOrganizations()"
+        (onChange)="onOrganizationChange($event.value)">
+      </p-select>
+    </rts-form-field>
 
-  <rts-form-field label="Target DB Version" for="targetDbVersionId" [required]="true">
-    <p-select
-      id="targetDbVersionId"
-      formControlName="targetDbVersionId"
-      [options]="dbVersions()"
-      optionLabel="versionNumber"
-      optionValue="id"
-      [showClear]="true"
-      [loading]="loadingDbVersions()">
-    </p-select>
-  </rts-form-field>
+    <rts-form-field label="Target DB Version" for="targetDbVersionId" [required]="true">
+      <p-select
+        id="targetDbVersionId"
+        formControlName="targetDbVersionId"
+        [options]="dbVersions()"
+        optionLabel="versionNumber"
+        optionValue="id"
+        [showClear]="true"
+        [loading]="loadingDbVersions()">
+      </p-select>
+    </rts-form-field>
 
 
-  <rts-form-field label="Locations to Migrate" for="locationIdsToMigrate">
-    <p-select
-      id="locationIdsToMigrate"
-      formControlName="locationIdsToMigrate"
-      [options]="locations()"
-      optionLabel="name"
-      optionValue="id"
-      [multiple]="true"
-      [showClear]="true"
-      [loading]="loadingLocations()">
-    </p-select>
-  </rts-form-field>
+    <rts-form-field label="Locations to Migrate" for="locationIdsToMigrate">
+      <p-select
+        id="locationIdsToMigrate"
+        formControlName="locationIdsToMigrate"
+        [options]="locations()"
+        optionLabel="name"
+        optionValue="id"
+        [multiple]="true"
+        [showClear]="true"
+        [loading]="loadingLocations()">
+      </p-select>
+    </rts-form-field>
 
-  <rts-forms-buttons
-    [disableReset]="!migrationForm.dirty"
-    [disableSave]="!migrationForm.valid || !migrationForm.dirty"
-    [hideDelete]="true"
-    [processingStatus]="processingStatus()"
-    [failureMessages]="failureMessages()"
-    saveLabel="Execute"
-    (save)="runMigration()"
-    (resetAction)="resetForm()">
-  </rts-forms-buttons>
-</form>
+    <rts-forms-buttons
+      [disableReset]="!migrationForm.dirty"
+      [disableSave]="!migrationForm.valid || !migrationForm.dirty"
+      [hideDelete]="true"
+      [processingStatus]="processingStatus()"
+      [failureMessages]="failureMessages()"
+      saveLabel="Execute"
+      (save)="runMigration()"
+      (resetAction)="resetForm()">
+    </rts-forms-buttons>
+  </form>
+</rts-loading-container>

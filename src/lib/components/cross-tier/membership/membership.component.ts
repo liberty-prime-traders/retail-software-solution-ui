@@ -46,10 +46,7 @@ export class MembershipComponent {
 
   private readonly fetchAuthoritiesAndUsers = effect(() => {
     const schemaLevel = this.schemaLevel()
-    untracked(() => {
-      this.membershipUserService.fetch()
-      this.authorityService.refetch(schemaLevel)
-    })
+    untracked(() => this.authorityService.refetch(schemaLevel))
   })
 
   terminateSelectedUsers() {
