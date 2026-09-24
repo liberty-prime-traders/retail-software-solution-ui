@@ -43,6 +43,10 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Environment files
+*.env
+src/environments/environment.local.ts
+
 # Claude Code: settings.json and commands/ are shared and committed;
 # only the personal local-override file and scratch dir are ignored.
 .claude/settings.local.json

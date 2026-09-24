@@ -7,7 +7,9 @@ import {ButtonDirective} from 'primeng/button'
 import {Splitter} from 'primeng/splitter'
 import {Tooltip} from 'primeng/tooltip'
 import {AuthenticationService} from '../../api/platform-level/authentication/authentication.service'
+import {UserContextService} from '../../utils/services/auth/user-context.service'
 import {SessionContextService} from '../../utils/services/session-context.service'
+import {AutoStretchDirective} from '../reusable/auto-stretch.directive'
 import {AutoStretchService} from '../reusable/auto-stretch.service'
 import {LoadingContainerComponent} from '../reusable/loading-container/loading-container.component'
 import {LocationNavContentComponent} from './top-navigation/location-nav-content/location-nav-content.component'
@@ -38,19 +40,22 @@ import {
     LocationNavContentComponent,
     UserAccountNavContentComponent,
     NgClass,
-    LoadingContainerComponent
+    LoadingContainerComponent,
+    AutoStretchDirective
   ]
 })
 export class WelcomeComponent implements OnInit {
   private readonly authenticationService = inject(AuthenticationService)
   readonly sessionContextService = inject(SessionContextService)
   private readonly autoStretchService = inject(AutoStretchService)
+  private readonly userContextService = inject(UserContextService)
 
   readonly darkMode = model(false)
   readonly fullScreen = signal(false)
 
   readonly isAuthenticating = this.authenticationService.isAuthenticating
   readonly isLoggedIn = this.authenticationService.isLoggedIn
+  readonly isPlatformAdmin = this.userContextService.isPlatformAdmin
   readonly PlatformPillConfig = PlatformPillConfig
   readonly OrganizationPillConfig = OrganizationPillConfig
   readonly LocationPillConfig = LocationPillConfig

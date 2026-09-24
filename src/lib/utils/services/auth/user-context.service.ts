@@ -1,5 +1,6 @@
 import {computed, inject, Injectable, Signal, signal} from '@angular/core'
 import {tap} from 'rxjs/operators'
+import {UserPermission} from '../../../api/cross-tier/authorization/user-permission.enum'
 import {AuthenticationService} from '../../../api/platform-level/authentication/authentication.service'
 import {
   OrganizationAdminService
@@ -22,11 +23,15 @@ export class UserContextService {
   readonly emailAddress = computed(() => this.loggedInUser()?.email ?? '')
   readonly token = computed(() => this.loginResponse()?.sessionToken ?? '')
   readonly isPlatformAdmin = this.hasRole(UserRole.PLATFORM_ADMIN)
-  readonly hasCreateRole = this.hasRole(UserRole.CREATE_ORGANIZATION)
+  readonly canCreateOrganization = this.hasPermission(UserPermission.CREATE_ORGANIZATION)
   readonly initials = computed(() =>  this.loggedInUser()?.initials ?? '')
 
-  hasRole(role: UserRole): Signal<boolean> {
+  private hasRole(role: UserRole): Signal<boolean> {
     return computed(() => this.loginResponse()?.verifiedRoles.includes(role) ?? false)
+  }
+
+  private hasPermission(permission: UserPermission): Signal<boolean> {
+    return computed(() => this.loginResponse()?.verifiedPermissions.includes(permission) ?? false)
   }
 
   checkOrganizationAdminStatus(): void {

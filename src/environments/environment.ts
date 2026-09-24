@@ -1,6 +1,2 @@
 
-export const environment = {
-  production: false,
-  BASE_URL: 'http://localhost:8080',
-  PRIME_LICENCE_KEY: 'eyJpZCI6IjZkZWZjZmY1LTNhNTItNDdiNi1iMTQwLWY0NWJkZGMyYmFjYSIsInByb2R1Y3QiOiJwcmltZXVpIiwidGllciI6ImNvbW11bml0eSIsInR5cGUiOiJkZXYiLCJpYXQiOjE3ODk4NzU2NTksImV4cCI6MTgyMTQxMTY1OX0.mjsBijoY5FlIH7INNyRpTaTfVJ_adU9h_Azh62vCVhVXEuNpENNuQb1miFcGWN2oklvzWYtibCWOufu9MgSsAg'
-}
+export * from './environment.dev'

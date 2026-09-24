@@ -1,6 +1,7 @@
 import {computed, Injectable} from '@angular/core'
 import {Subscription} from 'rxjs'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
+import {UserPermission} from '../../cross-tier/authorization/user-permission.enum'
 import {UserRole} from '../../cross-tier/authorization/user-role.enum'
 import {ApiCallbacks} from '../../util/base-api/api-callbacks'
 import {BaseService} from '../../util/base-api/base.service'
@@ -9,8 +10,6 @@ import {IdentityProvider, LoginRequest, LoginResponse} from './login.model'
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService extends BaseService<LoginResponse, LoginRequest> {
-
-  private static readonly ROLES_TO_VERIFY = [UserRole.CREATE_ORGANIZATION, UserRole.PLATFORM_ADMIN]
 
   readonly loginResponse = computed(() => this.selectFirst())
   readonly loggedInUser = computed(() => this.loginResponse()?.user)
@@ -28,7 +27,12 @@ export class AuthenticationService extends BaseService<LoginResponse, LoginReque
   logIn(provider: IdentityProvider, credential: string, callbacks: ApiCallbacks<LoginResponse>): Subscription {
     this.patchApiRequestConfig({urlSuffix: 'login', urlPrefix: ''})
     return this.post(
-      {provider, credential, rolesToVerify: AuthenticationService.ROLES_TO_VERIFY},
+      {
+        provider,
+        credential,
+        rolesToVerify: [UserRole.PLATFORM_ADMIN],
+        permissionsToVerify: [UserPermission.CREATE_ORGANIZATION]
+      },
       callbacks
     )
   }

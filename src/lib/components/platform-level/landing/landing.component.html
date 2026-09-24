@@ -28,7 +28,7 @@
       </div>
 
       <div class="px-4 flex flex-column justify-content-center align-items-center gap-3 my-4">
-        @if (hasCreateRole()) {
+        @if (canCreateOrganization()) {
           <span routerLink="create-organization" class="font-italic text-cyan-600 cursor-pointer">
             Create a New Organization
           </span>

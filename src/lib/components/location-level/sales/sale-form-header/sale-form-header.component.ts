@@ -4,6 +4,7 @@ import {ButtonDirective} from 'primeng/button'
 import {Card} from 'primeng/card'
 import {Tag} from 'primeng/tag'
 import {SaleStatus} from '../../../../api/location-level/sale-summary/sale-status.enum'
+import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
@@ -30,6 +31,7 @@ import {SaleStatusSeverityPipe} from '../sale-status-severity.pipe'
 export class SaleFormHeaderComponent {
   private readonly context = inject(SaleFormContext)
   private readonly navigator = inject(SaleFormNavigator)
+  private readonly saleSessionService = inject(SaleSessionService)
 
   readonly saleStatus = computed(() => this.saleSession().saleStatus)
   readonly saleSession = this.context.saleSession
@@ -52,6 +54,6 @@ export class SaleFormHeaderComponent {
   }
 
   voidSale() {
-    //this.saleSessionService.voidSale(this.context.saleSession()?.id!, {onSuccess: this.context.loadSession})
+    //this.saleSessionService. (this.context.saleSession()?.id!, {onSuccess: this.context.loadSession})
   }
 }

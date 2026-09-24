@@ -8,6 +8,7 @@ import {OrganizationLocationService} from '../../../../api/platform-level/organi
 import {OrganizationService} from '../../../../api/platform-level/organization/organization.service'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 
 @Component({
   selector: 'rts-run-migration',
@@ -16,7 +17,8 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
     ReactiveFormsModule,
     FormFieldComponent,
     FormButtonsComponent,
-    Select
+    Select,
+    LoadingContainerComponent
   ],
   templateUrl: './run-migration.component.html'
 })
@@ -28,6 +30,7 @@ export class RunMigrationComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder)
 
   readonly processingStatus = this.dbMigrationService.selectProcessingStatus
+  readonly migrationInProgress = this.dbMigrationService.selectLoading
   readonly failureMessages = this.dbMigrationService.selectFailureMessages
 
   readonly dbVersions = this.dbVersionService.selectAll

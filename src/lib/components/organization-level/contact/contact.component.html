@@ -2,7 +2,9 @@
   @if (addingIsActive()) {
 
     <div class="flex flex-column gap-4 flex-grow-1">
-      <button pButton (click)="setAddingActiveFalse()" severity="info"><i class="pi pi-times"></i> Cancel</button>
+      <button pButton (click)="setAddingActiveFalse()" severity="info" class="w-fit">
+        <i class="pi pi-times"></i> Cancel
+      </button>
       <rts-contact-form (contactCreated)="setAddingActiveFalse()"/>
     </div>
 
