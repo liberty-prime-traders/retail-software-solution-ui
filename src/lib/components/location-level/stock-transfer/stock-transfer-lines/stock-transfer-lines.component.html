@@ -27,11 +27,15 @@
 
     <ng-template #body let-line>
       <tr>
-        <td class="flex flex-column gap-1">
-          {{ line.productLabel }}
-          <small class="info-message">
-            Available: {{ line.quantityAvailable | nullSafe }} {{ line.baseUnitId | fullUnitDescription : line.quantityAvailable }}
-          </small>
+        <td>
+          <div class="flex flex-column gap-1">
+            {{ line.productLabel }}
+            @if (perspective() === StockTransferPerspective.OUTGOING && isDraft()) {
+              <small class="info-message">
+                Available: {{ line.quantityAvailable | nullSafe }} {{ line.baseUnitId | fullUnitDescription : line.quantityAvailable }}
+              </small>
+            }
+          </div>
         </td>
 
         @if (canManageLines()) {
@@ -71,7 +75,7 @@
                   <p-chip [label]="line.quantityReceived" icon="pi pi-check" class="success-medium"/>
                 }
 
-                @if (isDraft()) {
+                @if (isDispatched()) {
                   <button pButton
                           (click)="line.quantityReceived ? undoLineConfirmation(line) : confirmLine(line)"
                           [severity]="line.quantityReceived ? 'secondary' : 'primary'">

@@ -17,11 +17,18 @@ export interface SaleSession extends BaseModel {
   notes: string
   saleStatus: SaleStatus
   paymentStatus: PaymentStatus
+  saleVoidInfo: SaleVoidInfo | null
   saleLines: SaleLine[]
   saleAdjustments: SaleAdjustment[]
   salePayments: SalePayment[]
   totals: SaleSessionTotals
   uiOptions: SaleSessionUiOptions
+}
+
+export interface SaleVoidInfo {
+  voidedBy: string
+  voidedOn: string
+  voidedReason: string
 }
 
 export interface SaleSessionUiOptions {

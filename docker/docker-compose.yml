@@ -10,7 +10,6 @@ services:
       - "traefik.http.routers.rtss-ui-${ENV}.rule=Host(`rtss-ui${SUFFIX}.ezra-home.me`)"
       - "traefik.http.routers.rtss-ui-${ENV}.entrypoints=websecure"
       - "traefik.http.routers.rtss-ui-${ENV}.tls=true"
-      - "traefik.http.routers.rtss-ui-${ENV}.tls.certresolver=acme-cert-resolver"
       - "traefik.http.services.rtss-ui-${ENV}.loadbalancer.server.port=80"
 
 networks:

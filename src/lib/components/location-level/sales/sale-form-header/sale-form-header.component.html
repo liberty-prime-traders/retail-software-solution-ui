@@ -32,16 +32,39 @@
       <h2 class="m-0">New Sale</h2>
     }
 
-    @if (canVoidSale()) {
-      <rts-forms-buttons
-        [hideSave]="true"
-        [hideReset]="true"
-        (delete)="voidSale()"
-        contentClass=""
-        deleteInProgressMessage="Processing request..."
-        deleteWarning="All payments have been voided, and products have not been expended"
-        [deleteLabel]="voidSaleLabel()">
-      </rts-forms-buttons>
+    @if (canDiscardSale()) {
+      <button pButton (click)="startSaleVoid()" severity="danger">
+        <i class="pi pi-trash"></i>
+        {{discardSaleLabel()}}
+      </button>
     }
+
   </div>
 </p-card>
+
+<p-dialog [header]="discardSaleLabel()" [(visible)]="showVoidSaleScreen" [modal]="true">
+  <div class="flex flex-column gap-2">
+    @if (saleIsBeyondDraft()) {
+      <ul>
+        <li> This sale has been confirmed which means products have been handed over to the customer.</li>
+        <li> Discarding it will reverse the sale and return all products back to stock.</li>
+        <li> Confirm that these items have been physically returned to the shelf or store before voiding.</li>
+        <li> Any payments received should also be returned to the customer.</li>
+      </ul>
+
+    } @else {
+        <ul>
+          <li> This sale is still in a draft status.</li>
+          <li> Discarding it will remove it from the system and cannot be recovered.</li>
+          <li> All stock reservations will also be released.</li>
+        </ul>
+    }
+
+    <textarea pInputText placeholder="What went wrong?" class="w-full" rows="3" #voidReason></textarea>
+
+    <button pButton class="align-self-end" (click)="confirmSaleVoid(voidReason.value)" severity="danger">
+      <i class="pi pi-trash"></i> Confirm
+    </button>
+  </div>
+</p-dialog>
+
