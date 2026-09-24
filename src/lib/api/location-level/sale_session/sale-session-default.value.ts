@@ -17,6 +17,7 @@ export const defaultSaleSession = (): SaleSession => {
     soldBy: '',
     saleStatus: SaleStatus.DRAFT,
     paymentStatus: PaymentStatus.UNPAID,
+    saleVoidInfo: null,
     dateSold: '',
     notes: '',
     saleLines: [],

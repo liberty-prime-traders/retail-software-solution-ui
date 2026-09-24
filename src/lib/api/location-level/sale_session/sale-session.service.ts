@@ -89,6 +89,11 @@ export class SaleSessionService extends BaseService<SaleSession> {
     })
   }
 
+  discardOrVoidSale(reason: string, callbacks?: ApiCallbacks<SaleSession>) {
+    this.patchApiRequestConfig({urlSuffix: 'void'})
+    return this.postRequest({id: this.currentSessionId(), body: {reason} as any, callbacks})
+  }
+
   override finishDeletingWithSuccess() {
     this.setProcessingStatus(ProcessingStatus.SUCCESS)
   }

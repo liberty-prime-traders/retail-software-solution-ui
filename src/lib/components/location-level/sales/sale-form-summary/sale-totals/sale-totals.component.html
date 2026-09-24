@@ -33,7 +33,9 @@
   </div>
   <div class="flex justify-content-between">
     <span class="font-bold">Balance due</span>
-    <span class="money irregular-balance">{{ saleSession().totals.balance | currency }}</span>
+    <span class="money" [ngClass]="isVoided() ? 'strike-through': 'irregular-balance'">
+      {{ saleSession().totals.balance | currency }}
+    </span>
   </div>
 
   <p-divider/>
@@ -75,4 +77,23 @@
       </div>
     }
   }
+
+  @if (isVoided()) {
+    <p-divider/>
+
+    <div class="flex gap-2 flex-column">
+      <rts-form-field label="Voided By" [layout]="FormFieldLayout.COMPACT" contentClass="w-full">
+        {{ saleSession().saleVoidInfo?.voidedBy | nullSafe }}
+      </rts-form-field>
+
+      <rts-form-field label="Voided On" [layout]="FormFieldLayout.COMPACT" contentClass="w-full">
+        {{ saleSession().saleVoidInfo?.voidedOn | date }}
+      </rts-form-field>
+
+      <rts-form-field label="Void Reason" [layout]="FormFieldLayout.COMPACT" contentClass="w-full">
+        {{ saleSession().saleVoidInfo?.voidedReason | nullSafe }}
+      </rts-form-field>
+    </div>
+  }
+
 </div>

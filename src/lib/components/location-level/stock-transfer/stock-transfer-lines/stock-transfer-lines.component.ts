@@ -7,6 +7,7 @@ import {Chip} from 'primeng/chip'
 import {InputNumber} from 'primeng/inputnumber'
 import {Select} from 'primeng/select'
 import {TableModule} from 'primeng/table'
+import {StockTransferStatus} from '../../../../api/cross-tier/stock-transfer/stock-transfer-status.enum'
 import {ProductWithAvailability} from '../../../../api/location-level/product-lookup/product-with-availability.model'
 import {StockTransferPerspective} from '../../../../api/location-level/stock-transfer/stock-transfer-perspective.enum'
 import {
@@ -58,6 +59,7 @@ export class StockTransferLinesComponent {
 
   readonly StockTransferPerspective = StockTransferPerspective
   readonly isDraft = this.context.isDraft
+  readonly isDispatched = computed(() => this.context.status() === StockTransferStatus.DISPATCHED)
   readonly perspective = this.context.perspective
 
   readonly canManageLines = computed(() =>
