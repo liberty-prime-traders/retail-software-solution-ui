@@ -1,0 +1,64 @@
+<span class="font-bold">Declare Opening Stock</span>
+
+<rts-loading-container [loading]="loading()">
+  @if (unitsReady()) {
+    <div id="opening-stock-productLines" rtsAutoStretch="opening-stock-productLines">
+      <p-table [value]="products()"
+               (onLazyLoad)="onLazyLoad($event)"
+               [lazy]="true"
+               dataKey="id"
+               scrollHeight="flex"
+               [scrollable]="true"
+               [rows]="20"
+               [virtualScroll]="true"
+               [virtualScrollItemSize]="65">
+
+        <ng-template #caption>
+          <div class="flex justify-content-between align-items-center gap-3">
+            <ng-content select="[gridSearch]"/>
+
+            <button pButton [disabled]="!canDeclare()" (click)="declareAll()">
+              <i class="pi pi-save"></i> Save Changes
+            </button>
+
+            <button pButton severity="secondary" (click)="exitEditMode.emit()">
+              <i class="pi pi-times"></i> Exit Opening Stock Mode
+            </button>
+          </div>
+        </ng-template>
+
+        <ng-template #header>
+          <tr>
+            <th>Reference</th>
+            <th>Product Group</th>
+            <th>Product Name</th>
+            <th>Opening Stock</th>
+          </tr>
+        </ng-template>
+
+        <ng-template #body let-product>
+          @if (product?.placeholder) {
+            <tr>
+              <td style="height: 65px" colspan="4">
+                <p-skeleton class="h-full"/>
+              </td>
+            </tr>
+          } @else {
+            <tr style="height: 65px">
+              <td>{{ product?.referenceNumber | nullSafe }}</td>
+              <td>{{ product?.productGroupName | nullSafe }}</td>
+              <td>{{ product?.productName | nullSafe }}</td>
+              <td>
+                <rts-opening-stock-cell [product]="product" [editMode]="true"/>
+              </td>
+            </tr>
+          }
+        </ng-template>
+
+        <ng-template #emptymessage>
+          <tr rts-empty-row [colspan]="4" message="No products found."></tr>
+        </ng-template>
+      </p-table>
+    </div>
+  }
+</rts-loading-container>

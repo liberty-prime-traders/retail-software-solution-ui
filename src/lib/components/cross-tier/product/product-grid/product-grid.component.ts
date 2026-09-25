@@ -58,6 +58,7 @@ export class ProductGridComponent<PRODUCT extends ProductDetail> {
 
   readonly isOrganizationLevel = computed(() => this.schemaLevel() === SchemaLevel.ORGANIZATION)
   readonly isLocationLevel = computed(() => this.schemaLevel() === SchemaLevel.LOCATION)
+  readonly columnCount = computed(() => this.isLocationLevel() ? 9 : 7)
 
   onLazyLoad(lazyLoadEvent: TableLazyLoadEvent): void {
     const loadedRowCount = this.productSearchService.getPaginatedCount()
@@ -78,5 +79,4 @@ export class ProductGridComponent<PRODUCT extends ProductDetail> {
   onProductUpdated() {
     this.productFilterService.reloadClientSideFilteredEntities()
   }
-
 }

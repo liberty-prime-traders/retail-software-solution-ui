@@ -1,33 +1,4 @@
 <div class="flex flex-column gap-3" id="products-grid" rtsAutoStretch="products-grid">
-  <div class="flex align-items-center justify-content-between">
-    @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
-      <span class="font-bold">{{organizationName()}} Products</span>
-    } @else if (schemaLevel() === SchemaLevel.LOCATION) {
-      <span class="font-bold">{{locationName()}} Products</span>
-    }
-
-    @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
-      <div class="flex gap-4">
-        <button pButton
-                (click)="toggleBulkImport()"
-                [disabled]="addingIsActive() || showAdvancedFilter()"
-                rounded
-                severity="secondary">
-          <i [class]="showBulkImportScreen() ? 'pi pi-times' : 'pi pi-upload'"></i>
-          {{ showBulkImportScreen() ? 'Close Bulk Import' : 'Bulk Import Products' }}
-        </button>
-
-        <button pButton
-                (click)="setAddingActiveTrue()"
-                [disabled]="addingIsActive() || showAdvancedFilter() || showBulkImportScreen()"
-                rounded
-                severity="secondary">
-          + Add product
-        </button>
-      </div>
-    }
-  </div>
-
   <div class="flex gap-3">
     @if (showAdvancedFilter()) {
       <div class="col-3">
@@ -48,29 +19,74 @@
 
     <div class="flex flex-column gap-4 flex-grow-1">
       @if (showBulkImportScreen()) {
-        <rts-bulk-product-import (successfulUpload)="finishBulkImport()"/>
-      }
-      @else if (addingIsActive()) {
-        <button pButton (click)="setAddingActiveFalse()" severity="info" class="w-fit">
+        <button pButton (click)="toggleBulkImport()" severity="info" class="w-fit">
           <i class="pi pi-times"></i> Cancel
         </button>
-        <rts-organization-product-form (productCreated)="setAddingActiveFalse()"/>
+        <rts-bulk-product-import (successfulUpload)="finishBulkImport()"/>
+      }
+      @else if (addingNewProductIsActive()) {
+        <button pButton (click)="hideScreenThatAddsNewProduct()" severity="info" class="w-fit">
+          <i class="pi pi-times"></i> Cancel
+        </button>
+        <rts-organization-product-form (productCreated)="hideScreenThatAddsNewProduct()"/>
+      }
+      @else if (openingStockEditMode()) {
+        <rts-opening-stock-grid class="flex-grow-1" (exitEditMode)="toggleOpeningStockEditMode()">
+          <ng-container ngProjectAs="[gridSearch]" *ngTemplateOutlet="searchBar"/>
+        </rts-opening-stock-grid>
       }
       @else {
-        <div class="flex justify-content-between align-items-center">
-          @if (!showAdvancedFilter()) {
-            <button pButton (click)="toggleAdvancedFilter(true)"><i class="pi pi-chevron-right"></i> Advanced Filter</button>
-          }
+        @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
+          <span class="font-bold">{{organizationName()}} Products</span>
+        } @else if (schemaLevel() === SchemaLevel.LOCATION) {
+          <span class="font-bold">{{locationName()}} Products</span>
+        }
 
-          @if (advancedFilterApplied()) {
-            <p-message severity="info"> Advanced Filter is in use </p-message>
-          }
+        <rts-product-grid class="flex-grow-1" [schemaLevel]="schemaLevel()">
+          <div class="flex gap-2 flex-grow-1 justify-content-between">
+            <ng-container ngProjectAs="[gridSearch]" *ngTemplateOutlet="searchBar"/>
 
-          <rts-search [searchValueControl]="searchValueFormControl" [ngClass]="{'flex-grow-1': showAdvancedFilter()}"/>
-        </div>
+            @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
+              <div ngProjectAs="[gridActions]" class="flex gap-4">
+                <button pButton (click)="toggleBulkImport()"
+                        [disabled]="showAdvancedFilter()"
+                        rounded severity="secondary">
+                  <i class="pi pi-upload"></i>
+                  Bulk Import Products
+                </button>
 
-        <rts-product-grid class="flex-grow-1" [schemaLevel]="schemaLevel()" />
+                <button pButton (click)="showScreenThatAddsNewProduct()"
+                        [disabled]="showAdvancedFilter()"
+                        rounded severity="secondary">
+                  + Add product
+                </button>
+              </div>
+            } @else if (schemaLevel() === SchemaLevel.LOCATION) {
+              <button ngProjectAs="[gridActions]"
+                      pButton
+                      (click)="toggleOpeningStockEditMode()"
+                      rounded
+                      severity="secondary">
+                <i class="pi pi-warehouse"></i> Edit Opening Stock
+              </button>
+            }
+          </div>
+        </rts-product-grid>
       }
     </div>
   </div>
 </div>
+
+<ng-template #searchBar>
+  @if (!showAdvancedFilter()) {
+    <button pButton (click)="toggleAdvancedFilter(true)">
+      <i class="pi pi-chevron-right"></i> Advanced Filter
+    </button>
+  }
+
+  @if (advancedFilterApplied()) {
+    <p-message severity="info"> Advanced Filter is in use </p-message>
+  }
+
+  <rts-search [searchValueControl]="searchValueFormControl" [ngClass]="{'flex-grow-1': showAdvancedFilter()}"/>
+</ng-template>
