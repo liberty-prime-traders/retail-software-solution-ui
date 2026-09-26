@@ -58,6 +58,7 @@
 @if (showStockHistory()) {
   <p-dialog [header]="'Stock History for ' + originalLocationProduct()?.productName"
             [modal]="false"
+            appendTo="body"
             [(visible)]="showStockHistory">
     <rts-stock-history [locationProductId]="originalLocationProduct()?.id"/>
   </p-dialog>

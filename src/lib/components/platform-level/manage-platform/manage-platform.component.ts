@@ -22,6 +22,7 @@ export class ManagePlatformComponent implements OnInit {
     {label: 'Organizations', icon: 'pi pi-home', routerLink: 'organizations'},
     {label: 'Passes', icon: 'pi pi-id-card', routerLink: 'authorization-passes'},
     {label: 'Access Control', icon: 'pi pi-lock', routerLink: 'access-control'},
+    {label: 'Platform Features', icon: 'pi pi-sliders-h', routerLink: 'platform-features'},
   ]
 
   private readonly legalMenuItems: MenuItem[] = [
@@ -31,11 +32,7 @@ export class ManagePlatformComponent implements OnInit {
   ]
 
   private readonly configMenuItems: MenuItem[] = [
-    {label: 'Platform Features', icon: 'pi pi-sliders-h', routerLink: 'platform-features'},
-    {label: 'Table Registry', icon: 'pi pi-table', routerLink: 'table-registry'}
-  ]
-
-  private readonly databaseConfigs: MenuItem[] = [
+    {label: 'Table Registry', icon: 'pi pi-table', routerLink: 'table-registry'},
     {label: 'DB Versions', icon: 'pi pi-database', routerLink: 'db-versions'},
     {label: 'DB Migrations', icon: 'pi pi-sync', routerLink: 'db-migrations'}
   ]
@@ -45,9 +42,7 @@ export class ManagePlatformComponent implements OnInit {
     {separator: true},
     {label: 'Legal', items: this.legalMenuItems},
     {separator: true},
-    {label: 'Config', items: this.configMenuItems},
-    {separator: true},
-    {label: 'Database', items: this.databaseConfigs}
+    {label: 'Admin Config', items: this.configMenuItems},
   ]
 
   ngOnInit() {

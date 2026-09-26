@@ -15,9 +15,4 @@ export class AvailableProductLookupQuickSearchService
   constructor(protected override readonly store: AvailableProductLookupStore) {
     super(store)
   }
-
-  fetchProducts(searchText: string, excludeIds: string[] = []) {
-    const searchParameters: ProductSearchParameters = {searchText, excludeIds}
-    return this.refetch(searchParameters)
-  }
 }

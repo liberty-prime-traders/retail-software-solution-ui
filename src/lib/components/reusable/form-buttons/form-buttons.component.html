@@ -4,6 +4,7 @@
       <div class="flex gap-2 flex-grow-1">
         <button pButton
                 type="button"
+                class="h-fit"
                 [severity]="deleteSeverity()"
                 (click)="deleteIsActive.set(true)"
                 [disabled]="disableDelete() || deleteIsActive() || processingIsUnderway()">

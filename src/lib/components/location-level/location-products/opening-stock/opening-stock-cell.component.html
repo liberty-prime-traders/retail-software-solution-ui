@@ -1,0 +1,34 @@
+@if (showEditor()) {
+  <form class="flex gap-1 align-items-center p-0">
+    <p-select [options]="draft().unitId | alternativeUnitsFinder"
+              appendTo="body"
+              class="col-4"
+              size="small"
+              [ngModelOptions]="{standalone: true}"
+              [ngModel]="draft().unitId"
+              (ngModelChange)="updateUnitId($event)">
+    </p-select>
+
+    <p-input-number [min]="0"
+                    [maxFractionDigits]="2"
+                    class="col-4"
+                    placeholder="Qty"
+                    [ngModelOptions]="{standalone: true}"
+                    [ngModel]="draft().quantity"
+                    (ngModelChange)="updateQuantity($event)">
+    </p-input-number>
+
+
+    <p-input-number [min]="0"
+                    mode="currency"
+                    currency="KES"
+                    class="col-4"
+                    placeholder="Cost"
+                    [ngModelOptions]="{standalone: true}"
+                    [ngModel]="draft().unitCost"
+                    (ngModelChange)="updateUnitCost($event)">
+    </p-input-number>
+  </form>
+} @else {
+  {{ displayQuantity() | nullishToZero }}
+}

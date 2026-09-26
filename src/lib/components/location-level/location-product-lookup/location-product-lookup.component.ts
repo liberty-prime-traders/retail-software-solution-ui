@@ -1,24 +1,22 @@
 import {Component, computed, effect, inject, input, OnInit, output, TemplateRef, untracked} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
-import {Subscription} from 'rxjs'
 import {ProductCore} from '../../../api/cross-tier/product/product-core.model'
 import {ProductSearchParameters} from '../../../api/cross-tier/product/product-search-parameters.model'
 import {UnitConversionGraphService} from '../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
 import {PaginatedBaseService} from '../../../api/util/paginated-api/paginated-base.service'
+import {PaginatedModel} from '../../../api/util/paginated-api/paginated.model'
 import {ProductLabelPipe} from '../../../utils/pipes/product-label.pipe'
 import {toSelectItems} from '../../../utils/types/select-item.type'
 import {HasFilteredDataComponent} from '../../reusable/has-filtered-data.component'
 import {ProductLookupFilterService} from './product-lookup-filter.service'
 
 @Component({selector: 'rts-product-lookup', template: ''})
-export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore>
+export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore & PaginatedModel>
   extends HasFilteredDataComponent implements OnInit {
 
   readonly templateRef = input<TemplateRef<unknown>>()
   readonly selectedProductIds = input<string[]>([])
   readonly productSelected = output<LOOKUP>()
-
-  protected abstract fetchProducts(searchText: string, excludeIds: string[]): Subscription | undefined
 
   private readonly productQuickSearchService =
     inject<PaginatedBaseService<LOOKUP, ProductSearchParameters>>(PaginatedBaseService)
@@ -33,6 +31,8 @@ export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore>
     this.searchValueFormControl?.setValue(searchText)
   }
 
+  private readonly loadedProducts = this.productFilterService.filteredProducts
+
   readonly productsMap = computed(() => {
     const map = new Map<EntityId, LOOKUP>()
     this.productFilterService.filteredProducts().forEach(product => map.set(product.id, product))
@@ -40,7 +40,7 @@ export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore>
   })
 
   readonly productOptions = computed(() =>
-    toSelectItems(this.productFilterService.filteredProducts(), {
+    toSelectItems(this.loadedProducts(), {
       itemValueBy: this.extractValueFromProduct,
       itemLabelBy: this.extractLabelFromProduct
     })
@@ -60,8 +60,10 @@ export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore>
   })
 
   override ngOnInit() {
+    if (this.selectedProductIds().length) {
+      this.productFilterService.resetExternalParameters({excludeIds: this.selectedProductIds()})
+    }
     super.ngOnInit()
-    this.fetchProducts('', this.selectedProductIds())
   }
 
   private readonly extractLabelFromProduct = (product: LOOKUP): string => {
@@ -74,7 +76,7 @@ export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore>
 
   emitSelectedProduct(locationProductId: EntityId) {
     const selectedProduct = this.productsMap().get(locationProductId)
-    if (selectedProduct) {
+    if (selectedProduct && !selectedProduct.placeholder) {
       this.productSelected.emit(selectedProduct)
     }
   }

@@ -1,5 +1,5 @@
 import {CurrencyPipe, NgClass, NgTemplateOutlet} from '@angular/common'
-import {Component, computed, inject, input, signal, viewChild} from '@angular/core'
+import {Component, computed, effect, inject, input, signal, viewChild} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {ButtonDirective} from 'primeng/button'
 import {Skeleton} from 'primeng/skeleton'
@@ -11,6 +11,8 @@ import {ProductSearchParameters} from '../../../../api/cross-tier/product/produc
 import {ProductStatus} from '../../../../api/cross-tier/product/product-status.enum'
 import {SchemaLevel} from '../../../../api/platform-level/table-registry/schema-level.enum'
 import {PaginatedBaseService} from '../../../../api/util/paginated-api/paginated-base.service'
+import {loadNextOnLazyLoad} from '../../../../api/util/paginated-api/paginated-lazy-load.util'
+import {resetVirtualScrollOnSearch} from '../../../../utils/primeng-table.util'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {NullishToZeroPipe} from '../../../../utils/pipes/nullish-to-zero.pipe'
 import {
@@ -20,6 +22,7 @@ import {
   OrganizationProductFormComponent
 } from '../../../organization-level/products/product-form/organization-product-form.component'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
+import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {ProductFilterService} from '../product-filter.service'
 
@@ -40,7 +43,8 @@ import {ProductFilterService} from '../product-filter.service'
     AutoStretchDirective,
     CurrencyPipe,
     NullishToZeroPipe,
-    LoadingContainerComponent
+    LoadingContainerComponent,
+    EmptyRowComponent
   ]
 })
 export class ProductGridComponent<PRODUCT extends ProductDetail> {
@@ -58,13 +62,16 @@ export class ProductGridComponent<PRODUCT extends ProductDetail> {
 
   readonly isOrganizationLevel = computed(() => this.schemaLevel() === SchemaLevel.ORGANIZATION)
   readonly isLocationLevel = computed(() => this.schemaLevel() === SchemaLevel.LOCATION)
+  readonly columnCount = computed(() => this.isLocationLevel() ? 9 : 7)
+
+  readonly $resetScrollOnSearch = effect(() => {
+    this.productFilterService.searchTriggered()
+    this.productSearchService.freshLoadCompleted()
+    resetVirtualScrollOnSearch(this.table())
+  })
 
   onLazyLoad(lazyLoadEvent: TableLazyLoadEvent): void {
-    const loadedRowCount = this.productSearchService.getPaginatedCount()
-    const overlapThreshold = 5
-    if (Math.abs(loadedRowCount - (lazyLoadEvent.last ?? 0)) <= overlapThreshold) {
-      this.productSearchService.loadNext()
-    }
+    loadNextOnLazyLoad(this.productSearchService, lazyLoadEvent.last)
   }
 
   onRowExpand(): void {
@@ -74,9 +81,4 @@ export class ProductGridComponent<PRODUCT extends ProductDetail> {
   onRowCollapse(): void {
     this.rowIsExpanded.set(false)
   }
-
-  onProductUpdated() {
-    this.productFilterService.reloadClientSideFilteredEntities()
-  }
-
 }
