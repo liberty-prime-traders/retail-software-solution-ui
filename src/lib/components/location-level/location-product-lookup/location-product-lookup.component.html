@@ -14,5 +14,13 @@
       </ng-template>
     }
 
+    <ng-template #empty #emptyfilter>
+      @if (dependenciesLoading()) {
+        <p-skeleton width="100%" height="1.25rem"/>
+      } @else {
+        No products found.
+      }
+    </ng-template>
+
   </p-select>
 </rts-form-field>

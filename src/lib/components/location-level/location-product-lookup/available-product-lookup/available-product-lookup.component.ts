@@ -1,5 +1,6 @@
-import {Component, inject} from '@angular/core'
+import {Component} from '@angular/core'
 import {Select} from 'primeng/select'
+import {Skeleton} from 'primeng/skeleton'
 import {
   AvailableProductLookupQuickSearchService
 } from '../../../../api/location-level/product-lookup/available-product-lookup-quick-search.service'
@@ -25,14 +26,9 @@ import {AvailableProductLookupFilterService} from './available-product-lookup-fi
   imports: [
     FormFieldComponent,
     Select,
+    Skeleton,
     ProductLabelPipe
   ]
 })
 export class AvailableProductLookupComponent extends LocationProductLookupComponent<ProductWithAvailability> {
-
-  private readonly quickSearchService = inject(AvailableProductLookupQuickSearchService)
-
-  protected override fetchProducts(searchText: string, excludeIds: string[]) {
-    return this.quickSearchService.fetchProducts(searchText, excludeIds)
-  }
 }

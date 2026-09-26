@@ -1,6 +1,7 @@
 import {NgTemplateOutlet} from '@angular/common'
-import {Component, inject} from '@angular/core'
+import {Component} from '@angular/core'
 import {Select} from 'primeng/select'
+import {Skeleton} from 'primeng/skeleton'
 import {ProductForPurchase} from '../../../../api/location-level/product-lookup/product-for-purchase.model'
 import {
   PurchaseProductLookupQuickSearchService
@@ -27,14 +28,9 @@ import {PurchaseProductLookupFilterService} from './purchase-product-lookup-filt
   imports: [
     FormFieldComponent,
     Select,
+    Skeleton,
     NgTemplateOutlet
   ]
 })
 export class PurchaseProductLookupComponent extends LocationProductLookupComponent<ProductForPurchase> {
-
-  private readonly quickSearchService = inject(PurchaseProductLookupQuickSearchService)
-
-  protected override fetchProducts(searchText: string, excludeIds: string[]) {
-    return this.quickSearchService.fetchProducts(searchText, excludeIds)
-  }
 }

@@ -1,5 +1,5 @@
 import {NgClass, NgTemplateOutlet} from '@angular/common'
-import {Component, computed, effect, EnvironmentInjector, inject, input, runInInjectionContext, signal} from '@angular/core'
+import {Component, computed, inject, input, signal} from '@angular/core'
 import {toSignal} from '@angular/core/rxjs-interop'
 import {FormControl, FormsModule} from '@angular/forms'
 import {BlockUIModule} from 'primeng/blockui'
@@ -8,10 +8,7 @@ import {Divider} from 'primeng/divider'
 import {Message} from 'primeng/message'
 import {TableModule} from 'primeng/table'
 import {ProductDetail} from '../../../../api/cross-tier/product/product-detail.model'
-import {ProductSearchParameters} from '../../../../api/cross-tier/product/product-search-parameters.model'
 import {SchemaLevel} from '../../../../api/platform-level/table-registry/schema-level.enum'
-import {UnitConversionGraphService} from '../../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
-import {PaginatedBaseService} from '../../../../api/util/paginated-api/paginated-base.service'
 import {SessionContextService} from '../../../../utils/services/session-context.service'
 import {
   OpeningStockGridComponent
@@ -50,8 +47,6 @@ import {ProductGridComponent} from '../product-grid/product-grid.component'
 export class ProductGeneralComponent<PRODUCT extends ProductDetail> extends HasFilteredDataComponent {
 
   private readonly productFilterService = inject(ProductFilterService<PRODUCT>)
-  protected readonly productSearchService = inject(PaginatedBaseService<PRODUCT, ProductSearchParameters>)
-  private readonly environmentInjector = inject(EnvironmentInjector)
   readonly sessionContextService = inject(SessionContextService)
 
   protected override readonly applyFilters$ = this.productFilterService.applyFilters$
@@ -67,12 +62,6 @@ export class ProductGeneralComponent<PRODUCT extends ProductDetail> extends HasF
   readonly showBulkImportScreen = signal(false)
   readonly openingStockEditMode = signal(false)
 
-  readonly $initializeClientSideFilter = effect(() => {
-    if (this.productSearchService.requireClientSideFilter()) {
-      this.productFilterService.reloadClientSideFilteredEntities()
-    }
-  })
-
   readonly locationName = computed(() =>
     this.sessionContextService.selectedLocation()?.name ?? ''
   )
@@ -87,7 +76,6 @@ export class ProductGeneralComponent<PRODUCT extends ProductDetail> extends HasF
 
   hideScreenThatAddsNewProduct() {
     this.addingNewProductIsActive.set(false)
-    this.productFilterService.reloadClientSideFilteredEntities()
   }
 
   toggleBulkImport() {
@@ -95,15 +83,10 @@ export class ProductGeneralComponent<PRODUCT extends ProductDetail> extends HasF
   }
 
   toggleOpeningStockEditMode() {
-    const enteringEditMode = !this.openingStockEditMode()
-    this.openingStockEditMode.set(enteringEditMode)
-    if (enteringEditMode) {
-      runInInjectionContext(this.environmentInjector, () => inject(UnitConversionGraphService))
-    }
+    this.openingStockEditMode.set(!this.openingStockEditMode())
   }
 
   finishBulkImport() {
     this.showBulkImportScreen.set(false)
-    this.productFilterService.reloadClientSideFilteredEntities()
   }
 }

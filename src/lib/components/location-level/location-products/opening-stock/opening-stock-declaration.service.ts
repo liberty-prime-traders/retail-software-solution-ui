@@ -6,14 +6,12 @@ import {LocationProduct} from '../../../../api/location-level/location-product/l
 import {OpeningStockLine} from '../../../../api/location-level/opening-stock/opening-stock.model'
 import {OpeningStockService} from '../../../../api/location-level/opening-stock/opening-stock.service'
 import {parseError} from '../../../../utils/errors'
-import {LocationProductFilterService} from '../location-product-filter.service'
 import {OpeningStockDraftLine} from './opening-stock-draft-line.model'
 
 @Injectable({providedIn: 'root'})
 export class OpeningStockDeclarationService {
   private readonly openingStockService = inject(OpeningStockService)
   private readonly locationProductSearchService = inject(LocationProductPaginatedSearchService)
-  private readonly locationProductFilterService = inject(LocationProductFilterService)
 
   private readonly drafts = signal(new Map<string, OpeningStockDraftLine>())
   private readonly declaredQuantities = signal(new Map<string, number>())
@@ -66,10 +64,6 @@ export class OpeningStockDeclarationService {
     })
 
     this.locationProductSearchService.pushToPaginatedEntities(updatedProducts)
-
-    if (this.locationProductSearchService.requireClientSideFilter()) {
-      this.locationProductFilterService.reloadClientSideFilteredEntities()
-    }
 
     this.drafts.update(drafts => {
       const next = new Map(drafts)

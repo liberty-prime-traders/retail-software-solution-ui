@@ -90,14 +90,18 @@
         <tr>
           @if (isOrganizationLevel()){
             <td [attr.colspan]="columnCount()" class="filled-background">
-              <rts-organization-product-form [product]="product" (productUpdated)="onProductUpdated()"/>
+              <rts-organization-product-form [product]="product"/>
             </td>
           } @else if (isLocationLevel()) {
             <td [attr.colspan]="columnCount()" class="filled-background">
-              <rts-location-product-form [locationProduct]="product" (productUpdated)="onProductUpdated()"/>
+              <rts-location-product-form [locationProduct]="product"/>
             </td>
           }
         </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr rts-empty-row [colspan]="columnCount()" message="No products found."></tr>
       </ng-template>
     </p-table>
   </div>

@@ -1,13 +1,15 @@
-import {Component, computed, inject, output} from '@angular/core'
+import {Component, computed, effect, inject, output, viewChild} from '@angular/core'
 import {MessageService} from 'primeng/api'
 import {ButtonDirective} from 'primeng/button'
 import {Skeleton} from 'primeng/skeleton'
-import {TableModule} from 'primeng/table'
+import {Table, TableModule} from 'primeng/table'
 import {TableLazyLoadEvent} from 'primeng/types/table'
 import {LocationProduct} from '../../../../api/location-level/location-product/location-product.model'
 import {ProductSearchParameters} from '../../../../api/cross-tier/product/product-search-parameters.model'
 import {UnitConversionGraphService} from '../../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
 import {PaginatedBaseService} from '../../../../api/util/paginated-api/paginated-base.service'
+import {loadNextOnLazyLoad} from '../../../../api/util/paginated-api/paginated-lazy-load.util'
+import {resetVirtualScrollOnSearch} from '../../../../utils/primeng-table.util'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {ProductFilterService} from '../../../cross-tier/product/product-filter.service'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
@@ -40,6 +42,8 @@ export class OpeningStockGridComponent {
   readonly products = this.productFilterService.filteredProducts
   readonly canDeclare = this.declarationService.canDeclare
   readonly exitEditMode = output<void>()
+  protected readonly unitsReady = computed(() => !this.unitConversionGraphService.isLoading())
+  private readonly table = viewChild(Table)
 
   protected readonly loading = computed(() =>
     this.productSearchService.selectLoading()
@@ -47,14 +51,17 @@ export class OpeningStockGridComponent {
     || this.unitConversionGraphService.isLoading()
   )
 
-  protected readonly unitsReady = computed(() => !this.unitConversionGraphService.isLoading())
+  readonly $resetScrollOnSearch = effect(() => {
+    this.productFilterService.searchTriggered()
+    this.productSearchService.freshLoadCompleted()
+    const table = this.table()
+    if (table) {
+      resetVirtualScrollOnSearch(table)
+    }
+  })
 
   onLazyLoad(lazyLoadEvent: TableLazyLoadEvent): void {
-    const loadedRowCount = this.productSearchService.getPaginatedCount()
-    const overlapThreshold = 5
-    if (Math.abs(loadedRowCount - (lazyLoadEvent.last ?? 0)) <= overlapThreshold) {
-      this.productSearchService.loadNext()
-    }
+    loadNextOnLazyLoad(this.productSearchService, lazyLoadEvent.last)
   }
 
   declareAll() {

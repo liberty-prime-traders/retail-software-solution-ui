@@ -1,5 +1,5 @@
 import {HttpErrorResponse} from '@angular/common/http'
-import {computed, signal, Signal} from '@angular/core'
+import {signal, Signal} from '@angular/core'
 import {isEqual} from 'lodash-es'
 import {catchError, finalize, first, Subscription, tap} from 'rxjs'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
@@ -15,27 +15,22 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
   protected abstract readonly defaultCursor: CURSOR
   protected readonly BATCH_SIZE: number = 100
   protected readonly urlSuffix: string = 'search'
-  private readonly paginatedEntitiesVersion = signal(0)
 
   readonly requireClientSideFilter: Signal<boolean>
-  private readonly paginatedEntities: Array<RESPONSE> = this.getPlaceholders(15)
+  private readonly paginatedEntities = signal<RESPONSE[]>(this.getPlaceholders(15))
+  private readonly freshLoadCount = signal(0)
+  private isFreshLoad = false
 
-  override readonly selectAll = computed(() => {
-    this.paginatedEntitiesVersion()
-    return this.paginatedEntities
-  })
+  override readonly selectAll = this.paginatedEntities.asReadonly()
+  readonly freshLoadCompleted = this.freshLoadCount.asReadonly()
 
   protected constructor(protected override readonly store: PaginatedBaseStore<RESPONSE, PARAMETERS>) {
     super(store)
     this.requireClientSideFilter = this.store.requireClientSideFilter
   }
 
-  refreshState() {
-    this.paginatedEntitiesVersion.update(v => v + 1)
-  }
-
   getPaginatedCount(): number {
-    return this.paginatedEntities.filter(entity => !entity.placeholder).length
+    return this.paginatedEntities().filter(entity => !entity.placeholder).length
   }
 
   parametersHaveChanged(newParams: PARAMETERS): boolean {
@@ -48,7 +43,7 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
 
   override resetStoreAndClearCache() {
     super.resetStoreAndClearCache()
-    this.paginatedEntities.splice(0)
+    this.paginatedEntities.set([])
     this.store.resetPagination()
   }
 
@@ -58,6 +53,7 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
       return undefined
     }
     this.resetStoreAndClearCache()
+    this.isFreshLoad = true
     return this.executeSearch(parameters, this.defaultCursor)
   }
 
@@ -106,32 +102,28 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
       lastSearchParams: parameters
     })
     this.setProcessingStatus(ProcessingStatus.SUCCESS)
+    if (this.isFreshLoad) {
+      this.isFreshLoad = false
+      this.freshLoadCount.update(count => count + 1)
+    }
   }
 
   private patchPaginatedEntities(response: PageResponse<RESPONSE>) {
-    const entities = this.paginatedEntities
-    let cutIndex = entities.length
-    while (cutIndex > 0 && entities[cutIndex - 1].placeholder) {
-      cutIndex--
-    }
-    if (cutIndex < entities.length) {
-      entities.splice(cutIndex)
-    }
-    if (response.contents.length > 0) {
-      entities.push(...response.contents)
-    }
-    if (response.hasMore) {
-      entities.push(...this.getPlaceholders(5))
-    }
-    this.refreshState()
+    this.paginatedEntities.update(entities => {
+      const loadedEntities = entities.filter(entity => !entity.placeholder)
+      const updatedEntities = [...loadedEntities, ...response.contents]
+      if (response.hasMore) {
+        return [...updatedEntities, ...this.getPlaceholders(5)]
+      }
+      return updatedEntities
+    })
   }
 
   pushToPaginatedEntities(newEntities: RESPONSE[]) {
-    const entities = this.paginatedEntities
-    const entitiesMap = new Map(entities.map(entity => [entity.id, entity]))
-    newEntities.forEach(newEntity => entitiesMap.set(newEntity.id, newEntity))
-    const updatedEntities = Array.from(entitiesMap.values())
-    entities.splice(0, entities.length, ...updatedEntities)
-    this.refreshState()
+    this.paginatedEntities.update(entities => {
+      const entitiesMap = new Map(entities.map(entity => [entity.id, entity]))
+      newEntities.forEach(newEntity => entitiesMap.set(newEntity.id, newEntity))
+      return Array.from(entitiesMap.values())
+    })
   }
 }
