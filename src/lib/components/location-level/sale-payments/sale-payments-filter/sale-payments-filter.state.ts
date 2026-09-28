@@ -43,10 +43,12 @@ export class SalePaymentsFilterState {
 
   private readonly debouncedFilterFormValue = debouncedSignal(this.filterFormValue, 1500)
 
+  readonly filterParams = computed(() =>
+    SalePaymentsFilterFormDefinition.convertToFilterParams(this.debouncedFilterFormValue(), this.zonedDatesService)
+  )
+
   private readonly refetchSummaryOnFilterChange = effect(() => {
-    const filterParams = SalePaymentsFilterFormDefinition.convertToFilterParams(
-      this.debouncedFilterFormValue(), this.zonedDatesService
-    )
+    const filterParams = this.filterParams()
     untracked(() => this.salePaymentSummaryService.refetch(filterParams))
   })
 

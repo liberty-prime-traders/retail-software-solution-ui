@@ -1,9 +1,10 @@
-import {Component, computed, inject, model, OnInit} from '@angular/core'
+import {Component, computed, effect, inject, model, OnInit, untracked} from '@angular/core'
 import {Badge} from 'primeng/badge'
 import {Divider} from 'primeng/divider'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
 import {ContactService} from '../../../api/organization-level/contact/contact.service'
 import {PaymentOptionService} from '../../../api/organization-level/payment-option/payment-option.service'
+import {SalePaymentSearchResultService} from '../../../api/location-level/sale-payment/sale-payment-search-result.service'
 import {SalePaymentSummaryService} from '../../../api/location-level/sale-payment/sale-payment-summary.service'
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {LoadingContainerComponent} from '../../reusable/loading-container/loading-container.component'
@@ -35,8 +36,10 @@ import {SalePaymentsSummaryComponent} from './sale-payments-summary.component'
 })
 export class SalePaymentsComponent implements OnInit {
   private readonly salePaymentSummaryService = inject(SalePaymentSummaryService)
+  private readonly salePaymentSearchResultService = inject(SalePaymentSearchResultService)
   private readonly paymentOptionService = inject(PaymentOptionService)
   private readonly contactService = inject(ContactService)
+  private readonly filterState = inject(SalePaymentsFilterState)
 
   readonly activePaymentsCount = this.salePaymentSummaryService.activePaymentsCount
   readonly voidedPaymentsCount = this.salePaymentSummaryService.voidedPaymentsCount
@@ -49,6 +52,16 @@ export class SalePaymentsComponent implements OnInit {
       || this.paymentOptionService.selectLoading()
       || this.contactService.selectLoading()
   )
+
+  private readonly refetchSearchResultsOnPaymentsTab = effect(() => {
+    const selectedTab = this.selectedTab()
+    const filterParams = this.filterState.filterParams()
+    untracked(() => {
+      if (selectedTab === 'payments') {
+        this.salePaymentSearchResultService.refetch(filterParams)
+      }
+    })
+  })
 
   ngOnInit() {
     this.paymentOptionService.fetch()

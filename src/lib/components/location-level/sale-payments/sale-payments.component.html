@@ -3,7 +3,7 @@
     @if (selectedTab() === 'payments') {
       <rts-sale-payments-filter-readonly class="col-2" (editFilters)="selectedTab.set('summary')"/>
     } @else {
-      <rts-sale-payments-filter />
+      <rts-sale-payments-filter class="col-3" />
     }
 
     <p-divider layout="vertical"/>
