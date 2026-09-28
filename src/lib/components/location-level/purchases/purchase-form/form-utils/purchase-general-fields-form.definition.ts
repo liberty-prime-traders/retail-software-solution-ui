@@ -76,7 +76,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
 
     id: formValue.id,
     supplierId: formValue.supplierId,
-    dateOrdered: zonedDatesService.toZonedISOString(formValue.dateOrdered),
+    dateOrdered: zonedDatesService.atOrgZone(formValue.dateOrdered),
     orderedById: formValue.orderedById,
     notes: formValue.notes
   })

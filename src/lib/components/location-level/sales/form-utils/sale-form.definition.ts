@@ -62,7 +62,7 @@ export namespace SaleFormDefinition {
 
     disabled(
       salePath.contactId,
-      ({valueOf}: RootFieldContext<string>) => !!valueOf(salePath.walkInCustomer)
+      {when: ({valueOf}: RootFieldContext<string>) => !!valueOf(salePath.walkInCustomer)}
     )
 
     max(

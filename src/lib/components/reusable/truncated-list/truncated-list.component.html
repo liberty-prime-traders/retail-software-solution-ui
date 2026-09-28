@@ -1,0 +1,10 @@
+@let truncated = items() | truncatedList : showCount();
+
+<div class="flex flex-wrap gap-1">
+  @for (item of truncated.items; track item; let last = $last) {
+    <small>{{ item }}{{ last ? '' : ',' }}</small>
+  }
+  @if (truncated.remaining > 0) {
+    <small class="font-bold text-primary">+{{ truncated.remaining }}</small>
+  }
+</div>

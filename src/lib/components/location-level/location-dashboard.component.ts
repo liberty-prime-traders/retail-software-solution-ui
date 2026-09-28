@@ -35,22 +35,29 @@ export class LocationDashboardComponent implements OnInit {
 
   private readonly commonTasksMenuItems: MenuItem[] = [
     {label: 'Summary', icon: 'pi pi-home', routerLink: './', routerLinkActiveOptions: {exact: true}},
-    {label: 'Products', icon: 'pi pi-objects-column', routerLink: 'products'},
-    {label: 'Purchases', icon: 'pi pi-truck', routerLink: 'purchases'},
-    {label: 'Sales', icon: 'pi pi-receipt', routerLink: 'sales'},
-    {label: 'Stock Transfers', icon: 'pi pi-send', routerLink: 'stock-transfer'},
-    {label: 'Expenses', icon: 'pi pi-money-bill'},
-    {label: 'Fixtures', icon: 'pi pi-box'}
+    {label: 'Products', icon: 'pi pi-objects-column', routerLink: 'products'}
   ]
 
-  private readonly adminTasksMenuItems: MenuItem[] = [
+  private readonly transactionsMenuItems: MenuItem[] = [
+    {label: 'Sales', icon: 'pi pi-receipt', routerLink: 'sales'},
+    {label: 'Sale Payments', icon: 'pi pi-dollar', routerLink: 'sale-payments'},
+    {label: 'Purchases', icon: 'pi pi-truck', routerLink: 'purchases'},
+    {label: 'Stock Transfers', icon: 'pi pi-send', routerLink: 'stock-transfer'},
+    {label: 'Expenses', icon: 'pi pi-wallet'}
+  ]
+
+  private readonly adminSectionMenuItems: MenuItem[] = [
     {label: 'Sync', icon: 'pi pi-sync', routerLink: 'sync'},
-    {label: 'Users', icon: 'pi pi-users', routerLink: 'users'}
+    {label: 'Users', icon: 'pi pi-users', routerLink: 'users'},
+    {label: 'Fixtures', icon: 'pi pi-box'}
   ]
 
   readonly menuItems: MenuItem[] = [
     {label: 'Menu', items: this.commonTasksMenuItems},
-    {label: 'Admin Tasks', items: this.adminTasksMenuItems}
+    {separator: true},
+    {label: 'Transactions', items: this.transactionsMenuItems},
+    {separator: true},
+    {label: 'Admin Section', items: this.adminSectionMenuItems}
   ]
 
   ngOnInit(): void {

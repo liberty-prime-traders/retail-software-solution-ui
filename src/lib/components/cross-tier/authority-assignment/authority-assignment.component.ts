@@ -88,17 +88,17 @@ export class AuthorityAssignmentComponent {
       case SchemaLevel.ORGANIZATION:
         return this.organizationUserService.selectAll().map(user => ({
           id: user.userId,
-          displayName: user.fullName ?? ''
+          displayName: user.fullName
         }))
       case SchemaLevel.LOCATION:
         return this.locationUserService.selectAll().map(user => ({
           id: user.userId,
-          displayName: user.fullName ?? ''
+          displayName: user.fullName
         }))
       default:
         return this.platformUserService.selectAll().map(user => ({
           id: user.id,
-          displayName: user.fullName ?? ''
+          displayName: user.fullName
         }))
     }
   })

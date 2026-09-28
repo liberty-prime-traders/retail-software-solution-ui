@@ -54,12 +54,12 @@ export class AuthorizationPassFormComponent extends BaseFormComponent<Authorizat
   override ngOnInit() {
     super.ngOnInit()
     if (this.pass()) {
-      this.passForm().value.set(AuthorizationPassFormDefinition.convertToFormModel(this.zonedDatesService, this.pass()))
+      this.passForm().value.set(AuthorizationPassFormDefinition.convertToFormModel(this.pass()))
     }
   }
 
   resetForm() {
-    this.passForm().reset(AuthorizationPassFormDefinition.convertToFormModel(this.zonedDatesService, this.pass()))
+    this.passForm().reset(AuthorizationPassFormDefinition.convertToFormModel(this.pass()))
   }
 
   upsert() {

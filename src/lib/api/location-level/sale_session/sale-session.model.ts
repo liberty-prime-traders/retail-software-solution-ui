@@ -88,6 +88,7 @@ export interface SaleAdjustment {
 
 export interface SaleSessionTotals {
   subtotal: number
+  displaySubtotal: number
   lineLevelDiscountTotal: number
   orderLevelDiscountTotal: number
   lineLevelSurchargeTotal: number

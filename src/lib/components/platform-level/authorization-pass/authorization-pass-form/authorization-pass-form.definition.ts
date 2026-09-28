@@ -36,15 +36,12 @@ export namespace AuthorizationPassFormDefinition {
     )
   })
 
-  export const convertToFormModel = (
-    zonedDatesService: ZonedDatesService, pass?: AuthorizationPass
-  ): AuthorizationPassFormModel => ({
-
+  export const convertToFormModel = (pass?: AuthorizationPass): AuthorizationPassFormModel => ({
     id: pass?.id as string ?? '',
     passType: pass?.passType ?? '',
     maxUseCount: pass?.maxUseCount ?? 1,
     assignedToId: pass?.assignedToId ?? '',
-    expiresOn: zonedDatesService.fromUTCToZonedDate(pass?.expiresOn)
+    expiresOn: pass?.expiresOn ? new Date(pass.expiresOn) : null
   })
 
   export const convertToBackendModel = (
@@ -55,6 +52,6 @@ export namespace AuthorizationPassFormDefinition {
     passType: formValue.passType as PassType,
     maxUseCount: formValue.maxUseCount,
     assignedToId: formValue.assignedToId,
-    expiresOn: zonedDatesService.toZonedISOString(formValue.expiresOn)
+    expiresOn: zonedDatesService.atOrgZone(formValue.expiresOn)
   })
 }

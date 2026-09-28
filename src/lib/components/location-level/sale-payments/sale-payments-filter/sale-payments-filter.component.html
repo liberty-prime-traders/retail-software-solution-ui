@@ -1,0 +1,175 @@
+<div class="flex flex-column gap-3">
+  <rts-form-field label="Recorded Date"
+                  for="recordedFrom" [layout]="
+                  FormFieldDirection.COMPACT"
+                  contentClass="col-11">
+
+    <div class="flex flex-column gap-1">
+      <div class="flex align-items-center gap-2">
+        <span class="font-bold">&ge;</span>
+        <p-date-picker id="recordedFrom"
+                       class="flex-grow-1"
+                       [formField]="state.filterForm.recordedFrom"
+                       [showTime]="true"
+                       [showIcon]="true"
+                       appendTo="body">
+        </p-date-picker>
+      </div>
+
+      <div class="flex align-items-center gap-2">
+        <span class="font-bold">&lt;</span>
+        <p-date-picker id="recordedBefore"
+                       class="flex-grow-1"
+                       [formField]="state.filterForm.recordedBefore"
+                       [showTime]="true"
+                       [showIcon]="true"
+                       appendTo="body">
+        </p-date-picker>
+      </div>
+    </div>
+  </rts-form-field>
+
+  <rts-form-field label="Payment Date"
+                  for="paymentDateFrom"
+                  contentClass="col-11"
+                  [layout]="FormFieldDirection.COMPACT">
+    <div class="flex flex-column gap-1">
+      <div class="flex align-items-center gap-2">
+          <span class="font-bold">&ge;</span>
+          <p-date-picker id="paymentDateFrom"
+                         class="flex-grow-1"
+                         [formField]="state.filterForm.paymentDateFrom"
+                         [showTime]="true"
+                       [showIcon]="true"
+                       appendTo="body">
+        </p-date-picker>
+      </div>
+
+      <div class="flex align-items-center gap-2">
+        <span class="font-bold">&lt;</span>
+        <p-date-picker id="paymentDateBefore"
+                       class="flex-grow-1"
+                       [formField]="state.filterForm.paymentDateBefore"
+                       [showTime]="true"
+                       [showIcon]="true"
+                       appendTo="body">
+        </p-date-picker>
+      </div>
+    </div>
+  </rts-form-field>
+
+  <rts-form-field label="Customers"
+                  for="contactIds"
+                  contentClass="col-11"
+                  [layout]="FormFieldDirection.COMPACT">
+    <p-select id="contactIds"
+              class="flex-grow-1"
+              [options]="state.customers()"
+              optionLabel="fullName"
+              optionValue="id"
+              [multiple]="true"
+              [filter]="true"
+              [checkmark]="true"
+              [formField]="state.filterForm.contactIds"
+              placeholder="Select customers">
+
+      <ng-template #selectedItem let-selectedOption>
+        @let remainingCount = state.filterForm.contactIds().value().length - 1;
+        {{ selectedOption.fullName }}
+        @if (remainingCount > 0) {
+          (+{{ remainingCount }} Others)
+        }
+      </ng-template>
+    </p-select>
+  </rts-form-field>
+
+  <rts-form-field label="Payment method"
+                  for="paymentMethod0"
+                  contentClass="col-11"
+                  [layout]="FormFieldDirection.COMPACT">
+    <div class="flex flex-column gap-1">
+      @for (paymentMethod of state.paymentMethods(); track paymentMethod.id) {
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [value]="paymentMethod.id"
+                      [formField]="state.filterForm.paymentMethodIds"
+                      [inputId]="'paymentMethod' + $index"
+                      name="paymentMethod">
+          </p-checkbox>
+
+          <label [for]="'paymentMethod' + $index">{{ paymentMethod.name }}</label>
+        </div>
+      }
+    </div>
+  </rts-form-field>
+
+  <rts-form-field label="Status"
+                  for="statusActive"
+                  contentClass="col-11"
+                  [layout]="FormFieldDirection.COMPACT">
+    <div class="flex flex-column gap-1">
+      <div class="flex align-items-center gap-2">
+        <p-checkbox [value]="SalePaymentStatus.ACTIVE"
+                    [formField]="state.filterForm.statuses"
+                    inputId="statusActive"
+                    size="small"
+                    name="status">
+        </p-checkbox>
+        <label for="statusActive">Active</label>
+      </div>
+
+      <div class="flex align-items-center gap-2">
+        <p-checkbox [value]="SalePaymentStatus.VOIDED"
+                    [formField]="state.filterForm.statuses"
+                    inputId="statusVoided"
+                    size="small"
+                    name="status">
+        </p-checkbox>
+        <label for="statusVoided">Voided</label>
+      </div>
+    </div>
+  </rts-form-field>
+
+  <rts-form-field label="Amount (KES)"
+                  for="minAmount"
+                  contentClass="col-11"
+                  [layout]="FormFieldDirection.COMPACT">
+    <div class="flex gap-1 flex-column">
+      <p-input-number size="small"  [formField]="state.filterForm.minAmount" placeholder="Min"/>
+      <p-input-number size="small" [formField]="state.filterForm.maxAmount" placeholder="Max"/>
+    </div>
+  </rts-form-field>
+
+  <rts-form-field
+    label="Sale reference numbers"
+    for="saleReferenceNumberInput"
+    contentClass="col-11"
+    [layout]="FormFieldDirection.COMPACT">
+
+    @if (state.filterForm.saleReferenceNumbers().value().length > 0) {
+      <div class="flex flex-wrap gap-1">
+        @for (referenceNumber of state.filterForm.saleReferenceNumbers().value(); track referenceNumber) {
+          <p-chip label="{{ referenceNumber }}"
+                  [removable]="true"
+                  (onRemove)="state.removeSaleReferenceNumber(referenceNumber)">
+          </p-chip>
+        }
+      </div>
+    }
+
+    <input id="saleReferenceNumberInput"
+           #saleReferenceNumberInput
+           class="flex-grow-1"
+           pInputText
+           placeholder="Type ref, press Enter"
+           [disabled]="state.filterForm.saleReferenceNumbers().value().length >= state.maxSaleReferenceNumbers"
+           (keydown.enter)="state.addSaleReferenceNumbers(saleReferenceNumberInput.value); saleReferenceNumberInput.value = ''"
+           (paste)="state.addSaleReferenceNumbers($event.clipboardData?.getData('text') ?? ''); $event.preventDefault()" />
+  </rts-form-field>
+
+  <div class="flex justify-content-end pt-4">
+    <button pButton type="button" (click)="state.resetFilters()" severity="secondary">
+      <i class="pi pi-filter-slash"></i> Reset Filters
+    </button>
+  </div>
+
+</div>

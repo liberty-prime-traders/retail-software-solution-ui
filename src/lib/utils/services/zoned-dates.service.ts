@@ -1,34 +1,22 @@
 import {inject, Injectable} from '@angular/core'
-import {TIMEZONE_TOKEN} from '../../api/util/timezone.model'
+import {TIMEZONE_TOKEN} from '@global/utils/timezones.config'
 
 @Injectable({providedIn: 'root'})
 export class ZonedDatesService {
 
   private readonly timeZone = inject(TIMEZONE_TOKEN)
 
-  fromUTCToZonedDate = (utc?: string | Date | null): Date | null => {
-    if (!utc) return null
-
-    const date = typeof utc === 'string' ? new Date(utc) : utc
-    const parts = this.getDateParts(date)
-    const get = (type: string) => Number(parts.find(p => p.type === type)?.value ?? 0)
-    return new Date(get('year'), get('month') - 1, get('day'), get('hour'), get('minute'), get('second'))
-  }
-
-  toZonedISOString = (date?: Date | null): string => {
+  atOrgZone = (date?: Date | null): string => {
     if (!date) return ''
 
-    const parts = this.getDateParts(date)
-    const get = (type: string) => parts.find(p => p.type === type)?.value ?? '00'
+    const pad = (n: number) => String(n).padStart(2, '0')
 
-    // '2026-04-29T23:00:00'
-    const localISO = `${get('year')}-${get('month')}-${get('day')}T${get('hour')}:${get('minute')}:${get('second')}`
-
+    const localYmd = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+    const localTime = `T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
     const offset = this.getOffsetFromDate(date)
     const offsetWithColon = offset.slice(0, 3) + ':' + offset.slice(3)
 
-    // '2026-04-29T23:00:00+03:00'
-    return `${localISO}${offsetWithColon}`
+    return `${localYmd}${localTime}${offsetWithColon}`
   }
 
   getOffsetFromDate = (date: Date | string | number = new Date()): string => {
