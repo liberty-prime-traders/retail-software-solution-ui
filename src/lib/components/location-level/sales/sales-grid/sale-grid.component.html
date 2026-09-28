@@ -18,7 +18,6 @@
         <th>Sale Status</th>
         <th>Payment Status</th>
         <th>Sub Total</th>
-        <th>Grand Total</th>
         <th>Total Paid</th>
         <th>Sold By</th>
         <th>Date Sold</th>
@@ -43,7 +42,6 @@
           </p-tag>
         </td>
         <td>{{ sale.subtotal | currency }}</td>
-        <td>{{ sale.grandTotal | currency | nullSafe }}</td>
         <td>{{ sale.totalPaid | currency }}</td>
         <td>{{ sale.soldBy | nullSafe }}</td>
         <td>{{ sale.dateSold | date | nullSafe }}</td>

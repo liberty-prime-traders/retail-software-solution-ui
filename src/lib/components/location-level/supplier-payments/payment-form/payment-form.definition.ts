@@ -45,7 +45,7 @@ export namespace PaymentFormDefinition {
       deliveryId: formValue.deliveryId ?? undefined,
       paymentMethodId: formValue.paymentMethodId,
       amount: formValue.amount!,
-      paymentDate: zonedDatesService.toZonedISOString(formValue.paymentDate),
+      paymentDate: zonedDatesService.atOrgZone(formValue.paymentDate),
       notes: formValue.notes || undefined
     })
 }

@@ -1,0 +1,81 @@
+<div class="flex flex-column gap-2">
+
+  @if (state.filterFormValue().recordedFrom || state.filterFormValue().recordedBefore) {
+    <p-fieldset legend="Recorded">
+      <div class="flex flex-column gap-1">
+        @if (state.filterFormValue().recordedFrom) {
+          <small>
+            <span class="font-bold">&ge;</span>
+            {{ state.filterFormValue().recordedFrom | date:'d MMM y, HH:mm' }}
+          </small>
+        }
+        @if (state.filterFormValue().recordedBefore) {
+          <small>
+            <span class="font-bold">&lt;</span>
+            {{ state.filterFormValue().recordedBefore | date:'d MMM y, HH:mm' }}
+          </small>
+        }
+      </div>
+    </p-fieldset>
+  }
+
+  @if (state.filterFormValue().paymentDateFrom || state.filterFormValue().paymentDateBefore) {
+    <p-fieldset legend="Payment Date">
+      <div class="flex flex-column gap-1">
+        @if (state.filterFormValue().paymentDateFrom) {
+          <small>
+            <span class="font-bold">&ge;</span>
+            {{ state.filterFormValue().paymentDateFrom | date:'d MMM y, HH:mm' }}
+          </small>
+        }
+        @if (state.filterFormValue().paymentDateBefore) {
+          <small>
+            <span class="font-bold">&lt;</span>
+            {{ state.filterFormValue().paymentDateBefore | date:'d MMM y, HH:mm' }}
+          </small>
+        }
+      </div>
+    </p-fieldset>
+  }
+
+  @if (state.customerNames().length > 0) {
+    <p-fieldset legend="Customers">
+      <rts-truncated-list [items]="state.customerNames()"/>
+    </p-fieldset>
+  }
+
+  @if (state.paymentMethodNames().length > 0) {
+    <p-fieldset legend="Payment method">
+      <rts-truncated-list [items]="state.paymentMethodNames()"/>
+    </p-fieldset>
+  }
+
+  @if (state.statusLabels().length > 0) {
+    <p-fieldset legend="Status">
+      <rts-truncated-list [items]="state.statusLabels()"/>
+    </p-fieldset>
+  }
+
+  @if (state.filterFormValue().minAmount !== null || state.filterFormValue().maxAmount !== null) {
+    <p-fieldset legend="Amount (KES)">
+      <small>
+        {{ (state.filterFormValue().minAmount ?? 0) | number:'1.2-2' }}
+        &ndash;
+        {{ (state.filterFormValue().maxAmount ?? 0) | number:'1.2-2' }}
+      </small>
+    </p-fieldset>
+  }
+
+  @if (state.filterFormValue().saleReferenceNumbers.length > 0) {
+    <p-fieldset legend="Sale references">
+      <rts-truncated-list [items]="state.filterFormValue().saleReferenceNumbers"/>
+    </p-fieldset>
+  }
+
+  <button pButton type="button"
+          severity="secondary" class="w-full"
+          (click)="editFilters.emit()">
+    Edit filters
+  </button>
+
+</div>

@@ -3,9 +3,10 @@ import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@ang
 import {ApplicationConfig, DEFAULT_CURRENCY_CODE, inject, provideZoneChangeDetection} from '@angular/core'
 import {provideRouter} from '@angular/router'
 import {environment} from '@environments/environment'
+import {CURRENCY} from '@global/utils/currencies.config'
 import {provideMarkdown} from 'ngx-markdown'
 import {providePrimeNG} from 'primeng/config'
-import {RtsHttpInterceptor} from '../lib/api/util/rts-http.interceptor'
+import {RtsHttpInterceptor} from './utils/rts-http.interceptor'
 import {ZonedDatesService} from '../lib/utils/services/zoned-dates.service'
 import {AppPreset, darkModeSelector} from './app.preset'
 import {appRoutes} from './app.routes'
@@ -37,6 +38,6 @@ export const appConfig: ApplicationConfig = {
         return {timezone, dateFormat: 'medium'}
       }
     },
-    {provide: DEFAULT_CURRENCY_CODE, useValue: 'KES '}
+    {provide: DEFAULT_CURRENCY_CODE, useFactory: () => inject(CURRENCY)}
   ]
 }

@@ -1,4 +1,4 @@
-<form class="flex flex-column gap-2 mt-4 h-full" [formGroup]="productFilterService.filterForm">
+<form class="flex flex-column gap-2 mt-4" [formGroup]="productFilterService.filterForm">
 
   <rts-form-field label="Reference Number" for="referenceNumber" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
     <input [placeholder]="referenceNumberPlaceholder()"
@@ -10,33 +10,33 @@
 
   <rts-form-field label="Product Categories" for="categoryIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
     <p-select id="categoryIds"
-                   class="flex-grow-1"
-                   [options]="productCategories()"
-                   optionLabel="categoryName"
-                   optionValue="id"
-                   [multiple]="true"
-                   formControlName="categoryIds"
-                   placeholder="Select Product Categories" >
+              class="flex-grow-1"
+              [options]="productCategories()"
+              optionLabel="categoryName"
+              optionValue="id"
+              [multiple]="true"
+              formControlName="categoryIds"
+              placeholder="Select Product Categories" >
     </p-select>
   </rts-form-field>
 
   @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
     <rts-form-field  label="Tags" for="tagIds" [layout]="FormFieldDirection.VERTICAL" contentClass="col-12">
       <p-select id="tagIds"
-                     class="flex-grow-1"
-                     [options]="productTags()"
-                     optionLabel="tagName"
-                     optionValue="id"
-                     [multiple]="true"
-                     formControlName="tagIds"
-                     placeholder="Select Tags" >
+                class="flex-grow-1"
+                [options]="productTags()"
+                optionLabel="tagName"
+                optionValue="id"
+                [multiple]="true"
+                formControlName="tagIds"
+                placeholder="Select Tags" >
       </p-select>
     </rts-form-field>
   }
 
   <div class="flex flex-column gap-2">
     @for (statusOption of (ProductStatus | enumToDropdown); track statusOption.value) {
-      <div class="flex align-items-center gap-2">
+      <div class="flex align-items-center gap-2 pl-4">
         <p-checkbox [value]="statusOption.value"
                     formControlName="statusList"
                     [inputId]="'statusOption' + $index"

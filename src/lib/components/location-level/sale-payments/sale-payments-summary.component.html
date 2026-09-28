@@ -1,0 +1,32 @@
+<div class="flex flex-column gap-5">
+  <div class="flex gap-4">
+    <p-panel [header]="'Total Active (' + activePaymentsCount() + ')'" class="flex-grow-1">
+      <span class="money money-in">{{ activePaymentsTotal() | currency }}</span>
+    </p-panel>
+
+    <p-panel [header]="'Total Voided (' + voidedPaymentsCount() + ')'" class="flex-grow-1">
+      <span class="money irregular-balance">{{ voidedPaymentsTotal() | currency }}</span>
+    </p-panel>
+  </div>
+
+  <p-table [value]="paymentsPerMethod()">
+    <ng-template #header>
+      <tr>
+        <th>Payment Method</th>
+        <th>Active</th>
+        <th>Voided</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-method>
+      <tr>
+        <td>{{ method.paymentMethodName }}</td>
+        <td>{{ method.activeTotal | currency }}</td>
+        <td>{{ method.voidedTotal | currency }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr rts-empty-row [colspan]="3" message="No payments found"></tr>
+    </ng-template>
+  </p-table>
+</div>

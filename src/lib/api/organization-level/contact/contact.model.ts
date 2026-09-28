@@ -11,7 +11,7 @@ export interface Contact extends BaseModel {
   firstName?: string
   lastName?: string
   companyName?: string
-  fullName?: string
+  fullName: string
   email?: string
   phone?: string
   address?: string

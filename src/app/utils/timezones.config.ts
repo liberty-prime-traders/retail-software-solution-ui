@@ -1,5 +1,5 @@
 import {InjectionToken} from '@angular/core'
-import {LocalStorageKey} from '../../utils/types/local-storage-key.enum'
+import {LocalStorageKey} from '../../lib/utils/types/local-storage-key.enum'
 
 export interface Timezone {
   label: string

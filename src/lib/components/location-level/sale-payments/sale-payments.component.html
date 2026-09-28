@@ -1,0 +1,35 @@
+<rts-loading-container [loading]="loading()">
+  <div class="flex" id="sale-payments-report" rtsAutoStretch="sale-payments-report">
+    @if (selectedTab() === 'payments') {
+      <rts-sale-payments-filter-readonly class="col-2" (editFilters)="selectedTab.set('summary')"/>
+    } @else {
+      <rts-sale-payments-filter class="col-3" />
+    }
+
+    <p-divider layout="vertical"/>
+
+    <div class="flex flex-column flex-grow-1">
+      <span class="font-bold">Sale Payments</span>
+
+      <p-tabs [(value)]="selectedTab">
+        <p-tablist>
+          <p-tab value="summary">Summary</p-tab>
+          <p-tab value="payments">
+            Payments
+            <p-badge [value]="paymentsCount()" severity="info" class="ml-2"/>
+          </p-tab>
+        </p-tablist>
+
+        <p-tabpanels>
+          <p-tabpanel value="summary">
+            <rts-sale-payments-summary/>
+          </p-tabpanel>
+
+          <p-tabpanel value="payments">
+            <rts-sale-payments-summary-grid/>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
+    </div>
+  </div>
+</rts-loading-container>

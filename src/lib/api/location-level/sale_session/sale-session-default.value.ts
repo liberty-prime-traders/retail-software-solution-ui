@@ -25,6 +25,7 @@ export const defaultSaleSession = (): SaleSession => {
     salePayments: [],
     totals: {
       subtotal: 0,
+      displaySubtotal: 0,
       lineLevelDiscountTotal: 0,
       orderLevelDiscountTotal: 0,
       lineLevelSurchargeTotal: 0,
