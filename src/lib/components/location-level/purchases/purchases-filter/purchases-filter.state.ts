@@ -70,7 +70,7 @@ export class PurchasesFilterState {
 
   refreshResults() {
     const filterParams = this.filterParams()
-    this.purchaseSearchResultService.refetch(filterParams)
+    this.purchaseSearchResultService.forceRefetch(filterParams)
     this.purchaseSearchSummaryService.forceRefetch(filterParams)
   }
 }

@@ -52,6 +52,10 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
     if (!parametersHaveChanged) {
       return undefined
     }
+    return this.forceRefetch(parameters)
+  }
+
+  forceRefetch(parameters: PARAMETERS): Subscription {
     this.resetStoreAndClearCache()
     this.isFreshLoad = true
     return this.executeSearch(parameters, this.defaultCursor)
