@@ -1,0 +1,166 @@
+<div class="flex flex-column gap-3">
+  <p-fieldset legend="" [toggleable]="true">
+    <div class="flex flex-column gap-3">
+      <rts-form-field label="Recorded Date"
+                      for="recordedFrom"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <div class="flex flex-column gap-1">
+          <div class="flex align-items-center gap-2">
+            <span class="font-bold">&ge;</span>
+            <p-date-picker id="recordedFrom"
+                           class="flex-grow-1"
+                           [formField]="state.filterForm.recordedFrom"
+                           [showTime]="true"
+                           [showIcon]="true"
+                           appendTo="body">
+            </p-date-picker>
+          </div>
+
+          <div class="flex align-items-center gap-2">
+            <span class="font-bold">&lt;</span>
+            <p-date-picker id="recordedBefore"
+                           class="flex-grow-1"
+                           [formField]="state.filterForm.recordedBefore"
+                           [showTime]="true"
+                           [showIcon]="true"
+                           appendTo="body">
+            </p-date-picker>
+          </div>
+        </div>
+      </rts-form-field>
+
+      <rts-form-field label="Suppliers"
+                      for="supplierIds"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <p-select id="supplierIds"
+                  class="flex-grow-1"
+                  [options]="state.suppliers()"
+                  optionLabel="fullName"
+                  optionValue="id"
+                  [multiple]="true"
+                  [filter]="true"
+                  [checkmark]="true"
+                  [formField]="state.filterForm.supplierIds"
+                  placeholder="Select suppliers">
+
+          <ng-template #selectedItem let-selectedOption>
+            @let remainingCount = state.filterForm.supplierIds().value().length - 1;
+            {{ selectedOption.fullName }}
+            @if (remainingCount > 0) {
+              (+{{ remainingCount }} Others)
+            }
+          </ng-template>
+        </p-select>
+      </rts-form-field>
+    </div>
+  </p-fieldset>
+
+  <p-fieldset legend="Purchase Status" [toggleable]="true" [collapsed]="true">
+    <div class="flex flex-column gap-1">
+      @for (statusOption of (PurchaseStatus | enumToDropdown); track statusOption.value) {
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [value]="statusOption.value"
+                      [formField]="state.filterForm.purchaseStatuses"
+                      [inputId]="'purchaseStatus' + $index"
+                      name="purchaseStatus">
+          </p-checkbox>
+
+          <label [for]="'purchaseStatus' + $index">{{ statusOption.label }}</label>
+        </div>
+      }
+    </div>
+  </p-fieldset>
+
+  <p-fieldset legend="Payment Status" [toggleable]="true" [collapsed]="true">
+    <div class="flex flex-column gap-1">
+      @for (statusOption of (PaymentStatus | enumToDropdown); track statusOption.value) {
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [value]="statusOption.value"
+                      [formField]="state.filterForm.paymentStatuses"
+                      [inputId]="'paymentStatus' + $index"
+                      name="paymentStatus">
+          </p-checkbox>
+
+          <label [for]="'paymentStatus' + $index">{{ statusOption.label }}</label>
+        </div>
+      }
+    </div>
+  </p-fieldset>
+
+  <p-fieldset legend="Others" [toggleable]="true" [collapsed]="true">
+    <div class="flex flex-column gap-3">
+      <rts-form-field label="Purchase Date"
+                      for="purchaseDateFrom"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <div class="flex flex-column gap-1">
+          <div class="flex align-items-center gap-2">
+            <span class="font-bold">&ge;</span>
+            <p-date-picker id="purchaseDateFrom"
+                           class="flex-grow-1"
+                           [formField]="state.filterForm.purchaseDateFrom"
+                           [showTime]="true"
+                           [showIcon]="true"
+                           appendTo="body">
+            </p-date-picker>
+          </div>
+
+          <div class="flex align-items-center gap-2">
+            <span class="font-bold">&lt;</span>
+            <p-date-picker id="purchaseDateBefore"
+                           class="flex-grow-1"
+                           [formField]="state.filterForm.purchaseDateBefore"
+                           [showTime]="true"
+                           [showIcon]="true"
+                           appendTo="body">
+            </p-date-picker>
+          </div>
+        </div>
+      </rts-form-field>
+
+      <rts-form-field label="Amount (KES)"
+                      for="minAmount"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <div class="flex gap-1 flex-column">
+          <p-input-number size="small" [formField]="state.filterForm.minAmount" placeholder="Min"/>
+          <p-input-number size="small" [formField]="state.filterForm.maxAmount" placeholder="Max"/>
+        </div>
+      </rts-form-field>
+
+      <rts-form-field label="Purchase reference numbers"
+                      for="purchaseReferenceNumberInput"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        @if (state.filterForm.purchaseReferenceNumbers().value().length > 0) {
+          <div class="flex flex-wrap gap-1 pb-2">
+            @for (referenceNumber of state.filterForm.purchaseReferenceNumbers().value(); track referenceNumber) {
+              <p-chip label="{{ referenceNumber }}"
+                      [removable]="true"
+                      (onRemove)="state.removePurchaseReferenceNumber(referenceNumber)">
+              </p-chip>
+            }
+          </div>
+        }
+
+        <input id="purchaseReferenceNumberInput"
+               #purchaseReferenceNumberInput
+               class="flex-grow-1"
+               pInputText
+               placeholder="Type ref, press Enter"
+               [disabled]="state.filterForm.purchaseReferenceNumbers().value().length >= state.maxPurchaseReferenceNumbers"
+               (keydown.enter)="state.addPurchaseReferenceNumbers(purchaseReferenceNumberInput.value); purchaseReferenceNumberInput.value = ''"
+               (paste)="state.addPurchaseReferenceNumbers($event.clipboardData?.getData('text') ?? ''); $event.preventDefault()" />
+      </rts-form-field>
+    </div>
+  </p-fieldset>
+
+  <div class="flex justify-content-end pt-2">
+    <button pButton type="button" (click)="state.resetFilters()" severity="secondary">
+      <i class="pi pi-filter-slash"></i> Reset Filters
+    </button>
+  </div>
+
+</div>
