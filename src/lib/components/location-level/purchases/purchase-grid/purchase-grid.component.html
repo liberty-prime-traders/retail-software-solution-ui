@@ -1,10 +1,14 @@
 <div id="purchase-grid" rtsAutoStretch="purchase-grid">
   <p-table [value]="purchases()"
            [loading]="loading()"
-           sortField="referenceNumber"
-           [sortOrder]="-1"
+           (onLazyLoad)="onLazyLoad($event)"
+           [lazy]="true"
+           dataKey="id"
            scrollHeight="flex"
-           dataKey="id">
+           [scrollable]="true"
+           [rows]="20"
+           [virtualScroll]="true"
+           [virtualScrollItemSize]="55">
 
     <ng-template #header>
       <tr>
@@ -20,32 +24,44 @@
     </ng-template>
 
     <ng-template #body let-purchase>
-      <tr>
-        <td>{{ purchase.referenceNumber | nullSafe }}</td>
-        <td>{{ purchase.supplierName | nullSafe }}</td>
-        <td>
-          <p-tag [value]="purchase.purchaseStatus | prettifyEnum"
-                 [severity]="purchase.purchaseStatus | purchaseStatusSeverity">
-          </p-tag>
-        </td>
-        <td>{{ purchase.dateOrdered | date  | nullSafe }}</td>
-        <td>{{ purchase.orderedBy | nullSafe }}</td>
-        <td>{{ purchase.orderedTotal | currency }}</td>
-        <td>
-          <p-tag [value]="purchase.paymentStatus | prettifyEnum"
-                 [severity]="purchase.paymentStatus | paymentStatusSeverity">
-          </p-tag>
-        </td>
-        <td>
-          <button pButton
-                  rounded
-                  severity="secondary"
-                  [disabled]="loading()"
-                  (click)="onEditPurchase(purchase)">
-            <i class="pi pi-pen-to-square"></i>
-          </button>
-        </td>
-      </tr>
+      @if (purchase?.placeholder) {
+        <tr>
+          <td style="height: 55px" colspan="8">
+            <p-skeleton class="h-full"/>
+          </td>
+        </tr>
+      } @else {
+        <tr style="height: 55px">
+          <td>{{ purchase.referenceNumber | nullSafe }}</td>
+          <td>{{ purchase.supplierName | nullSafe }}</td>
+          <td>
+            <p-tag [value]="purchase.purchaseStatus | prettifyEnum"
+                   [severity]="purchase.purchaseStatus | purchaseStatusSeverity">
+            </p-tag>
+          </td>
+          <td>{{ purchase.dateOrdered | date  | nullSafe }}</td>
+          <td>{{ purchase.orderedBy | nullSafe }}</td>
+          <td>{{ purchase.orderedTotal | currency }}</td>
+          <td>
+            <p-tag [value]="purchase.paymentStatus | prettifyEnum"
+                   [severity]="purchase.paymentStatus | paymentStatusSeverity">
+            </p-tag>
+          </td>
+          <td>
+            <button pButton
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading()"
+                    (click)="onEditPurchase(purchase)">
+              <i class="pi pi-pen-to-square"></i>
+            </button>
+          </td>
+        </tr>
+      }
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr rts-empty-row [colspan]="8" message="No purchases found."></tr>
     </ng-template>
 
   </p-table>

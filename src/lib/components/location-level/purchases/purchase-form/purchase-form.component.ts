@@ -9,6 +9,7 @@ import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {HidesSaleButtonComponent} from '../../hides-sale-button.component'
 import {PaymentGridComponent} from '../../supplier-payments/payment-grid/payment-grid.component'
+import {PurchasesFilterState} from '../purchases-filter/purchases-filter.state'
 import {PurchaseFormContext} from './form-utils/purchase-form-context'
 import {PurchaseFormGeneralFieldsComponent} from './general-fields/general-fields.component'
 import {DeliveryGridComponent} from './purchase-deliveries/delivery-grid/delivery-grid.component'
@@ -37,6 +38,7 @@ export class PurchaseFormComponent extends HidesSaleButtonComponent {
 
   private readonly purchaseService = inject(PurchaseService)
   private readonly purchaseFormContext = inject(PurchaseFormContext)
+  private readonly filterState = inject(PurchasesFilterState)
 
 
   readonly purchaseIsLoading = this.purchaseService.selectLoading
@@ -83,5 +85,6 @@ export class PurchaseFormComponent extends HidesSaleButtonComponent {
 
   private readonly onSuccessfulSave = (saved: Purchase)=> {
     this.purchaseFormContext.initializeForm(saved)
+    this.filterState.refreshResults()
   }
 }
