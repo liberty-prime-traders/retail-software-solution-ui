@@ -6,13 +6,13 @@
         @if (state.filterFormValue().recordedFrom) {
           <small>
             <span class="font-bold">&ge;</span>
-            {{ state.filterFormValue().recordedFrom | date:'d MMM y, HH:mm' }}
+            {{ state.filterFormValue().recordedFrom | orgDateTime }}
           </small>
         }
         @if (state.filterFormValue().recordedBefore) {
           <small>
             <span class="font-bold">&lt;</span>
-            {{ state.filterFormValue().recordedBefore | date:'d MMM y, HH:mm' }}
+            {{ state.filterFormValue().recordedBefore | orgDateTime }}
           </small>
         }
       </div>
@@ -25,13 +25,13 @@
         @if (state.filterFormValue().paymentDateFrom) {
           <small>
             <span class="font-bold">&ge;</span>
-            {{ state.filterFormValue().paymentDateFrom | date:'d MMM y, HH:mm' }}
+            {{ state.filterFormValue().paymentDateFrom | orgDateTime }}
           </small>
         }
         @if (state.filterFormValue().paymentDateBefore) {
           <small>
             <span class="font-bold">&lt;</span>
-            {{ state.filterFormValue().paymentDateBefore | date:'d MMM y, HH:mm' }}
+            {{ state.filterFormValue().paymentDateBefore | orgDateTime }}
           </small>
         }
       </div>

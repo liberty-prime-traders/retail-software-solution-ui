@@ -4,10 +4,10 @@ import {ButtonDirective} from 'primeng/button'
 import {Fieldset} from 'primeng/fieldset'
 import {OrgDateTimePipe} from '../../../../utils/pipes/org-date-time.pipe'
 import {TruncatedListComponent} from '../../../reusable/truncated-list/truncated-list.component'
-import {SalePaymentsFilterState} from './sale-payments-filter.state'
+import {SalesFilterState} from './sales-filter.state'
 
 @Component({
-  selector: 'rts-sale-payments-filter-readonly',
+  selector: 'rts-sales-filter-readonly',
   imports: [
     OrgDateTimePipe,
     DecimalPipe,
@@ -15,10 +15,10 @@ import {SalePaymentsFilterState} from './sale-payments-filter.state'
     Fieldset,
     ButtonDirective
   ],
-  templateUrl: 'sale-payments-filter-readonly.component.html'
+  templateUrl: 'sales-filter-readonly.component.html'
 })
-export class SalePaymentsFilterReadonlyComponent {
-  readonly state = inject(SalePaymentsFilterState)
+export class SalesFilterReadonlyComponent {
+  readonly state = inject(SalesFilterState)
 
   readonly editFilters = output()
 }

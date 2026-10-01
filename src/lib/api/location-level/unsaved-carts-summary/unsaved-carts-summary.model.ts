@@ -7,6 +7,6 @@ export interface UnsavedCartsSummary extends BaseModel {
   lastAccessedBy: string,
   lastAccessedAt: string,
   contactLabel: string,
-  payableTotal: number
+  receivableTotal: number
   notes?: string
 }

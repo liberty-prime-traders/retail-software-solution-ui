@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, model, OnInit, untracked} from '@angular/core'
+import {Component, computed, inject, model, OnInit} from '@angular/core'
 import {Badge} from 'primeng/badge'
 import {Divider} from 'primeng/divider'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
@@ -31,7 +31,6 @@ import {SalePaymentsSummaryComponent} from './sale-payments-summary.component'
     SalePaymentsSummaryGridComponent,
     AutoStretchDirective
   ],
-  providers: [SalePaymentsFilterState],
   templateUrl: 'sale-payments.component.html'
 })
 export class SalePaymentsComponent implements OnInit {
@@ -53,18 +52,16 @@ export class SalePaymentsComponent implements OnInit {
       || this.contactService.selectLoading()
   )
 
-  private readonly refetchSearchResultsOnPaymentsTab = effect(() => {
-    const selectedTab = this.selectedTab()
-    const filterParams = this.filterState.filterParams()
-    untracked(() => {
-      if (selectedTab === 'payments') {
-        this.salePaymentSearchResultService.refetch(filterParams)
-      }
-    })
-  })
-
   ngOnInit() {
     this.paymentOptionService.fetch()
     this.contactService.fetch()
+  }
+
+  onSelectedTabChange(tab?: string | number) {
+    const selectedTab = tab as 'summary' | 'payments'
+    this.selectedTab.set(selectedTab)
+    if (selectedTab === 'payments') {
+      this.salePaymentSearchResultService.refetch(this.filterState.filterParams())
+    }
   }
 }

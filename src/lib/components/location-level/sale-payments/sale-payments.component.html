@@ -11,7 +11,7 @@
     <div class="flex flex-column flex-grow-1">
       <span class="font-bold">Sale Payments</span>
 
-      <p-tabs [(value)]="selectedTab">
+      <p-tabs [value]="selectedTab()" (valueChange)="onSelectedTabChange($event)">
         <p-tablist>
           <p-tab value="summary">Summary</p-tab>
           <p-tab value="payments">

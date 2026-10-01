@@ -1,15 +1,14 @@
 <div id="sale-grid" rtsAutoStretch="sale-grid">
   <p-table [value]="sales()"
            [loading]="loading()"
-           sortField="referenceNumber"
-           [sortOrder]="-1"
-           [scrollable]="true"
+           (onLazyLoad)="onLazyLoad($event)"
+           [lazy]="true"
+           dataKey="id"
            scrollHeight="flex"
-           dataKey="id">
-
-    <ng-template #caption>
-      <h3>Sales</h3>
-    </ng-template>
+           [scrollable]="true"
+           [rows]="20"
+           [virtualScroll]="true"
+           [virtualScrollItemSize]="55">
 
     <ng-template #header>
       <tr>
@@ -17,7 +16,7 @@
         <th>Customer</th>
         <th>Sale Status</th>
         <th>Payment Status</th>
-        <th>Sub Total</th>
+        <th>Arrears</th>
         <th>Total Paid</th>
         <th>Sold By</th>
         <th>Date Sold</th>
@@ -26,36 +25,48 @@
     </ng-template>
 
     <ng-template #body let-sale>
-      <tr>
-        <td>{{sale.referenceNumber | nullSafe}}</td>
-        <td>{{sale.contactName | nullSafe}}</td>
+      @if (sale?.placeholder) {
+        <tr>
+          <td style="height: 55px" colspan="9">
+            <p-skeleton class="h-full"/>
+          </td>
+        </tr>
+      } @else {
+        <tr style="height: 55px">
+          <td>{{ sale.referenceNumber | nullSafe }}</td>
+          <td>{{ sale.contactName | nullSafe }}</td>
 
-        <td>
-          <p-tag [value]="sale.status | prettifyEnum"
-                 [severity]="sale.status | saleStatusSeverity">
-          </p-tag>
-        </td>
+          <td>
+            <p-tag [value]="sale.status | prettifyEnum"
+                   [severity]="sale.status | saleStatusSeverity">
+            </p-tag>
+          </td>
 
-        <td>
-          <p-tag [value]="sale.paymentStatus | prettifyEnum"
-                 [severity]="sale.paymentStatus | paymentStatusSeverity">
-          </p-tag>
-        </td>
-        <td>{{ sale.subtotal | currency }}</td>
-        <td>{{ sale.totalPaid | currency }}</td>
-        <td>{{ sale.soldBy | nullSafe }}</td>
-        <td>{{ sale.dateSold | date | nullSafe }}</td>
+          <td>
+            <p-tag [value]="sale.paymentStatus | prettifyEnum"
+                   [severity]="sale.paymentStatus | paymentStatusSeverity">
+            </p-tag>
+          </td>
+          <td>{{ sale.arrearsTotal | currency }}</td>
+          <td>{{ sale.totalPaid | currency }}</td>
+          <td>{{ sale.soldBy | nullSafe }}</td>
+          <td>{{ sale.dateSold | date | nullSafe }}</td>
 
-        <td>
-          <button pButton
-                  rounded
-                  severity="secondary"
-                  [disabled]="loading()"
-                  (click)="onEditSale(sale)">
-            <i class="pi pi-pen-to-square"></i>
-          </button>
-        </td>
-      </tr>
+          <td>
+            <button pButton
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading()"
+                    (click)="onEditSale(sale)">
+              <i class="pi pi-pen-to-square"></i>
+            </button>
+          </td>
+        </tr>
+      }
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr rts-empty-row [colspan]="9" message="No sales found."></tr>
     </ng-template>
 
   </p-table>

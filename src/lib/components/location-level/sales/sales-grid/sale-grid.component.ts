@@ -1,14 +1,19 @@
 import {CurrencyPipe, DatePipe} from '@angular/common'
-import {Component, computed, inject, OnInit} from '@angular/core'
+import {Component, computed, effect, inject, viewChild} from '@angular/core'
 import {ButtonDirective} from 'primeng/button'
-import {TableModule} from 'primeng/table'
+import {Skeleton} from 'primeng/skeleton'
+import {Table, TableModule} from 'primeng/table'
+import {TableLazyLoadEvent} from 'primeng/types/table'
 import {Tag} from 'primeng/tag'
-import {SaleSummary} from '../../../../api/location-level/sale-summary/sale-summary.model'
-import {SaleSummaryService} from '../../../../api/location-level/sale-summary/sale-summary.service'
+import {SaleSearchResult} from '../../../../api/location-level/sale-summary/sale-search-result.model'
+import {SaleSearchResultService} from '../../../../api/location-level/sale-summary/sale-search-result.service'
 import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
+import {loadNextOnLazyLoad} from '../../../../api/util/paginated-api/paginated-lazy-load.util'
+import {resetVirtualScrollOnSearch} from '../../../../utils/primeng-table.util'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
+import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
 import {PaymentStatusSeverityPipe} from '../../purchases/payment-status-severity.pipe'
 import {SaleFormNavigator} from '../form-utils/sale-form-navigator'
 import {SaleStatusSeverityPipe} from '../sale-status-severity.pipe'
@@ -20,31 +25,43 @@ import {SaleStatusSeverityPipe} from '../sale-status-severity.pipe'
     TableModule,
     ButtonDirective,
     Tag,
+    Skeleton,
     NullSafePipe,
     PrettifyEnumPipe,
     SaleStatusSeverityPipe,
     PaymentStatusSeverityPipe,
     DatePipe,
     CurrencyPipe,
-    AutoStretchDirective
+    AutoStretchDirective,
+    EmptyRowComponent
   ]
 })
-export class SaleGridComponent implements OnInit {
-  private readonly saleSummaryService = inject(SaleSummaryService)
+export class SaleGridComponent {
+  private readonly saleSearchResultService = inject(SaleSearchResultService)
   private readonly saleSessionService = inject(SaleSessionService)
   private readonly navigator = inject(SaleFormNavigator)
 
-  readonly sales = this.saleSummaryService.selectAll
+  private readonly table = viewChild(Table)
+
+  readonly sales = this.saleSearchResultService.selectAll
 
   readonly loading = computed(() =>
-    this.saleSessionService.selectLoading() || this.saleSummaryService.selectLoading()
+    this.saleSessionService.selectLoading() || this.saleSearchResultService.selectLoading()
   )
 
-  onEditSale(sale: SaleSummary) {
-    this.navigator.openForEditSale(sale.id)
+  readonly $resetScrollOnSearch = effect(() => {
+    this.saleSearchResultService.freshLoadCompleted()
+    const table = this.table()
+    if (table) {
+      resetVirtualScrollOnSearch(table)
+    }
+  })
+
+  onLazyLoad(lazyLoadEvent: TableLazyLoadEvent): void {
+    loadNextOnLazyLoad(this.saleSearchResultService, lazyLoadEvent.last)
   }
 
-  ngOnInit() {
-    this.saleSummaryService.fetch()
+  onEditSale(sale: SaleSearchResult) {
+    this.navigator.openForEditSale(sale.id)
   }
 }

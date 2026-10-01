@@ -27,7 +27,7 @@
         <th>Last Accessed At</th>
         <th>Last Updated At</th>
         <th>Contact</th>
-        <th>Payable Total</th>
+        <th>Receivable Total</th>
         <th style="width: 50px">Abandon</th>
         <th style="width: 50px">Continue</th>
       </tr>
@@ -41,7 +41,7 @@
         <td>{{ session.lastAccessedAt | date }}</td>
         <td>{{ session.lastUpdatedAt | date }}</td>
         <td>{{ session.contactLabel }}</td>
-        <td>{{ session.payableTotal | currency }}</td>
+        <td>{{ session.receivableTotal | currency }}</td>
 
         <td>
           <button pButton

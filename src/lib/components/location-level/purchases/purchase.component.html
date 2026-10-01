@@ -1,5 +1,5 @@
 <div class="flex align-items-center justify-content-between">
-  <h3 class="font-bold">Purchases</h3>
+  <span class="font-bold">Purchases</span>
   @if (formIsVisible()) {
     <button pButton (click)="hideForm()" severity="secondary"><i class="pi pi-arrow-left"></i> Back to Purchases</button>
   } @else {
@@ -11,7 +11,7 @@
   <rts-purchase-form/>
 } @else {
   <rts-loading-container [loading]="loading()">
-    <div class="flex pt-3" id="purchases-report" rtsAutoStretch="purchases-report">
+    <div class="flex" id="purchases-report" rtsAutoStretch="purchases-report">
       @if (selectedTab() === 'purchases') {
         <rts-purchases-filter-readonly class="col-2" (editFilters)="selectedTab.set('summary')"/>
       } @else {
@@ -21,7 +21,7 @@
       <p-divider layout="vertical"/>
 
       <div class="flex flex-column flex-grow-1">
-        <p-tabs [(value)]="selectedTab">
+        <p-tabs [value]="selectedTab()" (valueChange)="onSelectedTabChange($event)">
           <p-tablist>
             <p-tab value="summary">Summary</p-tab>
             <p-tab value="purchases">

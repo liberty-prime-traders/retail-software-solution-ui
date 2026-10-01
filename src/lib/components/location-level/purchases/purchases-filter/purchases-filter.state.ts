@@ -8,7 +8,7 @@ import {debouncedSignal} from '../../../../utils/signals'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 import {PurchasesFilterFormDefinition} from './purchases-filter-form.definition'
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class PurchasesFilterState {
   private readonly contactService = inject(ContactService)
   private readonly purchaseSearchSummaryService = inject(PurchaseSearchSummaryService)

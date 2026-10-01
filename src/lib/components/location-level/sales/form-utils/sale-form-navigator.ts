@@ -1,6 +1,5 @@
 import {inject, Injectable, signal} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
-import {SaleSummaryService} from '../../../../api/location-level/sale-summary/sale-summary.service'
 import {
   UnsavedCartsSummaryService
 } from '../../../../api/location-level/unsaved-carts-summary/unsaved-carts-summary.service'
@@ -18,7 +17,6 @@ export class SaleFormNavigator {
   private readonly visibility = inject(SaleFormVisibilityContext)
   private readonly saleSessionService = inject(SaleSessionService)
   private readonly unsavedCartsSummaryService = inject(UnsavedCartsSummaryService)
-  private readonly saleSummaryService = inject(SaleSummaryService)
 
   private readonly _mode = signal<SaleFormMode>(SaleFormMode.FORM)
   private readonly _formOpenedFromPicker = signal(false)
@@ -79,7 +77,6 @@ export class SaleFormNavigator {
 
   closeForm() {
     this.visibility.hideForm()
-    this.saleSummaryService.refetch()
   }
 
   private enterFormWithSession(session: SaleSession) {
