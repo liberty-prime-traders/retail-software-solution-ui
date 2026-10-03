@@ -1,0 +1,62 @@
+<div id="tax-entries-grid" rtsAutoStretch="tax-entries-grid">
+  <p-table [value]="taxEntries()"
+           [loading]="loading()"
+           (onLazyLoad)="onLazyLoad($event)"
+           [lazy]="true"
+           dataKey="id"
+           scrollHeight="flex"
+           [scrollable]="true"
+           [rows]="20"
+           [virtualScroll]="true"
+           [virtualScrollItemSize]="55">
+
+    <ng-template #header>
+      <tr>
+        <th>Source</th>
+        <th>Source Type</th>
+        <th>Tax Type</th>
+        <th>Fiscal Period</th>
+        <th>Rate</th>
+        <th>Taxable Amount</th>
+        <th>Tax Amount</th>
+        <th>Recorded On</th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-taxEntry>
+      @if (taxEntry?.placeholder) {
+        <tr>
+          <td style="height: 55px" colspan="8">
+            <p-skeleton class="h-full"/>
+          </td>
+        </tr>
+      } @else {
+        <tr style="height: 55px">
+          <td>{{ taxEntry.sourceReferenceNumber | nullSafe }}</td>
+
+          <td>
+            <p-tag [value]="taxEntry.sourceType | prettifyEnum"
+                   [severity]="taxEntry.sourceType | taxSourceTypeSeverity">
+            </p-tag>
+          </td>
+
+          <td>{{ taxEntry.taxTypeName | nullSafe }}</td>
+          <td>{{ taxEntry.fiscalPeriodName | nullSafe }}</td>
+          <td>
+            {{ taxEntry.rate | taxRate : taxEntry.calculationMethod }}
+            @if (taxEntry.taxInclusive) {
+              <small class="text-color-secondary">(inclusive)</small>
+            }
+          </td>
+          <td>{{ taxEntry.taxableAmount | currency }}</td>
+          <td>{{ taxEntry.taxAmount | currency }}</td>
+          <td>{{ taxEntry.recordedOn | date:'medium' | nullSafe }}</td>
+        </tr>
+      }
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr rts-empty-row [colspan]="8" message="No tax entries found."></tr>
+    </ng-template>
+  </p-table>
+</div>

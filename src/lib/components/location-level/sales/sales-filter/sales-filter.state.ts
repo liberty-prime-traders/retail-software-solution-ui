@@ -87,7 +87,7 @@ export class SalesFilterState {
     this.filterFormValue.set(SalesFilterFormDefinition.createDefaultSalesFilterFormModel())
   }
 
-  refreshResults() {
+  private refreshResults() {
     const filterParams = this.filterParams()
     this.saleSearchResultService.forceRefetch(filterParams)
     this.saleSearchSummaryService.forceRefetch(filterParams)

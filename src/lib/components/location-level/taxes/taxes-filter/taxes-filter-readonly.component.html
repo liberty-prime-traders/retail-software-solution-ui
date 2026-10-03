@@ -1,0 +1,43 @@
+<div class="flex flex-column gap-2">
+
+  @if (state.fiscalPeriodNames().length > 0) {
+    <p-fieldset legend="Fiscal Periods">
+      <rts-truncated-list [items]="state.fiscalPeriodNames()"/>
+    </p-fieldset>
+  }
+
+  @if (state.taxTypeNames().length > 0) {
+    <p-fieldset legend="Tax Types">
+      <rts-truncated-list [items]="state.taxTypeNames()"/>
+    </p-fieldset>
+  }
+
+  @if (state.sourceTypeLabels().length > 0) {
+    <p-fieldset legend="Source Type">
+      <rts-truncated-list [items]="state.sourceTypeLabels()"/>
+    </p-fieldset>
+  }
+
+  @if (state.filterFormValue().minTaxAmount !== null || state.filterFormValue().maxTaxAmount !== null) {
+    <p-fieldset legend="Tax Amount (KES)">
+      <small>
+        {{ (state.filterFormValue().minTaxAmount ?? 0) | number:'1.2-2' }}
+        &ndash;
+        {{ (state.filterFormValue().maxTaxAmount ?? 0) | number:'1.2-2' }}
+      </small>
+    </p-fieldset>
+  }
+
+  @if (state.filterFormValue().sourceReferenceNumbers.length > 0) {
+    <p-fieldset legend="Source references">
+      <rts-truncated-list [items]="state.filterFormValue().sourceReferenceNumbers"/>
+    </p-fieldset>
+  }
+
+  <button pButton type="button"
+          severity="secondary" class="w-full"
+          (click)="editFilters.emit()">
+    Edit filters
+  </button>
+
+</div>

@@ -9,6 +9,7 @@ import {SalePaymentsComponent} from '../../lib/components/location-level/sale-pa
 import {SalesComponent} from '../../lib/components/location-level/sales/sales.component'
 import {StockTransferComponent} from '../../lib/components/location-level/stock-transfer/stock-transfer.component'
 import {SyncComponent} from '../../lib/components/location-level/sync/sync.component'
+import {TaxesComponent} from '../../lib/components/location-level/taxes/taxes.component'
 
 export const locationRoutes: Routes = [
   {path: '', component: LocationSummaryComponent},
@@ -18,5 +19,6 @@ export const locationRoutes: Routes = [
   {path: 'sales', component: SalesComponent},
   {path: 'stock-transfer', component: StockTransferComponent},
   {path: 'sale-payments', component: SalePaymentsComponent},
+  {path: 'taxes', component: TaxesComponent},
   {path: 'users', component: LocationUserComponent}
 ]
