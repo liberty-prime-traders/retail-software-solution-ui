@@ -4,6 +4,7 @@ import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {TaxRateService} from '../../../api/organization-level/tax-rate/tax-rate.service'
 import {CalculationMethod} from '../../../api/platform-level/tax-type/calculation-method.enum'
+import {BooleanToTextPipe} from '../../../utils/pipes/boolean-to-text.pipe'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
@@ -28,6 +29,7 @@ import {TaxRateEditFormComponent} from './tax-rate-edit-form/tax-rate-edit-form.
     AutoStretchDirective,
     NewFormCancelButtonComponent,
     CurrencyPipe,
+    BooleanToTextPipe,
   ]
 })
 export class TaxRateComponent extends GridWithAddButtonComponent<TaxRateService> {

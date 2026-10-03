@@ -39,7 +39,7 @@ export namespace TaxTypeFormDefinition {
   export const taxTypeFormSchema = schema<TaxTypeFormModel>((path) => {
     required(path.name)
     required(path.calculationMethod)
-    disabled(path.calculationMethod, ({valueOf}) => !!valueOf(path.id))
+    disabled(path.calculationMethod, {when: ({valueOf}) => !!valueOf(path.id)})
     required(path.taxRecoveryType)
     required(path.taxApplicationLevel)
     minLength(path.taxTriggers, 1, {message: 'At least one tax trigger must be selected.'})

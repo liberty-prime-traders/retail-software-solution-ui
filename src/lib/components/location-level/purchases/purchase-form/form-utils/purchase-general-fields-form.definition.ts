@@ -50,9 +50,9 @@ export namespace PurchaseGeneralFieldsFormDefinition {
       const purchaseStatus = valueOf(path.purchaseStatus)
       return purchaseStatus && purchaseStatus !== PurchaseStatus.DRAFT
     }
-    disabled(path.supplierId, isReadOnly)
-    disabled(path.dateOrdered, isReadOnly)
-    disabled(path.orderedById, isReadOnly)
+    disabled(path.supplierId, {when: isReadOnly})
+    disabled(path.dateOrdered, {when: isReadOnly})
+    disabled(path.orderedById, {when: isReadOnly})
   })
 
   export const convertToFormModel = (purchase: Purchase | null): PurchaseGeneralFieldsModel => ({

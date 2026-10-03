@@ -24,7 +24,7 @@ export namespace TaxRateEditFormDefinition {
   export const formSchema = schema<TaxRateEditFormModel>((path) => {
     required(path.id)
     required(path.name)
-    disabled(path.id, () => true)
+    disabled(path.id, {when: () => true})
   })
 
   export const convertFromRate = (rate: TaxRate): TaxRateEditFormModel => ({
