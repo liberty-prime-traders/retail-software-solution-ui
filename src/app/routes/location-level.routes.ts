@@ -6,17 +6,19 @@ import {LocationSummaryComponent} from '../../lib/components/location-level/loca
 import {LocationUserComponent} from '../../lib/components/location-level/location-user/location-user.component'
 import {PurchaseComponent} from '../../lib/components/location-level/purchases/purchase.component'
 import {SalePaymentsComponent} from '../../lib/components/location-level/sale-payments/sale-payments.component'
-import {SaleGridComponent} from '../../lib/components/location-level/sales/sales-grid/sale-grid.component'
+import {SalesComponent} from '../../lib/components/location-level/sales/sales.component'
 import {StockTransferComponent} from '../../lib/components/location-level/stock-transfer/stock-transfer.component'
 import {SyncComponent} from '../../lib/components/location-level/sync/sync.component'
+import {TaxesComponent} from '../../lib/components/location-level/taxes/taxes.component'
 
 export const locationRoutes: Routes = [
   {path: '', component: LocationSummaryComponent},
   {path: 'products', component: LocationProductComponent},
   {path: 'purchases', component: PurchaseComponent},
   {path: 'sync', component: SyncComponent},
-  {path: 'sales', component: SaleGridComponent},
+  {path: 'sales', component: SalesComponent},
   {path: 'stock-transfer', component: StockTransferComponent},
   {path: 'sale-payments', component: SalePaymentsComponent},
+  {path: 'taxes', component: TaxesComponent},
   {path: 'users', component: LocationUserComponent}
 ]

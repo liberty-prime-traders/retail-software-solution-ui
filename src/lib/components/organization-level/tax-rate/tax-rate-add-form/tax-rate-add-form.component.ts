@@ -1,5 +1,6 @@
 import {Component, computed, inject, OnInit, output, signal} from '@angular/core'
 import {form, FormField} from '@angular/forms/signals'
+import {Checkbox} from 'primeng/checkbox'
 import {DatePicker} from 'primeng/datepicker'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
@@ -26,7 +27,8 @@ import {TaxRateAddFormDefinition} from './tax-rate-add-form.definition'
     InputText,
     InputNumber,
     Select,
-    DatePicker
+    DatePicker,
+    Checkbox
   ]
 })
 export class TaxRateAddFormComponent extends BaseFormComponent<TaxRateService> implements OnInit {

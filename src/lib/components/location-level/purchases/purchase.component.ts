@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, model, OnInit, untracked} from '@angular/core'
+import {Component, computed, inject, model, OnInit} from '@angular/core'
 import {Badge} from 'primeng/badge'
 import {ButtonDirective} from 'primeng/button'
 import {Divider} from 'primeng/divider'
@@ -19,7 +19,7 @@ import {PurchasesSummaryComponent} from './purchases-summary.component'
 @Component({
   selector: 'rts-purchases',
   templateUrl: 'purchase.component.html',
-  providers: [PurchaseFormContext, PurchasesFilterState],
+  providers: [PurchaseFormContext],
   imports: [
     ButtonDirective,
     PurchaseGridComponent,
@@ -55,18 +55,16 @@ export class PurchaseComponent implements OnInit {
       || this.contactService.selectLoading()
   )
 
-  private readonly refetchSearchResultsOnPurchasesTab = effect(() => {
-    const selectedTab = this.selectedTab()
-    const filterParams = this.filterState.filterParams()
-    untracked(() => {
-      if (selectedTab === 'purchases') {
-        this.purchaseSearchResultService.refetch(filterParams)
-      }
-    })
-  })
-
   ngOnInit() {
     this.contactService.fetch()
+  }
+
+  onSelectedTabChange(tab?: string | number) {
+    const selectedTab = tab as 'summary' | 'purchases'
+    this.selectedTab.set(selectedTab)
+    if (selectedTab === 'purchases') {
+      this.purchaseSearchResultService.refetch(this.filterState.filterParams())
+    }
   }
 
   startNewPurchase() {

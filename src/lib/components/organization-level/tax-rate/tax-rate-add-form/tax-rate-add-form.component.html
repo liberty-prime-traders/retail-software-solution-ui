@@ -63,6 +63,20 @@
     </rts-form-field>
   }
 
+  <rts-form-field label="Billed to Customer Separately" for="taxIsBilledToCustomerSeparately">
+    <p-checkbox inputId="taxIsBilledToCustomerSeparately"
+                [binary]="true"
+                [formField]="taxRateForm.taxIsBilledToCustomerSeparately">
+    </p-checkbox>
+  </rts-form-field>
+
+  <rts-form-field label="Included in Taxable Amount" for="taxIsIncludedInTaxableAmount">
+    <p-checkbox inputId="taxIsIncludedInTaxableAmount"
+                [binary]="true"
+                [formField]="taxRateForm.taxIsIncludedInTaxableAmount">
+    </p-checkbox>
+  </rts-form-field>
+
   <rts-forms-buttons [disableReset]="!taxRateForm().dirty()"
                      [disableSave]="taxRateForm().invalid() || !taxRateForm().dirty()"
                      [hideDelete]="true"

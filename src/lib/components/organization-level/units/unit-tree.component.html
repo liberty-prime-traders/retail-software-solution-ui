@@ -13,7 +13,12 @@
           {{ showBulkImportScreen() ? 'Close Bulk Import' : 'Bulk Import Units' }}
         </button>
 
-        <button pButton (click)="setAddingActiveTrue()" rounded [disabled]="loading() || addingIsActive()">+ Add Unit Group</button>
+        <button pButton
+                (click)="setAddingActiveTrue()"
+                rounded
+                [disabled]="loading() || addingIsActive()">
+          + Add Unit Group
+        </button>
       </div>
 
     </div>

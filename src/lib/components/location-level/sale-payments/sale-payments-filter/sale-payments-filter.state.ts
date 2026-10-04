@@ -8,7 +8,7 @@ import {debouncedSignal} from '../../../../utils/signals'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 import {SalePaymentsFilterFormDefinition} from './sale-payments-filter-form.definition'
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class SalePaymentsFilterState {
   private readonly contactService = inject(ContactService)
   private readonly paymentOptionService = inject(PaymentOptionService)

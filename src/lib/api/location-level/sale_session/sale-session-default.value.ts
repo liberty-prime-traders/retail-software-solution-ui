@@ -31,7 +31,7 @@ export const defaultSaleSession = (): SaleSession => {
       lineLevelSurchargeTotal: 0,
       orderLevelSurchargeTotal: 0,
       paymentTotal: 0,
-      payableTotal: 0,
+      receivableTotal: 0,
       balance: 0,
     },
     uiOptions: {

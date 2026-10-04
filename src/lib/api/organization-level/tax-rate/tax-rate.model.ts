@@ -6,6 +6,8 @@ export interface TaxRate extends BaseModel {
   name?: string
   ratePercentage?: number
   rateFlatAmount?: number
+  taxIsBilledToCustomerSeparately?: boolean
+  taxIsIncludedInTaxableAmount?: boolean
   startDate?: string
   endDate?: string
   parentIsActive?: boolean

@@ -1,0 +1,56 @@
+<div class="flex flex-column gap-5">
+  <div class="flex gap-4">
+    <p-panel [header]="'Total Receivable (' + saleCount() + ')'" class="flex-grow-1">
+      <span class="money">{{ confirmedReceivableTotal() | currency }}</span>
+    </p-panel>
+
+    <p-panel header="Total Discount" class="flex-grow-1">
+      <span class="money">{{ confirmedDiscountTotal() | currency }}</span>
+    </p-panel>
+
+    <p-panel header="Total Paid" class="flex-grow-1">
+      <span class="money money-in">{{ paidTotal() | currency }}</span>
+    </p-panel>
+
+    <p-panel header="Total Outstanding" class="flex-grow-1">
+      <span class="money irregular-balance">{{ outstandingTotal() | currency }}</span>
+    </p-panel>
+
+    <p-panel header="Total Credit" class="flex-grow-1">
+      <span class="money">{{ creditTotal() | currency }}</span>
+    </p-panel>
+  </div>
+
+  <p-table [value]="statuses()">
+    <ng-template #header>
+      <tr>
+        <th>Sale Status</th>
+        <th>Sale Count</th>
+        <th>Receivable</th>
+        <th>Discount</th>
+        <th>Paid</th>
+        <th>Outstanding</th>
+        <th>Credit</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-statusSummary>
+      <tr>
+        <td>
+          <p-tag [value]="statusSummary.status | prettifyEnum"
+                 [severity]="statusSummary.status | saleStatusSeverity">
+          </p-tag>
+        </td>
+        <td>{{ statusSummary.saleCount }}</td>
+        <td>{{ statusSummary.receivableTotal | currency }}</td>
+        <td>{{ statusSummary.discountTotal | currency }}</td>
+        <td>{{ statusSummary.paidTotal | currency }}</td>
+        <td>{{ statusSummary.outstandingTotal | currency }}</td>
+        <td>{{ statusSummary.creditTotal | currency }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr rts-empty-row [colspan]="7" message="No sales found"></tr>
+    </ng-template>
+  </p-table>
+</div>

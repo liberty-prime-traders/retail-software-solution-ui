@@ -37,7 +37,7 @@ export namespace OrganizationProductFormDefinition {
     required(path.productName)
     required(path.productGroupId)
     required(path.baseUnitId, {when: ({valueOf}) => !valueOf(path.id)})
-    disabled(path.baseUnitId, ({valueOf}) => !valueOf(path.baseUnitGroupId))
+    disabled(path.baseUnitId, {when: ({valueOf}) => !valueOf(path.baseUnitGroupId)})
   })
 
   export const convertToFormModel = (product?: OrganizationProduct): ProductFormModel => ({

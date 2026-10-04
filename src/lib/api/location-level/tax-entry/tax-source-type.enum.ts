@@ -1,0 +1,5 @@
+export enum TaxSourceType {
+  SALE = 'SALE',
+  SALE_VOID = 'SALE_VOID',
+  PURCHASE_DELIVERY = 'PURCHASE_DELIVERY'
+}

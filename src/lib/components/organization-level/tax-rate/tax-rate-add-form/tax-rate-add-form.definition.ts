@@ -10,6 +10,8 @@ export namespace TaxRateAddFormDefinition {
     name: string
     ratePercentage: number | null
     rateFlatAmount: number | null
+    taxIsBilledToCustomerSeparately: boolean
+    taxIsIncludedInTaxableAmount: boolean
     startDate: Date | null
     endDate: Date | null
     calculationMethod: CalculationMethod | ''
@@ -20,6 +22,8 @@ export namespace TaxRateAddFormDefinition {
     ['name', 'Name'],
     ['ratePercentage', 'Rate Percentage'],
     ['rateFlatAmount', 'Flat Rate Amount'],
+    ['taxIsBilledToCustomerSeparately', 'Billed to Customer Separately'],
+    ['taxIsIncludedInTaxableAmount', 'Included in Taxable Amount'],
     ['startDate', 'Start Date'],
     ['endDate', 'End Date'],
   ])
@@ -29,6 +33,8 @@ export namespace TaxRateAddFormDefinition {
     name: '',
     ratePercentage: null,
     rateFlatAmount: null,
+    taxIsBilledToCustomerSeparately: false,
+    taxIsIncludedInTaxableAmount: false,
     startDate: null,
     endDate: null,
     calculationMethod: '',
@@ -38,11 +44,31 @@ export namespace TaxRateAddFormDefinition {
     required(path.orgJurisdictionTaxTypeId)
     required(path.name)
     required(path.startDate)
-    disabled(path.calculationMethod, () => true)
     required(path.ratePercentage)
-    disabled(path.ratePercentage, ({valueOf}) => valueOf(path.calculationMethod) !== CalculationMethod.PERCENTAGE)
     required(path.rateFlatAmount)
-    disabled(path.rateFlatAmount, ({valueOf}) => valueOf(path.calculationMethod) !== CalculationMethod.FLAT_PER_UNIT)
+
+    disabled(path.calculationMethod, {when: () => true})
+
+    disabled(
+      path.ratePercentage,
+      {when: ({valueOf}) => valueOf(path.calculationMethod) !== CalculationMethod.PERCENTAGE}
+    )
+
+    disabled(
+      path.rateFlatAmount,
+      {when: ({valueOf}) => valueOf(path.calculationMethod) !== CalculationMethod.FLAT_PER_UNIT}
+    )
+
+    // A tax already included in the taxable amount cannot also be billed separately
+    disabled(
+      path.taxIsBilledToCustomerSeparately,
+      {when: ({valueOf}) => valueOf(path.taxIsIncludedInTaxableAmount)}
+    )
+
+    disabled(
+      path.taxIsIncludedInTaxableAmount,
+      {when: ({valueOf}) => valueOf(path.taxIsBilledToCustomerSeparately)}
+    )
   })
 
   export const convertToBackendModel = (formValue: TaxRateAddFormModel): Partial<TaxRate> => ({
@@ -50,6 +76,8 @@ export namespace TaxRateAddFormDefinition {
     name: formValue.name,
     ratePercentage: formValue.ratePercentage ?? undefined,
     rateFlatAmount: formValue.rateFlatAmount ?? undefined,
+    taxIsBilledToCustomerSeparately: formValue.taxIsBilledToCustomerSeparately,
+    taxIsIncludedInTaxableAmount: formValue.taxIsIncludedInTaxableAmount,
     startDate: toLocaleDateString(formValue.startDate) || undefined,
     endDate: toLocaleDateString(formValue.endDate) || undefined,
   })

@@ -59,8 +59,6 @@ export class PurchaseGridComponent {
   }
 
   onEditPurchase(purchase: PurchaseSearchResult) {
-    // Keep PurchaseStore in sync so selectForId() lookups elsewhere (e.g. supplier
-    // payment/delivery forms) resolve, even for purchases only seen via search.
     this.purchaseService.applyResponse(purchase)
     this.context.initializeForm(purchase)
   }

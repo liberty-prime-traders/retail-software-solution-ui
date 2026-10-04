@@ -18,7 +18,7 @@ export namespace SaleFormDefinition {
     contactId: string
     walkInCustomer: boolean | null
     saleLines: SaleLineFormDefinition.SaleLineFormModel[]
-    payableTotal: number
+    receivableTotal: number
     paymentTotal: number
     balance: number
     saleStatus: SaleStatus
@@ -29,7 +29,7 @@ export namespace SaleFormDefinition {
     ['contactId', 'Customer'],
     ['walkInCustomer', 'Walk-in Customer'],
     ['saleLines', 'Sale Lines'],
-    ['payableTotal', 'Total Payable'],
+    ['receivableTotal', 'Total Receivable'],
     ['paymentTotal', 'Total Paid'],
     ['balance', 'Balance Due']
   ])
@@ -40,7 +40,7 @@ export namespace SaleFormDefinition {
     saleLines: [],
     paymentTotal: 0,
     balance: 0,
-    payableTotal: 0,
+    receivableTotal: 0,
     saleStatus: SaleStatus.DRAFT
   })
 
@@ -67,13 +67,13 @@ export namespace SaleFormDefinition {
 
     max(
       salePath.balance,
-      ({valueOf}) => valueOf(salePath.walkInCustomer) ? 0 : valueOf(salePath.payableTotal),
+      ({valueOf}) => valueOf(salePath.walkInCustomer) ? 0 : valueOf(salePath.receivableTotal),
       {message: 'Walk-in customers must pay in full'}
     )
 
     max(
       salePath.paymentTotal,
-      ({valueOf}) => valueOf(salePath.payableTotal),
+      ({valueOf}) => valueOf(salePath.receivableTotal),
       {message: 'Total paid cannot exceed order total'}
     )
   })
@@ -83,7 +83,7 @@ export namespace SaleFormDefinition {
       contactId: sale.contactId,
       walkInCustomer: sale.walkInCustomer ?? null,
       saleLines: SaleLineFormDefinition.mapSaleLines(sale.saleLines),
-      payableTotal: sale.totals.payableTotal,
+      receivableTotal: sale.totals.receivableTotal,
       paymentTotal: sale.totals.paymentTotal,
       balance: sale.totals.balance,
       saleStatus: sale.saleStatus

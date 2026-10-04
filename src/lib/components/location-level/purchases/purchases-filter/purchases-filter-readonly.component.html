@@ -6,13 +6,13 @@
         @if (state.filterFormValue().recordedFrom) {
           <small>
             <span class="font-bold">&ge;</span>
-            {{ state.filterFormValue().recordedFrom | date:'d MMM y, HH:mm' }}
+            {{ state.filterFormValue().recordedFrom | orgDateTime }}
           </small>
         }
         @if (state.filterFormValue().recordedBefore) {
           <small>
             <span class="font-bold">&lt;</span>
-            {{ state.filterFormValue().recordedBefore | date:'d MMM y, HH:mm' }}
+            {{ state.filterFormValue().recordedBefore | orgDateTime }}
           </small>
         }
       </div>
@@ -25,13 +25,13 @@
         @if (state.filterFormValue().purchaseDateFrom) {
           <small>
             <span class="font-bold">&ge;</span>
-            {{ state.filterFormValue().purchaseDateFrom | date:'d MMM y, HH:mm' }}
+            {{ state.filterFormValue().purchaseDateFrom | orgDateTime }}
           </small>
         }
         @if (state.filterFormValue().purchaseDateBefore) {
           <small>
             <span class="font-bold">&lt;</span>
-            {{ state.filterFormValue().purchaseDateBefore | date:'d MMM y, HH:mm' }}
+            {{ state.filterFormValue().purchaseDateBefore | orgDateTime }}
           </small>
         }
       </div>

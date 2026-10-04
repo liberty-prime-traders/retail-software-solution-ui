@@ -1,0 +1,33 @@
+<rts-loading-container [loading]="loading()">
+  <div class="flex" id="sales-report" rtsAutoStretch="sales-report">
+    @if (selectedTab() === 'sales') {
+      <rts-sales-filter-readonly class="col-2" (editFilters)="selectedTab.set('summary')"/>
+    } @else {
+      <rts-sales-filter class="col-3"/>
+    }
+
+    <p-divider layout="vertical"/>
+
+    <div class="flex flex-column flex-grow-1">
+      <p-tabs [value]="selectedTab()" (valueChange)="onSelectedTabChange($event)">
+        <p-tablist>
+          <p-tab value="summary">Summary</p-tab>
+          <p-tab value="sales">
+            Sales
+            <p-badge [value]="saleCount()" severity="info" class="ml-2"/>
+          </p-tab>
+        </p-tablist>
+
+        <p-tabpanels>
+          <p-tabpanel value="summary">
+            <rts-sales-summary/>
+          </p-tabpanel>
+
+          <p-tabpanel value="sales">
+            <rts-sale-grid/>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
+    </div>
+  </div>
+</rts-loading-container>

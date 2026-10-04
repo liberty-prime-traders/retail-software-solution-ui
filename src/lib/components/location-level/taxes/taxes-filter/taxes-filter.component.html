@@ -1,0 +1,117 @@
+<div class="flex flex-column gap-3">
+  <p-fieldset legend="" [toggleable]="true">
+    <div class="flex flex-column gap-3">
+      <rts-form-field label="Fiscal Periods"
+                      for="fiscalPeriodIds"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <p-select id="fiscalPeriodIds"
+                  class="flex-grow-1"
+                  [options]="state.fiscalPeriods()"
+                  optionLabel="name"
+                  optionValue="id"
+                  [multiple]="true"
+                  [filter]="true"
+                  [checkmark]="true"
+                  [formField]="state.filterForm.fiscalPeriodIds"
+                  placeholder="Select fiscal periods">
+
+          <ng-template #selectedItem let-selectedOption>
+            @let remainingCount = state.filterForm.fiscalPeriodIds().value().length - 1;
+            {{ selectedOption.name }}
+            @if (remainingCount > 0) {
+              (+{{ remainingCount }} Others)
+            }
+          </ng-template>
+        </p-select>
+      </rts-form-field>
+
+      <rts-form-field label="Tax Types"
+                      for="taxTypeIds"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <p-select id="taxTypeIds"
+                  class="flex-grow-1"
+                  [options]="state.taxTypes()"
+                  optionLabel="taxLabel"
+                  optionValue="id"
+                  [multiple]="true"
+                  [filter]="true"
+                  [checkmark]="true"
+                  [formField]="state.filterForm.taxTypeIds"
+                  placeholder="Select tax types">
+
+          <ng-template #selectedItem let-selectedOption>
+            @let remainingCount = state.filterForm.taxTypeIds().value().length - 1;
+            {{ selectedOption.taxLabel }}
+            @if (remainingCount > 0) {
+              (+{{ remainingCount }} Others)
+            }
+          </ng-template>
+        </p-select>
+      </rts-form-field>
+    </div>
+  </p-fieldset>
+
+  <p-fieldset legend="Source Type" [toggleable]="true" [collapsed]="true">
+    <div class="flex flex-column gap-1">
+      @for (sourceTypeOption of (TaxSourceType | enumToDropdown); track sourceTypeOption.value) {
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [value]="sourceTypeOption.value"
+                      [formField]="state.filterForm.sourceTypes"
+                      [inputId]="'sourceType' + $index"
+                      name="sourceType">
+          </p-checkbox>
+
+          <label [for]="'sourceType' + $index">{{ sourceTypeOption.label }}</label>
+        </div>
+      }
+    </div>
+  </p-fieldset>
+
+  <p-fieldset legend="Others" [toggleable]="true" [collapsed]="true">
+    <div class="flex flex-column gap-3">
+      <rts-form-field label="Tax Amount (KES)"
+                      for="minTaxAmount"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <div class="flex gap-1 flex-column">
+          <p-input-number size="small" [formField]="state.filterForm.minTaxAmount" placeholder="Min"/>
+          <p-input-number size="small" [formField]="state.filterForm.maxTaxAmount" placeholder="Max"/>
+        </div>
+      </rts-form-field>
+
+      <rts-form-field label="Source reference numbers"
+                      for="sourceReferenceNumberInput"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        @if (state.filterForm.sourceReferenceNumbers().value().length > 0) {
+          <div class="flex flex-wrap gap-1 pb-2">
+            @for (referenceNumber of state.filterForm.sourceReferenceNumbers().value(); track referenceNumber) {
+              <p-chip label="{{ referenceNumber }}"
+                      [removable]="true"
+                      (onRemove)="state.removeSourceReferenceNumber(referenceNumber)">
+              </p-chip>
+            }
+          </div>
+        }
+
+        <input id="sourceReferenceNumberInput"
+               #sourceReferenceNumberInput
+               class="flex-grow-1"
+               pInputText
+               placeholder="Type ref, press Enter"
+               [disabled]="state.filterForm.sourceReferenceNumbers().value().length >= state.maxSourceReferenceNumbers"
+               (keydown.enter)="state.addSourceReferenceNumbers(sourceReferenceNumberInput.value); sourceReferenceNumberInput.value = ''"
+               (paste)="state.addSourceReferenceNumbers($event.clipboardData?.getData('text') ?? ''); $event.preventDefault()" />
+      </rts-form-field>
+    </div>
+  </p-fieldset>
+
+  <div class="flex justify-content-end pt-2">
+    <button pButton type="button" (click)="state.resetFilters()" severity="secondary">
+      <i class="pi pi-filter-slash"></i> Reset Filters
+    </button>
+  </div>
+
+</div>

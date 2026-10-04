@@ -94,6 +94,6 @@ export interface SaleSessionTotals {
   lineLevelSurchargeTotal: number
   orderLevelSurchargeTotal: number
   paymentTotal: number
-  payableTotal: number
+  receivableTotal: number
   balance: number
 }

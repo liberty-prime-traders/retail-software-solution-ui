@@ -33,9 +33,9 @@ export namespace AccountFormDefinition {
     required(path.parentAccountCode, {
       when: ({valueOf}) => !valueOf(path.id) && !valueOf(path.isRoot)
     })
-    disabled(path.parentAccountCode, ({valueOf}) => valueOf(path.isRoot))
+    disabled(path.parentAccountCode, {when: ({valueOf}) => valueOf(path.isRoot)})
 
-    disabled(path.accountType, ({valueOf}) => !valueOf(path.isRoot))
+    disabled(path.accountType, {when: ({valueOf}) => !valueOf(path.isRoot)})
     required(path.accountType, {
       when: ({valueOf}) => !valueOf(path.id) && valueOf(path.isRoot)
     })

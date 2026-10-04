@@ -35,10 +35,6 @@ export class PullFromOrgUserComponent {
 
   readonly orgUsersLoading = this.orgMembershipUserService.selectLoading
 
-  constructor() {
-    this.orgMembershipUserService.fetch()
-  }
-
   pullSelectedUsers() {
     this.locationMembershipUserService.pullUsersFromOrg(this.selectedUserIds(), {
       onSuccess: () => this.onPullSuccess(),
