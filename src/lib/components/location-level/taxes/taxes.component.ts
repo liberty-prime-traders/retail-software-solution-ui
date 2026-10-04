@@ -51,8 +51,10 @@ export class TaxesComponent implements OnInit {
   )
 
   ngOnInit() {
-    this.fiscalPeriodService.fetch()
     this.orgTaxTypeService.fetch()
+    this.fiscalPeriodService.fetchRequest({
+      callbacks: {onSuccess: () => this.filterState.autoSelectCurrentFiscalPeriod()}
+    })
   }
 
   onSelectedTabChange(tab?: string | number) {

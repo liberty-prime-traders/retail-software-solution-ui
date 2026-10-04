@@ -50,6 +50,13 @@ export class TaxesFilterState {
     untracked(() => this.taxEntrySearchSummaryService.refetch(filterParams))
   })
 
+  autoSelectCurrentFiscalPeriod() {
+    const currentFiscalPeriod = this.fiscalPeriods().find(period => period.current)
+    if (currentFiscalPeriod) {
+      this.filterForm.fiscalPeriodIds().value.set([currentFiscalPeriod.id as string])
+    }
+  }
+
   addSourceReferenceNumbers(rawValue: string) {
     const candidates = rawValue.split(/[\n,]/).map(value => value.trim()).filter(Boolean)
     if (candidates.length === 0) {

@@ -19,16 +19,11 @@ export class TaxEntrySearchSummaryService extends BaseService<TaxEntrySearchSumm
   }
 
   override refetch(params: TaxEntrySearchParameters): Subscription | undefined {
-    if (isEqual(this.previousFilterParams(), params)) {
+    if (isEqual(this.previousFilterParams(), params) || !params.fiscalPeriodIds?.length) {
       return undefined
     }
     this.previousFilterParams.set(params)
     this.resetStoreAndClearCache()
     return this.postRequest({body: params})
-  }
-
-  forceRefetch(params: TaxEntrySearchParameters): Subscription {
-    this.previousFilterParams.set(null)
-    return this.refetch(params) as Subscription
   }
 }
