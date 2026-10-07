@@ -2,11 +2,13 @@ import {Component, computed, inject} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {ButtonDirective} from 'primeng/button'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
+import {ExpenseSourceType} from '../../../../api/cross-tier/expense/expense-source-type.enum'
 import {PaymentStatus} from '../../../../api/location-level/purchase/payment-status.enum'
 import {Purchase} from '../../../../api/location-level/purchase/purchase.model'
 import {PurchaseService} from '../../../../api/location-level/purchase/purchase.service'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
+import {ExpenseGridComponent} from '../../../cross-tier/expenses/expense-grid/expense-grid.component'
 import {HidesSaleButtonComponent} from '../../hides-sale-button.component'
 import {PaymentGridComponent} from '../../supplier-payments/payment-grid/payment-grid.component'
 import {PurchasesFilterState} from '../purchases-filter/purchases-filter.state'
@@ -28,6 +30,7 @@ import {PurchaseLinesComponent} from './purchase-lines/purchase-lines.component'
     PurchaseLinesComponent,
     DeliveryGridComponent,
     PaymentGridComponent,
+    ExpenseGridComponent,
     AutoStretchDirective,
     ButtonDirective,
     LoadingContainerComponent,
@@ -40,12 +43,15 @@ export class PurchaseFormComponent extends HidesSaleButtonComponent {
   private readonly purchaseFormContext = inject(PurchaseFormContext)
   private readonly filterState = inject(PurchasesFilterState)
 
+  readonly ExpenseSourceType = ExpenseSourceType
 
   readonly purchaseIsLoading = this.purchaseService.selectLoading
   readonly purchaseForm = this.purchaseFormContext.purchaseForm
   readonly isDraftOrNew = this.purchaseFormContext.isDraftOrNew
   readonly isEditingLines = this.purchaseFormContext.isEditingLines
   readonly purchaseId = computed(() => String(this.purchaseFormContext.purchaseId() ?? ''))
+  readonly purchaseReference = this.purchaseFormContext.purchaseReference
+  readonly supplierId = this.purchaseFormContext.supplierId
   readonly canPlaceOrder = computed(() =>
     this.purchaseFormContext.purchaseLinesArray().some((line) => line.quantityExpected > 0)
   )

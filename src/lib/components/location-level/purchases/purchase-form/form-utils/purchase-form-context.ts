@@ -23,6 +23,8 @@ export class PurchaseFormContext {
   readonly purchaseLinesArray = computed(() => this.purchaseForm.purchaseLines().value())
   readonly purchaseStatus = computed(() => this.originalPurchase()?.purchaseStatus)
   readonly purchaseId = computed(() => this.originalPurchase()?.id)
+  readonly purchaseReference = computed(() => this.originalPurchase()?.referenceNumber ?? '')
+  readonly supplierId = computed(() => this.originalPurchase()?.supplierId ?? null)
   readonly deliveries = computed(() => this.originalPurchase()?.deliveries ?? [])
 
   readonly keysForLinesBeingEdited = signal<Record<string, boolean>>({})

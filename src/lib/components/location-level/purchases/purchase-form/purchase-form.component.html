@@ -10,7 +10,7 @@
         @if (!isDraftOrNew()) {
           <p-tab value="deliveries">Deliveries</p-tab>
           <p-tab value="payments">Payments</p-tab>
-          <p-tab value="returns">Returns</p-tab>
+          <p-tab value="expenses">Expenses</p-tab>
         }
       </p-tablist>
 
@@ -29,6 +29,14 @@
                                        [canAddPayment]="canAddPayments()"
                                        (paymentChanged)="reloadFormFromStore()">
             </rts-supplier-payment-grid>
+          </p-tabpanel>
+
+          <p-tabpanel value="expenses">
+            <rts-expense-grid [sourceReference]="purchaseReference()"
+                              [defaultPayeeContactId]="supplierId()"
+                              [sourceType]="ExpenseSourceType.PURCHASE"
+                              [canAddExpense]="true">
+            </rts-expense-grid>
           </p-tabpanel>
         }
       </p-tabpanels>

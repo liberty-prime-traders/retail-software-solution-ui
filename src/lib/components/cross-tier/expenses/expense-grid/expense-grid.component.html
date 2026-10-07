@@ -1,0 +1,71 @@
+@if (showAddForm()) {
+  <rts-expense-form [purchaseReference]="sourceReference()"
+                    [defaultPayeeContactId]="defaultPayeeContactId()"
+                    (expensesSaved)="showAddForm.set(false)"
+                    (cancelled)="showAddForm.set(false)">
+  </rts-expense-form>
+} @else {
+  <div class="flex flex-column gap-3">
+
+    @if (canAddExpense()) {
+      <div class="flex justify-content-end">
+        <button pButton (click)="showAddForm.set(true)">
+          <i class="pi pi-plus"></i>
+          Record Expense
+        </button>
+      </div>
+    }
+
+    <p-table [value]="expenses()" dataKey="reference">
+      <ng-template #header>
+        <tr>
+          <th style="width: 3rem"></th>
+          <th>Payee</th>
+          <th>Expense Type</th>
+          <th>Status</th>
+          <th>Amount</th>
+          <th>Description</th>
+          <th>Expense Date</th>
+          <th>Voided Reason</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-expense let-expanded="expanded">
+        <tr [ngClass]="{'expanded-row': expanded, 'strike-through': expense.voided}">
+          <td>
+            <button pButton
+                    type="button"
+                    text
+                    rounded
+                    [pRowToggler]="expense">
+              <i [class]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+            </button>
+          </td>
+          <td>{{ expense.payeeDisplayName }}</td>
+          <td>{{ expense.expenseTypeName }}</td>
+          <td>
+            <p-tag [value]="expense.status | prettifyEnum"
+                   [severity]="expense.status | paymentStatusSeverity">
+            </p-tag>
+          </td>
+          <td>{{ expense.amount | currency }} (Balance: {{ expense.balanceRemaining | currency }})</td>
+          <td>{{ expense.description | nullSafe }}</td>
+          <td>{{ expense.expenseDate }}</td>
+          <td>{{ expense.voidReason | nullSafe }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template #expandedrow let-expense>
+        <tr>
+          <td colspan="8" class="filled-background p-4">
+            <rts-expense-payment-subgrid [payments]="expense.payments"/>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr [colspan]="8" rts-empty-row message="No expenses recorded yet"></tr>
+      </ng-template>
+    </p-table>
+  </div>
+}
