@@ -1,0 +1,53 @@
+<div id="expense-grid" [rtsAutoStretch]="'expense-grid'">
+  <p-table #expenseTable
+           [value]="expenses()"
+           [loading]="loading()"
+           [globalFilterFields]="filterFields"
+           dataKey="reference"
+           scrollHeight="flex"
+           [scrollable]="true"
+           [multiSortMeta]="[{field: 'expenseDate', order: -1}, {field: 'reference', order: -1}]">
+
+    <ng-template #caption>
+      <div class="flex justify-content-end gap-5 align-items-center">
+        <rts-grid-filter [dataTable]="expenseTable"/>
+        <ng-content/>
+      </div>
+
+    </ng-template>
+
+    <ng-template #header>
+      <tr>
+        <th>Expense Type</th>
+        <th>Expense Date</th>
+        <th>Payee</th>
+        <th>Reference</th>
+        <th>Status</th>
+        <th>Amount</th>
+        <th>Balance</th>
+        <th>Description</th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-expense>
+      <tr [ngClass]="{'strike-through': expense.voided}">
+        <td>{{ expense.expenseTypeName }}</td>
+        <td>{{ expense.expenseDate }}</td>
+        <td>{{ expense.payeeDisplayName }}</td>
+        <td>{{ expense.sourceReference | nullSafe }}</td>
+        <td>
+          <p-tag [value]="expense.status | prettifyEnum"
+                 [severity]="expense.status | paymentStatusSeverity">
+          </p-tag>
+        </td>
+        <td class="money">{{ expense.amount | currency }}</td>
+        <td class="money">{{ expense.balanceRemaining | currency }}</td>
+        <td>{{ expense.description | nullSafe }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr [colspan]="8" rts-empty-row message="No expenses recorded yet"></tr>
+    </ng-template>
+  </p-table>
+</div>

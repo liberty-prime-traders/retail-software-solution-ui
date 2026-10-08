@@ -1,53 +1,28 @@
-import {HttpParams} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {ApiCallbacks} from '../../util/base-api/api-callbacks'
-import {MultimapBaseService} from '../../util/base-api/multimap-base.service'
-import {
-  Expense,
-  ExpenseBySourceRequest,
-  ExpensePaymentCreateRequest,
-  ExpensePaymentVoidRequest,
-  ExpenseVoidRequest,
-  PurchaseExpenseBatchRequest
-} from './expense.model'
+import {BaseService} from '../../util/base-api/base.service'
+import {Expense, StandaloneExpenseBatchRequest, WageExpenseBatchRequest} from './expense.model'
 import {ExpenseStore} from './expense.store'
 
-@Injectable({providedIn: 'root'})
-export class ExpenseService extends MultimapBaseService<Expense> {
-  protected override keyPath: keyof Expense = 'sourceReference'
 
+@Injectable({providedIn: 'root'})
+export class ExpenseService extends BaseService<Expense> {
   constructor(protected override readonly store: ExpenseStore) {
     super(store)
   }
 
-  createForPurchase(dto: PurchaseExpenseBatchRequest, callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'purchase'})
+  fetchRecent() {
+    this.patchApiRequestConfig({urlSuffix: 'recent'})
+    return this.refetch()
+  }
+
+  createStandalone(dto: StandaloneExpenseBatchRequest, callbacks?: ApiCallbacks<Expense>) {
+    this.patchApiRequestConfig({urlSuffix: 'standalone', upsertOnSuccess: true})
     return this.post(dto as any, callbacks)
   }
 
-  createPayments(dtos: ExpensePaymentCreateRequest[], callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'payments'})
-    return this.post(dtos as any, callbacks)
-  }
-
-  voidPayment(dto: ExpensePaymentVoidRequest, callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'payments/void'})
+  createWages(dto: WageExpenseBatchRequest, callbacks?: ApiCallbacks<Expense>) {
+    this.patchApiRequestConfig({urlSuffix: 'wages', upsertOnSuccess: true})
     return this.post(dto as any, callbacks)
-  }
-
-  voidExpense(dto: ExpenseVoidRequest, callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'void'})
-    return this.post(dto as any, callbacks)
-  }
-
-  override appendHttpParams(httpParams: HttpParams, params: ExpenseBySourceRequest): HttpParams {
-    return httpParams
-      .setNonNull(String(this.keyPath), params.sourceReference)
-      .setNonNull('sourceType', params.sourceType)
-  }
-
-  fetchForSource(params: ExpenseBySourceRequest) {
-    this.patchApiRequestConfig({urlSuffix: 'by-source'})
-    return this.refetch(params)
   }
 }

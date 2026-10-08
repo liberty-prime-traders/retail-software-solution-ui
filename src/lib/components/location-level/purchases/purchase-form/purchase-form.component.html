@@ -32,11 +32,11 @@
           </p-tabpanel>
 
           <p-tabpanel value="expenses">
-            <rts-expense-grid [sourceReference]="purchaseReference()"
+            <rts-contextual-expense-grid [sourceReference]="purchaseReference()"
                               [defaultPayeeContactId]="supplierId()"
                               [sourceType]="ExpenseSourceType.PURCHASE"
                               [canAddExpense]="true">
-            </rts-expense-grid>
+            </rts-contextual-expense-grid>
           </p-tabpanel>
         }
       </p-tabpanels>

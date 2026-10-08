@@ -1,0 +1,145 @@
+<rts-loading-container [loading]="isLoading()" loadingText="Saving...">
+  <div class="flex flex-column gap-3 px-1" id="expense-form" rtsAutoStretch="expense-form">
+    <div class="text-lg font-semibold">Record New Expenses</div>
+
+    <p-divider class="m-0"/>
+
+    <div class="flex gap-3 flex-wrap align-items-center">
+      <p-select-button [options]="batchTypeOptions" [formField]="batchForm.batchType" [allowEmpty]="false"/>
+
+      @if (isAdhoc()) {
+        <div class="flex gap-2 align-items-center">
+          <p-checkbox [formField]="batchForm.grouped" [binary]="true" inputId="groupExpenses"/>
+          <label for="groupExpenses">Combine multiple expenses</label>
+        </div>
+
+      } @else {
+        <p-date-picker [formField]="batchForm.expenseDate"
+                       [showIcon]="true"
+                       placeholder="Wages date"
+                       appendTo="body">
+        </p-date-picker>
+      }
+    </div>
+
+    @if (isGrouped() && isAdhoc()) {
+      <input pInputText [formField]="batchForm.description" placeholder="Group description" class="max-w-28rem"/>
+    }
+
+    <div class="flex gap-3 flex-wrap">
+      <ng-container *ngTemplateOutlet="expenseRows"/>
+    </div>
+
+    @if (isGrouped()) {
+      <button pButton type="button" class="w-fit" outlined (click)="addRow()">
+        <i class="pi pi-plus"></i> Add expense
+      </button>
+    }
+
+    <rts-forms-buttons saveLabel="Save expenses"
+                       resetLabel="Cancel"
+                       [hideDelete]="true"
+                       [disableSave]="batchForm().invalid() || rowCount() === 0"
+                       [signalForm]="batchForm()"
+                       [processingStatus]="processingStatus()"
+                       [failureMessages]="failureMessages()"
+                       (save)="save()"
+                       (resetAction)="cancel()">
+    </rts-forms-buttons>
+  </div>
+</rts-loading-container>
+
+<ng-template #expenseRows>
+  @for (row of batchForm.rows; track $index) {
+    <p-card class="max-w-30rem">
+      <div class="flex flex-column gap-3">
+        @if (isGrouped()) {
+          <div class="flex justify-content-between">
+            <p-badge [value]="'Expense ' + ($index + 1)" size="large" severity="secondary"/>
+
+            <button pButton
+                    type="button"
+                    severity="danger"
+                    rounded
+                    class="w-fit"
+                    [disabled]="rowCount() === 1"
+                    (click)="removeRow($index)">
+              <i class="pi pi-times"></i>
+            </button>
+          </div>
+        }
+
+        <div class="flex gap-3">
+          <p-select [options]="payees()"
+                    [formField]="row.payeeContactId"
+                    optionLabel="fullName"
+                    optionValue="id"
+                    [placeholder]="isWages() ? 'Employee' : 'Payee'"
+                    appendTo="body"
+                    class="flex-grow-1">
+          </p-select>
+
+          @if (isAdhoc()) {
+            <p-select [options]="expenseTypes()"
+                      [formField]="row.expenseTypeId"
+                      optionLabel="name"
+                      optionValue="id"
+                      placeholder="Expense type"
+                      appendTo="body"
+                      class="flex-grow-1">
+            </p-select>
+          }
+        </div>
+
+        <div class="flex gap-3">
+          <p-input-number [formField]="row.amount"
+                          mode="currency"
+                          currency="KES"
+                          [min]="0"
+                          placeholder="Amount"
+                          class="flex-grow-1">
+          </p-input-number>
+
+          <p-date-picker [formField]="row.expenseDate"
+                         [showIcon]="true"
+                         [showClear]="isWages()"
+                         [placeholder]="isWages() ? 'Date (optional)' : 'Expense date'"
+                         appendTo="body"
+                         class="flex-grow-1">
+          </p-date-picker>
+        </div>
+
+        @if (isAdhoc()) {
+          <textarea pInputText
+                    [formField]="row.description"
+                    [placeholder]="isGrouped() ? 'Description (optional)' : 'Description'"
+                    class="w-full">
+          </textarea>
+        }
+
+        <div class="flex gap-3 align-items-center">
+          <p-checkbox [formField]="row.payNow" [binary]="true" [inputId]="'payNow' + $index"/>
+          <label [for]="'payNow' + $index">This expense is settled</label>
+
+          @if (row.payNow().value()) {
+            <p-select [options]="paymentOptions()"
+                      [formField]="row.paymentMethodId"
+                      optionLabel="name"
+                      optionValue="id"
+                      class="flex-grow-1"
+                      placeholder="Payment method"
+                      appendTo="body">
+            </p-select>
+          }
+        </div>
+
+        @if (row.payNow().value()) {
+          <div class="flex gap-3">
+            <p-date-picker [formField]="row.paymentDate" [showIcon]="true" appendTo="body"/>
+            <input pInputText [formField]="row.paymentReference" placeholder="Payment reference" class="flex-grow-1"/>
+          </div>
+        }
+      </div>
+    </p-card>
+  }
+</ng-template>

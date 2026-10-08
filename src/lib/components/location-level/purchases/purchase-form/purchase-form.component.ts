@@ -8,7 +8,7 @@ import {Purchase} from '../../../../api/location-level/purchase/purchase.model'
 import {PurchaseService} from '../../../../api/location-level/purchase/purchase.service'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
-import {ExpenseGridComponent} from '../../../cross-tier/expenses/expense-grid/expense-grid.component'
+import {ContextualExpenseGridComponent} from '../../../cross-tier/expenses/contextual-expense-grid/contextual-expense-grid.component'
 import {HidesSaleButtonComponent} from '../../hides-sale-button.component'
 import {PaymentGridComponent} from '../../supplier-payments/payment-grid/payment-grid.component'
 import {PurchasesFilterState} from '../purchases-filter/purchases-filter.state'
@@ -30,7 +30,7 @@ import {PurchaseLinesComponent} from './purchase-lines/purchase-lines.component'
     PurchaseLinesComponent,
     DeliveryGridComponent,
     PaymentGridComponent,
-    ExpenseGridComponent,
+    ContextualExpenseGridComponent,
     AutoStretchDirective,
     ButtonDirective,
     LoadingContainerComponent,

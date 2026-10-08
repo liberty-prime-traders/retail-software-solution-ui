@@ -77,3 +77,30 @@ export interface ExpenseVoidRequest {
   expenseReference: string
   reason: string
 }
+
+export interface StandaloneExpenseRowRequest {
+  payeeContactId: string
+  expenseTypeId: string
+  amount: number
+  description?: string
+  expenseDateOverride: string
+  settlement?: PaymentInstruction
+}
+
+export interface StandaloneExpenseBatchRequest {
+  description: string
+  expenseDate: string
+  rows: StandaloneExpenseRowRequest[]
+}
+
+export interface WageExpenseRowRequest {
+  employeeContactId: string
+  amount: number
+  expenseDateOverride?: string
+  settlement?: PaymentInstruction
+}
+
+export interface WageExpenseBatchRequest {
+  expenseDate: string
+  rows: WageExpenseRowRequest[]
+}

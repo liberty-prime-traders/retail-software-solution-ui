@@ -8,6 +8,7 @@ import {ExpenseTypeStore} from './expense-type.store'
 export class ExpenseTypeService extends BaseService<ExpenseType> {
 
   readonly forPurchase = computed(() => this.eligibleFor(ExpenseSourceType.PURCHASE))
+  readonly forAdhoc = computed(() => this.eligibleFor(ExpenseSourceType.ADHOC))
 
   constructor(protected override readonly store: ExpenseTypeStore) {
     super(store)

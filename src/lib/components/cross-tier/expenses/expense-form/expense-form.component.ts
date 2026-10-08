@@ -9,7 +9,7 @@ import {DatePicker} from 'primeng/datepicker'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
-import {ExpenseService} from '../../../../api/cross-tier/expense/expense.service'
+import {ContextualExpenseService} from '../../../../api/cross-tier/contextual-expense/contextual-expense.service'
 import {ContactService} from '../../../../api/organization-level/contact/contact.service'
 import {ExpenseTypeService} from '../../../../api/organization-level/expense-type/expense-type.service'
 import {PaymentOptionService} from '../../../../api/organization-level/payment-option/payment-option.service'
@@ -42,14 +42,14 @@ export class ExpenseFormComponent implements OnInit {
   readonly expensesSaved = output()
   readonly cancelled = output()
 
-  private readonly expenseService = inject(ExpenseService)
+  private readonly contextualExpenseService = inject(ContextualExpenseService)
   private readonly contactService = inject(ContactService)
   private readonly expenseTypeService = inject(ExpenseTypeService)
   private readonly paymentOptionService = inject(PaymentOptionService)
 
-  readonly isLoading = this.expenseService.selectLoading
-  readonly processingStatus = this.expenseService.selectProcessingStatus
-  readonly failureMessages = this.expenseService.selectFailureMessages
+  readonly isLoading = this.contextualExpenseService.selectLoading
+  readonly processingStatus = this.contextualExpenseService.selectProcessingStatus
+  readonly failureMessages = this.contextualExpenseService.selectFailureMessages
   readonly contacts = this.contactService.selectAll
   readonly expenseTypes = this.expenseTypeService.forPurchase
   readonly paymentOptions = this.paymentOptionService.selectAll
@@ -61,7 +61,7 @@ export class ExpenseFormComponent implements OnInit {
   readonly totalAmount = computed(() => this.rows().reduce((sum, row) => sum + (row.amount ?? 0), 0))
 
   ngOnInit() {
-    this.expenseService.resetProcessingStatus()
+    this.contextualExpenseService.resetProcessingStatus()
     this.contactService.fetch()
     this.expenseTypeService.fetch()
     this.paymentOptionService.fetch()
@@ -82,6 +82,6 @@ export class ExpenseFormComponent implements OnInit {
 
   save() {
     const dto = ExpenseFormDefinition.convertToBackendModel(this.rows(), this.purchaseReference())
-    this.expenseService.createForPurchase(dto, {onSuccess: () => this.expensesSaved.emit()})
+    this.contextualExpenseService.createForPurchase(dto, {onSuccess: () => this.expensesSaved.emit()})
   }
 }

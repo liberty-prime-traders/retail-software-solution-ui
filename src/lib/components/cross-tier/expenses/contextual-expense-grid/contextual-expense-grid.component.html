@@ -16,7 +16,9 @@
       </div>
     }
 
-    <p-table [value]="expenses()" dataKey="reference" sortField="expenseDate">
+    <p-table [value]="expenses()"
+             dataKey="reference"
+             [multiSortMeta]="[{field: 'expenseDate', order: 1}, {field: 'reference', order: 1}]">
       <ng-template #header>
         <tr>
           <th style="width: 3rem"></th>

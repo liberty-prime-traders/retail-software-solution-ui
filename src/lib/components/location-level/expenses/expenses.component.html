@@ -1,0 +1,13 @@
+@if (formIsVisible()) {
+  <rts-expense-batch-form (expensesSaved)="formIsVisible.set(false)"
+                          (cancelled)="formIsVisible.set(false)">
+  </rts-expense-batch-form>
+
+} @else {
+  <rts-expense-grid>
+    <button pButton (click)="formIsVisible.set(true)" class="h-fit">
+      <i class="pi pi-plus"></i>
+      New Expense
+    </button>
+  </rts-expense-grid>
+}
