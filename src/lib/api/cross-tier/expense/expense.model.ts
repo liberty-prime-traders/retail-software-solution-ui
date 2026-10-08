@@ -67,3 +67,13 @@ export interface ExpensePaymentCreateRequest {
   settlement: PaymentInstruction
   amount: number
 }
+
+export interface ExpensePaymentVoidRequest {
+  paymentReference: string
+  reason: string
+}
+
+export interface ExpenseVoidRequest {
+  expenseReference: string
+  reason: string
+}

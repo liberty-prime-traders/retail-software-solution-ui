@@ -1,0 +1,52 @@
+<rts-loading-container [loading]="isLoading()" loadingText="Saving...">
+  <div class="flex flex-column gap-3">
+    @for (row of paymentsForm; track $index) {
+      <div class="flex gap-3 flex-wrap align-items-center">
+        <p-select [options]="paymentOptions()"
+                  [formField]="row.paymentMethodId"
+                  optionLabel="name"
+                  optionValue="id"
+                  placeholder="Payment method"
+                  appendTo="body">
+        </p-select>
+
+        <p-input-number [formField]="row.amount"
+                        mode="currency"
+                        currency="KES"
+                        [min]="0"
+                        placeholder="Amount">
+        </p-input-number>
+
+        <p-date-picker [formField]="row.paymentDate" [showIcon]="true" appendTo="body"/>
+
+        <input pInputText [formField]="row.paymentReference" placeholder="Payment reference"/>
+
+        <button pButton
+                type="button"
+                severity="danger"
+                rounded
+                [disabled]="paymentCount() === 1"
+                (click)="removeRow($index)">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+    }
+
+    <div>
+      <button pButton type="button" text size="small" (click)="addRow()">
+        <i class="pi pi-plus"></i> Add another payment
+      </button>
+    </div>
+
+    <rts-forms-buttons saveLabel="Save payments"
+                       resetLabel="Cancel"
+                       [hideDelete]="true"
+                       [disableSave]="paymentsForm().invalid() || paymentCount() === 0"
+                       [signalForm]="paymentsForm()"
+                       [processingStatus]="processingStatus()"
+                       [failureMessages]="failureMessages()"
+                       (save)="save()"
+                       (resetAction)="cancel()">
+    </rts-forms-buttons>
+  </div>
+</rts-loading-container>

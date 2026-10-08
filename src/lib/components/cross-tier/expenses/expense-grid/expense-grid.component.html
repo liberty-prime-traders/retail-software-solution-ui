@@ -16,7 +16,7 @@
       </div>
     }
 
-    <p-table [value]="expenses()" dataKey="reference">
+    <p-table [value]="expenses()" dataKey="reference" sortField="expenseDate">
       <ng-template #header>
         <tr>
           <th style="width: 3rem"></th>
@@ -58,7 +58,7 @@
       <ng-template #expandedrow let-expense>
         <tr>
           <td colspan="8" class="filled-background p-4">
-            <rts-expense-payment-subgrid [payments]="expense.payments"/>
+            <rts-expense-payment-subgrid [expense]="expense"/>
           </td>
         </tr>
       </ng-template>

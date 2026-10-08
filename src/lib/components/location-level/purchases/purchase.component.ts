@@ -48,7 +48,7 @@ export class PurchaseComponent implements OnInit {
   readonly formIsVisible = this.context.formIsVisible
   readonly purchaseCount = this.purchaseSearchSummaryService.purchaseCount
 
-  readonly selectedTab = model<'summary' | 'purchases'>('summary')
+  readonly selectedTab = model<'summary' | 'purchases'>('purchases')
 
   readonly loading = computed(() =>
     this.purchaseSearchSummaryService.selectLoading()
@@ -56,6 +56,7 @@ export class PurchaseComponent implements OnInit {
   )
 
   ngOnInit() {
+    this.onSelectedTabChange(this.selectedTab())
     this.contactService.fetch()
   }
 
