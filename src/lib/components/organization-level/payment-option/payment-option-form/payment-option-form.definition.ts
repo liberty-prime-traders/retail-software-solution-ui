@@ -25,6 +25,7 @@ export namespace PaymentOptionFormDefinition {
 
   export const formSchema = schema<PaymentOptionFormModel>((path) => {
     required(path.name)
+    required(path.accountCode)
   })
 
   export const convertToFormModel = (entity?: PaymentOption): PaymentOptionFormModel => ({
@@ -38,6 +39,6 @@ export namespace PaymentOptionFormDefinition {
     id: formValue.id,
     name: formValue.name,
     description: formValue.description,
-    accountCode: formValue.accountCode || undefined
+    accountCode: formValue.accountCode
   })
 }

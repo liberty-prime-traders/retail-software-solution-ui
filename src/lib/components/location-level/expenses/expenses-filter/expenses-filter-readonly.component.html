@@ -1,0 +1,93 @@
+<div class="flex flex-column gap-2">
+
+  @if (state.filterFormValue().createdFrom || state.filterFormValue().createdBefore) {
+    <p-fieldset legend="Recorded">
+      <div class="flex flex-column gap-1">
+        @if (state.filterFormValue().createdFrom) {
+          <small>
+            <span class="font-bold">&ge;</span>
+            {{ state.filterFormValue().createdFrom | orgDateTime }}
+          </small>
+        }
+        @if (state.filterFormValue().createdBefore) {
+          <small>
+            <span class="font-bold">&lt;</span>
+            {{ state.filterFormValue().createdBefore | orgDateTime }}
+          </small>
+        }
+      </div>
+    </p-fieldset>
+  }
+
+  @if (state.filterFormValue().expenseDateFrom || state.filterFormValue().expenseDateBefore) {
+    <p-fieldset legend="Expense Date">
+      <div class="flex flex-column gap-1">
+        @if (state.filterFormValue().expenseDateFrom) {
+          <small>
+            <span class="font-bold">&ge;</span>
+            {{ state.filterFormValue().expenseDateFrom | orgDateTime }}
+          </small>
+        }
+        @if (state.filterFormValue().expenseDateBefore) {
+          <small>
+            <span class="font-bold">&lt;</span>
+            {{ state.filterFormValue().expenseDateBefore | orgDateTime }}
+          </small>
+        }
+      </div>
+    </p-fieldset>
+  }
+
+  @if (state.payeeNames().length > 0) {
+    <p-fieldset legend="Payees">
+      <rts-truncated-list [items]="state.payeeNames()"/>
+    </p-fieldset>
+  }
+
+  @if (state.expenseTypeNames().length > 0) {
+    <p-fieldset legend="Expense Types">
+      <rts-truncated-list [items]="state.expenseTypeNames()"/>
+    </p-fieldset>
+  }
+
+  @if (state.paymentStatusLabels().length > 0) {
+    <p-fieldset legend="Payment Status">
+      <rts-truncated-list [items]="state.paymentStatusLabels()"/>
+    </p-fieldset>
+  }
+
+  @if (state.paymentMethodNames().length > 0) {
+    <p-fieldset legend="Payment Method">
+      <rts-truncated-list [items]="state.paymentMethodNames()"/>
+    </p-fieldset>
+  }
+
+  @if (state.voidedStateLabels().length > 0) {
+    <p-fieldset legend="Voided">
+      <rts-truncated-list [items]="state.voidedStateLabels()"/>
+    </p-fieldset>
+  }
+
+  @if (state.filterFormValue().minAmount !== null || state.filterFormValue().maxAmount !== null) {
+    <p-fieldset legend="Amount (KES)">
+      <small>
+        {{ (state.filterFormValue().minAmount ?? 0) | number:'1.2-2' }}
+        &ndash;
+        {{ (state.filterFormValue().maxAmount ?? 0) | number:'1.2-2' }}
+      </small>
+    </p-fieldset>
+  }
+
+  @if (state.filterFormValue().sourceReferences.length > 0) {
+    <p-fieldset legend="Source references">
+      <rts-truncated-list [items]="state.filterFormValue().sourceReferences"/>
+    </p-fieldset>
+  }
+
+  <button pButton type="button"
+          severity="secondary" class="w-full"
+          (click)="editFilters.emit()">
+    Edit filters
+  </button>
+
+</div>

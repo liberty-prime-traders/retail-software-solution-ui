@@ -9,7 +9,7 @@ import {SaleStatus} from '../../../../api/location-level/sale-summary/sale-statu
 import {SaleSessionService} from '../../../../api/location-level/sale_session/sale-session.service'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
-import {PaymentStatusSeverityPipe} from '../../purchases/payment-status-severity.pipe'
+import {PaymentStatusSeverityPipe} from '../../../../api/cross-tier/payment-status-severity.pipe'
 import {SaleFormContext} from '../form-utils/sale-form-context'
 import {SaleFormNavigator} from '../form-utils/sale-form-navigator'
 import {SaleStatusSeverityPipe} from '../sale-status-severity.pipe'

@@ -1,0 +1,71 @@
+@if (showPaymentForm()) {
+  <rts-expense-payment-form [expense]="expense()"
+                            (paymentsSaved)="showPaymentForm.set(false)"
+                            (cancelled)="showPaymentForm.set(false)">
+  </rts-expense-payment-form>
+} @else if (showVoidForm()) {
+  <rts-expense-void-form [expense]="expense()"
+                         (voided)="showVoidForm.set(false)"
+                         (cancelled)="showVoidForm.set(false)">
+  </rts-expense-void-form>
+} @else {
+  <div class="flex flex-column gap-2">
+    <div class="flex justify-content-end gap-2">
+      @if (canVoidExpense()) {
+        <button pButton type="button" text size="small" severity="warn" [disabled]="hasActivePayments()"
+                (click)="showVoidForm.set(true)">
+          <i class="pi pi-ban"></i> Void Expense
+        </button>
+      }
+      @if (canAddPayment()) {
+        <button pButton type="button" text size="small" severity="help" (click)="showPaymentForm.set(true)">
+          <i class="pi pi-plus"></i> Add Payment
+        </button>
+      }
+    </div>
+
+    <p-table [value]="expense().payments" dataKey="reference" rowExpandMode="single">
+      <ng-template #header>
+        <tr>
+          <th style="width: 3rem"></th>
+          <th>Payment Method</th>
+          <th>Amount</th>
+          <th>Reference</th>
+          <th>Payment Date</th>
+          <th>Voided Reason</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-payment let-expanded="expanded">
+        <tr [ngClass]="{'expanded-row': expanded, 'strike-through': payment.voided}">
+          <td>
+            <button pButton
+                    type="button"
+                    text
+                    rounded
+                    [pRowToggler]="payment">
+              <i [class]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+            </button>
+          </td>
+          <td>{{ payment.paymentMethodName }}</td>
+          <td>{{ payment.amount | currency }}</td>
+          <td>{{ payment.providerReference | nullSafe }}</td>
+          <td>{{ payment.paymentDate }}</td>
+          <td>{{ payment.voidReason | nullSafe }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template #expandedrow let-payment>
+        <tr>
+          <td colspan="6" class="expanded-sub-row p-4">
+            <rts-expense-payment-expanded-row [payment]="payment" />
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr [colspan]="6" rts-empty-row message="No payments recorded yet"></tr>
+      </ng-template>
+    </p-table>
+  </div>
+}

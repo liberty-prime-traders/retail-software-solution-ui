@@ -1,0 +1,113 @@
+<rts-loading-container [loading]="isLoading()" loadingText="Saving...">
+  <div class="flex flex-column gap-3 px-1">
+    <div class="text-lg font-semibold">Record New Expenses</div>
+
+    <div class="flex gap-3 flex-wrap">
+      <ng-container *ngTemplateOutlet="expenseForm"/>
+    </div>
+
+    <div>
+      <button pButton type="button" outlined (click)="addRow()">
+        <i class="pi pi-plus"></i> Add expense
+      </button>
+    </div>
+
+    <rts-forms-buttons saveLabel="Save expenses"
+                       resetLabel="Cancel"
+                       [hideDelete]="true"
+                       [disableSave]="expensesForm().invalid() || expenseCount() === 0"
+                       [signalForm]="expensesForm()"
+                       [processingStatus]="processingStatus()"
+                       [failureMessages]="failureMessages()"
+                       (save)="save()"
+                       (resetAction)="cancel()">
+    </rts-forms-buttons>
+  </div>
+</rts-loading-container>
+
+<ng-template #expenseForm>
+  @for (row of expensesForm; track $index) {
+    <p-card class="max-w-30rem">
+      <div class="flex flex-column gap-3">
+        <div class="flex justify-content-between">
+          <p-badge [value]="'Expense ' + ($index + 1)" size="large" severity="secondary"/>
+
+          <button pButton
+                  type="button"
+                  severity="danger"
+                  rounded
+                  class="w-fit"
+                  [disabled]="expenseCount() === 1"
+                  (click)="removeRow($index)">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+
+        <div class="flex gap-3">
+          <p-select [options]="contacts()"
+                    [formField]="row.payeeContactId"
+                    optionLabel="fullName"
+                    optionValue="id"
+                    placeholder="Payee"
+                    [showClear]="true"
+                    appendTo="body"
+                    class="flex-grow-1">
+          </p-select>
+
+          <p-select [options]="expenseTypes()"
+                    [formField]="row.expenseTypeId"
+                    optionLabel="name"
+                    optionValue="id"
+                    placeholder="Expense type"
+                    appendTo="body"
+                    class="flex-grow-1">
+          </p-select>
+        </div>
+
+        <div class="flex gap-3">
+          <p-input-number [formField]="row.amount"
+                          mode="currency"
+                          currency="KES"
+                          [min]="0"
+                          placeholder="Amount"
+                          class="flex-grow-1">
+          </p-input-number>
+
+          <p-date-picker [formField]="row.expenseDate"
+                         [showIcon]="true"
+                         appendTo="body"
+                         class="flex-grow-1">
+          </p-date-picker>
+        </div>
+
+        <textarea pInputText
+                  [formField]="row.description"
+                  placeholder="Description (optional)"
+                  class="w-full">
+        </textarea>
+
+        <div class="flex gap-3 align-items-center">
+          <p-checkbox [formField]="row.payNow" [binary]="true" [inputId]="'payNow' + $index"/>
+          <label [for]="'payNow' + $index">This expense is settled</label>
+
+          @if (row.payNow().value()) {
+            <p-select [options]="paymentOptions()"
+                      [formField]="row.paymentMethodId"
+                      optionLabel="name"
+                      optionValue="id"
+                      placeholder="Payment method"
+                      appendTo="body">
+            </p-select>
+          }
+        </div>
+
+        @if (row.payNow().value()) {
+          <div class="flex gap-3">
+            <p-date-picker [formField]="row.paymentDate" [showIcon]="true" appendTo="body"/>
+            <input pInputText [formField]="row.paymentReference" placeholder="Payment reference"/>
+          </div>
+        }
+      </div>
+    </p-card>
+  }
+</ng-template>

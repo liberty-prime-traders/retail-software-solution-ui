@@ -13,7 +13,7 @@ import {OrgMembershipUserService} from '../../../../../api/organization-level/me
 import {PrettifyEnumPipe} from '../../../../../utils/pipes/prettify-enum.pipe'
 import {ErrorSummaryComponent} from '../../../../reusable/error-summary/error-summary.component'
 import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
-import {PaymentStatusSeverityPipe} from '../../payment-status-severity.pipe'
+import {PaymentStatusSeverityPipe} from '../../../../../api/cross-tier/payment-status-severity.pipe'
 import {PurchaseStatusSeverityPipe} from '../../purchase-status-severity.pipe'
 import {PurchaseFormContext} from '../form-utils/purchase-form-context'
 import {PurchaseGeneralFieldsFormDefinition} from '../form-utils/purchase-general-fields-form.definition'

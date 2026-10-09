@@ -44,6 +44,10 @@ form, .form-container  {
   background-color: theme.$expandedRowBackground !important;
 }
 
+.expanded-sub-row {
+  background-color: theme.$expandedSubRowBackground !important;
+}
+
 .scrollable {
   overflow: auto;
 

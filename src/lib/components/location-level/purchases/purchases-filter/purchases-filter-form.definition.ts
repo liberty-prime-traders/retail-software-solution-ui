@@ -25,8 +25,11 @@ export namespace PurchasesFilterFormDefinition {
     const tomorrow = getToday()
     tomorrow.setDate(tomorrow.getDate() + 1)
 
+    const sevenDaysAgo = getToday()
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+
     return {
-      recordedFrom: getToday(),
+      recordedFrom: sevenDaysAgo,
       recordedBefore: tomorrow,
       purchaseDateFrom: null,
       purchaseDateBefore: null,

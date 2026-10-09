@@ -14,7 +14,7 @@ import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
-import {PaymentStatusSeverityPipe} from '../../purchases/payment-status-severity.pipe'
+import {PaymentStatusSeverityPipe} from '../../../../api/cross-tier/payment-status-severity.pipe'
 import {SaleFormNavigator} from '../form-utils/sale-form-navigator'
 import {SaleStatusSeverityPipe} from '../sale-status-severity.pipe'
 

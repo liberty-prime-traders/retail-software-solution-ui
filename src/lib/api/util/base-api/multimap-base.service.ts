@@ -7,6 +7,7 @@ import {Multimap} from '../../../utils/types/multimap.type'
 import {FetchParams} from './api-get-request.model'
 import {BaseModel} from './base.model'
 import {BaseService} from './base.service'
+import '../http-params.extension'
 
 export abstract class MultimapBaseService<RESPONSE extends BaseModel> extends BaseService<RESPONSE> {
 

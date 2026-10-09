@@ -1,0 +1,22 @@
+<div class="flex flex-column gap-3">
+  <rts-form-field label="Void Reason"
+                  [required]="true"
+                  [layout]="FormFieldDirection.VERTICAL"
+                  class="col-5"
+                  contentClass="col-12">
+    <textarea pInputText class="w-full" rows="3" [formField]="voidForm.reason"></textarea>
+  </rts-form-field>
+
+  <rts-forms-buttons deleteLabel="Void Expense"
+                     deleteWarning="This action cannot be undone."
+                     deleteInProgressMessage="Voiding expense..."
+                     deleteIcon="pi pi-ban"
+                     resetLabel="Cancel"
+                     [hideSave]="true"
+                     [disableDelete]="voidForm().invalid()"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (resetAction)="cancelled.emit()"
+                     (delete)="confirmVoid()">
+  </rts-forms-buttons>
+</div>

@@ -37,15 +37,15 @@
             Name
             <p-sort-icon field="name"/>
           </th>
-          <th pSortableColumn="description">
-            Description
-            <p-sort-icon field="description"/>
-          </th>
+          <th>Linked Account</th>
           <th pSortableColumn="createdBy">
             Created By
             <p-sort-icon field="createdBy"/>
           </th>
-          <th>Linked Account</th>
+          <th pSortableColumn="description">
+            Description
+            <p-sort-icon field="description"/>
+          </th>
           <th style="width: 5rem"></th>
         </tr>
       </ng-template>
@@ -53,9 +53,9 @@
       <ng-template #body let-paymentOption let-expanded="expanded">
         <tr [ngClass]="{ 'expanded-row': expanded }">
           <td>{{paymentOption?.name | nullSafe}}</td>
-          <td>{{paymentOption?.description | nullSafe}}</td>
-          <td>{{paymentOption?.createdBy | nullSafe}}</td>
           <td>{{paymentOption?.linkedAccount | nullSafe}}</td>
+          <td>{{paymentOption?.createdBy | nullSafe}}</td>
+          <td>{{paymentOption?.description | nullSafe}}</td>
           <td>
             <button pButton
                     rounded

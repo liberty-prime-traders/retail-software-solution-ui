@@ -42,7 +42,7 @@ export class SalesComponent implements OnInit {
 
   readonly saleCount = this.saleSearchSummaryService.saleCount
 
-  readonly selectedTab = model<'summary' | 'sales'>('summary')
+  readonly selectedTab = model<'summary' | 'sales'>('sales')
 
   readonly loading = computed(() =>
     this.saleSearchSummaryService.selectLoading()
@@ -51,6 +51,7 @@ export class SalesComponent implements OnInit {
   )
 
   ngOnInit() {
+    this.onSelectedTabChange(this.selectedTab())
     this.contactService.fetch()
     this.orgMembershipUserService.fetch()
   }

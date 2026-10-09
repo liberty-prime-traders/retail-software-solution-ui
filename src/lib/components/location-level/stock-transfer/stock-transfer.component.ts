@@ -1,5 +1,6 @@
 import {Component, inject} from '@angular/core'
 import {ButtonDirective} from 'primeng/button'
+import {Divider} from 'primeng/divider'
 import {StockTransferSummaryService} from '../../../api/cross-tier/stock-transfer/stock-transfer-summary.service'
 import {StockTransferService} from '../../../api/location-level/stock-transfer/stock-transfer.service'
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
@@ -18,7 +19,8 @@ import {StockTransferGridComponent} from './stock-transfer-grid/stock-transfer-g
     StockTransferGridComponent,
     StockTransferFormComponent,
     ErrorSummaryComponent,
-    AutoStretchDirective
+    AutoStretchDirective,
+    Divider
   ]
 })
 export class StockTransferComponent extends HidesSaleButtonComponent {

@@ -29,6 +29,11 @@
                     (ngModelChange)="updateUnitCost($event)">
     </p-input-number>
   </form>
+
 } @else {
-  {{ displayQuantity() | nullishToZero }}
+  <div class="flex flex-grow-1 justify-content-between">
+    <span class="col-4">{{ displayQuantity() | nullishToZero }}</span>
+    <span class="col-4">--</span>
+    <span class="col-4">--</span>
+  </div>
 }

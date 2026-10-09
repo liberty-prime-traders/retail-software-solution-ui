@@ -1,0 +1,49 @@
+@if (formIsVisible()) {
+  <rts-expense-batch-form (expensesSaved)="formIsVisible.set(false)"
+                          (cancelled)="formIsVisible.set(false)">
+  </rts-expense-batch-form>
+
+} @else {
+  <rts-loading-container [loading]="loading()">
+    <div class="flex justify-content-between">
+      <span class="font-bold">Expenses</span>
+
+      <button pButton (click)="formIsVisible.set(true)" class="h-fit">
+        <i class="pi pi-plus"></i>
+        New Expense
+      </button>
+    </div>
+
+    <div class="flex" id="expenses-report" rtsAutoStretch="expenses-report">
+      @if (selectedTab() === 'expenses') {
+        <rts-expenses-filter-readonly class="col-2" (editFilters)="selectedTab.set('summary')"/>
+      } @else {
+        <rts-expenses-filter class="col-3"/>
+      }
+
+      <p-divider layout="vertical"/>
+
+      <div class="flex flex-column flex-grow-1">
+        <p-tabs [value]="selectedTab()" (valueChange)="onSelectedTabChange($event)">
+          <p-tablist>
+            <p-tab value="summary">Summary</p-tab>
+            <p-tab value="expenses">
+              Expenses
+              <p-badge [value]="expenseCount()" severity="info" class="ml-2"/>
+            </p-tab>
+          </p-tablist>
+
+          <p-tabpanels>
+            <p-tabpanel value="summary">
+              <rts-expenses-summary/>
+            </p-tabpanel>
+
+            <p-tabpanel value="expenses">
+              <rts-expense-grid/>
+            </p-tabpanel>
+          </p-tabpanels>
+        </p-tabs>
+      </div>
+    </div>
+  </rts-loading-container>
+}
