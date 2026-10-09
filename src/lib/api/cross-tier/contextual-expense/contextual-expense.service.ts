@@ -10,10 +10,11 @@ import {
   ExpenseVoidRequest,
   PurchaseExpenseBatchRequest
 } from '../expense/expense.model'
+import {ExpenseActions} from '../expense/expense-actions'
 import {ContextualExpenseStore} from './contextual-expense.store'
 
 @Injectable({providedIn: 'root'})
-export class ContextualExpenseService extends MultimapBaseService<Expense> {
+export class ContextualExpenseService extends MultimapBaseService<Expense> implements ExpenseActions {
   protected override keyPath: keyof Expense = 'sourceReference'
 
   constructor(protected override readonly store: ContextualExpenseStore) {
@@ -26,7 +27,7 @@ export class ContextualExpenseService extends MultimapBaseService<Expense> {
   }
 
   createPayments(dtos: ExpensePaymentCreateRequest[], callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'payments'})
+    this.patchApiRequestConfig({urlSuffix: 'payments', upsertOnSuccess: true})
     return this.post(dtos as any, callbacks)
   }
 

@@ -1,6 +1,8 @@
 <rts-loading-container [loading]="purchaseIsLoading()" loadingText="Saving...">
   <form class="flex flex-column" id="purchaseForm" rtsAutoStretch="purchaseForm" [useMinHeight]="true" [padding]="20">
 
+    <p-divider class="mt-0"/>
+
     <rts-purchase-form-general-fields/>
 
     <p-tabs value="items">

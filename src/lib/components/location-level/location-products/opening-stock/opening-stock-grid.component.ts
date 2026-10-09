@@ -39,11 +39,25 @@ export class OpeningStockGridComponent {
   private readonly unitConversionGraphService = inject(UnitConversionGraphService)
   readonly productFilterService = inject(ProductFilterService<LocationProduct>)
 
-  readonly products = this.productFilterService.filteredProducts
   readonly canDeclare = this.declarationService.canDeclare
   readonly exitEditMode = output<void>()
   protected readonly unitsReady = computed(() => !this.unitConversionGraphService.isLoading())
   private readonly table = viewChild(Table)
+
+  readonly products = computed(() =>
+    [...this.productFilterService.filteredProducts()]
+      .sort((a, b) => {
+        const rankDifference = this.sortRank(a) - this.sortRank(b)
+        if (rankDifference !== 0) return rankDifference
+        if (a.productName === b.productName) return 0
+        return a.productName > b.productName ? 1 : -1
+      })
+  )
+
+  private sortRank(product: LocationProduct): number {
+    if (product.placeholder) return 2
+    return product.openingStockQuantity ? 1 : 0
+  }
 
   protected readonly loading = computed(() =>
     this.productSearchService.selectLoading()

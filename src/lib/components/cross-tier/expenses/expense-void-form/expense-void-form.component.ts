@@ -2,7 +2,7 @@ import {Component, inject, input, output, signal} from '@angular/core'
 import {form, FormField, required} from '@angular/forms/signals'
 import {InputText} from 'primeng/inputtext'
 import {Expense, ExpenseVoidRequest} from '../../../../api/cross-tier/expense/expense.model'
-import {ContextualExpenseService} from '../../../../api/cross-tier/contextual-expense/contextual-expense.service'
+import {EXPENSE_ACTIONS, ExpenseActions} from '../../../../api/cross-tier/expense/expense-actions'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
@@ -13,13 +13,13 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
   templateUrl: 'expense-void-form.component.html',
   imports: [FormButtonsComponent, FormFieldComponent, FormField, InputText]
 })
-export class ExpenseVoidFormComponent extends BaseFormComponent<ContextualExpenseService> {
+export class ExpenseVoidFormComponent extends BaseFormComponent<ExpenseActions> {
   readonly expense = input.required<Expense>()
 
   readonly voided = output()
   readonly cancelled = output()
 
-  protected readonly apiService = inject(ContextualExpenseService)
+  protected readonly apiService = inject(EXPENSE_ACTIONS)
 
   readonly FormFieldDirection = FormFieldLayout
 

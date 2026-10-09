@@ -3,6 +3,7 @@ import {Component, effect, inject, input, signal, untracked} from '@angular/core
 import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {Tag} from 'primeng/tag'
+import {EXPENSE_ACTIONS} from '../../../../api/cross-tier/expense/expense-actions'
 import {ExpenseSourceType} from '../../../../api/cross-tier/expense/expense-source-type.enum'
 import {ContextualExpenseService} from '../../../../api/cross-tier/contextual-expense/contextual-expense.service'
 import {PaymentStatusSeverityPipe} from '../../../../api/cross-tier/payment-status-severity.pipe'
@@ -15,6 +16,7 @@ import {ExpensePaymentSubgridComponent} from '../expense-payment-subgrid/expense
 @Component({
   selector: 'rts-contextual-expense-grid',
   templateUrl: 'contextual-expense-grid.component.html',
+  providers: [{provide: EXPENSE_ACTIONS, useExisting: ContextualExpenseService}],
   imports: [
     TableModule,
     ButtonDirective,

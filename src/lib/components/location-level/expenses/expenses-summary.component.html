@@ -1,0 +1,65 @@
+<div class="flex flex-column gap-5">
+  <div class="flex gap-4">
+    <p-panel [header]="'Expenses (' + expenseCount() + ')'" class="flex-grow-1">
+      <span class="money">{{ amountTotal() | currency }}</span>
+    </p-panel>
+
+    <p-panel header="Total Paid" class="flex-grow-1">
+      <span class="money money-in">{{ paidTotal() | currency }}</span>
+    </p-panel>
+
+    <p-panel header="Total Outstanding" class="flex-grow-1">
+      <span class="money irregular-balance">{{ outstandingTotal() | currency }}</span>
+    </p-panel>
+
+    <p-panel [header]="'Voided (' + voidedCount() + ')'" class="flex-grow-1">
+      <span class="money">{{ voidedAmountTotal() | currency }}</span>
+    </p-panel>
+  </div>
+
+  <p-table [value]="byStatus()">
+    <ng-template #header>
+      <tr>
+        <th>Status</th>
+        <th>Amount</th>
+        <th>Paid</th>
+        <th>Outstanding</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-statusSummary>
+      <tr>
+        <td>{{ statusSummary.bucket | prettifyEnum }} ({{ statusSummary.expenseCount }})</td>
+        <td>{{ statusSummary.amountTotal | currency }}</td>
+        <td>{{ statusSummary.paidTotal | currency }}</td>
+        <td>{{ statusSummary.outstandingTotal | currency }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr rts-empty-row [colspan]="5" message="No expenses found"></tr>
+    </ng-template>
+  </p-table>
+
+  @if (byExpenseType().length > 0) {
+    <p-table [value]="byExpenseType()">
+      <ng-template #header>
+        <tr>
+          <th>Expense Type</th>
+          <th>Amount</th>
+          <th>Paid</th>
+          <th>Outstanding</th>
+          <th>Voided</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-typeSummary>
+        <tr>
+          <td>{{ typeSummary.expenseTypeName }} ({{ typeSummary.expenseCount }})</td>
+          <td>{{ typeSummary.amountTotal | currency }}</td>
+          <td>{{ typeSummary.paidTotal | currency }}</td>
+          <td>{{ typeSummary.outstandingTotal | currency }}</td>
+          <td>{{ typeSummary.voidedAmountTotal | currency }} ({{ typeSummary.voidedCount }})</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+</div>

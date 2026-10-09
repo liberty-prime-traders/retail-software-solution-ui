@@ -1,0 +1,205 @@
+<div class="flex flex-column gap-3">
+  <p-fieldset legend="" [toggleable]="true">
+    <div class="flex flex-column gap-3">
+      <rts-form-field label="Recorded Date"
+                      for="createdFrom"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <div class="flex flex-column gap-1">
+          <div class="flex align-items-center gap-2">
+            <span class="font-bold">&ge;</span>
+            <p-date-picker id="createdFrom"
+                           class="flex-grow-1"
+                           [formField]="state.filterForm.createdFrom"
+                           [showTime]="true"
+                           [showIcon]="true"
+                           appendTo="body">
+            </p-date-picker>
+          </div>
+
+          <div class="flex align-items-center gap-2">
+            <span class="font-bold">&lt;</span>
+            <p-date-picker id="createdBefore"
+                           class="flex-grow-1"
+                           [formField]="state.filterForm.createdBefore"
+                           [showTime]="true"
+                           [showIcon]="true"
+                           appendTo="body">
+            </p-date-picker>
+          </div>
+        </div>
+      </rts-form-field>
+
+      <rts-form-field label="Payees"
+                      for="payeeContactIds"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <p-select id="payeeContactIds"
+                  class="flex-grow-1"
+                  [options]="state.payees()"
+                  optionLabel="fullName"
+                  optionValue="id"
+                  [multiple]="true"
+                  [filter]="true"
+                  [checkmark]="true"
+                  [formField]="state.filterForm.payeeContactIds"
+                  placeholder="Select payees">
+
+          <ng-template #selectedItem let-selectedOption>
+            @let remainingCount = state.filterForm.payeeContactIds().value().length - 1;
+            {{ selectedOption.fullName }}
+            @if (remainingCount > 0) {
+              (+{{ remainingCount }} Others)
+            }
+          </ng-template>
+        </p-select>
+      </rts-form-field>
+
+      <rts-form-field label="Expense Types"
+                      for="expenseTypeIds"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <p-select id="expenseTypeIds"
+                  class="flex-grow-1"
+                  [options]="state.expenseTypes()"
+                  optionLabel="name"
+                  optionValue="id"
+                  [multiple]="true"
+                  [filter]="true"
+                  [checkmark]="true"
+                  [formField]="state.filterForm.expenseTypeIds"
+                  placeholder="Select expense types">
+
+          <ng-template #selectedItem let-selectedOption>
+            @let remainingCount = state.filterForm.expenseTypeIds().value().length - 1;
+            {{ selectedOption.name }}
+            @if (remainingCount > 0) {
+              (+{{ remainingCount }} Others)
+            }
+          </ng-template>
+        </p-select>
+      </rts-form-field>
+    </div>
+  </p-fieldset>
+
+  <p-fieldset legend="Payment Status" [toggleable]="true" [collapsed]="true">
+    <div class="flex flex-column gap-1">
+      @for (statusOption of (PaymentStatus | enumToDropdown); track statusOption.value) {
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [value]="statusOption.value"
+                      [formField]="state.filterForm.paymentStatuses"
+                      [inputId]="'paymentStatus' + $index"
+                      name="paymentStatus">
+          </p-checkbox>
+
+          <label [for]="'paymentStatus' + $index">{{ statusOption.label }}</label>
+        </div>
+      }
+    </div>
+  </p-fieldset>
+
+  <p-fieldset legend="Voided" [toggleable]="true" [collapsed]="true">
+    <div class="flex flex-column gap-1">
+      @for (voidedOption of (ExpenseVoidedState | enumToDropdown); track voidedOption.value) {
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [value]="voidedOption.value"
+                      [formField]="state.filterForm.voidedStates"
+                      [inputId]="'voidedState' + $index"
+                      name="voidedState">
+          </p-checkbox>
+
+          <label [for]="'voidedState' + $index">{{ voidedOption.label }}</label>
+        </div>
+      }
+    </div>
+  </p-fieldset>
+
+  <p-fieldset legend="Payment Method" [toggleable]="true" [collapsed]="true">
+    <div class="flex flex-column gap-1">
+      @for (paymentMethod of state.paymentMethods(); track paymentMethod.id) {
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [value]="paymentMethod.id"
+                      [formField]="state.filterForm.paymentMethodIds"
+                      [inputId]="'paymentMethod' + $index"
+                      name="paymentMethod">
+          </p-checkbox>
+
+          <label [for]="'paymentMethod' + $index">{{ paymentMethod.name }}</label>
+        </div>
+      }
+    </div>
+  </p-fieldset>
+
+  <p-fieldset legend="Others" [toggleable]="true" [collapsed]="true">
+    <div class="flex flex-column gap-3">
+      <rts-form-field label="Expense Date"
+                      for="expenseDateFrom"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <div class="flex flex-column gap-1">
+          <div class="flex align-items-center gap-2">
+            <span class="font-bold">&ge;</span>
+            <p-date-picker id="expenseDateFrom"
+                           class="flex-grow-1"
+                           [formField]="state.filterForm.expenseDateFrom"
+                           [showIcon]="true"
+                           appendTo="body">
+            </p-date-picker>
+          </div>
+
+          <div class="flex align-items-center gap-2">
+            <span class="font-bold">&lt;</span>
+            <p-date-picker id="expenseDateBefore"
+                           class="flex-grow-1"
+                           [formField]="state.filterForm.expenseDateBefore"
+                           [showIcon]="true"
+                           appendTo="body">
+            </p-date-picker>
+          </div>
+        </div>
+      </rts-form-field>
+
+      <rts-form-field label="Amount (KES)"
+                      for="minAmount"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        <div class="flex gap-1 flex-column">
+          <p-input-number size="small" [formField]="state.filterForm.minAmount" placeholder="Min"/>
+          <p-input-number size="small" [formField]="state.filterForm.maxAmount" placeholder="Max"/>
+        </div>
+      </rts-form-field>
+
+      <rts-form-field label="Source references"
+                      for="sourceReferenceInput"
+                      [layout]="FormFieldDirection.COMPACT"
+                      contentClass="col-11">
+        @if (state.filterForm.sourceReferences().value().length > 0) {
+          <div class="flex flex-wrap gap-1 pb-2">
+            @for (reference of state.filterForm.sourceReferences().value(); track reference) {
+              <p-chip label="{{ reference }}"
+                      [removable]="true"
+                      (onRemove)="state.removeSourceReference(reference)">
+              </p-chip>
+            }
+          </div>
+        }
+
+        <input id="sourceReferenceInput"
+               #sourceReferenceInput
+               class="flex-grow-1"
+               pInputText
+               placeholder="Type ref, press Enter"
+               [disabled]="state.filterForm.sourceReferences().value().length >= state.maxSourceReferences"
+               (keydown.enter)="state.addSourceReferences(sourceReferenceInput.value); sourceReferenceInput.value = ''"
+               (paste)="state.addSourceReferences($event.clipboardData?.getData('text') ?? ''); $event.preventDefault()" />
+      </rts-form-field>
+    </div>
+  </p-fieldset>
+
+  <div class="flex justify-content-end pt-2">
+    <button pButton type="button" (click)="state.resetFilters()" severity="secondary">
+      <i class="pi pi-filter-slash"></i> Reset Filters
+    </button>
+  </div>
+
+</div>

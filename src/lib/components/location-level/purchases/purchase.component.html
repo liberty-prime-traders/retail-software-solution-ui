@@ -1,9 +1,17 @@
 <div class="flex align-items-center justify-content-between">
   <span class="font-bold">Purchases</span>
+
   @if (formIsVisible()) {
-    <button pButton (click)="hideForm()" severity="secondary"><i class="pi pi-arrow-left"></i> Back to Purchases</button>
+    <button pButton (click)="hideForm()" severity="secondary">
+      <i class="pi pi-arrow-left"></i>
+      Back to Purchases
+    </button>
+
   } @else {
-    <button pButton (click)="startNewPurchase()"><i class="pi pi-plus"></i> New Purchase</button>
+    <button pButton (click)="startNewPurchase()">
+      <i class="pi pi-plus"></i>
+      New Purchase
+    </button>
   }
 </div>
 

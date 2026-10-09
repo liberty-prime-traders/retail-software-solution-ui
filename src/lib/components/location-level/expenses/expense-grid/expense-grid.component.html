@@ -1,27 +1,28 @@
 <div id="expense-grid" [rtsAutoStretch]="'expense-grid'">
-  <p-table #expenseTable
-           [value]="expenses()"
+  <p-table [value]="expenses()"
            [loading]="loading()"
-           [globalFilterFields]="filterFields"
+           (onLazyLoad)="onLazyLoad($event)"
+           [lazy]="true"
            dataKey="reference"
+           [multiSortMeta]="multiSortMeta"
            scrollHeight="flex"
            [scrollable]="true"
-           [multiSortMeta]="[{field: 'expenseDate', order: -1}, {field: 'reference', order: -1}]">
+           [rows]="20"
+           [virtualScroll]="true"
+           [virtualScrollItemSize]="55">
 
     <ng-template #caption>
       <div class="flex justify-content-end gap-5 align-items-center">
-        <rts-grid-filter [dataTable]="expenseTable"/>
         <ng-content/>
       </div>
-
     </ng-template>
 
     <ng-template #header>
       <tr>
+        <th style="width: 3rem"></th>
         <th>Expense Type</th>
         <th>Expense Date</th>
         <th>Payee</th>
-        <th>Reference</th>
         <th>Status</th>
         <th>Amount</th>
         <th>Balance</th>
@@ -29,25 +30,49 @@
       </tr>
     </ng-template>
 
-    <ng-template #body let-expense>
-      <tr [ngClass]="{'strike-through': expense.voided}">
-        <td>{{ expense.expenseTypeName }}</td>
-        <td>{{ expense.expenseDate }}</td>
-        <td>{{ expense.payeeDisplayName }}</td>
-        <td>{{ expense.sourceReference | nullSafe }}</td>
-        <td>
-          <p-tag [value]="expense.status | prettifyEnum"
-                 [severity]="expense.status | paymentStatusSeverity">
-          </p-tag>
+    <ng-template #body let-expense let-expanded="expanded">
+      @if (expense?.placeholder) {
+        <tr>
+          <td style="height: 55px" colspan="9">
+            <p-skeleton class="h-full"/>
+          </td>
+        </tr>
+      } @else {
+        <tr style="height: 55px" [ngClass]="{'expanded-row': expanded, 'strike-through': expense.voided}">
+          <td>
+            <button pButton type="button" text rounded [pRowToggler]="expense">
+              <i [class]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+            </button>
+          </td>
+          <td>{{ expense.expenseTypeName }}</td>
+          <td>{{ expense.expenseDate }}</td>
+          <td>{{ expense.payeeDisplayName }}</td>
+          <td>
+            <p-tag [value]="expense.status | prettifyEnum"
+                   [severity]="expense.status | paymentStatusSeverity">
+            </p-tag>
+          </td>
+          <td class="money">{{ expense.amount | currency }}</td>
+          <td class="money">{{ expense.balanceRemaining | currency }}</td>
+          <td>
+            @let sourceReference = expense.sourceReference || '';
+            @let description = expense.description || '';
+            {{(sourceReference + description) | nullSafe }}
+          </td>
+        </tr>
+      }
+    </ng-template>
+
+    <ng-template #expandedrow let-expense>
+      <tr>
+        <td colspan="9" class="filled-background px-4">
+          <rts-expense-payment-subgrid [expense]="expense"/>
         </td>
-        <td class="money">{{ expense.amount | currency }}</td>
-        <td class="money">{{ expense.balanceRemaining | currency }}</td>
-        <td>{{ expense.description | nullSafe }}</td>
       </tr>
     </ng-template>
 
     <ng-template #emptymessage>
-      <tr [colspan]="8" rts-empty-row message="No expenses recorded yet"></tr>
+      <tr [colspan]="9" rts-empty-row message="No expenses recorded yet"></tr>
     </ng-template>
   </p-table>
 </div>

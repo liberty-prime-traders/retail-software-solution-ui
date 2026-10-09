@@ -1,6 +1,7 @@
 import {Component, computed, inject} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {ButtonDirective} from 'primeng/button'
+import {Divider} from 'primeng/divider'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
 import {ExpenseSourceType} from '../../../../api/cross-tier/expense/expense-source-type.enum'
 import {PaymentStatus} from '../../../../api/location-level/purchase/payment-status.enum'
@@ -34,7 +35,8 @@ import {PurchaseLinesComponent} from './purchase-lines/purchase-lines.component'
     AutoStretchDirective,
     ButtonDirective,
     LoadingContainerComponent,
-    PurchaseFormGeneralFieldsComponent
+    PurchaseFormGeneralFieldsComponent,
+    Divider
   ]
 })
 export class PurchaseFormComponent extends HidesSaleButtonComponent {

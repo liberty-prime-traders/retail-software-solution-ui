@@ -6,7 +6,7 @@ import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
 import {Select} from 'primeng/select'
 import {Expense} from '../../../../api/cross-tier/expense/expense.model'
-import {ContextualExpenseService} from '../../../../api/cross-tier/contextual-expense/contextual-expense.service'
+import {EXPENSE_ACTIONS} from '../../../../api/cross-tier/expense/expense-actions'
 import {PaymentOptionService} from '../../../../api/organization-level/payment-option/payment-option.service'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
@@ -32,12 +32,12 @@ export class ExpensePaymentFormComponent implements OnInit {
   readonly paymentsSaved = output()
   readonly cancelled = output()
 
-  private readonly contextualExpenseService = inject(ContextualExpenseService)
+  private readonly expenseActions = inject(EXPENSE_ACTIONS)
   private readonly paymentOptionService = inject(PaymentOptionService)
 
-  readonly isLoading = this.contextualExpenseService.selectLoading
-  readonly processingStatus = this.contextualExpenseService.selectProcessingStatus
-  readonly failureMessages = this.contextualExpenseService.selectFailureMessages
+  readonly isLoading = this.expenseActions.selectLoading
+  readonly processingStatus = this.expenseActions.selectProcessingStatus
+  readonly failureMessages = this.expenseActions.selectFailureMessages
   readonly paymentOptions = this.paymentOptionService.selectAll
 
   private readonly rows = signal<ExpensePaymentFormDefinition.PaymentRowModel[]>([])
@@ -47,7 +47,7 @@ export class ExpensePaymentFormComponent implements OnInit {
   readonly totalPayment = computed(() => this.rows().reduce((sum, row) => sum + (row.amount ?? 0), 0))
 
   ngOnInit() {
-    this.contextualExpenseService.resetProcessingStatus()
+    this.expenseActions.resetProcessingStatus()
     this.paymentOptionService.fetch()
     this.addRow(this.expense().balanceRemaining)
   }
@@ -66,6 +66,6 @@ export class ExpensePaymentFormComponent implements OnInit {
 
   save() {
     const dtos = ExpensePaymentFormDefinition.convertToBackendModel(this.rows(), this.expense().reference)
-    this.contextualExpenseService.createPayments(dtos, {onSuccess: () => this.paymentsSaved.emit()})
+    this.expenseActions.createPayments(dtos, {onSuccess: () => this.paymentsSaved.emit()})
   }
 }
