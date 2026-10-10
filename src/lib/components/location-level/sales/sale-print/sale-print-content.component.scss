@@ -1,0 +1,189 @@
+:host {
+  display: block;
+}
+
+.money {
+  flex: none;
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+// A label/amount pair: the label may wrap, the amount keeps its own column and never overlaps.
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75em;
+
+  &.emphasis {
+    font-weight: 700;
+  }
+}
+
+.row-label {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow-wrap: anywhere;
+}
+
+.was {
+  color: #555;
+  text-decoration: line-through;
+}
+
+.status-flag {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.note {
+  margin: 0.75em 0 0;
+  overflow-wrap: anywhere;
+}
+
+// --- sheets (A4 / Letter / custom) -------------------------------------------------------------------------
+
+.sheet {
+  h1 {
+    margin: 0;
+    font-size: 1.6em;
+  }
+
+  h2 {
+    margin: 0 0 0.35em;
+    font-size: 1em;
+  }
+
+  &-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1em;
+    margin-bottom: 0.75em;
+  }
+
+  &-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+    gap: 0.5em 1.5em;
+    margin: 0 0 1.25em;
+
+    dt {
+      font-size: 0.8em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    dd {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &-lines {
+    margin-bottom: 1em;
+
+    th, td {
+      padding: 0.4em 0.5em;
+      border-bottom: 1px solid #bbb;
+      vertical-align: top;
+    }
+
+    thead th {
+      border-bottom: 2px solid #000;
+      font-size: 0.85em;
+      text-transform: uppercase;
+    }
+
+    .text {
+      text-align: left;
+      overflow-wrap: anywhere;
+    }
+
+    .num {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .was {
+      display: block;
+    }
+  }
+
+  &-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5em;
+    justify-content: space-between;
+  }
+
+  &-payments {
+    flex: 1 1 14em;
+  }
+
+  &-totals {
+    flex: 1 1 14em;
+    max-width: 22em;
+    margin-left: auto;
+  }
+}
+
+// --- receipts (80mm / 58mm) --------------------------------------------------------------------------------
+
+.receipt {
+  hr {
+    margin: 0.5em 0;
+    border: 0;
+    border-top: 1px dashed #000;
+  }
+
+  &-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.1em;
+  }
+
+  &-line {
+    margin-bottom: 0.4em;
+
+    &-name {
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &-payment {
+    margin-bottom: 0.4em;
+
+    &-reference {
+      display: block;
+      color: #555;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  // Narrow roll: let an amount drop under its label (right aligned) instead of squeezing the label beside it.
+  &-compact {
+    .receipt-line,
+    .receipt-payment {
+      margin-bottom: 0.6em;
+    }
+
+    .row {
+      flex-wrap: wrap;
+      row-gap: 0.1em;
+    }
+
+    .row-label {
+      flex: 0 1 auto;
+    }
+
+    .money {
+      margin-left: auto;
+    }
+  }
+}

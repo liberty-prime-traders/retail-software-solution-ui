@@ -6,4 +6,5 @@ export enum LocalStorageKey {
   RETURN_TO_URL = 'returnToUrl',
   CURRENCY = 'currency',
   GOOGLE_CREDENTIAL = 'googleCredential',
+  PRINT_LAYOUT = 'printLayout',
 }

@@ -1,0 +1,30 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+// Laid out for real (so fonts/images load and widths resolve) but out of sight.
+.sale-print-offscreen {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  pointer-events: none;
+}
+
+.sale-print-preview {
+  max-height: 65vh;
+}
+
+.sale-print-branding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 0.75em;
+}
+
+.sale-print-thanks {
+  margin: 1em 0 0;
+  text-align: center;
+}
