@@ -8,4 +8,5 @@ export interface ProductQuantities {
 }
 
 export interface ProductWithAvailability extends ProductCore, PaginatedModel, ProductQuantities {
+  defaultSalePrice?: number
 }

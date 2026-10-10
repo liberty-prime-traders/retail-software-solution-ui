@@ -18,6 +18,10 @@
             @if (selectedProduct.quantityReserved) {
               ({{ selectedProduct.quantityOnHand }} on hand, {{ selectedProduct.quantityReserved }} reserved)
             }
+
+            <p-divider layout="vertical" class="p-0 m-0 mr-1"/>
+
+            {{ selectedProduct.defaultSalePrice | currency }}
           </small>
         </div>
       }

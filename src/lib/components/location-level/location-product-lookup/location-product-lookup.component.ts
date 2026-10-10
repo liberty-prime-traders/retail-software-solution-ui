@@ -31,7 +31,9 @@ export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore 
     this.searchValueFormControl?.setValue(searchText)
   }
 
-  private readonly loadedProducts = this.productFilterService.filteredProducts
+  private readonly loadedProducts = computed(() =>
+    this.productFilterService.filteredProducts().filter(product => !product.placeholder)
+  )
 
   readonly productsMap = computed(() => {
     const map = new Map<EntityId, LOOKUP>()

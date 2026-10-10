@@ -64,6 +64,12 @@ export class OrganizationDashboardComponent implements OnInit {
         visible: isChartOfAccountsEnabled
       },
       {
+        label: 'Expense Types',
+        icon: 'pi pi-wallet',
+        routerLink: 'expense-types',
+        visible: isChartOfAccountsEnabled
+      },
+      {
         label: 'Fiscal Periods',
         icon: 'pi pi-calendar',
         routerLink: 'fiscal-periods',

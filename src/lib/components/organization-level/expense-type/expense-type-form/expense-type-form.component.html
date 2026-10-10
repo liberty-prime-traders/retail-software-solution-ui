@@ -1,0 +1,62 @@
+<div class="flex flex-column gap-2" [ngClass]="expenseTypeFormValue().id ? '' : 'filled-background'">
+  <rts-form-field [required]="true" label="Name" for="name">
+    <input id="name" class="flex-grow-1" pInputText [formField]="expenseTypeForm.name" />
+  </rts-form-field>
+
+  @if (!expenseTypeFormValue().systemDefined) {
+    <rts-loading-container [loading]="accountTreesLoading()">
+      <rts-form-field [required]="true" label="Expense Account" for="expenseAccountCode">
+        <p-tree-select id="expenseAccountCode"
+                       [options]="expenseAccountTrees()"
+                       [loading]="accountTreesLoading()"
+                       [(ngModel)]="expenseAccount"
+                       (ngModelChange)="onAccountChange()"
+                       appendTo="body"
+                       placeholder="Select an Expense Account"
+                       class="flex-grow-1">
+        </p-tree-select>
+      </rts-form-field>
+    </rts-loading-container>
+
+    <rts-form-field [required]="true" label="Who can charge us under this expense" labelClass="align-self-start">
+      <div class="flex flex-column gap-2">
+        @for (type of (contactType | enumToDropdown); track type) {
+          <div class="flex gap-2">
+            <p-check-box [id]="'payee-' + type.value"
+                         [value]="type.value"
+                         (onChange)="onPayeeTypeChecked()"
+                         [(ngModel)]="selectedPayeeTypes">
+            </p-check-box>
+            <label [for]="'payee-' + type.value">{{ type.label }}</label>
+          </div>
+        }
+      </div>
+    </rts-form-field>
+
+    <rts-form-field [required]="true" label="Expense can only originate from" labelClass="align-self-start">
+      <div class="flex flex-column gap-2">
+        @for (type of (expenseSourceType | enumToDropdown); track type) {
+          <div class="flex gap-2">
+            <p-check-box [id]="'source-' + type.value"
+                         [value]="type.value"
+                         (onChange)="onSourceTypeChecked()"
+                         [(ngModel)]="selectedSourceTypes">
+            </p-check-box>
+            <label [for]="'source-' + type.value">{{ type.label }}</label>
+          </div>
+        }
+      </div>
+    </rts-form-field>
+  }
+
+  <rts-forms-buttons [disableReset]="!expenseTypeForm().dirty()"
+                     [disableSave]="expenseTypeForm().invalid() || !expenseTypeForm().dirty()"
+                     [hideDelete]="true"
+                     [signalForm]="expenseTypeForm()"
+                     [fieldMap]="expenseTypeFormFields"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (save)="upsertExpenseType()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</div>
