@@ -1,4 +1,6 @@
+import {CurrencyPipe} from '@angular/common'
 import {Component} from '@angular/core'
+import {Divider} from 'primeng/divider'
 import {Select} from 'primeng/select'
 import {Skeleton} from 'primeng/skeleton'
 import {
@@ -27,7 +29,9 @@ import {AvailableProductLookupFilterService} from './available-product-lookup-fi
     FormFieldComponent,
     Select,
     Skeleton,
-    ProductLabelPipe
+    ProductLabelPipe,
+    Divider,
+    CurrencyPipe
   ]
 })
 export class AvailableProductLookupComponent extends LocationProductLookupComponent<ProductWithAvailability> {

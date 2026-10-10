@@ -1,0 +1,88 @@
+<div class="flex flex-column gap-4" id="expenseTypes" [rtsAutoStretch]="'expenseTypes'">
+  @if (addingIsActive()) {
+    <button pButton (click)="setAddingActiveFalse()" severity="info" class="align-self-end">
+      <i class="pi pi-times"></i>
+      Cancel
+    </button>
+
+    <rts-expense-type-form (expenseTypeCreated)="closeAddRow()"/>
+
+  } @else {
+    <p-table  [loading]="loading() && !addingIsActive()"
+              rowExpandMode="single"
+              dataKey="id"
+              scrollHeight="flex"
+              [scrollable]="true"
+              sortField="name"
+              #expenseTypesTable
+              [value]="expenseTypes()"
+              [globalFilterFields]="['code', 'name', 'expenseAccountName']"
+              (onRowExpand)="rowIsExpanded.set(true)"
+              (onRowCollapse)="rowIsExpanded.set(false)">
+
+      <ng-template #caption>
+        <div class="flex justify-content-between align-items-center">
+          <span class="font-bold">Expense Types</span>
+
+          <rts-grid-filter [dataTable]="expenseTypesTable"/>
+
+          <button pButton (click)="addingIsActive.set(true)"
+                  [disabled]="loading() || addingIsActive()"
+                  rounded
+                  severity="secondary">
+            + Add Expense Type
+          </button>
+        </div>
+      </ng-template>
+
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="name">
+            Name
+            <p-sort-icon field="name"></p-sort-icon>
+          </th>
+          <th pSortableColumn="expenseAccountName">
+            Expense Account
+            <p-sort-icon field="expenseAccountName"></p-sort-icon>
+          </th>
+          <th>Eligible Payees</th>
+          <th pSortableColumn="systemDefined">
+            System Defined
+            <p-sort-icon field="systemDefined"></p-sort-icon>
+          </th>
+          <th style="width: 5rem"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-expenseType let-expanded="expanded">
+        <tr [ngClass]="{ 'expanded-row': expanded }">
+          <td>{{ expenseType?.name | nullSafe }}</td>
+          <td>{{ expenseType?.expenseAccountName | nullSafe }}</td>
+          <td>{{ expenseType?.eligiblePayeeTypes | joinEnum }}</td>
+          <td>{{ expenseType?.systemDefined | booleanToText }}</td>
+          <td>
+            <button pButton
+                    rounded
+                    severity="secondary"
+                    [disabled]="loading() || addingIsActive()"
+                    [pRowToggler]="expenseType">
+              <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #expandedrow let-expenseType>
+        <tr>
+          <td colspan="7" class="filled-background">
+            <rts-expense-type-form [expenseType]="expenseType" />
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr rts-empty-row [colspan]="7" message="No Expense Types Were Found"></tr>
+      </ng-template>
+    </p-table>
+  }
+</div>
