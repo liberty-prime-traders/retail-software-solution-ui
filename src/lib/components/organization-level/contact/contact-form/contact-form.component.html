@@ -1,52 +1,74 @@
 <div class="form-container flex flex-column gap-2">
 
   <p-panel>
-    <rts-form-field [required]="true" label="Identity Type" for="identityType">
-      <p-select id="identityType"
-                class="flex-grow-1"
-                [options]="identityType | enumToDropdown"
-                [formField]="contactForm.identityType">
-      </p-select>
-    </rts-form-field>
+    <div class="flex flex-wrap">
+      <div class="flex flex-column gap-2 col-5">
+        <rts-form-field [required]="true" label="Identity Type" for="identityType">
+          <p-select id="identityType"
+                    class="flex-grow-1"
+                    [options]="identityType | enumToDropdown"
+                    [formField]="contactForm.identityType">
+          </p-select>
+        </rts-form-field>
 
-    @if (isOrganization()) {
-      <rts-form-field [required]="true" label="Company Name" for="companyName">
-        <input id="companyName" class="flex-grow-1" pInputText [formField]="contactForm.companyName">
-      </rts-form-field>
+        @if (isOrganization()) {
+          <rts-form-field [required]="true" label="Company Name" for="companyName">
+            <input id="companyName" class="flex-grow-1" pInputText [formField]="contactForm.companyName">
+          </rts-form-field>
 
-    } @else {
-      <rts-form-field [required]="true" label="First Name" for="firstName">
-        <input id="firstName" class="flex-grow-1" pInputText [formField]="contactForm.firstName">
-      </rts-form-field>
+        } @else {
+          <rts-form-field [required]="true" label="First Name" for="firstName">
+            <input id="firstName" class="flex-grow-1" pInputText [formField]="contactForm.firstName">
+          </rts-form-field>
 
-      <rts-form-field label="Last Name" for="lastName">
-        <input id="lastName" class="flex-grow-1" pInputText [formField]="contactForm.lastName">
-      </rts-form-field>
-    }
-
-    <rts-form-field [required]="true" label="Status" for="status">
-      <p-select id="status"
-                class="flex-grow-1"
-                [options]="contactStatus | enumToDropdown"
-                [formField]="contactForm.status">
-      </p-select>
-    </rts-form-field>
-
-    <rts-form-field [required]="true" label="Contact Type" labelClass="align-self-start">
-      <div class="flex flex-column gap-2">
-        @for (type of (ContactType | enumToDropdown); track type) {
-          <div class="flex gap-2">
-            <p-check-box [id]="type.value"
-                         [value]="type.value"
-                         (onChange)="onContactTypeChecked()"
-                         [(ngModel)]="selectedContactTypes">
-            </p-check-box>
-            <label [for]="type.value">{{ type.label }}</label>
-          </div>
+          <rts-form-field label="Last Name" for="lastName">
+            <input id="lastName" class="flex-grow-1" pInputText [formField]="contactForm.lastName">
+          </rts-form-field>
         }
-      </div>
-    </rts-form-field>
 
+        <rts-form-field label="Opening Balance">
+          <div class="flex gap-2 align-items-center">
+            <rts-money [amount]="originalContact()?.netOpeningBalance"
+                       [balanceSignal]="originalContact()?.netOpeningBalanceSignal">
+            </rts-money>
+
+            @if (originalContact()) {
+              <button pButton rounded size="small" severity="secondary" (click)="showEditDialog.set(true)">
+                <i class="pi pi-pencil"></i>
+              </button>
+              <button pButton rounded size="small" severity="secondary" (click)="showHistoryDialog.set(true)">
+                <i class="pi pi-history"></i>
+              </button>
+            }
+          </div>
+        </rts-form-field>
+      </div>
+
+      <div class="flex flex-column gap-2 col-5">
+        <rts-form-field [required]="true" label="Status" for="status">
+          <p-select id="status"
+                    class="flex-grow-1"
+                    [options]="contactStatus | enumToDropdown"
+                    [formField]="contactForm.status">
+          </p-select>
+        </rts-form-field>
+
+        <rts-form-field [required]="true" label="Contact Type" labelClass="align-self-start">
+          <div class="flex flex-column gap-2">
+            @for (type of (ContactType | enumToDropdown); track type) {
+              <div class="flex gap-2">
+                <p-check-box [id]="type.value"
+                             [value]="type.value"
+                             (onChange)="onContactTypeChecked()"
+                             [(ngModel)]="selectedContactTypes">
+                </p-check-box>
+                <label [for]="type.value">{{ type.label }}</label>
+              </div>
+            }
+          </div>
+        </rts-form-field>
+      </div>
+    </div>
   </p-panel>
 
   <p-panel header="Additional Information" toggleable [collapsed]="true">
@@ -81,13 +103,24 @@
 
   <rts-forms-buttons [disableReset]="!contactForm().dirty"
                      [disableSave]="contactForm().invalid() || !contactForm().dirty"
-                     [hideDelete]="!originalContact()?.id"
+                     [hideDelete]="true"
                      [signalForm]="contactForm()"
                      [fieldMap]="contactFormFields"
                      [processingStatus]="processingStatus()"
                      [failureMessages]="failureMessages()"
-                     (delete)="deleteContact()"
                      (save)="upsertContact()"
                      (resetAction)="resetForm()">
   </rts-forms-buttons>
 </div>
+
+@if (showEditDialog()) {
+  <p-dialog header="Update Opening Balance" [(visible)]="showEditDialog" [modal]="true">
+    <rts-contact-opening-balance-edit [contact]="originalContact()" [(showDialog)]="showEditDialog"/>
+  </p-dialog>
+}
+
+@if (showHistoryDialog()) {
+  <p-dialog header="Opening Balance Update History" [(visible)]="showHistoryDialog" [modal]="true">
+    <rts-contact-opening-balance-history [contactReferenceNumber]="originalContact()?.referenceNumber"/>
+  </p-dialog>
+}

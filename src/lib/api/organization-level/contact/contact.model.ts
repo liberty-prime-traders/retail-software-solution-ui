@@ -1,4 +1,5 @@
 import {BaseModel} from '../../util/base-api/base.model'
+import {BalanceSignal} from '../chart-of-accounts/balance-signal.enum'
 import {ContactStatus} from './contact-status.enum'
 import {ContactType} from './contact-type.enum'
 import {IdentityType} from './identity-type.enum'
@@ -19,4 +20,8 @@ export interface Contact extends BaseModel {
   notes?: string
   status: ContactStatus
   systemDefined: boolean
+  netBalance: number
+  balanceSignal: BalanceSignal
+  netOpeningBalance: number
+  netOpeningBalanceSignal: BalanceSignal
 }

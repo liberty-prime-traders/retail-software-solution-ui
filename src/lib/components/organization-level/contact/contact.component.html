@@ -1,5 +1,8 @@
 <div id="contacts" [rtsAutoStretch]="'contacts'">
-  @if (addingIsActive()) {
+  @if (selectedContactId(); as contactId) {
+    <rts-contact-detail [contactId]="contactId" (closed)="selectedContactId.set(undefined)"/>
+
+  } @else if (addingIsActive()) {
 
     <div class="flex flex-column gap-4 flex-grow-1">
       <button pButton (click)="setAddingActiveFalse()" severity="info" class="w-fit">
@@ -11,15 +14,12 @@
   } @else {
     <p-table
       [loading]="loading() && !addingIsActive()"
-      rowExpandMode="single"
       dataKey="id"
       scrollHeight="flex"
       [scrollable]="true"
       sortField="referenceNumber"
       #contactsTable
       [globalFilterFields]="['referenceNumber', 'firstName', 'lastName', 'companyName', 'email', 'phone', 'createdBy']"
-      (onRowExpand)="rowIsExpanded.set(true)"
-      (onRowCollapse)="rowIsExpanded.set(false)"
       [value]="contacts()">
 
       <ng-template #caption>
@@ -43,52 +43,49 @@
             <p-sort-icon field="referenceNumber"></p-sort-icon>
           </th>
           <th>Name</th>
+          <th pSortableColumn="status">Status
+            <p-sort-icon field="status"></p-sort-icon>
+          </th>
+          <th>Contact Type</th>
+          <th pSortableColumn="netBalance">Net Balance
+            <p-sort-icon field="netBalance"></p-sort-icon>
+          </th>
           <th pSortableColumn="email">Email
             <p-sort-icon field="email"></p-sort-icon>
           </th>
           <th pSortableColumn="phone">Phone
             <p-sort-icon field="phone"></p-sort-icon>
           </th>
-          <th pSortableColumn="status">Status
-            <p-sort-icon field="status"></p-sort-icon>
-          </th>
-          <th>Contact Type</th>
           <th style="width: 5rem"></th>
         </tr>
       </ng-template>
 
-      <ng-template #body let-contact let-expanded="expanded">
-        <tr [ngClass]="{ 'expanded-row': expanded }">
+      <ng-template #body let-contact>
+        <tr>
           <td>{{ contact?.referenceNumber | nullSafe }}</td>
           <td>{{ contact | contactName }}</td>
-          <td>{{ contact?.email | nullSafe }}</td>
-          <td>{{ contact?.phone | nullSafe }}</td>
           <td>{{ contact?.status | prettifyEnum }}</td>
           <td>{{ contact?.contactTypes | joinEnum }}</td>
+          <td>
+            <rts-money [amount]="contact?.netBalance" [balanceSignal]="contact?.balanceSignal"/>
+          </td>
+          <td>{{ contact?.email | nullSafe }}</td>
+          <td>{{ contact?.phone | nullSafe }}</td>
           <td>
             @if (!contact.systemDefined) {
               <button pButton
                       rounded
                       severity="secondary"
-                      [disabled]="loading() || addingIsActive()"
-                      [pRowToggler]="contact">
-                <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+                      (click)="selectedContactId.set(contact.id)">
+                <i class="pi pi-pen-to-square"></i>
               </button>
             }
           </td>
         </tr>
       </ng-template>
 
-      <ng-template #expandedrow let-contact>
-        <tr>
-          <td colspan="7" class="filled-background">
-            <rts-contact-form [contact]="contact"/>
-          </td>
-        </tr>
-      </ng-template>
-
       <ng-template #emptymessage>
-        <tr rts-empty-row [colspan]="7" message="No Contacts Were Found"></tr>
+        <tr rts-empty-row [colspan]="8" message="No Contacts Were Found"></tr>
       </ng-template>
     </p-table>
   }

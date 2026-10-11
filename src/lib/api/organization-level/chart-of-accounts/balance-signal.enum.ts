@@ -5,7 +5,7 @@ export enum BalanceSignal {
   ZERO_BALANCE = 'ZERO_BALANCE'
 }
 
-export const findColorClass = (balanceSignal: BalanceSignal) => {
+export const findColorClass = (balanceSignal?: BalanceSignal) => {
   switch (balanceSignal) {
     case BalanceSignal.MONEY_IN:
       return 'money-in'

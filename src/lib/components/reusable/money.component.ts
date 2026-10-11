@@ -9,14 +9,14 @@ import {BalanceSignal, findColorClass} from '../../api/organization-level/chart-
     CurrencyPipe
   ],
   template: `
-    <div class="monospace" [ngClass]="colorClass()">
+    <div class="money" [ngClass]="colorClass()">
       {{ absoluteAmount() | currency }}
     </div>
   `
 })
 export class MoneyComponent {
   readonly amount = input<number|undefined>(0)
-  readonly balanceSignal = input(BalanceSignal.ZERO_BALANCE)
+  readonly balanceSignal = input<BalanceSignal|undefined>(BalanceSignal.ZERO_BALANCE)
 
   readonly absoluteAmount = computed(() => Math.abs(this.amount() ?? 0))
 
