@@ -1,5 +1,5 @@
-import {NgClass} from '@angular/common'
-import {Component, inject} from '@angular/core'
+import {Component, inject, signal} from '@angular/core'
+import {EntityId} from '@ngrx/signals/entities'
 import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {ContactService} from '../../../api/organization-level/contact/contact.service'
@@ -10,6 +10,8 @@ import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
+import {MoneyComponent} from '../../reusable/money.component'
+import {ContactDetailComponent} from './contact-detail/contact-detail.component'
 import {ContactFormComponent} from './contact-form/contact-form.component'
 import {ContactNamePipe} from './contact-name.pipe'
 
@@ -21,13 +23,14 @@ import {ContactNamePipe} from './contact-name.pipe'
     NullSafePipe,
     ButtonDirective,
     ContactFormComponent,
+    ContactDetailComponent,
     GridFilterComponent,
     EmptyRowComponent,
-    NgClass,
     PrettifyEnumPipe,
     ContactNamePipe,
     AutoStretchDirective,
-    JoinEnumPipe
+    JoinEnumPipe,
+    MoneyComponent
   ]
 })
 export class ContactComponent extends GridWithAddButtonComponent<ContactService> {
@@ -35,4 +38,5 @@ export class ContactComponent extends GridWithAddButtonComponent<ContactService>
   readonly apiService = this.contactService
 
   readonly contacts = this.contactService.selectAll
+  readonly selectedContactId = signal<EntityId | undefined>(undefined)
 }

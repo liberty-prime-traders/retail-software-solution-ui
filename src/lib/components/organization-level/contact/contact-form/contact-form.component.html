@@ -81,12 +81,11 @@
 
   <rts-forms-buttons [disableReset]="!contactForm().dirty"
                      [disableSave]="contactForm().invalid() || !contactForm().dirty"
-                     [hideDelete]="!originalContact()?.id"
+                     [hideDelete]="true"
                      [signalForm]="contactForm()"
                      [fieldMap]="contactFormFields"
                      [processingStatus]="processingStatus()"
                      [failureMessages]="failureMessages()"
-                     (delete)="deleteContact()"
                      (save)="upsertContact()"
                      (resetAction)="resetForm()">
   </rts-forms-buttons>

@@ -9,7 +9,7 @@ import {BalanceSignal, findColorClass} from '../../api/organization-level/chart-
     CurrencyPipe
   ],
   template: `
-    <div class="monospace" [ngClass]="colorClass()">
+    <div class="money" [ngClass]="colorClass()">
       {{ absoluteAmount() | currency }}
     </div>
   `

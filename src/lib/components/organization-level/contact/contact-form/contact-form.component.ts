@@ -87,10 +87,4 @@ export class ContactFormComponent extends BaseFormComponent<ContactService> {
       })
     }
   }
-
-  deleteContact() {
-    if (this.contactFormValue()?.id) {
-      this.contactService.delete(this.contactFormValue()?.id)
-    }
-  }
 }
