@@ -1,0 +1,99 @@
+// Global by design (see PrintDocumentComponent). Everything is rooted at .rts-print-doc or a .rts-print-* marker.
+
+.rts-print-doc {
+  display: block;
+  box-sizing: border-box;
+  width: var(--rts-print-width);
+  padding: var(--rts-print-pad-top) var(--rts-print-pad-right) var(--rts-print-pad-bottom) var(--rts-print-pad-left);
+  background: #fff;
+  color: #000;
+  color-scheme: light;
+  font-size: 12pt;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+
+  // Paper is white regardless of the app's dark theme: re-pin the tokens PrimeNG-styled content may read.
+  --p-text-color: #000;
+  --p-content-background: #fff;
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  img, svg, canvas {
+    max-width: 100%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  tr, img {
+    break-inside: avoid;
+  }
+
+  // The preview approximates one sheet; real pagination is the browser's job at print time.
+  &.rts-print-doc--paged {
+    min-height: var(--rts-print-min-height);
+  }
+
+  &.rts-print-doc--receipt {
+    font-size: 9pt;
+    line-height: 1.25;
+  }
+}
+
+// --- directive semantics ---------------------------------------------------------------------------------
+
+.rts-print-keep-together {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+// Page breaks only mean something on sheets; receipts are one continuous roll.
+.rts-print-doc--paged .rts-print-break-before {
+  break-before: page;
+  page-break-before: always;
+}
+
+// Outside a document surface this never shows. Inside one it is untouched, so the author's own `display` wins.
+.rts-print-only:not(.rts-print-doc .rts-print-only) {
+  display: none;
+}
+
+// Preview only: show what will be omitted from the printout.
+.rts-print-preview .rts-print-hide {
+  opacity: 0.4;
+  outline: 1px dashed #888;
+}
+
+// --- printing ----------------------------------------------------------------------------------------------
+
+@media print {
+  .rts-print-doc {
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    box-shadow: none;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  // Sheets: the @page margin already provides the margins, so padding would double them.
+  .rts-print-doc.rts-print-doc--paged {
+    padding: 0;
+  }
+
+  .rts-print-doc .rts-print-hide {
+    display: none !important;
+  }
+}

@@ -12,6 +12,7 @@ import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
 import {PaymentStatusSeverityPipe} from '../../../../api/cross-tier/payment-status-severity.pipe'
 import {SaleFormContext} from '../form-utils/sale-form-context'
 import {SaleFormNavigator} from '../form-utils/sale-form-navigator'
+import {SalePrintActionsComponent} from '../sale-print/sale-print-actions.component'
 import {SaleStatusSeverityPipe} from '../sale-status-severity.pipe'
 
 @Component({
@@ -26,7 +27,8 @@ import {SaleStatusSeverityPipe} from '../sale-status-severity.pipe'
     DatePipe,
     NullSafePipe,
     Dialog,
-    InputText
+    InputText,
+    SalePrintActionsComponent
   ],
   templateUrl: 'sale-form-header.component.html'
 })
