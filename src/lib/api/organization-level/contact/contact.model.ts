@@ -22,4 +22,6 @@ export interface Contact extends BaseModel {
   systemDefined: boolean
   netBalance: number
   balanceSignal: BalanceSignal
+  netOpeningBalance: number
+  netOpeningBalanceSignal: BalanceSignal
 }

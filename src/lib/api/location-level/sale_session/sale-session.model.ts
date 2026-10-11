@@ -56,6 +56,7 @@ export interface SaleLine extends ProductQuantities {
   identity: SessionIdentity
   locationProductId: string
   productLabel: string
+  productPrintLabel: string
   quantity: number
   baseQuantity: number
   unitId: string

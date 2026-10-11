@@ -1,6 +1,8 @@
 import {Component, computed, inject, Input, model, output, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {FormField, form} from '@angular/forms/signals'
+import {ButtonDirective} from 'primeng/button'
+import {Dialog} from 'primeng/dialog'
 import {InputNumber} from 'primeng/inputnumber'
 import {InputText} from 'primeng/inputtext'
 import {Panel} from 'primeng/panel'
@@ -15,6 +17,11 @@ import {IdentityType} from '../../../../api/organization-level/contact/identity-
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {MoneyComponent} from '../../../reusable/money.component'
+import {ContactOpeningBalanceEditComponent} from '../contact-opening-balance-edit/contact-opening-balance-edit.component'
+import {
+  ContactOpeningBalanceHistoryComponent
+} from '../contact-opening-balance-history/contact-opening-balance-history.component'
 import {ContactFormDefinition} from './contact-form.definition'
 
 
@@ -31,7 +38,12 @@ import {ContactFormDefinition} from './contact-form.definition'
     FormField,
     Panel,
     Checkbox,
-    FormsModule
+    FormsModule,
+    MoneyComponent,
+    ButtonDirective,
+    Dialog,
+    ContactOpeningBalanceEditComponent,
+    ContactOpeningBalanceHistoryComponent
   ]
 })
 export class ContactFormComponent extends BaseFormComponent<ContactService> {
@@ -59,6 +71,8 @@ export class ContactFormComponent extends BaseFormComponent<ContactService> {
     ContactFormDefinition.defaultContactFormModel
   )
 
+  readonly showEditDialog = signal(false)
+  readonly showHistoryDialog = signal(false)
   readonly originalContact = signal<Contact|undefined>(undefined)
   readonly contactForm = form(this.contactFormValue, ContactFormDefinition.contactFormSchema)
   readonly contactFormFields = ContactFormDefinition.fieldMap

@@ -9,7 +9,7 @@ import {BaseModel} from './base.model'
 import {BaseService} from './base.service'
 import '../http-params.extension'
 
-export abstract class MultimapBaseService<RESPONSE extends BaseModel> extends BaseService<RESPONSE> {
+export abstract class MultimapBaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<RESPONSE>> extends BaseService<RESPONSE, PAYLOAD> {
 
   protected abstract keyPath: keyof RESPONSE
   private readonly cache = new Multimap<RESPONSE>(undefined, false, (entity) => this.store.selectId(entity))
