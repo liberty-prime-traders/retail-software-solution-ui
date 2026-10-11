@@ -1,0 +1,163 @@
+@let current = sale();
+
+@if (isReceipt()) {
+  <!-- Narrow roll: one stacked column, no table. Every row can wrap; amounts never do. -->
+  <article class="receipt" [class.receipt-compact]="isCompactReceipt()">
+    <div class="receipt-meta">
+      <strong>{{ current.referenceNumber | nullSafe }}</strong>
+      <span>{{ current.dateSold | date | nullSafe }}</span>
+      <span>{{ customerLabel() | nullSafe }}</span>
+      @if (current.soldBy) {
+        <span>Served by {{ current.soldBy }}</span>
+      }
+      @if (isDraft() || isVoided()) {
+        <strong class="status-flag">{{ current.saleStatus | prettifyEnum }}</strong>
+      }
+    </div>
+
+    <hr>
+
+    @for (line of lines(); track line.identity.id ?? line.identity.transientId) {
+      <div class="receipt-line" rtsPrintKeepTogether>
+        <div class="receipt-line-name">{{ line.productLabel }}</div>
+        <div class="row">
+          <span class="row-label">
+            {{ line.quantity }} {{ line.unitId | fullUnitDescription : line.quantity }}
+            &times; {{ line.netUnitPrice | currency }}
+          </span>
+          <span class="money">{{ line.lineTotal | currency }}</span>
+        </div>
+        @if (line.hasPriceOverride) {
+          <small class="was">was {{ line.unitPrice | currency }}</small>
+        }
+      </div>
+    }
+
+    <hr>
+
+    <div class="receipt-totals" rtsPrintKeepTogether>
+      @for (row of totalRows(); track row.label) {
+        <div class="row" [class.emphasis]="row.emphasis">
+          <span class="row-label">{{ row.label }}</span>
+          <span class="money">{{ row.amount | currency }}</span>
+        </div>
+      }
+    </div>
+
+    @if (payments().length) {
+      <hr>
+      <div class="receipt-payments" rtsPrintKeepTogether>
+        @for (payment of payments(); track payment.identity.id ?? payment.identity.transientId) {
+          <div class="receipt-payment" rtsPrintKeepTogether>
+            <div class="row">
+              <span class="row-label">{{ payment.paymentMethod }}</span>
+              <span class="money">{{ payment.amount | currency }}</span>
+            </div>
+            @if (payment.reference) {
+              <small class="receipt-payment-reference">Ref: {{ payment.reference }}</small>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @if (isVoided()) {
+      <hr>
+      <p class="note">Voided: {{ current.saleVoidInfo?.voidedReason | nullSafe }}</p>
+    }
+  </article>
+
+} @else {
+  <article class="sheet">
+    <section class="sheet-heading" rtsPrintKeepTogether>
+      <h2>{{ current.referenceNumber | nullSafe }}</h2>
+      @if (isDraft() || isVoided()) {
+        <strong class="status-flag">{{ current.saleStatus | prettifyEnum }}</strong>
+      }
+    </section>
+
+    <dl class="sheet-meta" rtsPrintKeepTogether>
+      <div>
+        <dt>Customer</dt>
+        <dd>{{ customerLabel() | nullSafe }}</dd>
+      </div>
+      <div>
+        <dt>Date sold</dt>
+        <dd>{{ current.dateSold | date | nullSafe }}</dd>
+      </div>
+      <div>
+        <dt>Sold by</dt>
+        <dd>{{ current.soldBy | nullSafe }}</dd>
+      </div>
+      <div>
+        <dt>Payment</dt>
+        <dd>{{ current.paymentStatus | prettifyEnum }}</dd>
+      </div>
+    </dl>
+
+    <table class="sheet-lines">
+      <thead>
+        <tr>
+          <th class="text">Product</th>
+          <th class="num">Quantity</th>
+          <th class="num">Unit price</th>
+          <th class="num">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (line of lines(); track line.identity.id ?? line.identity.transientId) {
+          <tr>
+            <td class="text">{{ line.productLabel }}</td>
+            <td class="num">{{ line.quantity }} {{ line.unitId | fullUnitDescription : line.quantity }}</td>
+            <td class="num">
+              {{ line.netUnitPrice | currency }}
+              @if (line.hasPriceOverride) {
+                <small class="was">was {{ line.unitPrice | currency }}</small>
+              }
+            </td>
+            <td class="num">{{ line.lineTotal | currency }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <section class="sheet-summary" rtsPrintKeepTogether>
+      @if (payments().length) {
+        <div class="sheet-payments">
+          <h2>Payments</h2>
+          @for (payment of payments(); track payment.identity.id ?? payment.identity.transientId) {
+            <div class="row">
+              <span class="row-label">
+                {{ payment.paymentMethod }}
+                @if (payment.reference) {
+                  <small>({{ payment.reference }})</small>
+                }
+              </span>
+              <span class="money">{{ payment.amount | currency }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      <div class="sheet-totals">
+        @for (row of totalRows(); track row.label) {
+          <div class="row" [class.emphasis]="row.emphasis">
+            <span class="row-label">{{ row.label }}</span>
+            <span class="money">{{ row.amount | currency }}</span>
+          </div>
+        }
+      </div>
+    </section>
+
+    @if (current.notes) {
+      <p class="note" rtsPrintKeepTogether>{{ current.notes }}</p>
+    }
+
+    @if (isVoided()) {
+      <p class="note" rtsPrintKeepTogether>
+        Voided by {{ current.saleVoidInfo?.voidedBy | nullSafe }} on {{ current.saleVoidInfo?.voidedOn | date | nullSafe }}:
+        {{ current.saleVoidInfo?.voidedReason | nullSafe }}
+      </p>
+    }
+  </article>
+}
