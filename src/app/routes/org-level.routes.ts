@@ -32,6 +32,9 @@ import {TaxRateComponent} from '../../lib/components/organization-level/tax-rate
 import {OrgFeatureComponent} from '../../lib/components/organization-level/org-feature/org-feature.component'
 import {ChartOfAccountsComponent} from '../../lib/components/organization-level/chart-of-accounts/chart-of-accounts.component'
 import {ExpenseTypeComponent} from '../../lib/components/organization-level/expense-type/expense-type.component'
+import {
+  StockMovementReasonComponent
+} from '../../lib/components/organization-level/stock-movement-reason/stock-movement-reason.component'
 import {FiscalPeriodsComponent} from '../../lib/components/organization-level/fiscal-periods/fiscal-periods.component'
 
 export const orgManagementRoutes: Routes = [
@@ -44,6 +47,7 @@ export const orgManagementRoutes: Routes = [
   {path: 'payment-options', component: PaymentOptionComponent},
   {path: 'tags', component: TagComponent},
   {path: 'contacts', component: ContactComponent},
+  {path: 'stock-movement-reasons', component: StockMovementReasonComponent},
 
   {path: 'locations', component: LocationsComponent},
   {path: 'profile', component: OrganizationProfileComponent},

@@ -34,18 +34,20 @@ export class SalePrintContentComponent {
   readonly layout = input.required<PrintLayout>()
 
   readonly isReceipt = computed(() => this.layout().kind === PrintLayoutKind.RECEIPT)
-
   readonly isDraft = computed(() => this.sale().saleStatus === SaleStatus.DRAFT)
   readonly isVoided = computed(() => this.sale().saleStatus === SaleStatus.VOIDED)
-  readonly lines = computed(() => this.sale().saleLines)
   readonly payments = computed(() => this.sale().salePayments.filter(payment => !payment.voidedReason))
-
-  readonly isCompactReceipt = computed(() =>
-    this.isReceipt() && printableWidthMm(this.layout()) < COMPACT_RECEIPT_MAX_WIDTH_MM
-  )
 
   readonly customerLabel = computed(() =>
     this.sale().walkInCustomer ? 'Walk-in customer' : this.sale().contactLabel
+  )
+
+  readonly lines = computed(() =>
+    this.sale().saleLines.map(line => ({...line, hasDiscount: false})) //line.netUnitPrice < line.unitPrice}))
+  )
+
+  readonly isCompactReceipt = computed(() =>
+    this.isReceipt() && printableWidthMm(this.layout()) < COMPACT_RECEIPT_MAX_WIDTH_MM
   )
 
   readonly totalRows = computed<SalePrintTotalRow[]>(() => {

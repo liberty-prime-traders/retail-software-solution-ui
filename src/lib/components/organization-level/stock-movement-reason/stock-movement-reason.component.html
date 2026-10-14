@@ -1,0 +1,93 @@
+<div class="flex flex-column gap-4" id="stockMovementReasons" [rtsAutoStretch]="'stockMovementReasons'">
+  @if (addingIsActive()) {
+    <div class="flex justify-content-between align-items-center">
+      <span class="font-bold">Add a Stock Movement Reason</span>
+      <button pButton (click)="setAddingActiveFalse()" severity="info" class="align-self-end">
+        <i class="pi pi-times"></i>
+        Cancel
+      </button>
+    </div>
+
+    <rts-stock-movement-reason-form (stockMovementReasonCreated)="closeAddRow()" />
+
+  } @else {
+    <p-table [loading]="loading() && !addingIsActive()"
+             rowExpandMode="single"
+             dataKey="id"
+             scrollHeight="flex"
+             [scrollable]="true"
+             sortField="name"
+             #stockMovementReasonsTable
+             [value]="stockMovementReasons()"
+             [globalFilterFields]="['code', 'name', 'description']"
+             (onRowExpand)="rowIsExpanded.set(true)"
+             (onRowCollapse)="rowIsExpanded.set(false)">
+
+      <ng-template #caption>
+        <div class="flex justify-content-between align-items-center">
+          <span class="font-bold">Stock Movement Reasons</span>
+
+          <rts-grid-filter [dataTable]="stockMovementReasonsTable" />
+
+          <button pButton (click)="addingIsActive.set(true)"
+                  [disabled]="loading() || addingIsActive()"
+                  rounded
+                  severity="secondary">
+            + Add Stock Movement Reason
+          </button>
+        </div>
+      </ng-template>
+
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="name">
+            Name
+            <p-sort-icon field="name"></p-sort-icon>
+          </th>
+          <th pSortableColumn="description">
+            Description
+            <p-sort-icon field="description"></p-sort-icon>
+          </th>
+          <th>Used For</th>
+          <th pSortableColumn="systemDefined">
+            System Defined
+            <p-sort-icon field="systemDefined"></p-sort-icon>
+          </th>
+          <th style="width: 5rem"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-stockMovementReason let-expanded="expanded">
+        <tr [ngClass]="{ 'expanded-row': expanded }">
+          <td>{{ stockMovementReason?.name | nullSafe }}</td>
+          <td>{{ stockMovementReason?.description | nullSafe }}</td>
+          <td>{{ stockMovementReason?.movementTypes | joinEnum }}</td>
+          <td>{{ stockMovementReason?.systemDefined | booleanToText }}</td>
+          <td>
+            @if (!stockMovementReason.systemDefined) {
+              <button pButton
+                      rounded
+                      severity="secondary"
+                      [disabled]="loading() || addingIsActive()"
+                      [pRowToggler]="stockMovementReason">
+                <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+              </button>
+            }
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #expandedrow let-stockMovementReason>
+        <tr>
+          <td colspan="5" class="filled-background">
+            <rts-stock-movement-reason-form [stockMovementReason]="stockMovementReason" />
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr rts-empty-row [colspan]="5" message="No Stock Movement Reasons Were Found"></tr>
+      </ng-template>
+    </p-table>
+  }
+</div>

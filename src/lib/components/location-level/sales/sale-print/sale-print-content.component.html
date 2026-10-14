@@ -27,6 +27,9 @@
           </span>
           <span class="money">{{ line.lineTotal | currency }}</span>
         </div>
+        @if (line.hasDiscount) {
+          <small class="was">was {{ line.unitPrice | currency }}</small>
+        }
       </div>
     }
 
@@ -106,7 +109,12 @@
           <tr>
             <td class="text">{{ line.productPrintLabel }}</td>
             <td class="num">{{ line.quantity }} {{ line.unitId | fullUnitDescription : line.quantity }}</td>
-            <td class="num">{{ line.netUnitPrice | currency }}</td>
+            <td class="num">
+              {{ line.netUnitPrice | currency }}
+              @if (line.hasDiscount) {
+                <small class="was">was {{ line.unitPrice | currency }}</small>
+              }
+            </td>
             <td class="num">{{ line.lineTotal | currency }}</td>
           </tr>
         }
