@@ -44,6 +44,7 @@ export class OrganizationDashboardComponent implements OnInit {
     {label: 'Units', icon: 'pi pi-percentage', routerLink: 'units'},
     {label: 'Payment Options', icon: 'pi pi-dollar', routerLink: 'payment-options'},
     {label: 'Tags', icon: 'pi pi-tags', routerLink: 'tags'},
+    {label: 'Stock Movement Reasons', icon: 'pi pi-arrow-right-arrow-left', routerLink: 'stock-movement-reasons'},
   ]
 
   private readonly productSettingsMenuItems: MenuItem[] = [

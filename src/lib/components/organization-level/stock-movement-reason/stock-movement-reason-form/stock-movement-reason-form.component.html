@@ -1,0 +1,36 @@
+<div class="flex flex-column gap-2" [ngClass]="formValue().id ? '' : 'filled-background'">
+  <rts-form-field [required]="true" label="Name" for="name">
+    <input id="name" class="flex-grow-1" pInputText [formField]="stockMovementReasonForm.name" />
+  </rts-form-field>
+
+  <rts-form-field label="Description" for="description">
+    <input id="description" class="flex-grow-1" pInputText [formField]="stockMovementReasonForm.description" />
+  </rts-form-field>
+
+  <rts-form-field [required]="true" label="Applies to these movements" labelClass="align-self-start">
+    <div class="flex flex-column gap-2">
+      @for (type of (movementType | enumToDropdown); track type.value) {
+        <div class="flex gap-2">
+          <p-check-box [id]="'movement-' + type.value"
+                       [value]="type.value"
+                       (onChange)="onMovementTypeChecked()"
+                       [(ngModel)]="selectedMovementTypes">
+          </p-check-box>
+          <label [for]="'movement-' + type.value">{{ type.label }}</label>
+        </div>
+      }
+    </div>
+  </rts-form-field>
+
+  <rts-forms-buttons [disableReset]="!stockMovementReasonForm().dirty()"
+                     [disableSave]="stockMovementReasonForm().invalid() || !stockMovementReasonForm().dirty()"
+                     [hideDelete]="!originalStockMovementReason()?.id"
+                     [signalForm]="stockMovementReasonForm()"
+                     [fieldMap]="fieldMap"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (delete)="deleteStockMovementReason()"
+                     (save)="upsertStockMovementReason()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</div>
