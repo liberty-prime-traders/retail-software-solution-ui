@@ -6,6 +6,8 @@ import {SaleSessionService} from '../../../../api/location-level/sale_session/sa
 import {OrgMembershipUserService} from '../../../../api/organization-level/membership/org-membership-user.service'
 import {ContactService} from '../../../../api/organization-level/contact/contact.service'
 import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
+import {LocalStorageService} from '../../../../utils/services/local-storage.service'
+import {LocalStorageKey} from '../../../../utils/types/local-storage-key.enum'
 import {debouncedSignal, runOnSignalChange} from '../../../../utils/signals'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 import {SalesFilterFormDefinition} from './sales-filter-form.definition'
@@ -18,13 +20,17 @@ export class SalesFilterState {
   private readonly saleSearchResultService = inject(SaleSearchResultService)
   private readonly saleSessionService = inject(SaleSessionService)
   private readonly zonedDatesService = inject(ZonedDatesService)
+  private readonly localStorageService = inject(LocalStorageService)
 
   readonly maxSaleReferenceNumbers = SalesFilterFormDefinition.MAX_SALE_REFERENCE_NUMBERS
 
   readonly customers = this.contactService.customers
   readonly soldByUsers = this.orgMembershipUserService.selectAll
 
-  readonly filterFormValue = signal(SalesFilterFormDefinition.createDefaultSalesFilterFormModel())
+  readonly filterFormValue = signal(SalesFilterFormDefinition.withStoredCreatedRange(
+    SalesFilterFormDefinition.createDefaultSalesFilterFormModel(),
+    this.localStorageService.getItem<SalesFilterFormDefinition.StoredCreatedRange>(LocalStorageKey.SALES_FILTER_CREATED)
+  ))
   readonly filterForm = form(this.filterFormValue, SalesFilterFormDefinition.salesFilterFormSchema)
 
   readonly customerNames = computed(() => {
@@ -48,6 +54,11 @@ export class SalesFilterState {
   readonly paymentStatusLabels = computed(() =>
     this.filterFormValue().paymentStatuses.map(status => PrettifyEnumPipe.prototype.transform(status))
   )
+
+  private readonly persistCreatedRange = effect(() => {
+    const stored = SalesFilterFormDefinition.toStoredCreatedRange(this.filterFormValue())
+    untracked(() => this.localStorageService.setItem(LocalStorageKey.SALES_FILTER_CREATED, stored))
+  })
 
   private readonly debouncedFilterFormValue = debouncedSignal(this.filterFormValue, 1500)
 

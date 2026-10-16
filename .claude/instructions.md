@@ -48,3 +48,27 @@ If an enum exists, use it. This makes the code more maintainable and less error-
 The backend tends to break up data classes into response and create/update dtos. However, we keep
 it simple on the frontend and just use one type for both. This is because the frontend often needs to handle both cases in the same component,
 and having separate types can lead to unnecessary complexity.
+
+### Comments
+- Gotchas only — never restate what the code already says.
+- A comment describes the code as it now stands, never the change that produced it. It is read by
+  someone who has no idea what the previous version looked like.
+- Banned: what the code used to do, what the old approach was, how many call sites a migration
+  touched, ticket/PR references, and words that date the comment (`now`, `previously`, `used to`,
+  `no longer`, `recently`, `this change`). That narrative belongs in the commit message.
+- Naming a rejected alternative is allowed only to stop someone reverting to it, and only stated
+  as a durable property of that alternative — `@CreationTimestamp applies at INSERT, so the field
+  is null after save()`, not `we switched off @CreationTimestamp because ~20 call sites needed
+  saveAndFlush`.
+- State a rationale once, at the most relevant spot. Don't repeat the same "why" at every call
+  site; if it spans a package, it goes in that package's README instead.
+- Don't defend against an edit the compiler or type system already prevents (a reordering blocked
+  by a data dependency, an elvis on a non-nullable type).
+- Test comments: name the invariant being guarded and what breaks if it regresses — not the bug
+  or task that prompted writing the test.
+- Prefer a name that carries the invariant over a comment that explains it. A bulk method that
+  deliberately skips per-item validation because the caller already validated the whole batch
+  should say so in its name — `bulkInsertValidatedList(insertDtos: List<UnitConversionInsertDto>)`,
+  not `bulkInsert` with a `// validation already happened upstream` comment above it. The name
+  travels with every call site and autocomplete entry; the comment only helps a reader already
+  looking at the declaration.
