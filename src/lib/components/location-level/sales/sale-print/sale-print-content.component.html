@@ -27,9 +27,6 @@
           </span>
           <span class="money">{{ line.lineTotal | currency }}</span>
         </div>
-        @if (line.hasDiscount) {
-          <small class="was">was {{ line.unitPrice | currency }}</small>
-        }
       </div>
     }
 
