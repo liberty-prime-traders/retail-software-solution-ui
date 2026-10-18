@@ -26,7 +26,9 @@ export class UserContextService {
   readonly token = computed(() => this.loginResponse()?.sessionToken ?? '')
   readonly isPlatformAdmin = this.hasRole(UserRole.PLATFORM_ADMIN)
   readonly canCreateOrganization = this.hasPermission(UserPermission.CREATE_ORGANIZATION)
-  readonly isLibertyAdmin = this.libertyAccessService.isLibertyAdmin
+  readonly isLibertyAdmin = computed(() =>
+    this.libertyAccessService.isLibertyAdmin() || this.isPlatformAdmin()
+  )
   readonly initials = computed(() =>  this.loggedInUser()?.initials ?? '')
 
   private hasRole(role: UserRole): Signal<boolean> {

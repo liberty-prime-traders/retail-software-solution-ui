@@ -35,6 +35,7 @@ import {ExpenseTypeComponent} from '../../lib/components/organization-level/expe
 import {
   StockMovementReasonComponent
 } from '../../lib/components/organization-level/stock-movement-reason/stock-movement-reason.component'
+import {FundTransferComponent} from '../../lib/components/organization-level/fund-transfer/fund-transfer.component'
 import {FiscalPeriodsComponent} from '../../lib/components/organization-level/fiscal-periods/fiscal-periods.component'
 
 export const orgManagementRoutes: Routes = [
@@ -60,5 +61,6 @@ export const orgManagementRoutes: Routes = [
   {path: 'chart-of-accounts', component: ChartOfAccountsComponent},
   {path: 'expense-types', component: ExpenseTypeComponent},
   {path: 'fiscal-periods', component: FiscalPeriodsComponent},
+  {path: 'fund-transfers', component: FundTransferComponent},
   {path: '', redirectTo: 'summary', pathMatch: 'full'}
 ]
