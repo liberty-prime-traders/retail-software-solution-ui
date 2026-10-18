@@ -9,6 +9,7 @@ import {LandingComponent} from '../lib/components/platform-level/landing/landing
 import {ManagePlatformComponent} from '../lib/components/platform-level/manage-platform/manage-platform.component'
 import {MyJoinRequestsComponent} from '../lib/components/platform-level/my-join-request/my-join-request.component'
 import {PublicComponent} from '../lib/components/public/public.component'
+import {CanActivateChildForNonLibertyAdmin} from './route-guards/can-activate-child-for-non-liberty-admin'
 import {CanViewLocation} from './route-guards/can-view-location'
 import {CanViewOrganization} from './route-guards/can-view-organization'
 import {CanViewPlatformOrganization} from './route-guards/can-view-platform.guard'
@@ -25,6 +26,7 @@ const secureRoutes: Routes = [
     path: 'manage-organization',
     component: OrganizationDashboardComponent,
     canActivate: [CanViewOrganization],
+    canActivateChild: [CanActivateChildForNonLibertyAdmin],
     children: orgManagementRoutes
   },
   {
@@ -37,6 +39,7 @@ const secureRoutes: Routes = [
     path: 'location-dashboard',
     component: LocationDashboardComponent,
     canActivate: [CanViewLocation],
+    canActivateChild: [CanActivateChildForNonLibertyAdmin],
     children: locationRoutes
   }
 ]

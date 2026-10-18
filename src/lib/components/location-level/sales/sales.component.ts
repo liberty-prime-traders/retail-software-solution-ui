@@ -1,4 +1,4 @@
-import {Component, computed, inject, model, OnInit} from '@angular/core'
+import {Component, computed, effect, inject, model, OnInit, untracked} from '@angular/core'
 import {Badge} from 'primeng/badge'
 import {Divider} from 'primeng/divider'
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
@@ -6,6 +6,7 @@ import {SaleSearchResultService} from '../../../api/location-level/sale-summary/
 import {SaleSearchSummaryService} from '../../../api/location-level/sale-summary/sale-search-summary.service'
 import {OrgMembershipUserService} from '../../../api/organization-level/membership/org-membership-user.service'
 import {ContactService} from '../../../api/organization-level/contact/contact.service'
+import {UserContextService} from '../../../utils/services/auth/user-context.service'
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {LoadingContainerComponent} from '../../reusable/loading-container/loading-container.component'
 import {SaleGridComponent} from './sales-grid/sale-grid.component'
@@ -39,6 +40,9 @@ export class SalesComponent implements OnInit {
   private readonly contactService = inject(ContactService)
   private readonly orgMembershipUserService = inject(OrgMembershipUserService)
   private readonly filterState = inject(SalesFilterState)
+  private readonly userContextService = inject(UserContextService)
+
+  readonly salesGridOnly = computed(() => !this.userContextService.isLibertyAdmin())
 
   readonly saleCount = this.saleSearchSummaryService.saleCount
 
@@ -49,6 +53,13 @@ export class SalesComponent implements OnInit {
       || this.contactService.selectLoading()
       || this.orgMembershipUserService.selectLoading()
   )
+
+  private readonly refetchSalesOnFilterChange = effect(() => {
+    const filterParams = this.filterState.filterParams()
+    if (this.salesGridOnly()) {
+      untracked(() => this.saleSearchResultService.refetch(filterParams))
+    }
+  })
 
   ngOnInit() {
     this.onSelectedTabChange(this.selectedTab())

@@ -3,6 +3,7 @@ import {Router} from '@angular/router'
 import {MessageService} from 'primeng/api'
 import {finalize, of} from 'rxjs'
 import {catchError, tap} from 'rxjs/operators'
+import {LibertyAccessService} from '../../../../api/organization-level/liberty-access/liberty-access.service'
 import {LocationService} from '../../../../api/organization-level/location/location.service'
 import {
   OrganizationLaunchResponse
@@ -20,6 +21,7 @@ export class OrganizationLaunchService {
   private readonly sessionContextService = inject(SessionContextService)
   private readonly organizationService = inject(OrganizationService)
   private readonly locationService = inject(LocationService)
+  private readonly libertyAccessService = inject(LibertyAccessService)
 
   private readonly _errorMessages = signal<string[] | undefined>(undefined)
   private readonly _launchingInProgress = signal(false)
@@ -57,6 +59,7 @@ export class OrganizationLaunchService {
   proceedToSelectedOrganization() {
     if (this.sessionContextService.selectedOrganization()){
       this.userContextService.checkOrganizationAdminStatus()
+      this.libertyAccessService.refresh$().subscribe()
       this.locationService.fetch()
     }
   }
