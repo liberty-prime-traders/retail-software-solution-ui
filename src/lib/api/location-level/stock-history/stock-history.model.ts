@@ -4,7 +4,8 @@ import {MovementType} from './movement-type.enum'
 export interface StockHistory extends BaseModel{
   locationProductId: string
   movementType: MovementType
-  externalReferenceNumber?: string
+  documentReference?: string
+  detailReference?: string
   quantityMoved: string
   newQuantity: string
   recordedOn: string

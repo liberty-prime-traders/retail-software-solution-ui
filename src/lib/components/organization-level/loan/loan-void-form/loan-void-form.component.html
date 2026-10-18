@@ -1,0 +1,20 @@
+<div class="flex flex-column gap-3">
+  <rts-form-field label="Void Reason"
+                  [layout]="FormFieldDirection.VERTICAL"
+                  class="col-5"
+                  contentClass="col-12">
+    <textarea pInputText class="w-full" rows="3" [formField]="voidForm.reason"></textarea>
+  </rts-form-field>
+
+  <rts-forms-buttons deleteLabel="Void Loan"
+                     deleteWarning="This reverses the ledger entry and cannot be undone."
+                     deleteInProgressMessage="Voiding loan..."
+                     deleteIcon="pi pi-ban"
+                     resetLabel="Cancel"
+                     [hideSave]="true"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (resetAction)="cancelled.emit()"
+                     (delete)="confirmVoid()">
+  </rts-forms-buttons>
+</div>

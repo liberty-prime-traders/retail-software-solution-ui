@@ -1,0 +1,51 @@
+<div class="flex flex-column gap-2">
+  <b>Record Repayment</b>
+
+  <rts-loading-container [loading]="accountTreesLoading()">
+    <rts-form-field [required]="true" label="Paid From Account" for="repaymentAccount">
+      <p-tree-select id="repaymentAccount"
+                     class="flex-grow-1"
+                     appendTo="body"
+                     placeholder="Select an Account"
+                     [options]="loanTrees()"
+                     [ngModel]="assetAccount()"
+                     (ngModelChange)="onAssetAccountChange($event)">
+      </p-tree-select>
+    </rts-form-field>
+  </rts-loading-container>
+
+  <rts-form-field [required]="true" label="Amount" for="repaymentAmount">
+    <p-input-number inputId="repaymentAmount"
+                    mode="currency"
+                    currency="KES"
+                    class="flex-grow-1"
+                    [min]="0"
+                    [max]="loan().outstanding"
+                    [formField]="repaymentForm.amount">
+    </p-input-number>
+  </rts-form-field>
+
+  <rts-form-field [required]="true" label="Date" for="repaymentDate">
+    <p-date-picker inputId="repaymentDate"
+                   class="flex-grow-1"
+                   appendTo="body"
+                   [showIcon]="true"
+                   [formField]="repaymentForm.repaymentDate">
+    </p-date-picker>
+  </rts-form-field>
+
+  <rts-form-field label="Note" for="repaymentNote">
+    <input id="repaymentNote" class="flex-grow-1" pInputText [formField]="repaymentForm.note"/>
+  </rts-form-field>
+
+  <rts-forms-buttons [disableReset]="!repaymentForm().dirty()"
+                     [disableSave]="repaymentForm().invalid() || !repaymentForm().dirty()"
+                     [hideDelete]="true"
+                     [signalForm]="repaymentForm()"
+                     [fieldMap]="fieldMap"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (save)="save()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</div>

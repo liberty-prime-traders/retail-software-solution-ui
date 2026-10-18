@@ -53,6 +53,23 @@ export class OrganizationDashboardComponent implements OnInit {
     {label: 'Product Lines', icon: 'pi pi-objects-column', routerLink: 'products'}
   ]
 
+  private readonly transactionsMenuItems: Signal<MenuItem[]> = computed(() => {
+    const isChartOfAccountsEnabled = this.orgFeatureService.isChartOfAccountsEnabled()
+    return [
+      {
+        label: 'Fund Transfers',
+        icon: 'pi pi-money-bill',
+        routerLink: 'fund-transfers',
+        visible: isChartOfAccountsEnabled
+      },
+      {
+        label: 'Loans',
+        icon: 'pi pi-briefcase',
+        routerLink: 'loans',
+        visible: isChartOfAccountsEnabled
+      }
+    ]
+  })
 
   private readonly financialSettingsMenuItems: Signal<MenuItem[]> = computed(() => {
     const showTaxes = this.orgFeatureService.isTaxEnabled()
@@ -74,12 +91,6 @@ export class OrganizationDashboardComponent implements OnInit {
         label: 'Fiscal Periods',
         icon: 'pi pi-calendar',
         routerLink: 'fiscal-periods',
-        visible: isChartOfAccountsEnabled
-      },
-      {
-        label: 'Fund Transfers',
-        icon: 'pi pi-money-bill',
-        routerLink: 'fund-transfers',
         visible: isChartOfAccountsEnabled
       },
       {
@@ -106,9 +117,15 @@ export class OrganizationDashboardComponent implements OnInit {
       {label: 'Home', items: this.organizationHomeMenuItems},
       {label: 'Products', items: this.productSettingsMenuItems},
       {separator: true},
-      {label: 'Business Settings', items: this.businessSettingsMenuItems},
+      {label: 'Business Settings', items: this.businessSettingsMenuItems, expanded: true, toggleable: true},
       {separator: true},
     ]
+
+    const transactionItems = this.transactionsMenuItems()
+    const showTransactions = transactionItems.some(item => item.visible !== false)
+    if (showTransactions) {
+      menuItems.push({label: 'Transactions', items: transactionItems, expanded: false, toggleable: true})
+    }
 
     const financeItems = this.financialSettingsMenuItems()
     const showFinance = financeItems.some(item => item.visible !== false)

@@ -1,0 +1,24 @@
+<div class="flex flex-column gap-2" id="stock-adjustment" rtsAutoStretch="stock-adjustment">
+  <div class="flex align-items-center justify-content-between">
+    <span class="font-bold">Stock Adjustments</span>
+    @if (formIsVisible()) {
+      <button pButton (click)="formIsVisible.set(false)" severity="secondary">
+        <i class="pi pi-arrow-left"></i>
+        Back to Stock Adjustments
+      </button>
+    } @else {
+      <button pButton (click)="formIsVisible.set(true)"><i class="pi pi-plus"></i> New Adjustment</button>
+    }
+  </div>
+
+  @if (formIsVisible()) {
+    <p-divider class="m-0"/>
+    <rts-location-stock-adjustment-form (stockAdjustmentSaved)="formIsVisible.set(false)"/>
+  } @else {
+    <div class="pt-3">
+      <rts-location-stock-adjustment-grid/>
+    </div>
+  }
+
+  <rts-error-summary class="floating bottom left" [regularErrorMessages]="failureMessages()"/>
+</div>

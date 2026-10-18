@@ -8,6 +8,7 @@ import {ExpensesComponent} from '../../lib/components/location-level/expenses/ex
 import {PurchaseComponent} from '../../lib/components/location-level/purchases/purchase.component'
 import {SalePaymentsComponent} from '../../lib/components/location-level/sale-payments/sale-payments.component'
 import {SalesComponent} from '../../lib/components/location-level/sales/sales.component'
+import {StockAdjustmentComponent} from '../../lib/components/location-level/stock-adjustment/stock-adjustment.component'
 import {StockTransferComponent} from '../../lib/components/location-level/stock-transfer/stock-transfer.component'
 import {SyncComponent} from '../../lib/components/location-level/sync/sync.component'
 import {TaxesComponent} from '../../lib/components/location-level/taxes/taxes.component'
@@ -19,6 +20,7 @@ export const locationRoutes: Routes = [
   {path: 'sync', component: SyncComponent},
   {path: 'sales', component: SalesComponent},
   {path: 'stock-transfer', component: StockTransferComponent},
+  {path: 'stock-adjustments', component: StockAdjustmentComponent},
   {path: 'sale-payments', component: SalePaymentsComponent},
   {path: 'taxes', component: TaxesComponent},
   {path: 'expenses', component: ExpensesComponent},

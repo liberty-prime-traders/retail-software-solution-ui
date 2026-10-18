@@ -18,7 +18,12 @@
     <ng-template #body let-history>
       <tr>
         <td>{{ history.recordedOn | date  }}</td>
-        <td>{{ history.externalReferenceNumber | nullSafe }}</td>
+        <td>
+          {{ history.documentReference | nullSafe }}
+          @if (history.detailReference) {
+            <span> : {{ history.detailReference | nullSafe }}</span>
+          }
+        </td>
         <td>{{ history.movementType | prettifyEnum }}</td>
         <td>
           {{ history.quantityMoved | nullSafe }}

@@ -1,8 +1,11 @@
 @if (formIsVisible()) {
   <div class="flex flex-column gap-4">
-    <button pButton (click)="formIsVisible.set(false)" severity="info" class="align-self-end">
-      <i class="pi pi-times"></i> Cancel
-    </button>
+    <div class="flex justify-content-between align-items-center">
+      <span class="font-bold">Add Fund Transfer</span>
+      <button pButton (click)="formIsVisible.set(false)" severity="info" class="align-self-end">
+        <i class="pi pi-times"></i> Cancel
+      </button>
+    </div>
     <rts-fund-transfer-form (fundMovementCreated)="refreshAfterWrite()"/>
   </div>
 

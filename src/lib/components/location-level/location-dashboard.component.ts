@@ -46,6 +46,7 @@ export class LocationDashboardComponent implements OnInit {
     {label: 'Purchases', icon: 'pi pi-truck', routerLink: 'purchases'},
     {label: 'Taxes', icon: 'pi pi-money-bill', routerLink: 'taxes'},
     {label: 'Stock Transfers', icon: 'pi pi-send', routerLink: 'stock-transfer'},
+    {label: 'Stock Adjustments', icon: 'pi pi-sliders-h', routerLink: 'stock-adjustments'},
     {label: 'Expenses', icon: 'pi pi-wallet', routerLink: 'expenses'}
   ]
 
