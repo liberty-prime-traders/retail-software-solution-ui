@@ -36,8 +36,11 @@ export interface PurchaseLine extends BaseModel {
   lineTotal: number
   quantityExpected?: number
   quantityDelivered?: number
+  quantityDeliveredBreakdown: string
   quantityYetToBeDelivered?: number
+  quantityYetToBeDeliveredBreakdown: string
   quantityCanceled?: number
+  quantityCanceledBreakdown: string
 }
 
 export interface PurchaseLineCancelDto {

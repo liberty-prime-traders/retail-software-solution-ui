@@ -5,6 +5,8 @@ export interface ProductQuantities {
   quantityOnHand: number
   quantityReserved: number
   quantityAvailable: number
+  quantityAvailableBreakdown: string
+  quantityOnHandBreakdown: string
 }
 
 export interface ProductWithAvailability extends ProductCore, PaginatedModel, ProductQuantities {

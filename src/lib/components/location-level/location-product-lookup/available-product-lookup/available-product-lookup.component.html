@@ -13,10 +13,10 @@
         <div class="flex flex-column gap-1">
           {{ selectedProduct | productLabel }}
           <small class="block flex gap-2 info-message">
-            Available: {{ selectedProduct.quantityAvailable }}
+            Available: {{ selectedProduct.quantityAvailableBreakdown }}
 
             @if (selectedProduct.quantityReserved) {
-              ({{ selectedProduct.quantityOnHand }} on hand, {{ selectedProduct.quantityReserved }} reserved)
+              ({{ selectedProduct.quantityOnHandBreakdown }} on hand, {{ selectedProduct.quantityReserved }} reserved)
             }
 
             <p-divider layout="vertical" class="p-0 m-0 mr-1"/>

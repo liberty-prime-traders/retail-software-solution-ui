@@ -129,7 +129,7 @@
                 </p-input-number>
               </ng-template>
               <ng-template #output>
-                {{ purchaseLine.quantityCanceled }}
+                {{ purchaseLine.quantityCanceledBreakdown }}
               </ng-template>
             </p-cell-editor>
             <small class="block info-message">
@@ -141,16 +141,7 @@
             </small>
           </td>
 
-          <td>
-            {{ purchaseLine.quantityDelivered }}
-            <small class="block info-message">
-              {{
-                purchaseLine.unitId
-                  | buildConversionContext : purchaseLine : purchaseLine.quantityDelivered
-                  | convertToTargetUnitForDisplay
-              }}
-            </small>
-          </td>
+          <td>{{ purchaseLine.quantityDeliveredBreakdown }}</td>
         }
 
         <td>{{ purchaseLine.lineTotal | currency }}</td>

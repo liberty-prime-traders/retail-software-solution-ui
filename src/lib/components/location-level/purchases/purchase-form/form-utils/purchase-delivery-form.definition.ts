@@ -11,6 +11,12 @@ export namespace PurchaseDeliveryFormDefinition {
     lines: DeliveryLineModel[]
   }
 
+  export const fieldMap = new Map<keyof DeliveryFormModel, string>([
+    ['deliveredAt', 'Delivered At'],
+    ['notes', 'Notes'],
+    ['lines', 'Lines']
+  ])
+
   export interface DeliveryLineModel {
     purchaseLineId: string
     referenceNumber: string
@@ -22,6 +28,7 @@ export namespace PurchaseDeliveryFormDefinition {
     unitId: string
     snapshotUnitId: string
     quantityYetToBeDelivered: number
+    quantityYetToBeDeliveredBreakdown: string
     quantityDelivered: number
     unitCost: number
   }
@@ -43,6 +50,7 @@ export namespace PurchaseDeliveryFormDefinition {
     unitId: line.unitId,
     snapshotUnitId: line.unitId,
     quantityYetToBeDelivered: line.quantityYetToBeDelivered,
+    quantityYetToBeDeliveredBreakdown: line.quantityYetToBeDeliveredBreakdown,
     unitCost: line.unitCost,
     quantityDelivered: 0
   })
