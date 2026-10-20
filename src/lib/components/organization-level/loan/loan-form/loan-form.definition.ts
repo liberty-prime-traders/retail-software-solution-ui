@@ -1,6 +1,6 @@
-import {min, required, schema} from '@angular/forms/signals'
+import {maxDate, min, required, schema} from '@angular/forms/signals'
 import {LoanCreateRequest} from '../../../../api/organization-level/loan/loan.model'
-import {getToday, toLocaleDateString} from '../../../../utils/dates'
+import {getToday, getTomorrow, toLocaleDateString} from '../../../../utils/dates'
 
 export namespace LoanFormDefinition {
   export interface LoanFormModel {
@@ -35,6 +35,7 @@ export namespace LoanFormDefinition {
     required(path.amount)
     min(path.amount, 0.01)
     required(path.loanDate)
+    maxDate(path.loanDate, getTomorrow())
   })
 
   export const convertToRequest = (formValue: LoanFormModel): LoanCreateRequest => ({

@@ -47,9 +47,8 @@
 
           <td>
             <p-select appendTo="body"
-                      #select
                       [options]="deliveryLine.purchaseLineUnitId | alternativeUnitsFinder"
-                      (ngModelChange)="clearQuantities(deliveryLine.purchaseLineId, select.value)"
+                      (ngModelChange)="clearQuantities(deliveryLine)"
                       [(ngModel)]="deliveryLine.unitId">
             </p-select>
 
@@ -63,9 +62,9 @@
             @let effectiveFactor = deliveryLine.conversionFactor / deliveryLineFactor;
 
             <p-input-number [min]="0"
-                           [max]="deliveryLine.quantityYetToBeDelivered * effectiveFactor"
-                           [maxFractionDigits]="2"
-                           [(ngModel)]="deliveryLine.quantityDelivered">
+                            [max]="deliveryLine.quantityYetToBeDelivered * effectiveFactor"
+                            [maxFractionDigits]="2"
+                            [(ngModel)]="deliveryLine.quantityDelivered">
             </p-input-number>
 
             <small class="block info-message">

@@ -46,4 +46,5 @@ export interface PurchaseLine extends BaseModel {
 export interface PurchaseLineCancelDto {
   purchaseLineId: string
   quantityCanceled: number
+  unitId?: string
 }

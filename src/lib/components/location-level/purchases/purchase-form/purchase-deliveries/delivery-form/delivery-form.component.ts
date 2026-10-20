@@ -19,7 +19,6 @@ import {
   UnitCurrencyPipe,
   UnitFactorResolver
 } from '../../../../../../api/organization-level/unit-conversion/pipes/unit-convert.pipe'
-import {UnitDescriptionPipe} from '../../../../../../api/organization-level/unit-conversion/pipes/unit-description.pipe'
 import {getTomorrow} from '../../../../../../utils/dates'
 import {ProductLabelPipe} from '../../../../../../utils/pipes/product-label.pipe'
 import {ZonedDatesService} from '../../../../../../utils/services/zoned-dates.service'
@@ -47,7 +46,6 @@ import {PurchaseFormContext} from '../../form-utils/purchase-form-context'
     ProductLabelPipe,
     AlternativeUnitsFinderPipe,
     Select,
-    UnitDescriptionPipe,
     UnitConvertPipe,
     ConversionContextPipe,
     UnitCurrencyPipe,
@@ -102,14 +100,8 @@ export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliverySer
     })
   }
 
-  clearQuantities(purchaseLineId: string, unitId: string) {
-    const lines = this.deliveryFormValue().lines
-    const updatedLines = lines.map(line => {
-      if (line.purchaseLineId === purchaseLineId) {
-        return {...line, unitId, quantityDelivered: 0, unitCost: 0}
-      }
-      return line
-    })
-    this.deliveryFormValue.update(form => ({...form, lines: updatedLines}))
+  clearQuantities(deliveryLine: PurchaseDeliveryFormDefinition.DeliveryLineModel) {
+    deliveryLine.quantityDelivered = 0
+    deliveryLine.unitCost = 0
   }
 }

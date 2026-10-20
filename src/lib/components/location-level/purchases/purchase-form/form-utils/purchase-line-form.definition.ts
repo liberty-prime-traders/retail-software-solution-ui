@@ -22,6 +22,7 @@ export namespace PurchaseLineFormDefinition {
     quantityYetToBeDelivered: number
     quantityYetToBeDeliveredBreakdown: string
     quantityCanceled: number
+    cancelUnitId: string
     quantityCanceledBreakdown: string
     canceledWithoutSingleDelivery: boolean
   }
@@ -46,6 +47,7 @@ export namespace PurchaseLineFormDefinition {
       quantityYetToBeDelivered: 1,
       quantityYetToBeDeliveredBreakdown: '',
       quantityCanceled: 0,
+      cancelUnitId: product.baseUnitId ?? '',
       quantityCanceledBreakdown: '',
       canceledWithoutSingleDelivery: false
     }
@@ -69,6 +71,7 @@ export namespace PurchaseLineFormDefinition {
       quantityDelivered: line.quantityDelivered ?? 0,
       quantityDeliveredBreakdown: line.quantityDeliveredBreakdown ?? '',
       quantityCanceled: line.quantityCanceled ?? 0,
+      cancelUnitId: line.unitId ?? '',
       quantityYetToBeDelivered: line.quantityYetToBeDelivered ?? 0,
       quantityYetToBeDeliveredBreakdown: line.quantityYetToBeDeliveredBreakdown ?? '',
       quantityCanceledBreakdown: line.quantityCanceledBreakdown ?? '',

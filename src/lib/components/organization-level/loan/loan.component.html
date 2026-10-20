@@ -14,6 +14,7 @@
     <p-table [value]="loans()"
              [loading]="loading()"
              [lazy]="true"
+             rowExpandMode="single"
              dataKey="id"
              scrollHeight="flex"
              [scrollable]="true"
@@ -44,7 +45,6 @@
 
       <ng-template #header>
         <tr>
-          <th style="width: 3rem"></th>
           <th>Reference</th>
           <th>Lender</th>
           <th>Date</th>
@@ -53,6 +53,7 @@
           <th>Repaid</th>
           <th>Outstanding</th>
           <th>Status</th>
+          <th style="width: 5rem"></th>
         </tr>
       </ng-template>
 
@@ -65,11 +66,6 @@
           </tr>
         } @else {
           <tr style="height: 55px" [ngClass]="{'expanded-row': expanded, 'strike-through': loan.void}">
-            <td>
-              <button pButton type="button" text rounded [pRowToggler]="loan">
-                <i [class]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
-              </button>
-            </td>
             <td>{{ loan.referenceNumber | nullSafe }}</td>
             <td>{{ loan.lender.displayName }}</td>
             <td>{{ loan.loanDate }}</td>
@@ -82,80 +78,19 @@
                      [severity]="loan.status === LoanStatus.OPEN ? 'warn' : loan.status === LoanStatus.SETTLED ? 'success' : 'danger'">
               </p-tag>
             </td>
+            <td>
+              <button pButton rounded severity="secondary" [pRowToggler]="loan">
+                <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+              </button>
+            </td>
           </tr>
         }
       </ng-template>
 
       <ng-template #expandedrow let-loan>
         <tr>
-          <td colspan="9" class="filled-background px-4">
-            <div class="flex flex-column gap-3">
-              <div><b>Recorded by:</b> {{ loan.createdBy }}</div>
-              <div><b>Note:</b> {{ loan.note | nullSafe }}</div>
-
-              @if (loan.void) {
-                <div>
-                  <b>Voided on</b> {{ loan.void.voidDate }} by {{ loan.void.voidedBy }}.
-                  <b>Reason:</b> {{ loan.void.reason | nullSafe }}
-                </div>
-              }
-
-              <div class="flex flex-column gap-2">
-                <b>Repayments</b>
-                @for (repayment of loan.repayments; track repayment.id) {
-                  <div class="flex flex-column gap-2">
-                    <div class="flex align-items-center gap-4" [ngClass]="{'strike-through': repayment.void}">
-                      <span>{{ repayment.referenceNumber }}</span>
-                      <span>{{ repayment.repaymentDate }}</span>
-                      <span>{{ repayment.assetAccount.label }}</span>
-                      <span class="money">{{ repayment.amount | currency }}</span>
-                      <span>{{ repayment.note | nullSafe }}</span>
-                      @if (!repayment.void && loan.status !== LoanStatus.VOIDED) {
-                        <button pButton type="button" size="small" severity="secondary" text
-                                (click)="repaymentBeingVoided.set(repayment.id)">
-                          <i class="pi pi-ban"></i> Void
-                        </button>
-                      }
-                    </div>
-
-                    @if (repayment.void) {
-                      <div>
-                        <b>Voided on</b> {{ repayment.void.voidDate }} by {{ repayment.void.voidedBy }}.
-                        <b>Reason:</b> {{ repayment.void.reason | nullSafe }}
-                      </div>
-                    }
-
-                    @if (repaymentBeingVoided() === repayment.id) {
-                      <rts-loan-repayment-void-form [repayment]="repayment"
-                                                    (voided)="refreshAfterWrite()"
-                                                    (cancelled)="repaymentBeingVoided.set(null)">
-                      </rts-loan-repayment-void-form>
-                    }
-                  </div>
-                } @empty {
-                  <span>No repayments recorded</span>
-                }
-              </div>
-
-              @if (loan.status === LoanStatus.OPEN) {
-                <rts-loan-repayment-form [loan]="loan" (repaymentRecorded)="refreshAfterWrite()"/>
-              }
-
-              @if (loan.status !== LoanStatus.VOIDED) {
-                @if (voidingLoanIsVisible()) {
-                  <rts-loan-void-form [loan]="loan"
-                                      (voided)="refreshAfterWrite()"
-                                      (cancelled)="voidingLoanIsVisible.set(false)">
-                  </rts-loan-void-form>
-                } @else {
-                  <div>
-                    <button pButton type="button" severity="danger" text (click)="voidingLoanIsVisible.set(true)">
-                      <i class="pi pi-ban"></i> Void Loan
-                    </button>
-                  </div>
-                }
-              }
-            </div>
+          <td colspan="9" class="filled-background">
+            <rts-loan-expanded-row [loan]="loan" (changed)="refreshAfterWrite()"/>
           </td>
         </tr>
       </ng-template>

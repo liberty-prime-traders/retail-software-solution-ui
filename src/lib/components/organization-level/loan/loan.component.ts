@@ -16,10 +16,8 @@ import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {resetVirtualScrollOnSearch} from '../../../utils/primeng-table.util'
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
+import {LoanExpandedRowComponent} from './loan-expanded-row/loan-expanded-row.component'
 import {LoanFormComponent} from './loan-form/loan-form.component'
-import {LoanRepaymentFormComponent} from './loan-repayment-form/loan-repayment-form.component'
-import {LoanRepaymentVoidFormComponent} from './loan-repayment-void-form/loan-repayment-void-form.component'
-import {LoanVoidFormComponent} from './loan-void-form/loan-void-form.component'
 
 const DEFAULT_RANGE_DAYS = 30
 
@@ -39,10 +37,8 @@ const DEFAULT_RANGE_DAYS = 30
     PrettifyEnumPipe,
     AutoStretchDirective,
     EmptyRowComponent,
-    LoanFormComponent,
-    LoanRepaymentFormComponent,
-    LoanRepaymentVoidFormComponent,
-    LoanVoidFormComponent
+    LoanExpandedRowComponent,
+    LoanFormComponent
   ]
 })
 export class LoanComponent implements OnInit {
@@ -55,8 +51,6 @@ export class LoanComponent implements OnInit {
   readonly loading = this.loanSearchResultService.selectLoading
 
   readonly formIsVisible = signal(false)
-  readonly voidingLoanIsVisible = signal(false)
-  readonly repaymentBeingVoided = signal<string | null>(null)
   readonly dateRange = model<Date[] | null>(LoanComponent.defaultDateRange())
 
   readonly searchParameters = computed<LoanSearchParameters | undefined>(() => {
@@ -98,8 +92,6 @@ export class LoanComponent implements OnInit {
 
   refreshAfterWrite() {
     this.formIsVisible.set(false)
-    this.voidingLoanIsVisible.set(false)
-    this.repaymentBeingVoided.set(null)
     const parameters = this.searchParameters()
     if (parameters) {
       this.loanSearchResultService.forceRefetch(parameters)
