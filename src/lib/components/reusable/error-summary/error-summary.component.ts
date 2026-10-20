@@ -21,7 +21,7 @@ import {toErrorMessages} from '../../../utils/form-validation'
   imports: []
 })
 export class ErrorSummaryComponent<T> {
-  readonly signalFormErrors = input<ValidationError.WithField[]>()
+  readonly signalFormErrors = input<ValidationError.WithFieldTree[]>()
   readonly fieldMap = input<Map<keyof T, string>>()
   readonly regularErrorMessages = input<string[] | undefined>([])
 

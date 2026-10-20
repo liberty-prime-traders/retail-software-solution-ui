@@ -2,7 +2,7 @@ import {schema} from '@angular/forms/signals'
 import {ExpenseSearchParameters} from '../../../../api/cross-tier/expense/expense-search-parameters.model'
 import {ExpenseVoidedState} from '../../../../api/cross-tier/expense/expense-voided-state.enum'
 import {PaymentStatus} from '../../../../api/location-level/purchase/payment-status.enum'
-import {getToday, toLocaleDateString} from '../../../../utils/dates'
+import {getToday, getTomorrow, toLocaleDateString} from '../../../../utils/dates'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 
 export namespace ExpensesFilterFormDefinition {
@@ -24,15 +24,12 @@ export namespace ExpensesFilterFormDefinition {
   export const MAX_SOURCE_REFERENCES = 20
 
   export const createDefaultExpensesFilterFormModel = (): ExpensesFilterFormModel => {
-    const tomorrow = getToday()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-
     const sevenDaysAgo = getToday()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
 
     return {
       createdFrom: sevenDaysAgo,
-      createdBefore: tomorrow,
+      createdBefore: getTomorrow(),
       expenseDateFrom: null,
       expenseDateBefore: null,
       payeeContactIds: [],

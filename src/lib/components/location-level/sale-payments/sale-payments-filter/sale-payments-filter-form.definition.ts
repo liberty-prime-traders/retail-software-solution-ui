@@ -1,7 +1,7 @@
 import {schema} from '@angular/forms/signals'
 import {SalePaymentStatus} from '../../../../api/location-level/sale-payment/sale-payment-status.enum'
 import {SalePaymentSummaryParams} from '../../../../api/location-level/sale-payment/sale-payment-summary-params.model'
-import {getToday} from '../../../../utils/dates'
+import {getToday, getTomorrow} from '../../../../utils/dates'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 
 export namespace SalePaymentsFilterFormDefinition {
@@ -21,12 +21,9 @@ export namespace SalePaymentsFilterFormDefinition {
   export const MAX_SALE_REFERENCE_NUMBERS = 20
 
   export const createDefaultSalePaymentsFilterFormModel = (): SalePaymentsFilterFormModel => {
-    const tomorrow = getToday()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-
     return {
       recordedFrom: getToday(),
-      recordedBefore: tomorrow,
+      recordedBefore: getTomorrow(),
       paymentDateFrom: null,
       paymentDateBefore: null,
       contactIds: [],

@@ -2,7 +2,7 @@ import {schema} from '@angular/forms/signals'
 import {PaymentStatus} from '../../../../api/location-level/purchase/payment-status.enum'
 import {PurchaseSearchParameters} from '../../../../api/location-level/purchase/purchase-search-parameters.model'
 import {PurchaseStatus} from '../../../../api/location-level/purchase/purchase-status.enum'
-import {getToday} from '../../../../utils/dates'
+import {getToday, getTomorrow} from '../../../../utils/dates'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 
 export namespace PurchasesFilterFormDefinition {
@@ -22,15 +22,12 @@ export namespace PurchasesFilterFormDefinition {
   export const MAX_PURCHASE_REFERENCE_NUMBERS = 20
 
   export const createDefaultPurchasesFilterFormModel = (): PurchasesFilterFormModel => {
-    const tomorrow = getToday()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-
     const sevenDaysAgo = getToday()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
 
     return {
       recordedFrom: sevenDaysAgo,
-      recordedBefore: tomorrow,
+      recordedBefore: getTomorrow(),
       purchaseDateFrom: null,
       purchaseDateBefore: null,
       supplierIds: [],
