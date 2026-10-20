@@ -2,6 +2,7 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {inject, Injectable} from '@angular/core'
 import {environment} from '@environments/environment'
 import {Observable} from 'rxjs'
+import {NavigationScope} from '../../lib/components/welcome/top-navigation/navigation-scope.model'
 import {UserContextService} from '../../lib/utils/services/auth/user-context.service'
 import {SessionContextService} from '../../lib/utils/services/session-context.service'
 
@@ -21,7 +22,10 @@ export class RtsHttpInterceptor implements HttpInterceptor {
 
   private withAuthHeaders(req: HttpRequest<any>, token: string|null): HttpRequest<any> {
     const organization = this.sessionContextService.selectedOrganization()
-    const location = this.sessionContextService.selectedLocation()
+    let location = null
+    if (this.sessionContextService.selectedScope() === NavigationScope.LOCATION) {
+      location = this.sessionContextService.selectedLocation()
+    }
 
     return req.clone({
       setHeaders: {

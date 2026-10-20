@@ -47,3 +47,36 @@ export const toLocaleDate = (date: Date | string | null | undefined): Date | nul
   return new Date(Number(year), Number(month) - 1, Number(day))
 }
 
+const MILLISECONDS_PER_DAY = 86_400_000
+
+const dayLabelFormatter = new Intl.DateTimeFormat('en-US', {weekday: 'short', day: 'numeric', month: 'short'})
+const fullDayFormatter = new Intl.DateTimeFormat('en-US', {
+  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+})
+
+export const addDays = (date: string, days: number): string => {
+  const shifted = toLocaleDate(date)!
+  shifted.setDate(shifted.getDate() + days)
+  return toLocaleDateString(shifted)
+}
+
+// Rounded because local midnights a daylight-saving change apart are 23 or 25 hours apart.
+export const daysBetween = (from: string, before: string): number =>
+  Math.round((toLocaleDate(before)!.getTime() - toLocaleDate(from)!.getTime()) / MILLISECONDS_PER_DAY)
+
+/** Every date in `[from, before)`, ascending. */
+export const datesInRange = (from: string, before: string): string[] =>
+  Array.from({length: Math.max(daysBetween(from, before), 0)}, (_, offset) => addDays(from, offset))
+
+export const firstOfMonth = (date: string): string => `${date.slice(0, 8)}01`
+
+export const firstOfPreviousMonth = (date: string): string => firstOfMonth(addDays(firstOfMonth(date), -1))
+
+/** Weekday, day and month, e.g. `Tue, Mar 10`. */
+export const formatDayLabel = (date: string): string => dayLabelFormatter.format(toLocaleDate(date)!)
+
+export const formatFullDay = (date: string): string => fullDayFormatter.format(toLocaleDate(date)!)
+
+export const formatDayRange = (firstDay: string, lastDay: string): string =>
+  firstDay === lastDay ? formatDayLabel(firstDay) : `${formatDayLabel(firstDay)} to ${formatDayLabel(lastDay)}`
+

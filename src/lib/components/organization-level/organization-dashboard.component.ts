@@ -25,9 +25,15 @@ export class OrganizationDashboardComponent implements OnInit {
   private readonly organizationLaunchService = inject(OrganizationLaunchService)
   private readonly orgMembershipUserService = inject(OrgMembershipUserService)
 
-  private readonly organizationHomeMenuItems: MenuItem[] = [
-    {label: 'Summary', icon: 'pi pi-home', routerLink: 'summary'}
-  ]
+  private readonly organizationHomeMenuItems: Signal<MenuItem[]> = computed(() => [
+    {label: 'Summary', icon: 'pi pi-home', routerLink: 'summary'},
+    {
+      label: 'Daily Summary',
+      icon: 'pi pi-chart-bar',
+      routerLink: 'daily-summary',
+      visible: this.orgFeatureService.isChartOfAccountsEnabled()
+    }
+  ])
 
   private readonly orgAdminSettings: MenuItem[] = [
     {label: 'Locations', icon: 'pi pi-map-marker', routerLink: 'locations'},
@@ -110,11 +116,11 @@ export class OrganizationDashboardComponent implements OnInit {
 
   readonly menuItems: Signal<MenuItem[]> = computed(() => {
     if (!this.userContextService.isLibertyAdmin()) {
-      return this.organizationHomeMenuItems
+      return this.organizationHomeMenuItems()
     }
 
     const menuItems: MenuItem[] = [
-      {label: 'Home', items: this.organizationHomeMenuItems},
+      {label: 'Home', items: this.organizationHomeMenuItems()},
       {label: 'Products', items: this.productSettingsMenuItems},
       {separator: true},
       {label: 'Business Settings', items: this.businessSettingsMenuItems, expanded: true, toggleable: true},

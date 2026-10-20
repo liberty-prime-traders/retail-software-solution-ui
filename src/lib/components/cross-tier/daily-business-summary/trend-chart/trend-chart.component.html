@@ -1,0 +1,17 @@
+<div class="flex flex-column gap-2">
+  <div class="flex gap-3 align-items-center">
+    <span class="inline-flex align-items-center gap-2">
+      <span class="legend-swatch" [style.background]="netSalesColor"></span> Net sales
+    </span>
+    <span class="inline-flex align-items-center gap-2">
+      <span class="legend-swatch" [style.background]="netProfitColor"></span> Net profit
+    </span>
+  </div>
+  <p-chart type="bar"
+           height="18rem"
+           ariaLabel="Net sales and net profit by day"
+           [data]="data()"
+           [options]="options()"
+           (onDataSelect)="onDataSelect($event)">
+  </p-chart>
+</div>

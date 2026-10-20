@@ -1,4 +1,5 @@
 import {HttpClient, HttpParams} from '@angular/common/http'
+import {signal} from '@angular/core'
 import {isNil} from 'lodash-es'
 import {finalize, Subscription} from 'rxjs'
 import {catchError, tap} from 'rxjs/operators'
@@ -9,6 +10,9 @@ import {BaseStore} from './base.store'
 import {ServiceFacade} from './service.facade'
 
 export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFacade<RESPONSE> {
+
+  protected inFlight= signal<Subscription|null>(null)
+
   protected constructor(protected override readonly store: BaseStore<RESPONSE>, private readonly fetcher: HttpClient) {
     super(store)
   }
@@ -32,14 +36,14 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
       return undefined
     }
     const {id, params, callbacks} = apiRequest
-    this.startApiRequest()
     const httpParams = this.getHttpParams(params)
     const matrixParams = this.assembleMatrixParams(this.getMatrixParams(params))
     const pathParams = this.getPathParams(params)
     const pathSuffix = this.getPathSuffix(params)
     const suffix = pathSuffix ? `/${pathSuffix}` : ''
     const url = `${this.getBasePath(id)}${suffix}${pathParams}${matrixParams}`
-    return this.fetcher.get<RESPONSE>(url, {params: httpParams}).pipe(
+    this.startApiRequest()
+    const subscription = this.fetcher.get<RESPONSE>(url, {params: httpParams}).pipe(
       tap((body) => {
         this.finishSavingWithSuccess(body, id)
         callbacks?.onSuccess?.(body)
@@ -49,8 +53,9 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
         return this.setStoreError(error)
       }),
       finalize(() => this.finalizeApiRequest())
-    )
-      .subscribe()
+    ).subscribe()
+    this.inFlight.set(subscription)
+    return subscription
   }
 
   private shouldMakeCall() {
@@ -59,6 +64,13 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
 
   protected allowMultipleCalls(): boolean {
     return false
+  }
+
+  protected override startApiRequest() {
+    if (this.allowMultipleCalls()) {
+      this.inFlight()?.unsubscribe()
+    }
+    super.startApiRequest()
   }
 
   resetStoreAndClearCache() {

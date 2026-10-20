@@ -37,10 +37,14 @@ import {
 } from '../../lib/components/organization-level/stock-movement-reason/stock-movement-reason.component'
 import {FundTransferComponent} from '../../lib/components/organization-level/fund-transfer/fund-transfer.component'
 import {LoanComponent} from '../../lib/components/organization-level/loan/loan.component'
+import {
+  DailyBusinessSummaryComponent
+} from '../../lib/components/cross-tier/daily-business-summary/daily-business-summary.component'
 import {FiscalPeriodsComponent} from '../../lib/components/organization-level/fiscal-periods/fiscal-periods.component'
 
 export const orgManagementRoutes: Routes = [
   {path: 'summary', component: OrganizationSummaryComponent},
+  {path: 'daily-summary', component: DailyBusinessSummaryComponent},
   {path: 'product-category', component: ProductCategoryComponent},
   {path: 'job-title', component: JobTitleComponent},
   {path: 'units', component: UnitTreeComponent},

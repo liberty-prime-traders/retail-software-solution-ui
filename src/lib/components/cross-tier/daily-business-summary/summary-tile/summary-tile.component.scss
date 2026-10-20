@@ -1,0 +1,14 @@
+// The host is the flex item of the tile row, so it carries the sizing and stretches to the row's tallest tile.
+:host {
+  display: flex;
+  flex: 1 1 11rem;
+}
+
+p-card {
+  display: flex;
+  flex: 1;
+}
+
+:host ::ng-deep .p-card {
+  flex: 1;
+}
