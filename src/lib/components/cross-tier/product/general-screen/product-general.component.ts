@@ -9,6 +9,7 @@ import {Message} from 'primeng/message'
 import {TableModule} from 'primeng/table'
 import {ProductDetail} from '../../../../api/cross-tier/product/product-detail.model'
 import {SchemaLevel} from '../../../../api/platform-level/table-registry/schema-level.enum'
+import {UserContextService} from '../../../../utils/services/auth/user-context.service'
 import {SessionContextService} from '../../../../utils/services/session-context.service'
 import {
   OpeningStockGridComponent
@@ -48,11 +49,13 @@ export class ProductGeneralComponent<PRODUCT extends ProductDetail> extends HasF
 
   private readonly productFilterService = inject(ProductFilterService<PRODUCT>)
   readonly sessionContextService = inject(SessionContextService)
+  private readonly userContextService = inject(UserContextService)
 
   protected override readonly applyFilters$ = this.productFilterService.applyFilters$
   readonly searchValueFormControl = this.productFilterService.filterForm.get('searchText')! as FormControl<string>
   private readonly advancedFilterApplied$ = this.productFilterService.advancedFilterInUse$
   readonly advancedFilterApplied = toSignal(this.advancedFilterApplied$, {initialValue: false})
+  readonly showBulkImport = this.userContextService.isLibertyAdmin
 
   readonly SchemaLevel = SchemaLevel
   readonly schemaLevel = input.required<SchemaLevel>()
