@@ -7,5 +7,4 @@ export enum LocalStorageKey {
   CURRENCY = 'currency',
   GOOGLE_CREDENTIAL = 'googleCredential',
   PRINT_LAYOUT = 'printLayout',
-  SALES_FILTER_CREATED = 'salesFilterCreated',
 }
