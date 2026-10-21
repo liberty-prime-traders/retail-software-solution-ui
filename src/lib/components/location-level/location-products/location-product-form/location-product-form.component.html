@@ -25,7 +25,7 @@
 
   <rts-form-field label="Stock Balance">
     <div class="flex gap-2 align-items-center">
-      {{ originalLocationProduct()?.stockBalance | nullishToZero }} {{ originalLocationProduct()?.baseUnit }}s
+      {{ originalLocationProduct()?.stockBalanceBreakdown | nullishToZero }}
 
       <button pButton
               type="button"

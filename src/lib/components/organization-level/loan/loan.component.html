@@ -1,0 +1,103 @@
+@if (formIsVisible()) {
+  <div class="flex flex-column gap-4">
+    <div class="flex justify-content-between align-items-center">
+      <span class="font-bold">Add Loan</span>
+      <button pButton (click)="formIsVisible.set(false)" severity="info" class="align-self-end">
+        <i class="pi pi-times"></i> Cancel
+      </button>
+    </div>
+    <rts-loan-form (loanCreated)="refreshAfterWrite()"/>
+  </div>
+
+} @else {
+  <div class="flex flex-column flex-grow-1" id="loans" rtsAutoStretch="loans">
+    <p-table [value]="loans()"
+             [loading]="loading()"
+             [lazy]="true"
+             rowExpandMode="single"
+             dataKey="id"
+             scrollHeight="flex"
+             [scrollable]="true"
+             [rows]="20"
+             [virtualScroll]="true"
+             [virtualScrollItemSize]="55"
+             (onLazyLoad)="onLazyLoad($event)">
+
+      <ng-template #caption>
+        <div class="flex justify-content-between align-items-center">
+          <h3 class="font-bold">Loans</h3>
+
+          <p-date-picker selectionMode="range"
+                         placeholder="Created between"
+                         appendTo="body"
+                         class="w-15rem"
+                         [showIcon]="true"
+                         [readonlyInput]="true"
+                         [ngModel]="dateRange()"
+                         (ngModelChange)="onDateRangeChange($event)">
+          </p-date-picker>
+
+          <button pButton rounded severity="secondary" (click)="formIsVisible.set(true)">
+            + Add Loan
+          </button>
+        </div>
+      </ng-template>
+
+      <ng-template #header>
+        <tr>
+          <th>Reference</th>
+          <th>Lender</th>
+          <th>Date</th>
+          <th>Received Into</th>
+          <th>Amount</th>
+          <th>Repaid</th>
+          <th>Outstanding</th>
+          <th>Status</th>
+          <th style="width: 5rem"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-loan let-expanded="expanded">
+        @if (loan?.placeholder) {
+          <tr>
+            <td style="height: 55px" colspan="9">
+              <p-skeleton class="h-full"/>
+            </td>
+          </tr>
+        } @else {
+          <tr style="height: 55px" [ngClass]="{'expanded-row': expanded, 'strike-through': loan.void}">
+            <td>{{ loan.referenceNumber | nullSafe }}</td>
+            <td>{{ loan.lender.displayName }}</td>
+            <td>{{ loan.loanDate }}</td>
+            <td>{{ loan.assetAccount.label }}</td>
+            <td class="money">{{ loan.amount | currency }}</td>
+            <td class="money">{{ loan.amountRepaid | currency }}</td>
+            <td class="money">{{ loan.outstanding | currency }}</td>
+            <td>
+              <p-tag [value]="loan.status | prettifyEnum"
+                     [severity]="loan.status === LoanStatus.OPEN ? 'warn' : loan.status === LoanStatus.SETTLED ? 'success' : 'danger'">
+              </p-tag>
+            </td>
+            <td>
+              <button pButton rounded severity="secondary" [pRowToggler]="loan">
+                <i [class]="expanded ? 'pi pi-times' : 'pi pi-pen-to-square'"></i>
+              </button>
+            </td>
+          </tr>
+        }
+      </ng-template>
+
+      <ng-template #expandedrow let-loan>
+        <tr>
+          <td colspan="9" class="filled-background">
+            <rts-loan-expanded-row [loan]="loan" (changed)="refreshAfterWrite()"/>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr rts-empty-row [colspan]="9" message="No loans were found"></tr>
+      </ng-template>
+    </p-table>
+  </div>
+}

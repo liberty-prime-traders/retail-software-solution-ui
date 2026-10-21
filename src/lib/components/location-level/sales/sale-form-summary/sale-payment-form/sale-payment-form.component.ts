@@ -23,6 +23,7 @@ import {SalePaymentFormDefinition} from '../../form-utils/sale-payment-form-defi
 @Component({
   selector: 'rts-sale-payment-form',
   templateUrl: 'sale-payment-form.component.html',
+  styleUrl: 'sale-payment-form.component.scss',
   imports: [
     LoadingContainerComponent,
     SelectButton,
@@ -64,7 +65,11 @@ export class SalePaymentFormComponent implements OnInit {
     if (preselectedOverride.length > 0) {
       return preselectedOverride.concat(this.otherPaymentOption)
     }
-    return this.paymentOptions().slice(0, 3).concat(this.otherPaymentOption)
+    const availableOptions = this.paymentOptions()
+    if (availableOptions.length > 3) {
+      return availableOptions.slice(0, 3).concat(this.otherPaymentOption)
+    }
+    return availableOptions
   })
 
   readonly hiddenPaymentOptions: Signal<MenuItem[]> = computed(() => {

@@ -1,0 +1,85 @@
+<div id="fund-transfer-form"  rtsAutoStretch="fund-transfer-form">
+  <div class="flex flex-column gap-2 filled-background" >
+    <rts-form-field [required]="true" label="Type" for="type">
+      <p-select id="type"
+                class="flex-grow-1"
+                optionLabel="label"
+                optionValue="value"
+                [options]="FundMovementType | enumToDropdown"
+                [formField]="fundTransferForm.type">
+      </p-select>
+    </rts-form-field>
+
+    <rts-loading-container [loading]="accountTreesLoading()">
+      @if (isTransfer()) {
+        <rts-form-field [required]="true" label="From Account" for="fromAccount">
+          <p-tree-select id="fromAccount"
+                         class="flex-grow-1"
+                         appendTo="body"
+                         placeholder="Select an Account"
+                         [options]="fundMovementTrees()"
+                         [ngModel]="fromAccount()"
+                         (ngModelChange)="onFromAccountChange($event)">
+          </p-tree-select>
+        </rts-form-field>
+
+        <rts-form-field [required]="true" label="To Account" for="toAccount">
+          <p-tree-select id="toAccount"
+                         class="flex-grow-1"
+                         appendTo="body"
+                         placeholder="Select an Account"
+                         [options]="fundMovementTrees()"
+                         [ngModel]="toAccount()"
+                         (ngModelChange)="onToAccountChange($event)">
+          </p-tree-select>
+        </rts-form-field>
+      } @else {
+        <rts-form-field [required]="true" [label]="accountLabel()" for="account">
+          <p-tree-select id="account"
+                         class="flex-grow-1"
+                         appendTo="body"
+                         placeholder="Select an Account"
+                         [options]="fundMovementTrees()"
+                         [ngModel]="account()"
+                         (ngModelChange)="onAccountChange($event)">
+          </p-tree-select>
+        </rts-form-field>
+      }
+    </rts-loading-container>
+
+    <rts-form-field [required]="true" label="Amount" for="amount">
+      <p-input-number inputId="amount"
+                      mode="currency"
+                      currency="KES"
+                      class="flex-grow-1"
+                      [min]="0"
+                      [formField]="fundTransferForm.amount">
+      </p-input-number>
+    </rts-form-field>
+
+    <rts-form-field [required]="true" label="Date" for="movementDate">
+      <p-date-picker inputId="movementDate"
+                     class="flex-grow-1"
+                     appendTo="body"
+                     [showIcon]="true"
+                     [maxDate]="today"
+                     [formField]="fundTransferForm.movementDate">
+      </p-date-picker>
+    </rts-form-field>
+
+    <rts-form-field label="Note" for="note">
+      <input id="note" class="flex-grow-1" pInputText [formField]="fundTransferForm.note"/>
+    </rts-form-field>
+
+    <rts-forms-buttons [disableReset]="!fundTransferForm().dirty()"
+                       [disableSave]="fundTransferForm().invalid() || !fundTransferForm().dirty()"
+                       [hideDelete]="true"
+                       [signalForm]="fundTransferForm()"
+                       [fieldMap]="fieldMap"
+                       [processingStatus]="processingStatus()"
+                       [failureMessages]="failureMessages()"
+                       (save)="save()"
+                       (resetAction)="resetForm()">
+    </rts-forms-buttons>
+  </div>
+</div>

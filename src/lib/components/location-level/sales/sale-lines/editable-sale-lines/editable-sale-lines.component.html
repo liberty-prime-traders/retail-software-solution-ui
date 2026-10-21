@@ -22,7 +22,7 @@
 
             @if (line.quantityAvailable != null) {
               <small class="info-message">
-                Available: {{ line.quantityAvailable }} {{ line.baseUnitId | fullUnitDescription : line.quantityAvailable }}
+                Available: {{ line.quantityAvailableBreakdown }}
               </small>
             }
           </div>

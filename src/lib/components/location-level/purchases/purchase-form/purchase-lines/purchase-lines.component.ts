@@ -21,12 +21,14 @@ import {
   ConversionContextPipe,
   UnitConversionDescriptorPipe,
   UnitConvertPipe,
-  UnitCurrencyPipe
+  UnitCurrencyPipe,
+  UnitFactorResolver
 } from '../../../../../api/organization-level/unit-conversion/pipes/unit-convert.pipe'
 import {
   UnitConversionGraphService
 } from '../../../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
 import {ProductLabelPipe} from '../../../../../utils/pipes/product-label.pipe'
+import {RoundNumbersPipe} from '../../../../../utils/pipes/round-numbers.pipe'
 import {EmptyRowComponent} from '../../../../reusable/empty-row/empty-row.component'
 import {PurchaseProductLookupComponent} from '../../../location-product-lookup/purchase-product-lookup/purchase-product-lookup.component'
 import {PurchaseFormContext} from '../form-utils/purchase-form-context'
@@ -52,11 +54,13 @@ import PurchaseLineModel = PurchaseLineFormDefinition.PurchaseLineModel
     UnitCurrencyPipe,
     UnitConversionDescriptorPipe,
     ConversionContextPipe,
+    UnitFactorResolver,
     UnitCurrencyPipe,
     UnitCurrencyPipe,
     UnitConversionDescriptorPipe,
     PurchaseProductLookupComponent,
-    EmptyRowComponent
+    EmptyRowComponent,
+    RoundNumbersPipe
   ]
 })
 export class PurchaseLinesComponent {
@@ -108,7 +112,7 @@ export class PurchaseLinesComponent {
 
   completeEditingLine(line: PurchaseLineModel) {
     if(this.isOrderedOrPartiallyDelivered()) {
-      this.cancelLines()
+      this.cancelLine(line)
 
     } else {
       const quantityExpected = line.quantityOrdered - (line.quantityCanceled ?? 0)
@@ -149,11 +153,27 @@ export class PurchaseLinesComponent {
     }
   }
 
-  cancelLines() {
+  clearCanceledQuantity(line: PurchaseLineModel) {
+    line.quantityCanceled = 0
+  }
+
+  cancelLine(editedLine: PurchaseLineModel) {
     const payload = this.purchaseFormContext.getSavableFormValue()
-    const lines: PurchaseLineCancelDto[] = this.purchaseFormContext.purchaseLinesArray().map(line =>
-      ({purchaseLineId: line.id, quantityCanceled: line.quantityCanceled})
-    )
+    const originalLine = this.linesBeingEdited.get(editedLine.referenceNumber)
+    const cancellationUnchanged = originalLine?.quantityCanceled === editedLine.quantityCanceled
+      && originalLine?.cancelUnitId === editedLine.cancelUnitId
+    if (cancellationUnchanged) {
+      this.removeLineFromEditing(editedLine)
+      return
+    }
+    const lines: PurchaseLineCancelDto[] = [editedLine]
+      .filter(line => line.quantityCanceled && line.quantityCanceled > 0)
+      .map(line => ({
+        purchaseLineId: line.id,
+        quantityCanceled: line.quantityCanceled,
+        unitId: line.cancelUnitId
+      }))
+
     if (payload.id && lines.length > 0) {
       this.purchaseService.cancelLines(
         payload.id as EntityId,

@@ -11,6 +11,8 @@ export class AccountTreesService extends FetchService<AccountsTreesForSelection>
   readonly recoverable = computed(() => this.selectFirst()?.recoverable ?? [])
   readonly paymentMethods = computed(() => this.selectFirst()?.paymentMethods ?? [])
   readonly expenseTypes = computed(() => this.selectFirst()?.expenseTypes ?? [])
+  readonly fundMovements = computed(() => this.selectFirst()?.fundMovements ?? [])
+  readonly loans = computed(() => this.selectFirst()?.loans ?? [])
 
   constructor(protected override readonly store: AccountTreesStore) {
     super(store, inject(HttpClient))

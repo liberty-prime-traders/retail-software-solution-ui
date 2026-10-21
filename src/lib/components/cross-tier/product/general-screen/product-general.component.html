@@ -45,12 +45,14 @@
 
             @if (schemaLevel() === SchemaLevel.ORGANIZATION) {
               <div ngProjectAs="[gridActions]" class="flex gap-4">
-                <button pButton (click)="toggleBulkImport()"
-                        [disabled]="showAdvancedFilter()"
-                        rounded severity="secondary">
-                  <i class="pi pi-upload"></i>
-                  Bulk Import Products
-                </button>
+                @if (showBulkImport()) {
+                  <button pButton (click)="toggleBulkImport()"
+                          [disabled]="showAdvancedFilter()"
+                          rounded severity="secondary">
+                    <i class="pi pi-upload"></i>
+                    Bulk Import Products
+                  </button>
+                }
 
                 <button pButton (click)="showScreenThatAddsNewProduct()"
                         [disabled]="showAdvancedFilter()"

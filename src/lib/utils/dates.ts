@@ -7,6 +7,12 @@ export const getToday = (): Date => {
   return dateObj
 }
 
+export const getTomorrow = (): Date => {
+  const dateObj = getToday()
+  dateObj.setDate(dateObj.getDate() + 1)
+  return dateObj
+}
+
 export const toLocaleDateString = (date: string | Date | null): string => {
   if (!date) {
     return ''

@@ -11,6 +11,10 @@ export class ContactService extends BaseService<Contact> {
     this.selectAll().filter(contact => contact.contactTypes.includes(ContactType.SUPPLIER))
   )
 
+  readonly lenders = computed(() =>
+    this.selectAll().filter(contact => contact.contactTypes.includes(ContactType.LENDER))
+  )
+
   readonly customers = computed(() =>
     this.selectAll().filter(contact => contact.contactTypes.includes(ContactType.CUSTOMER))
   )

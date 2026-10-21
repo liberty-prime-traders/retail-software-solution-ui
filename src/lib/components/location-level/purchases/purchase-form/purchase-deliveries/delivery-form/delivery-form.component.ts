@@ -1,6 +1,6 @@
 import {Component, computed, inject, output, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms'
-import {form, FormField, required} from '@angular/forms/signals'
+import {form, FormField, maxDate, required} from '@angular/forms/signals'
 import {ButtonDirective} from 'primeng/button'
 import {DatePicker} from 'primeng/datepicker'
 import {InputNumber} from 'primeng/inputnumber'
@@ -13,18 +13,17 @@ import {
   AlternativeUnitsFinderPipe
 } from '../../../../../../api/organization-level/unit-conversion/pipes/alternative-units-finder.pipe'
 import {
-  UnitDescriptionPipe
-} from '../../../../../../api/organization-level/unit-conversion/pipes/unit-description.pipe'
-import {
   ConversionContextPipe,
   UnitConversionDescriptorPipe,
   UnitConvertPipe,
   UnitCurrencyPipe,
   UnitFactorResolver
 } from '../../../../../../api/organization-level/unit-conversion/pipes/unit-convert.pipe'
+import {getTomorrow} from '../../../../../../utils/dates'
 import {ProductLabelPipe} from '../../../../../../utils/pipes/product-label.pipe'
 import {ZonedDatesService} from '../../../../../../utils/services/zoned-dates.service'
 import {BaseFormComponent} from '../../../../../reusable/base-form.component'
+import {ErrorSummaryComponent} from '../../../../../reusable/error-summary/error-summary.component'
 import {FormFieldLayout} from '../../../../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../../../../reusable/form-field/form-field.component'
 import {LoadingContainerComponent} from '../../../../../reusable/loading-container/loading-container.component'
@@ -47,12 +46,12 @@ import {PurchaseFormContext} from '../../form-utils/purchase-form-context'
     ProductLabelPipe,
     AlternativeUnitsFinderPipe,
     Select,
-    UnitDescriptionPipe,
     UnitConvertPipe,
     ConversionContextPipe,
     UnitCurrencyPipe,
     UnitConversionDescriptorPipe,
-    UnitFactorResolver
+    UnitFactorResolver,
+    ErrorSummaryComponent
   ]
 })
 export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliveryService> {
@@ -67,6 +66,7 @@ export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliverySer
   readonly deliverySaved = output()
 
   readonly FormFieldDirection = FormFieldLayout
+  readonly PurchaseDeliveryFormDefinition = PurchaseDeliveryFormDefinition
 
   private readonly deliveryFormValue = signal<PurchaseDeliveryFormDefinition.DeliveryFormModel>(
     PurchaseDeliveryFormDefinition.createDefault(
@@ -76,6 +76,7 @@ export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliverySer
 
   readonly deliveryForm = form(this.deliveryFormValue, s => {
     required(s.deliveredAt)
+    maxDate(s.deliveredAt, getTomorrow())
   })
 
   readonly deliveryLinesArray = computed(() => this.deliveryForm.lines().value())
@@ -99,14 +100,8 @@ export class DeliveryFormComponent extends BaseFormComponent<PurchaseDeliverySer
     })
   }
 
-  clearQuantities(purchaseLineId: string, unitId: string) {
-    const lines = this.deliveryFormValue().lines
-    const updatedLines = lines.map(line => {
-      if (line.purchaseLineId === purchaseLineId) {
-        return {...line, unitId, quantityDelivered: 0, unitCost: 0}
-      }
-      return line
-    })
-    this.deliveryFormValue.update(form => ({...form, lines: updatedLines}))
+  clearQuantities(deliveryLine: PurchaseDeliveryFormDefinition.DeliveryLineModel) {
+    deliveryLine.quantityDelivered = 0
+    deliveryLine.unitCost = 0
   }
 }

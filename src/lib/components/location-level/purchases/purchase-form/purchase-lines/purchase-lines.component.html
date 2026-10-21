@@ -123,34 +123,37 @@
           <td>
             <p-cell-editor>
               <ng-template #input>
-                <p-input-number [min]="0"
-                               [max]="purchaseLine.quantityYetToBeDelivered"
-                               [(ngModel)]="purchaseLine.quantityCanceled">
-                </p-input-number>
+                @let cancelUnitFactor = purchaseLine.cancelUnitId | unitFactorResolver : purchaseLine.baseUnitId;
+                @let effectiveFactor = (purchaseLine.conversionFactor ?? 1) / cancelUnitFactor;
+
+                <div class="flex gap-2">
+                  <p-select appendTo="body"
+                            [options]="purchaseLine.unitId | alternativeUnitsFinder"
+                            (ngModelChange)="clearCanceledQuantity(purchaseLine)"
+                            [(ngModel)]="purchaseLine.cancelUnitId">
+                  </p-select>
+                  <p-input-number [min]="0"
+                                  [max]="purchaseLine.quantityYetToBeDelivered * effectiveFactor | round : 2"
+                                  [maxFractionDigits]="2"
+                                  [(ngModel)]="purchaseLine.quantityCanceled">
+                  </p-input-number>
+                </div>
+
+                <small class="block info-message">
+                  {{
+                    purchaseLine.cancelUnitId
+                      | buildConversionContext : purchaseLine : purchaseLine.quantityCanceled
+                      | convertToTargetUnitForDisplay
+                  }}
+                </small>
               </ng-template>
               <ng-template #output>
-                {{ purchaseLine.quantityCanceled }}
+                {{ purchaseLine.quantityCanceledBreakdown }}
               </ng-template>
             </p-cell-editor>
-            <small class="block info-message">
-              {{
-                purchaseLine.unitId
-                  | buildConversionContext : purchaseLine : purchaseLine.quantityCanceled
-                  | convertToTargetUnitForDisplay
-              }}
-            </small>
           </td>
 
-          <td>
-            {{ purchaseLine.quantityDelivered }}
-            <small class="block info-message">
-              {{
-                purchaseLine.unitId
-                  | buildConversionContext : purchaseLine : purchaseLine.quantityDelivered
-                  | convertToTargetUnitForDisplay
-              }}
-            </small>
-          </td>
+          <td>{{ purchaseLine.quantityDeliveredBreakdown }}</td>
         }
 
         <td>{{ purchaseLine.lineTotal | currency }}</td>

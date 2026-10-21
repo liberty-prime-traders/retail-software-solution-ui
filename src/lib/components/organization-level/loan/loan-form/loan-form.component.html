@@ -1,0 +1,62 @@
+<div id="loan-form" rtsAutoStretch="loan-form">
+  <div class="flex flex-column gap-2 filled-background">
+    <rts-form-field [required]="true" label="Lender" for="lender">
+      <p-select id="lender"
+                class="flex-grow-1"
+                optionLabel="fullName"
+                optionValue="referenceNumber"
+                placeholder="Select a lender"
+                [filter]="true"
+                [options]="lenders()"
+                [formField]="loanForm.lenderContactReference">
+      </p-select>
+    </rts-form-field>
+
+    <rts-loading-container [loading]="accountTreesLoading()">
+      <rts-form-field [required]="true" label="Received Into Account" for="assetAccount">
+        <p-tree-select id="assetAccount"
+                       class="flex-grow-1"
+                       appendTo="body"
+                       placeholder="Select an Account"
+                       [options]="loanTrees()"
+                       [ngModel]="assetAccount()"
+                       (ngModelChange)="onAssetAccountChange($event)">
+        </p-tree-select>
+      </rts-form-field>
+    </rts-loading-container>
+
+    <rts-form-field [required]="true" label="Amount" for="amount">
+      <p-input-number inputId="amount"
+                      mode="currency"
+                      currency="KES"
+                      class="flex-grow-1"
+                      [min]="0"
+                      [formField]="loanForm.amount">
+      </p-input-number>
+    </rts-form-field>
+
+    <rts-form-field [required]="true" label="Date" for="loanDate">
+      <p-date-picker inputId="loanDate"
+                     class="flex-grow-1"
+                     appendTo="body"
+                     [showIcon]="true"
+                     [formField]="loanForm.loanDate">
+      </p-date-picker>
+    </rts-form-field>
+
+    <rts-form-field label="Note" for="note">
+      <input id="note" class="flex-grow-1" pInputText [formField]="loanForm.note"/>
+    </rts-form-field>
+
+    <rts-forms-buttons [disableReset]="!loanForm().dirty()"
+                       [disableSave]="loanForm().invalid() || !loanForm().dirty()"
+                       [hideDelete]="true"
+                       [signalForm]="loanForm()"
+                       [fieldMap]="fieldMap"
+                       [processingStatus]="processingStatus()"
+                       [failureMessages]="failureMessages()"
+                       (save)="save()"
+                       (resetAction)="resetForm()">
+    </rts-forms-buttons>
+  </div>
+</div>

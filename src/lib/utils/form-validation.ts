@@ -1,10 +1,12 @@
 import {
+  MaxDateValidationError,
   MaxLengthValidationError,
   MaxValidationError,
   MinLengthValidationError,
   MinValidationError,
   ValidationError
 } from '@angular/forms/signals'
+import {getToday, toLocaleDateString} from './dates'
 
 export const toErrorMessages = <T> (
   fieldMap: Map<keyof T, string>,
@@ -42,6 +44,9 @@ export const toMessage = (error: ValidationError): string => {
     case 'maxLength':
       const maxLength = error as MaxLengthValidationError
       return `Cannot exceed ${maxLength.maxLength} item(s).`
+    case 'maxDate':
+      const maxDate = error as MaxDateValidationError
+      return `Cannot exceed ${toLocaleDateString(maxDate.maxDate)}.`
     default:
       return error.kind ?? 'Validation Error'
   }

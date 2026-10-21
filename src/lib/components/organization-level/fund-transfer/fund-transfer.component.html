@@ -1,0 +1,118 @@
+@if (formIsVisible()) {
+  <div class="flex flex-column gap-4">
+    <div class="flex justify-content-between align-items-center">
+      <span class="font-bold">Add Fund Transfer</span>
+      <button pButton (click)="formIsVisible.set(false)" severity="info" class="align-self-end">
+        <i class="pi pi-times"></i> Cancel
+      </button>
+    </div>
+    <rts-fund-transfer-form (fundMovementCreated)="refreshAfterWrite()"/>
+  </div>
+
+} @else {
+  <div class="flex flex-column flex-grow-1" id="fund-transfers" rtsAutoStretch="fund-transfers">
+    <p-table [value]="fundMovements()"
+             [loading]="loading()"
+             [lazy]="true"
+             dataKey="id"
+             scrollHeight="flex"
+             [scrollable]="true"
+             [rows]="20"
+             [virtualScroll]="true"
+             [virtualScrollItemSize]="55"
+             (onLazyLoad)="onLazyLoad($event)">
+
+      <ng-template #caption>
+        <div class="flex justify-content-between align-items-center">
+          <h3 class="font-bold">Fund Transfers</h3>
+
+          <p-date-picker selectionMode="range"
+                         placeholder="Created between"
+                         appendTo="body"
+                         class="w-15rem"
+                         [showIcon]="true"
+                         [readonlyInput]="true"
+                         [ngModel]="dateRange()"
+                         (ngModelChange)="onDateRangeChange($event)">
+          </p-date-picker>
+
+          <button pButton rounded severity="secondary" (click)="formIsVisible.set(true)">
+            + Add Fund Transfer
+          </button>
+        </div>
+      </ng-template>
+
+      <ng-template #header>
+        <tr>
+          <th style="width: 3rem"></th>
+          <th>Reference</th>
+          <th>Type</th>
+          <th>Date</th>
+          <th>Debit Account</th>
+          <th>Credit Account</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Recorded By</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-fundMovement let-expanded="expanded">
+        @if (fundMovement?.placeholder) {
+          <tr>
+            <td style="height: 55px" colspan="9">
+              <p-skeleton class="h-full"/>
+            </td>
+          </tr>
+        } @else {
+          <tr style="height: 55px" [ngClass]="{'expanded-row': expanded, 'strike-through': fundMovement.void}">
+            <td>
+              <button pButton type="button" text rounded [pRowToggler]="fundMovement">
+                <i [class]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+              </button>
+            </td>
+            <td>{{ fundMovement.referenceNumber | nullSafe }}</td>
+            <td>{{ fundMovement.type | prettifyEnum }}</td>
+            <td>{{ fundMovement.movementDate }}</td>
+            <td>{{ fundMovement.debitAccount.label }}</td>
+            <td>{{ fundMovement.creditAccount.label }}</td>
+            <td class="money">{{ fundMovement.amount | currency }}</td>
+            <td>
+              @if (fundMovement.void) {
+                <p-tag value="Voided" severity="danger"/>
+              } @else {
+                <p-tag value="Active" severity="success"/>
+              }
+            </td>
+            <td>{{ fundMovement.createdBy }}</td>
+          </tr>
+        }
+      </ng-template>
+
+      <ng-template #expandedrow let-fundMovement>
+        <tr>
+          <td colspan="9" class="filled-background px-4">
+            <div class="flex flex-column gap-3">
+              <div><b>Note:</b> {{ fundMovement.note | nullSafe }}</div>
+
+              @if (fundMovement.void) {
+                <div>
+                  <b>Voided on</b> {{ fundMovement.void.voidDate }} by {{ fundMovement.void.voidedBy }}.
+                  <b>Reason:</b> {{ fundMovement.void.reason | nullSafe }}
+                </div>
+              } @else {
+                <rts-fund-transfer-void-form [fundMovement]="fundMovement"
+                                             (voided)="refreshAfterWrite()"
+                                             (cancelled)="refreshAfterWrite()">
+                </rts-fund-transfer-void-form>
+              }
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr rts-empty-row [colspan]="9" message="No fund transfers were found"></tr>
+      </ng-template>
+    </p-table>
+  </div>
+}

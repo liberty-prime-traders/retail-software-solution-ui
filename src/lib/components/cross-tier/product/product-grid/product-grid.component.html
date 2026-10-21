@@ -63,8 +63,8 @@
             <td>{{ product?.baseUnit | nullSafe }}</td>
 
             @if (isLocationLevel()) {
-              <td>{{ product?.stockBalance | nullishToZero }}</td>
-              <td>{{ product?.openingStockQuantity | nullishToZero }}</td>
+              <td>{{ product?.stockBalanceBreakdown | nullishToZero }}</td>
+              <td>{{ product?.openingStockBreakdown | nullishToZero }}</td>
               <td>{{ product?.lastPurchasePrice | nullishToZero | currency }}</td>
             }
 

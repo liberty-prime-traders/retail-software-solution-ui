@@ -4,5 +4,6 @@ export enum ContactType {
   SUPPLIER = 'SUPPLIER',
   EMPLOYEE = 'EMPLOYEE',
   GOVERNMENT = 'GOVERNMENT',
+  LENDER = 'LENDER',
   OTHER = 'OTHER'
 }

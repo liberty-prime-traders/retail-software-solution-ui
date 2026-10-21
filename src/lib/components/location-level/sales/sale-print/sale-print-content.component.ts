@@ -43,7 +43,7 @@ export class SalePrintContentComponent {
   )
 
   readonly lines = computed(() =>
-    this.sale().saleLines.map(line => ({...line, hasDiscount: false})) //line.netUnitPrice < line.unitPrice}))
+    this.sale().saleLines.map(line => ({...line, hasDiscount: line.netUnitPrice < line.unitPrice}))
   )
 
   readonly isCompactReceipt = computed(() =>

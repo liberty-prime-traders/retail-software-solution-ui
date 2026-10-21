@@ -1,0 +1,89 @@
+<div class="flex flex-column gap-3">
+  <div class="flex justify-content-between gap-4">
+    <div class="flex gap-2 flex-wrap">
+      <span><b>Recorded by:</b> {{ loan().createdBy }}</span>
+      @if (loan().note) {
+        <span>{{ loan().note | nullSafe }}</span>
+      }
+
+      @if (loan().void; as loanVoid) {
+        <span><b>Voided on</b> {{ loanVoid.voidDate }} by {{ loanVoid.voidedBy }}.</span>
+        <span><b>Void Reason:</b> {{ loanVoid.reason | nullSafe }}</span>
+      }
+    </div>
+
+    @if (!voidingLoanIsVisible()) {
+      <button class="w-fit" pButton type="button" severity="danger" (click)="voidingLoanIsVisible.set(true)">
+        <i class="pi pi-ban"></i> Void Loan
+      </button>
+    }
+  </div>
+
+
+  @if (loan().status === LoanStatus.OPEN) {
+    @if (voidingLoanIsVisible()) {
+      <rts-loan-void-form [loan]="loan()"
+                          (voided)="changed.emit()"
+                          (cancelled)="voidingLoanIsVisible.set(false)">
+      </rts-loan-void-form>
+    } @else {
+      <p-panel header="Record Payment" [toggleable]="true" [collapsed]="true">
+        <rts-loan-repayment-form [loan]="loan()" (repaymentRecorded)="changed.emit()"/>
+      </p-panel>
+    }
+  }
+
+  <p-panel header="Repayments" [toggleable]="true" [collapsed]="true">
+    <p-table #repaymentsTable [value]="loan().repayments" dataKey="id" rowExpandMode="single">
+      <ng-template #header>
+        <tr>
+          <th style="width: 3rem"></th>
+          <th>Reference #</th>
+          <th>Date</th>
+          <th>Paid From</th>
+          <th>Amount</th>
+          <th>Note</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-repayment let-expanded="expanded">
+        <tr [ngClass]="{'expanded-sub-row': expanded, 'strike-through': repayment.void}">
+          <td>
+            <button pButton type="button" text rounded [pRowToggler]="repayment">
+              <i [class]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+            </button>
+          </td>
+          <td>{{ repayment.referenceNumber }}</td>
+          <td>{{ repayment.repaymentDate }}</td>
+          <td>{{ repayment.assetAccount.label }}</td>
+          <td class="money">{{ repayment.amount | currency }}</td>
+          <td>{{ repayment.note | nullSafe }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template #expandedrow let-repayment>
+        <tr>
+          <td colspan="6" class="filled-background">
+            @if (repayment.void) {
+              <div>
+                <b>Voided on</b> {{ repayment.void.voidDate }} by {{ repayment.void.voidedBy }}.
+                <b>Reason:</b> {{ repayment.void.reason | nullSafe }}
+              </div>
+            } @else if (loan().status === LoanStatus.VOIDED) {
+              <span>This repayment was reversed when the loan was voided.</span>
+            } @else {
+              <rts-loan-repayment-void-form [repayment]="repayment"
+                                            (voided)="changed.emit()"
+                                            (cancelled)="repaymentsTable.toggleRow(repayment)">
+              </rts-loan-repayment-void-form>
+            }
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr rts-empty-row [colspan]="6" message="No repayments recorded"></tr>
+      </ng-template>
+    </p-table>
+  </p-panel>
+</div>

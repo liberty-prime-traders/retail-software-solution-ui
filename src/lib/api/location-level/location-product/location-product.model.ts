@@ -7,5 +7,7 @@ export interface LocationProduct extends ProductDetail {
   minStockLevel?: number
   lastSyncedAt?: number
   stockBalance?: number
+  stockBalanceBreakdown?: string
+  openingStockBreakdown?: string
   openingStockQuantity?: number
 }

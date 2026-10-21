@@ -18,8 +18,12 @@ export namespace PurchaseLineFormDefinition {
     lineTotal: number,
     quantityExpected: number
     quantityDelivered: number
+    quantityDeliveredBreakdown: string
     quantityYetToBeDelivered: number
+    quantityYetToBeDeliveredBreakdown: string
     quantityCanceled: number
+    cancelUnitId: string
+    quantityCanceledBreakdown: string
     canceledWithoutSingleDelivery: boolean
   }
 
@@ -39,8 +43,12 @@ export namespace PurchaseLineFormDefinition {
       snapshotUnitId: '',
       quantityExpected: 1,
       quantityDelivered: 0,
+      quantityDeliveredBreakdown: '',
       quantityYetToBeDelivered: 1,
+      quantityYetToBeDeliveredBreakdown: '',
       quantityCanceled: 0,
+      cancelUnitId: product.baseUnitId ?? '',
+      quantityCanceledBreakdown: '',
       canceledWithoutSingleDelivery: false
     }
   }
@@ -61,8 +69,12 @@ export namespace PurchaseLineFormDefinition {
       lineTotal: line.lineTotal ?? 0,
       quantityExpected: line.quantityExpected ?? 0,
       quantityDelivered: line.quantityDelivered ?? 0,
+      quantityDeliveredBreakdown: line.quantityDeliveredBreakdown ?? '',
       quantityCanceled: line.quantityCanceled ?? 0,
+      cancelUnitId: line.unitId ?? '',
       quantityYetToBeDelivered: line.quantityYetToBeDelivered ?? 0,
+      quantityYetToBeDeliveredBreakdown: line.quantityYetToBeDeliveredBreakdown ?? '',
+      quantityCanceledBreakdown: line.quantityCanceledBreakdown ?? '',
       canceledWithoutSingleDelivery: (line.quantityYetToBeDelivered ?? 0) + (line.quantityDelivered ?? 0) === 0
     }))
 

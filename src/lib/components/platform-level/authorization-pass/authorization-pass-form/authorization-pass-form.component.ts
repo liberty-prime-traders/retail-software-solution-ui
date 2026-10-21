@@ -8,6 +8,7 @@ import {AuthorizationPassService} from '../../../../api/platform-level/authoriza
 import {PassStatus} from '../../../../api/platform-level/authorization-pass/pass-status.enum'
 import {PassType} from '../../../../api/platform-level/authorization-pass/pass-type.enum'
 import {PlatformSysUserService} from '../../../../api/platform-level/sys-user/platform-sys-user.service'
+import {getTomorrow} from '../../../../utils/dates'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
 import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
@@ -49,7 +50,7 @@ export class AuthorizationPassFormComponent extends BaseFormComponent<Authorizat
   readonly sysUsers = this.platformSysUserService.selectAll
 
   readonly PassType = PassType
-  readonly tomorrow = this.getTomorrow()
+  readonly tomorrow = getTomorrow()
 
   override ngOnInit() {
     super.ngOnInit()
@@ -78,11 +79,5 @@ export class AuthorizationPassFormComponent extends BaseFormComponent<Authorizat
     if (id) {
       this.authorizationPassService.revoke(id)
     }
-  }
-
-  private getTomorrow(): Date {
-    const tomorrow = new Date()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    return tomorrow
   }
 }

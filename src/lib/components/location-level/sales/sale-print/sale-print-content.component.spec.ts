@@ -24,12 +24,12 @@ const buildSale = (): SaleSession => {
     saleStatus: SaleStatus.CONFIRMED,
     saleLines: [
       {
-        identity: {id: 'l1'}, locationProductId: 'p1', productLabel: LONG_NAME, quantity: 2, baseQuantity: 2,
+        identity: {id: 'l1'}, locationProductId: 'p1', productLabel: LONG_NAME, productPrintLabel: LONG_NAME, quantity: 2, baseQuantity: 2,
         unitId: 'u1', baseUnitId: 'u1', conversionFactor: 1, unitPrice: 1234567.5, lineTotal: 2469135,
         unitPriceOverride: 1234567.5, netUnitPrice: 1234567.5, quantityOnHand: 9, quantityReserved: 0, quantityAvailable: 9
       },
       {
-        identity: {id: 'l2'}, locationProductId: 'p2', productLabel: 'Brush', quantity: 1, baseQuantity: 1,
+        identity: {id: 'l2'}, locationProductId: 'p2', productLabel: 'Brush', productPrintLabel: 'Brush', quantity: 1, baseQuantity: 1,
         unitId: 'u1', baseUnitId: 'u1', conversionFactor: 1, unitPrice: 10, lineTotal: 8,
         unitPriceOverride: 8, netUnitPrice: 8, quantityOnHand: 9, quantityReserved: 0, quantityAvailable: 9
       }
@@ -110,10 +110,10 @@ describe('SalePrintContentComponent', () => {
     expect(payments[0].querySelector('.receipt-payment-reference')?.textContent).toContain('QWE123')
   })
 
-  it('shows the original price of an overridden line on receipts', () => {
+  it('does not show the original price of an overridden line on receipts', () => {
     for (const preset of [PrintPaperPreset.RECEIPT_80MM, PrintPaperPreset.RECEIPT_58MM]) {
       render(preset)
-      expect(root.querySelectorAll('.receipt .was').length).withContext(preset).toBe(1)
+      expect(root.querySelectorAll('.receipt .was').length).withContext(preset).toBe(0)
     }
   })
 
@@ -131,7 +131,7 @@ describe('SalePrintContentComponent', () => {
     expect(text).not.toContain('Card')
   })
 
-  it('flags the original price of an overridden line', () => {
+  it('flags the original price of an overridden line on sheets', () => {
     expect(root.querySelectorAll('.was').length).toBe(1)
   })
 

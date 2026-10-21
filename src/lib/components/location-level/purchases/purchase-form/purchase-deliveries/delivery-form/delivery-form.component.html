@@ -6,11 +6,11 @@
     </div>
 
     <div class="flex gap-4">
-      <rts-form-field label="Delivered At" contentClass="col-8" class="col-4" [layout]="FormFieldDirection.VERTICAL">
+      <rts-form-field label="Delivered At" contentClass="col-8" class="col-3" [layout]="FormFieldDirection.VERTICAL">
         <p-date-picker [formField]="deliveryForm.deliveredAt" [showTime]="true" [showIcon]="true" appendTo="body"/>
       </rts-form-field>
 
-      <rts-form-field label="Notes" class="col-6" contentClass="col-8" [layout]="FormFieldDirection.VERTICAL">
+      <rts-form-field label="Notes" class="flex-grow-1" contentClass="col-8" [layout]="FormFieldDirection.VERTICAL">
         <div class="flex">
           <textarea pInputText
                     rows="3"
@@ -20,6 +20,13 @@
           </textarea>
         </div>
       </rts-form-field>
+
+      @if (deliveryForm().errorSummary().length > 0) {
+        <rts-error-summary [signalFormErrors]="deliveryForm().errorSummary()"
+                           class="col-4"
+                           [fieldMap]="PurchaseDeliveryFormDefinition.fieldMap">
+        </rts-error-summary>
+      }
     </div>
 
     <p-table [value]="deliveryLinesArray()">
@@ -36,24 +43,12 @@
       <ng-template #body let-deliveryLine>
         <tr>
           <td>{{ deliveryLine | productLabel }}</td>
-
-          <td>
-            {{ deliveryLine.quantityYetToBeDelivered }} {{ deliveryLine.purchaseLineUnitId | fullUnitDescription }}
-
-            <small class="block info-message">
-              {{
-                deliveryLine.purchaseLineUnitId
-                  | buildConversionContext : deliveryLine: deliveryLine.quantityYetToBeDelivered
-                  | convertToTargetUnitForDisplay
-              }}
-            </small>
-          </td>
+          <td>{{ deliveryLine.quantityYetToBeDeliveredBreakdown }}</td>
 
           <td>
             <p-select appendTo="body"
-                      #select
                       [options]="deliveryLine.purchaseLineUnitId | alternativeUnitsFinder"
-                      (ngModelChange)="clearQuantities(deliveryLine.purchaseLineId, select.value)"
+                      (ngModelChange)="clearQuantities(deliveryLine)"
                       [(ngModel)]="deliveryLine.unitId">
             </p-select>
 
@@ -67,9 +62,9 @@
             @let effectiveFactor = deliveryLine.conversionFactor / deliveryLineFactor;
 
             <p-input-number [min]="0"
-                           [max]="deliveryLine.quantityYetToBeDelivered * effectiveFactor"
-                           [maxFractionDigits]="2"
-                           [(ngModel)]="deliveryLine.quantityDelivered">
+                            [max]="deliveryLine.quantityYetToBeDelivered * effectiveFactor"
+                            [maxFractionDigits]="2"
+                            [(ngModel)]="deliveryLine.quantityDelivered">
             </p-input-number>
 
             <small class="block info-message">

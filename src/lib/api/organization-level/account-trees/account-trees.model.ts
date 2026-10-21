@@ -7,4 +7,6 @@ export interface AccountsTreesForSelection extends BaseModel {
   recoverable: TreeNode<Account>[]
   paymentMethods: TreeNode<Account>[]
   expenseTypes: TreeNode<Account>[]
+  fundMovements: TreeNode<Account>[]
+  loans: TreeNode<Account>[]
 }
