@@ -7,34 +7,48 @@
   </p-message>
 } @else {
   <div class="flex flex-column gap-4">
-    <div class="flex flex-wrap gap-3">
+    <div class="tiles">
       @if (loading()) {
-        @for (placeholder of [1, 2, 3, 4, 5, 6]; track placeholder) {
+        @for (placeholder of [1, 2, 3, 4, 5]; track placeholder) {
           <rts-summary-tile label="" [loading]="true" />
         }
       } @else {
-        @for (tile of tiles(); track tile.label) {
+        @for (tile of otherTiles(); track tile.label) {
           <rts-summary-tile [label]="tile.label"
                             [amount]="tile.amount"
                             [caption]="tile.caption"
                             [change]="tile.change"
-                            [changeSuffix]="tile.emphasized ? changeSuffix() : ''"
-                            [changeSignal]="tile.balanceSignal"
-                            [emphasized]="tile.emphasized">
+                            [changeEffect]="tile.changeEffect">
           </rts-summary-tile>
         }
       }
     </div>
-
+    <div class="overview">
+      @if (loading()) {
+        <rts-summary-tile class="featured" label="" [loading]="true" />
+        <p-skeleton class="overview-chart" height="18rem" />
+      } @else {
+        @if (featuredTile(); as tile) {
+          <rts-summary-tile class="featured"
+                            [label]="tile.label"
+                            [amount]="tile.amount"
+                            [caption]="tile.caption"
+                            [change]="tile.change"
+                            [changeSuffix]="changeSuffix()"
+                            [changeEffect]="tile.changeEffect"
+                            [emphasized]="true">
+          </rts-summary-tile>
+        }
+        <rts-net-worth-chart class="overview-chart"
+                             [days]="days()"
+                             [focusedDate]="focusedDate()"
+                             (dayFocused)="dayFocused.emit($event)">
+        </rts-net-worth-chart>
+      }
+    </div>
     @if (loading()) {
-      <p-skeleton height="18rem" />
       <p-skeleton height="20rem" />
     } @else {
-      <rts-net-worth-chart [days]="days()"
-                           [focusedDate]="focusedDate()"
-                           (dayFocused)="dayFocused.emit($event)">
-      </rts-net-worth-chart>
-
       <p-card [header]="cardTitle()">
         <p-table [value]="rows()">
           <ng-template #header>
@@ -59,9 +73,9 @@
                       <div class="text-sm text-color-secondary">{{ row.caption }}</div>
                     }
                   </td>
-                  <td class="text-right tabular-nums">{{ row.closingBalance | currency }}</td>
+                  <td class="text-right tabular-nums" [ngClass]="{'irregular-balance': row.closingBalanceEffect === BalanceEffect.IRREGULAR}">{{ row.closingBalance | currency }}</td>
                   <td class="text-right">
-                    <rts-amount-change [amount]="row.change" [nonZeroSignal]="row.balanceSignal" />
+                    <rts-amount-change [amount]="row.change" [changeEffect]="row.changeEffect ?? BalanceEffect.ZERO" />
                   </td>
                 </tr>
               }

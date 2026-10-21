@@ -12,6 +12,7 @@ import {PeriodStatus} from '../../../api/cross-tier/daily-business-summary/perio
 import {addDays, formatDayLabel, formatDayRange, toLocaleDate, toLocaleDateString} from '../../../utils/dates'
 import {ZonedDatesService} from '../../../utils/services/zoned-dates.service'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
+import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {DATE_RANGE_PRESET_OPTIONS, DateRangePreset} from './date-range-preset.enum'
 import {NetWorthTabComponent} from './net-worth-tab/net-worth-tab.component'
 import {PerformanceTabComponent} from './performance-tab/performance-tab.component'
@@ -28,7 +29,7 @@ export enum SummaryTab {
   templateUrl: 'daily-business-summary.component.html',
   imports: [
     FormsModule, ButtonDirective, DatePicker, Message, SelectButton, Tab, TabList, TabPanel, TabPanels, Tabs,
-    NetWorthTabComponent, PerformanceTabComponent
+    NetWorthTabComponent, PerformanceTabComponent, AutoStretchDirective
   ]
 })
 export class DailyBusinessSummaryComponent implements OnInit {

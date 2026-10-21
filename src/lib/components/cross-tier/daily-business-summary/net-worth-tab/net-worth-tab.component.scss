@@ -1,0 +1,21 @@
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1rem;
+}
+
+.overview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.featured {
+  flex: 1 1 18rem;
+  max-width: 24rem;
+}
+
+.overview-chart {
+  flex: 3 1 24rem;
+  min-width: 0;
+}

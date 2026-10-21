@@ -78,5 +78,5 @@ export const formatDayLabel = (date: string): string => dayLabelFormatter.format
 export const formatFullDay = (date: string): string => fullDayFormatter.format(toLocaleDate(date)!)
 
 export const formatDayRange = (firstDay: string, lastDay: string): string =>
-  firstDay === lastDay ? formatDayLabel(firstDay) : `${formatDayLabel(firstDay)} to ${formatDayLabel(lastDay)}`
+  firstDay === lastDay ? formatDayLabel(firstDay) : `${formatDayLabel(firstDay)} ... ${formatDayLabel(lastDay)}`
 

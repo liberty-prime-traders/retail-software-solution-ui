@@ -67,6 +67,11 @@ export class StockAdjustmentFormComponent extends BaseFormComponent<StockAdjustm
     })
   )
 
+  readonly requiresUnitCost = computed(() => StockAdjustmentFormDefinition.requiresUnitCost(
+    this.stockAdjustmentFormValue().unitCostDirections,
+    this.stockAdjustmentFormValue().direction
+  ))
+
   readonly directionIsChosenByUser = computed(() => this.directionOptions().length > 1)
 
   readonly reasonOptions = computed(() => {
@@ -80,7 +85,7 @@ export class StockAdjustmentFormComponent extends BaseFormComponent<StockAdjustm
     if (!descriptor) return
     untracked(() => this.stockAdjustmentFormValue.update(formValue => ({
       ...formValue,
-      requiresUnitCost: descriptor.requiresUnitCost,
+      unitCostDirections: descriptor.unitCostDirections,
       requiresReason: descriptor.requiresReason,
       requiresNote: descriptor.requiresNote,
       direction: descriptor.allowedDirections.length === 1 ? descriptor.allowedDirections[0] : '',

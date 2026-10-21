@@ -67,7 +67,7 @@
           <td>{{ contact?.status | prettifyEnum }}</td>
           <td>{{ contact?.contactTypes | joinEnum }}</td>
           <td>
-            <rts-money [amount]="contact?.netBalance" [balanceSignal]="contact?.balanceSignal"/>
+            <rts-money [amount]="contact?.netBalance" [balanceEffect]="contact?.balanceEffect"/>
           </td>
           <td>{{ contact?.email | nullSafe }}</td>
           <td>{{ contact?.phone | nullSafe }}</td>

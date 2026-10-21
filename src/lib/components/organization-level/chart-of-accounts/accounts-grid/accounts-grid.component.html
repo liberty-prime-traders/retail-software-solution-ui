@@ -55,7 +55,7 @@
           <td>{{ account.displayName }}</td>
           <td>{{ account.accountType | prettifyEnum }}</td>
           <td>
-            <rts-money [amount]="account.currentBalance" [balanceSignal]="account.balanceSignal"/>
+            <rts-money [amount]="account.currentBalance" [balanceEffect]="account.balanceEffect"/>
           </td>
           <td>
             <div class="flex gap-2 align-items-center">

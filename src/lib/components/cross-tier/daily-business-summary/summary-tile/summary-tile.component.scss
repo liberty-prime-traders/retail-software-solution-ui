@@ -1,7 +1,7 @@
 // The host is the flex item of the tile row, so it carries the sizing and stretches to the row's tallest tile.
 :host {
   display: flex;
-  flex: 1 1 11rem;
+  flex: 1 1 12rem;
 }
 
 p-card {

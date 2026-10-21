@@ -9,7 +9,7 @@ export namespace StockAdjustmentFormDefinition {
     productLabel: string
     baseUnitId: string
     category: StockAdjustmentCategory | ''
-    requiresUnitCost: boolean
+    unitCostDirections: StockAdjustmentDirection[]
     requiresReason: boolean
     requiresNote: boolean
     direction: StockAdjustmentDirection | ''
@@ -19,6 +19,11 @@ export namespace StockAdjustmentFormDefinition {
     stockMovementReasonId: string
     note: string
   }
+
+  export const requiresUnitCost = (
+    unitCostDirections: StockAdjustmentDirection[],
+    direction: StockAdjustmentDirection | ''
+  ): boolean => direction !== '' && unitCostDirections.includes(direction)
 
   export const fieldMap = new Map<keyof StockAdjustmentFormModel, string>([
     ['locationProductId', 'Product'],
@@ -36,7 +41,7 @@ export namespace StockAdjustmentFormDefinition {
     productLabel: '',
     baseUnitId: '',
     category: '',
-    requiresUnitCost: false,
+    unitCostDirections: [],
     requiresReason: false,
     requiresNote: false,
     direction: '',
@@ -54,7 +59,7 @@ export namespace StockAdjustmentFormDefinition {
     required(path.unitId)
     required(path.quantity)
     min(path.quantity, 0.0001)
-    required(path.unitCost, {when: ({valueOf}) => valueOf(path.requiresUnitCost)})
+    required(path.unitCost, {when: ({valueOf}) => requiresUnitCost(valueOf(path.unitCostDirections), valueOf(path.direction))})
     required(path.note, {when: ({valueOf}) => valueOf(path.requiresNote)})
     required(path.stockMovementReasonId, {when: ({valueOf}) => valueOf(path.requiresReason)})
   })
@@ -66,7 +71,7 @@ export namespace StockAdjustmentFormDefinition {
       direction: formValue.direction as StockAdjustmentDirection,
       quantity: formValue.quantity!,
       unitId: formValue.unitId,
-      unitCost: formValue.requiresUnitCost ? formValue.unitCost! : undefined,
+      unitCost: requiresUnitCost(formValue.unitCostDirections, formValue.direction) ? formValue.unitCost! : undefined,
       stockMovementReasonId: formValue.requiresReason ? formValue.stockMovementReasonId : undefined,
       note: formValue.note.trim() || undefined
     }

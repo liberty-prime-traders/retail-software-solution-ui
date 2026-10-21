@@ -1,6 +1,6 @@
 import {CurrencyPipe, NgClass} from '@angular/common'
 import {Component, computed, input} from '@angular/core'
-import {BalanceSignal, findColorClass} from '../../api/organization-level/chart-of-accounts/balance-signal.enum'
+import {BalanceEffect, findColorClass} from '../../api/organization-level/chart-of-accounts/balance-effect.enum'
 
 @Component({
   selector: 'rts-money',
@@ -16,10 +16,10 @@ import {BalanceSignal, findColorClass} from '../../api/organization-level/chart-
 })
 export class MoneyComponent {
   readonly amount = input<number|undefined>(0)
-  readonly balanceSignal = input<BalanceSignal|undefined>(BalanceSignal.ZERO_BALANCE)
+  readonly balanceEffect = input<BalanceEffect|undefined>(BalanceEffect.ZERO)
 
   readonly absoluteAmount = computed(() => Math.abs(this.amount() ?? 0))
 
-  readonly colorClass = computed(() => findColorClass(this.balanceSignal()))
+  readonly colorClass = computed(() => findColorClass(this.balanceEffect()))
 
 }

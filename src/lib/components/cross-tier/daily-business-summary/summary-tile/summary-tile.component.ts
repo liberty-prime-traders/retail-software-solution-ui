@@ -1,7 +1,7 @@
 import {CurrencyPipe, NgClass} from '@angular/common'
 import {Component, computed, input} from '@angular/core'
 import {Card} from 'primeng/card'
-import {BalanceSignal} from '../../../../api/organization-level/chart-of-accounts/balance-signal.enum'
+import {BalanceEffect} from '../../../../api/organization-level/chart-of-accounts/balance-effect.enum'
 import {Skeleton} from 'primeng/skeleton'
 import {AmountChangeComponent} from '../amount-change/amount-change.component'
 
@@ -24,13 +24,13 @@ export class SummaryTileComponent {
   readonly caption = input<string>('')
   readonly change = input<number | null>(null)
   readonly changeSuffix = input<string>('')
-  readonly changeSignal = input(BalanceSignal.MONEY_IN)
+  readonly changeEffect = input(BalanceEffect.ZERO)
   readonly emphasized = input(false)
   readonly tone = input(TileTone.NEUTRAL)
   readonly loading = input(false)
 
   readonly amountClass = computed(() => [
-    this.emphasized() ? 'text-3xl' : 'text-2xl',
+    this.emphasized() ? 'text-3xl' : 'text-xl',
     this.tone() === TileTone.SUCCESS ? 'text-green-600' : '',
     this.tone() === TileTone.DANGER ? 'text-red-600' : ''
   ].filter(cssClass => cssClass))

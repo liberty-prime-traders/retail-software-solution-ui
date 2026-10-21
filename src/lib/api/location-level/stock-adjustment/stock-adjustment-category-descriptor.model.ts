@@ -12,7 +12,7 @@ export interface StockAdjustmentCategoryDescriptor extends BaseModel {
   category: StockAdjustmentCategory
   displayName: string
   allowedDirections: StockAdjustmentDirection[]
-  requiresUnitCost: boolean
+  unitCostDirections: StockAdjustmentDirection[]
   requiresReason: boolean
   requiresNote: boolean
   reasons: StockAdjustmentReasonOption[]

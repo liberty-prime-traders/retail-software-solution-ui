@@ -28,7 +28,7 @@ export class OrganizationDashboardComponent implements OnInit {
   private readonly organizationHomeMenuItems: Signal<MenuItem[]> = computed(() => [
     {label: 'Summary', icon: 'pi pi-home', routerLink: 'summary'},
     {
-      label: 'Daily Summary',
+      label: 'Snapshot',
       icon: 'pi pi-chart-bar',
       routerLink: 'daily-summary',
       visible: this.orgFeatureService.isChartOfAccountsEnabled()

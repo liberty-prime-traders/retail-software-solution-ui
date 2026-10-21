@@ -58,7 +58,7 @@
     </p-input-number>
   </rts-form-field>
 
-  @if (stockAdjustmentFormValue().requiresUnitCost) {
+  @if (requiresUnitCost()) {
     <rts-form-field [required]="true" label="Unit Cost" for="unitCost">
       <p-input-number id="unitCost"
                       class="flex-grow-1"

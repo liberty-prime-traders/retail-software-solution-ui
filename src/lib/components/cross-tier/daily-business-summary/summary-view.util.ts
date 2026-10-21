@@ -1,4 +1,4 @@
-import {BalanceSignal} from '../../../api/organization-level/chart-of-accounts/balance-signal.enum'
+import {BalanceEffect, effectOfSignedAmount} from '../../../api/organization-level/chart-of-accounts/balance-effect.enum'
 import {AccountBalanceLine, BalanceSection, BalanceSections} from '../../../api/cross-tier/daily-business-summary/daily-balances.model'
 import {DailyPerformanceFigures} from '../../../api/cross-tier/daily-business-summary/daily-performance.model'
 import {SystemAccountCode} from '../../../api/cross-tier/daily-business-summary/system-account-code.enum'
@@ -30,8 +30,9 @@ export interface BalanceRow {
   label: string
   caption?: string
   closingBalance?: number
+  closingBalanceEffect?: BalanceEffect
   change?: number
-  balanceSignal?: BalanceSignal
+  changeEffect?: BalanceEffect
 }
 
 export interface NetWorthTile {
@@ -40,7 +41,7 @@ export interface NetWorthTile {
   amount: number
   change: number
   emphasized: boolean
-  balanceSignal: BalanceSignal
+  changeEffect: BalanceEffect
 }
 
 export const hasActivity = (figures: DailyPerformanceFigures): boolean =>
@@ -88,16 +89,16 @@ export const buildNetWorthTiles = (sections: BalanceSections): NetWorthTile[] =>
   const tileFor = (
     label: string,
     caption: string,
-    line?: Pick<AccountBalanceLine, 'closingBalance' | 'change'>,
-    balanceSignal = BalanceSignal.MONEY_IN
+    line?: Pick<AccountBalanceLine, 'closingBalance' | 'change' | 'changeEffect'>
   ): NetWorthTile => ({
     label,
     caption,
     amount: line?.closingBalance ?? 0,
     change: line?.change ?? 0,
     emphasized: false,
-    balanceSignal
+    changeEffect: line?.changeEffect ?? BalanceEffect.ZERO
   })
+  const digitalPaymentsChange = digitalLines.reduce((total, line) => total + line.change, 0)
   return [
     {
       label: 'Net worth',
@@ -105,16 +106,17 @@ export const buildNetWorthTiles = (sections: BalanceSections): NetWorthTile[] =>
       amount: sections.netWorth,
       change: sections.netWorthChange,
       emphasized: true,
-      balanceSignal: BalanceSignal.MONEY_IN
+      changeEffect: sections.netWorthChangeEffect
     },
     tileFor('Cash', '', findLine(sections.assets, SystemAccountCode.CASH)),
     tileFor('Digital payments', 'Digital accounts', {
       closingBalance: digitalLines.reduce((total, line) => total + line.closingBalance, 0),
-      change: digitalLines.reduce((total, line) => total + line.change, 0)
+      change: digitalPaymentsChange,
+      changeEffect: effectOfSignedAmount(digitalPaymentsChange)
     }),
     tileFor('Trade receivables', 'Customers owe us', findLine(sections.assets, SystemAccountCode.TRADE_RECEIVABLES)),
     tileFor('Inventory', 'Valued at buying price', findLine(sections.assets, SystemAccountCode.INVENTORY)),
-    tileFor('Trade payables', 'We owe', findLine(sections.liabilities, SystemAccountCode.TRADE_PAYABLES), BalanceSignal.MONEY_OUT)
+    tileFor('Trade payables', 'We owe', findLine(sections.liabilities, SystemAccountCode.TRADE_PAYABLES))
   ]
 }
 
@@ -126,7 +128,6 @@ const ASSET_CAPTIONS: Record<string, string> = {
 const toBalanceRows = (
   title: string,
   section: BalanceSection,
-  balanceSignal: BalanceSignal,
   captionFor: (line: AccountBalanceLine) => string | undefined
 ): BalanceRow[] => [
   {kind: BalanceRowKind.SECTION_HEADER, label: title},
@@ -135,13 +136,20 @@ const toBalanceRows = (
     label: line.accountName,
     caption: captionFor(line),
     closingBalance: line.closingBalance,
+    closingBalanceEffect: line.closingBalanceEffect,
     change: line.change,
-    balanceSignal
+    changeEffect: line.changeEffect
   })),
-  {kind: BalanceRowKind.TOTAL, label: `Total ${title.toLowerCase()}`, closingBalance: section.closingTotal, change: section.changeTotal}
+  {
+    kind: BalanceRowKind.TOTAL,
+    label: `Total ${title.toLowerCase()}`,
+    closingBalance: section.closingTotal,
+    change: section.changeTotal,
+    changeEffect: section.changeTotalEffect
+  }
 ]
 
 export const buildBalanceRows = (sections: BalanceSections): BalanceRow[] => [
-  ...toBalanceRows('Assets', sections.assets, BalanceSignal.MONEY_IN, line => line.accountCode ? ASSET_CAPTIONS[line.accountCode] : undefined),
-  ...toBalanceRows('Liabilities', sections.liabilities, BalanceSignal.MONEY_OUT, () => 'We owe')
+  ...toBalanceRows('Assets', sections.assets, line => line.accountCode ? ASSET_CAPTIONS[line.accountCode] : undefined),
+  ...toBalanceRows('Liabilities', sections.liabilities, () => 'We owe')
 ]

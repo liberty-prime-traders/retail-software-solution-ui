@@ -7,11 +7,5 @@
       <span class="legend-swatch" [style.background]="netProfitColor"></span> Net profit
     </span>
   </div>
-  <p-chart type="bar"
-           height="18rem"
-           ariaLabel="Net sales and net profit by day"
-           [data]="data()"
-           [options]="options()"
-           (onDataSelect)="onDataSelect($event)">
-  </p-chart>
+  <ag-charts class="chart" [options]="options()"></ag-charts>
 </div>
