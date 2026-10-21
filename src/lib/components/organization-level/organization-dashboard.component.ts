@@ -92,6 +92,10 @@ export class OrganizationDashboardComponent implements OnInit {
   })
 
   readonly menuItems: Signal<MenuItem[]> = computed(() => {
+    if (!this.userContextService.isLibertyAdmin()) {
+      return this.organizationHomeMenuItems
+    }
+
     const menuItems: MenuItem[] = [
       {label: 'Home', items: this.organizationHomeMenuItems},
       {label: 'Products', items: this.productSettingsMenuItems},

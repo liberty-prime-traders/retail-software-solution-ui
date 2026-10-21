@@ -1,5 +1,5 @@
 import {CdkDrag} from '@angular/cdk/drag-drop'
-import {Component, inject, OnInit, signal} from '@angular/core'
+import {Component, computed, inject, OnInit, Signal, signal} from '@angular/core'
 import {RouterOutlet} from '@angular/router'
 import {MenuItem} from 'primeng/api'
 import {ButtonDirective} from 'primeng/button'
@@ -7,6 +7,7 @@ import {Card} from 'primeng/card'
 import {Menu} from 'primeng/menu'
 import {LocationMembershipUserService} from '../../api/location-level/membership/location-membership-user.service'
 import {OrgMembershipUserService} from '../../api/organization-level/membership/org-membership-user.service'
+import {UserContextService} from '../../utils/services/auth/user-context.service'
 import {SaleFormNavigator} from './sales/form-utils/sale-form-navigator'
 import {SaleFormVisibilityContext} from './sales/sale-form-visibility.context'
 import {SaleFormComponent} from './sales/sale-form/sale-form.component'
@@ -30,6 +31,7 @@ export class LocationDashboardComponent implements OnInit {
   readonly saleFormNavigator = inject(SaleFormNavigator)
   private readonly orgMembershipUserService = inject(OrgMembershipUserService)
   private readonly locationMembershipUserService = inject(LocationMembershipUserService)
+  private readonly userContextService = inject(UserContextService)
 
   readonly showNavigation = signal(true)
 
@@ -53,13 +55,21 @@ export class LocationDashboardComponent implements OnInit {
     {label: 'Fixtures', icon: 'pi pi-box'}
   ]
 
-  readonly menuItems: MenuItem[] = [
-    {label: 'Menu', items: this.commonTasksMenuItems},
-    {separator: true},
-    {label: 'Transactions', items: this.transactionsMenuItems},
-    {separator: true},
-    {label: 'Admin Section', items: this.adminSectionMenuItems}
-  ]
+  readonly menuItems: Signal<MenuItem[]> = computed(() => {
+    if (!this.userContextService.isLibertyAdmin()) {
+      return [
+        ...this.commonTasksMenuItems,
+        {label: 'Sales', icon: 'pi pi-receipt', routerLink: 'sales'}
+      ]
+    }
+    return [
+      {label: 'Menu', items: this.commonTasksMenuItems},
+      {separator: true},
+      {label: 'Transactions', items: this.transactionsMenuItems},
+      {separator: true},
+      {label: 'Admin Section', items: this.adminSectionMenuItems}
+    ]
+  })
 
   ngOnInit(): void {
     this.locationMembershipUserService.fetch()

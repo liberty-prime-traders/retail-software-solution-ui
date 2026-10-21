@@ -20,6 +20,11 @@ export namespace SalesFilterFormDefinition {
     saleReferenceNumbers: string[]
   }
 
+  export interface StoredCreatedRange {
+    createdFrom: string | null
+    createdBefore: string | null
+  }
+
   export const MAX_SALE_REFERENCE_NUMBERS = 20
 
   export const createDefaultSalesFilterFormModel = (): SalesFilterFormModel => {
@@ -40,6 +45,26 @@ export namespace SalesFilterFormDefinition {
       saleReferenceNumbers: []
     }
   }
+
+  const parseStoredDate = (value: string | null | undefined, fallback: Date | null): Date | null => {
+    if (value === undefined) return fallback
+    if (value === null) return null
+    const parsed = new Date(value)
+    return isNaN(parsed.getTime()) ? fallback : parsed
+  }
+
+  export const withStoredCreatedRange = (
+    model: SalesFilterFormModel, stored: StoredCreatedRange | null
+  ): SalesFilterFormModel => stored === null ? model : {
+    ...model,
+    createdFrom: parseStoredDate(stored.createdFrom, model.createdFrom),
+    createdBefore: parseStoredDate(stored.createdBefore, model.createdBefore)
+  }
+
+  export const toStoredCreatedRange = (model: SalesFilterFormModel): StoredCreatedRange => ({
+    createdFrom: model.createdFrom?.toISOString() ?? null,
+    createdBefore: model.createdBefore?.toISOString() ?? null
+  })
 
   export const salesFilterFormSchema = schema<SalesFilterFormModel>(() => {})
 

@@ -5,6 +5,7 @@ import {AuthenticationService} from '../../../api/platform-level/authentication/
 import {
   OrganizationAdminService
 } from '../../../api/platform-level/organization/organization-admin/organization-admin.service'
+import {LibertyAccessService} from '../../../api/organization-level/liberty-access/liberty-access.service'
 import {UserRole} from '../../../api/cross-tier/authorization/user-role.enum'
 import {RtsGoogleAuthService} from './rts-google-auth.service'
 
@@ -13,6 +14,7 @@ export class UserContextService {
   private readonly authenticationService = inject(AuthenticationService)
   private readonly organizationAdminService = inject(OrganizationAdminService)
   private readonly googleAuthService = inject(RtsGoogleAuthService)
+  private readonly libertyAccessService = inject(LibertyAccessService)
 
   private readonly _isOrganizationAdmin = signal<boolean>(false)
 
@@ -24,6 +26,7 @@ export class UserContextService {
   readonly token = computed(() => this.loginResponse()?.sessionToken ?? '')
   readonly isPlatformAdmin = this.hasRole(UserRole.PLATFORM_ADMIN)
   readonly canCreateOrganization = this.hasPermission(UserPermission.CREATE_ORGANIZATION)
+  readonly isLibertyAdmin = this.libertyAccessService.isLibertyAdmin
   readonly initials = computed(() =>  this.loggedInUser()?.initials ?? '')
 
   private hasRole(role: UserRole): Signal<boolean> {
@@ -42,6 +45,7 @@ export class UserContextService {
 
   signOut() {
     this.googleAuthService.clearStoredCredential()
+    this.libertyAccessService.clear()
     this.authenticationService.resetStoreAndClearCache()
   }
 }
