@@ -1,5 +1,4 @@
 import {HttpClient, HttpParams} from '@angular/common/http'
-import {signal} from '@angular/core'
 import {isNil} from 'lodash-es'
 import {finalize, Subscription} from 'rxjs'
 import {catchError, tap} from 'rxjs/operators'
@@ -9,9 +8,11 @@ import {BaseModel} from './base.model'
 import {BaseStore} from './base.store'
 import {ServiceFacade} from './service.facade'
 
+export type HttpVerb = 'GET' | 'POST' | 'PUT' | 'DELETE'
+
 export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFacade<RESPONSE> {
 
-  protected inFlight= signal<Subscription|null>(null)
+  private readonly inFlight = new Map<HttpVerb, Subscription>()
 
   protected constructor(protected override readonly store: BaseStore<RESPONSE>, private readonly fetcher: HttpClient) {
     super(store)
@@ -42,6 +43,9 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
     const pathSuffix = this.getPathSuffix(params)
     const suffix = pathSuffix ? `/${pathSuffix}` : ''
     const url = `${this.getBasePath(id)}${suffix}${pathParams}${matrixParams}`
+    if (this.allowMultipleCalls()) {
+      this.releaseInFlight('GET')
+    }
     this.startApiRequest()
     const subscription = this.fetcher.get<RESPONSE>(url, {params: httpParams}).pipe(
       tap((body) => {
@@ -54,8 +58,17 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
       }),
       finalize(() => this.finalizeApiRequest())
     ).subscribe()
-    this.inFlight.set(subscription)
+    return this.captureInFlight('GET', subscription)
+  }
+
+  protected captureInFlight(verb: HttpVerb, subscription: Subscription): Subscription {
+    this.inFlight.set(verb, subscription)
     return subscription
+  }
+
+  protected releaseInFlight(verb: HttpVerb): void {
+    this.inFlight.get(verb)?.unsubscribe()
+    this.inFlight.delete(verb)
   }
 
   private shouldMakeCall() {
@@ -64,13 +77,6 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
 
   protected allowMultipleCalls(): boolean {
     return false
-  }
-
-  protected override startApiRequest() {
-    if (this.allowMultipleCalls()) {
-      this.inFlight()?.unsubscribe()
-    }
-    super.startApiRequest()
   }
 
   resetStoreAndClearCache() {

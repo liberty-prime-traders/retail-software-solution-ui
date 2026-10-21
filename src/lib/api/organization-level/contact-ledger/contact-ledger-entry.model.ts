@@ -1,5 +1,5 @@
 import {PaginatedModel} from '../../util/paginated-api/paginated.model'
-import {BalanceSignal} from '../chart-of-accounts/balance-signal.enum'
+import {BalanceEffect} from '../chart-of-accounts/balance-effect.enum'
 import {ContactLedgerSourceType} from './contact-ledger-source-type.enum'
 
 
@@ -9,7 +9,7 @@ export interface ContactLedgerEntry extends PaginatedModel {
   sourceType: ContactLedgerSourceType
   sourceReferenceNumber: string
   netBalance: number
-  netBalanceSignal: BalanceSignal
+  netBalanceEffect: BalanceEffect
   transactionAmount: number
-  transactionBalanceSignal: BalanceSignal
+  transactionBalanceEffect: BalanceEffect
 }

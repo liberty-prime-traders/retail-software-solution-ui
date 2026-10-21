@@ -6,7 +6,6 @@ import {TaxRateService} from '../../../api/organization-level/tax-rate/tax-rate.
 import {CalculationMethod} from '../../../api/platform-level/tax-type/calculation-method.enum'
 import {BooleanToTextPipe} from '../../../utils/pipes/boolean-to-text.pipe'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
-import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
@@ -26,7 +25,6 @@ import {TaxRateEditFormComponent} from './tax-rate-edit-form/tax-rate-edit-form.
     TaxRateEditFormComponent,
     GridFilterComponent,
     EmptyRowComponent,
-    AutoStretchDirective,
     NewFormCancelButtonComponent,
     CurrencyPipe,
     BooleanToTextPipe,

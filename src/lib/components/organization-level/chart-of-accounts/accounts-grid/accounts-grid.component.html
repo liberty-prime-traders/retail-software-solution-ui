@@ -1,7 +1,9 @@
 <div class="flex flex-column gap-4" id="chart-of-accounts" rtsAutoStretch="chart-of-accounts">
 
   @if (addingIsActive()) {
-    <button pButton (click)="setAddingActiveFalse()" severity="info" class="align-self-end"><i class="pi pi-times"></i> Cancel</button>
+    <button pButton (click)="setAddingActiveFalse()" severity="info" class="align-self-end">
+      <i class="pi pi-times"></i> Cancel
+    </button>
     <rts-account-form (accountCreated)="closeAddRow()"/>
 
   } @else {
@@ -55,7 +57,7 @@
           <td>{{ account.displayName }}</td>
           <td>{{ account.accountType | prettifyEnum }}</td>
           <td>
-            <rts-money [amount]="account.currentBalance" [balanceSignal]="account.balanceSignal"/>
+            <rts-money [amount]="account.currentBalance" [balanceEffect]="account.balanceEffect"/>
           </td>
           <td>
             <div class="flex gap-2 align-items-center">

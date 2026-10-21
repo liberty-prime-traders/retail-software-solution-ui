@@ -27,9 +27,7 @@
     </p-tabpanel>
 
     <p-tabpanel value="2">
-      <div id="accounting-guideline" rtsAutoStretch="accounting-guideline">
-        <markdown style="height: inherit; overflow-y: scroll" class="block md-content" src="/assets/md/accounting-guideline.md"/>
-      </div>
+      <markdown style="height: inherit; overflow-y: scroll" class="block md-content" src="/assets/md/accounting-guideline.md"/>
     </p-tabpanel>
   </p-tabpanels>
 </p-tabs>
@@ -58,7 +56,7 @@
             </div>
           </td>
           <td>
-            <rts-money [amount]="rowData.currentBalance" [balanceSignal]="rowData.balanceSignal"/>
+            <rts-money [amount]="rowData.currentBalance" [balanceEffect]="rowData.balanceEffect"/>
           </td>
         </tr>
       </ng-template>

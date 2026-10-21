@@ -22,7 +22,7 @@
         <td>{{ revision.changedAt | date }}</td>
         <td>{{ revision.subledgerDirection | contactSubledgerDirectionLabel }}</td>
         <td>
-          <rts-money [amount]="revision.amount" [balanceSignal]="revision.balanceSignal"/>
+          <rts-money [amount]="revision.amount" [balanceEffect]="revision.balanceEffect"/>
         </td>
       </tr>
     </ng-template>

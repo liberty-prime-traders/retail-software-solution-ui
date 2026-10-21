@@ -1,5 +1,5 @@
 import {Component, computed, input} from '@angular/core'
-import {BalanceSignal} from '../../../../api/organization-level/chart-of-accounts/balance-signal.enum'
+import {BalanceEffect} from '../../../../api/organization-level/chart-of-accounts/balance-effect.enum'
 import {MoneyComponent} from '../../../reusable/money.component'
 
 @Component({
@@ -10,8 +10,7 @@ import {MoneyComponent} from '../../../reusable/money.component'
 export class AmountChangeComponent {
   readonly amount = input.required<number>()
   readonly suffix = input<string>('')
-  /** Assets are money in and liabilities money out; a zero change is neutral for both. */
-  readonly nonZeroSignal = input(BalanceSignal.MONEY_IN)
+  readonly changeEffect = input.required<BalanceEffect>()
 
   readonly iconClass = computed(() => {
     if (this.amount() > 0) return 'pi pi-arrow-up'
@@ -19,5 +18,4 @@ export class AmountChangeComponent {
     return 'pi pi-minus'
   })
   readonly sign = computed(() => this.amount() > 0 ? '+' : this.amount() < 0 ? '-' : '')
-  readonly balanceSignal = computed(() => this.amount() === 0 ? BalanceSignal.ZERO_BALANCE : this.nonZeroSignal())
 }

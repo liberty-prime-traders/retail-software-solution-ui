@@ -1,5 +1,12 @@
-export const readThemeColor = (cssVariable: string): string =>
-  getComputedStyle(document.documentElement).getPropertyValue(cssVariable).trim()
+/** Theme variables can alias other variables, so the color is resolved through a probe element rather than read raw. */
+export const readThemeColor = (cssVariable: string): string => {
+  const probe = document.createElement('span')
+  probe.style.color = `var(${cssVariable})`
+  document.body.appendChild(probe)
+  const color = getComputedStyle(probe).color
+  probe.remove()
+  return color
+}
 
 /** Applies opacity to a `#rrggbb` or `rgb(...)` theme color; anything else is returned unchanged. */
 export const withOpacity = (color: string, opacity: number): string => {

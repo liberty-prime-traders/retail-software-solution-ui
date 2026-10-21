@@ -7,6 +7,7 @@ import {Menu} from 'primeng/menu'
 import {OrgMembershipUserService} from '../../api/organization-level/membership/org-membership-user.service'
 import {OrgFeatureService} from '../../api/organization-level/org-feature/org-feature.service'
 import {UserContextService} from '../../utils/services/auth/user-context.service'
+import {AutoStretchDirective} from '../reusable/auto-stretch.directive'
 import {OrganizationLaunchService} from '../welcome/top-navigation/organization-nav-content/organization-launch.service'
 
 @Component({
@@ -16,7 +17,8 @@ import {OrganizationLaunchService} from '../welcome/top-navigation/organization-
     RouterOutlet,
     Menu,
     Card,
-    ButtonDirective
+    ButtonDirective,
+    AutoStretchDirective
   ]
 })
 export class OrganizationDashboardComponent implements OnInit {
@@ -28,7 +30,7 @@ export class OrganizationDashboardComponent implements OnInit {
   private readonly organizationHomeMenuItems: Signal<MenuItem[]> = computed(() => [
     {label: 'Summary', icon: 'pi pi-home', routerLink: 'summary'},
     {
-      label: 'Daily Summary',
+      label: 'Snapshot',
       icon: 'pi pi-chart-bar',
       routerLink: 'daily-summary',
       visible: this.orgFeatureService.isChartOfAccountsEnabled()

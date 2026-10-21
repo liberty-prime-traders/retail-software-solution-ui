@@ -28,7 +28,7 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
   postRequest(apiRequest: ApiRequest<PAYLOAD, RESPONSE>): Subscription {
     const url = this.getBasePath(apiRequest.id)
     this.startApiRequest()
-    this.inFlight = this.httpClient.post<RESPONSE>(url, apiRequest.body).pipe(
+    const subscription = this.httpClient.post<RESPONSE>(url, apiRequest.body).pipe(
       first(),
       tap((result: RESPONSE) => {
         this.finishSavingWithSuccess(result)
@@ -40,12 +40,12 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
       }),
       finalize(() => this.finalizeApiRequest())
     ).subscribe()
-    return this.inFlight
+    return this.captureInFlight('POST', subscription)
   }
 
   putRequest(apiRequest: ApiRequest<PAYLOAD, RESPONSE>): Subscription {
     this.startApiRequest()
-    return this.httpClient.put<RESPONSE>(this.getBasePath(apiRequest.id), apiRequest.body).pipe(
+    const subscription = this.httpClient.put<RESPONSE>(this.getBasePath(apiRequest.id), apiRequest.body).pipe(
       first(),
       tap((result: RESPONSE) => {
         this.finishSavingWithSuccess(result)
@@ -57,6 +57,7 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
       }),
       finalize(() => this.finalizeApiRequest())
     ).subscribe()
+    return this.captureInFlight('PUT', subscription)
   }
 
   delete(id?: EntityId): Subscription | undefined {
@@ -68,7 +69,7 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
       return
     }
     this.startApiRequest()
-    return this.httpClient.delete<RESPONSE>(this.getBasePath(apiRequest.id), {body: apiRequest.body}).pipe(
+    const subscription = this.httpClient.delete<RESPONSE>(this.getBasePath(apiRequest.id), {body: apiRequest.body}).pipe(
       first(),
       tap((response) => {
         this.finishDeletingWithSuccess(apiRequest.id!)
@@ -80,6 +81,7 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
       }),
       finalize(() => this.finalizeApiRequest())
     ).subscribe()
+    return this.captureInFlight('DELETE', subscription)
   }
 
   protected readonly applyInternalCallBacks = (

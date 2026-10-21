@@ -1,5 +1,5 @@
 import {BaseModel} from '../../util/base-api/base.model'
-import {BalanceSignal} from '../chart-of-accounts/balance-signal.enum'
+import {BalanceEffect} from '../chart-of-accounts/balance-effect.enum'
 import {ContactStatus} from './contact-status.enum'
 import {ContactType} from './contact-type.enum'
 import {IdentityType} from './identity-type.enum'
@@ -21,7 +21,7 @@ export interface Contact extends BaseModel {
   status: ContactStatus
   systemDefined: boolean
   netBalance: number
-  balanceSignal: BalanceSignal
+  balanceEffect: BalanceEffect
   netOpeningBalance: number
-  netOpeningBalanceSignal: BalanceSignal
+  netOpeningBalanceEffect: BalanceEffect
 }

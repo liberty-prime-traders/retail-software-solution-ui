@@ -33,10 +33,10 @@
           <td>{{ entry.sourceType | prettifyEnum }}</td>
           <td>{{ entry.sourceReferenceNumber }}</td>
           <td>
-            <rts-money [amount]="entry.transactionAmount" [balanceSignal]="entry.transactionBalanceSignal"/>
+            <rts-money [amount]="entry.transactionAmount" [balanceEffect]="entry.transactionBalanceEffect"/>
           </td>
           <td>
-            <rts-money [amount]="entry.netBalance" [balanceSignal]="entry.netBalanceSignal"/>
+            <rts-money [amount]="entry.netBalance" [balanceEffect]="entry.netBalanceEffect"/>
           </td>
         </tr>
       }
