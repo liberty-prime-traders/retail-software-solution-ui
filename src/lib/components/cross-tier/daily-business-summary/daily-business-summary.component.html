@@ -1,0 +1,82 @@
+<div class="flex flex-column gap-4">
+  <div class="flex flex-column gap-2">
+    <div class="flex flex-wrap justify-content-between align-items-center gap-3">
+      <div class="flex flex-column">
+        <h3 class="font-bold m-0">{{ headerTitle() }}</h3>
+      </div>
+
+      <div class="flex flex-wrap align-items-center gap-3">
+        <p-selectbutton optionLabel="label"
+                        optionValue="value"
+                        [allowEmpty]="false"
+                        [options]="presetOptions"
+                        [ngModel]="preset()"
+                        (ngModelChange)="onPresetChange($event)">
+        </p-selectbutton>
+
+        @if (preset() === DateRangePreset.CUSTOM) {
+          <p-date-picker selectionMode="range"
+                         placeholder="Pick a range"
+                         appendTo="body"
+                         class="w-15rem"
+                         [showIcon]="true"
+                         [readonlyInput]="true"
+                         [maxDate]="maxDate()"
+                         [ngModel]="customRange()"
+                         (ngModelChange)="onCustomRangeChange($event)">
+          </p-date-picker>
+        }
+
+        @if (isMultiDay()) {
+          <button pButton
+                  type="button"
+                  severity="secondary"
+                  [disabled]="!focusedDate()"
+                  (click)="showWholeRange()">
+            Show whole range
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (customRangeTooLong()) {
+      <p-message severity="warn" class="block">Pick a range of {{ maximumRangeDays }} days or fewer</p-message>
+    }
+  </div>
+
+  <p-tabs [value]="activeTab()" (valueChange)="onTabChange($event)">
+    <p-tablist>
+      <p-tab [value]="SummaryTab.PERFORMANCE">Performance</p-tab>
+      <p-tab [value]="SummaryTab.NET_WORTH">Net worth</p-tab>
+    </p-tablist>
+
+    <p-tabpanels>
+      <p-tabpanel [value]="SummaryTab.PERFORMANCE">
+        <rts-performance-tab [figures]="performanceFigures()"
+                             [days]="performance()?.days ?? []"
+                             [focusedDate]="focusedDate()"
+                             [loading]="performanceLoading()"
+                             [failed]="performanceFailed()"
+                             [partial]="performancePartial()"
+                             [asOf]="performance()?.asOf"
+                             (dayFocused)="focusDay($event)"
+                             (retried)="retryPerformance()">
+        </rts-performance-tab>
+      </p-tabpanel>
+
+      <p-tabpanel [value]="SummaryTab.NET_WORTH">
+        <rts-net-worth-tab [balances]="balanceSections()"
+                           [days]="balances()?.days ?? []"
+                           [focusedDate]="focusedDate()"
+                           [loading]="balancesLoading()"
+                           [failed]="balancesFailed()"
+                           [cardTitle]="balancesCardTitle()"
+                           [changeLabel]="balancesChangeLabel()"
+                           [changeSuffix]="balancesChangeSuffix()"
+                           (dayFocused)="focusDay($event)"
+                           (retried)="retryBalances()">
+        </rts-net-worth-tab>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div>

@@ -1,0 +1,99 @@
+@if (failed()) {
+  <p-message severity="error" class="block">
+    <div class="flex align-items-center gap-3">
+      <span>Couldn't load performance</span>
+      <button pButton type="button" size="small" severity="secondary" (click)="retried.emit()">Retry</button>
+    </div>
+  </p-message>
+} @else {
+  <div class="flex flex-column gap-4">
+    <div class="flex flex-wrap gap-3">
+      <rts-summary-tile label="Net sales" [loading]="loading()" [amount]="figures()?.netSales ?? 0" />
+
+      <rts-summary-tile label="Cost of goods sold"
+                        [loading]="loading()"
+                        [amount]="figures()?.costOfGoodsSold ?? 0"
+                        [subLabel]="costOfGoodsSoldShare()">
+      </rts-summary-tile>
+
+      <rts-summary-tile label="Gross profit"
+                        [loading]="loading()"
+                        [amount]="figures()?.grossProfit ?? 0"
+                        [subLabel]="grossMarginLabel()">
+      </rts-summary-tile>
+
+      <rts-summary-tile label="Expenses"
+                        [loading]="loading()"
+                        [amount]="figures()?.expensesTotal ?? 0">
+      </rts-summary-tile>
+
+      <rts-summary-tile label="Net profit"
+                        [emphasized]="true"
+                        [loading]="loading()"
+                        [amount]="figures()?.netProfit ?? 0"
+                        [tone]="netProfitTone()"
+                        [subLabel]="netMarginLabel()">
+      </rts-summary-tile>
+    </div>
+
+    @if (partial() && !loading()) {
+      <span class="text-color-secondary">
+        Today isn't over. Figures cover activity up to {{ asOf() | date:'h:mm a' }}.
+      </span>
+    }
+
+    @if (loading()) {
+      <p-skeleton height="18rem" />
+    } @else {
+      <rts-trend-chart [days]="days()"
+                       [focusedDate]="focusedDate()"
+                       (dayFocused)="dayFocused.emit($event)">
+      </rts-trend-chart>
+    }
+
+    @if (loading()) {
+      <div class="flex flex-wrap gap-3">
+        <p-skeleton class="flex-1" height="18rem" />
+        <p-skeleton class="flex-1" height="18rem" />
+      </div>
+    } @else if (showCards()) {
+      <div class="flex flex-wrap gap-3">
+        <p-card header="Profit and loss" class="flex-1 summary-card">
+          <p-table [value]="profitAndLossRows()">
+            <ng-template #body let-row>
+              <tr [ngClass]="{'font-bold': row.emphasized, 'border-top-1 surface-border': row.topBorder}">
+                <td>{{ row.label }}</td>
+                <td class="text-right tabular-nums">{{ row.amount | currency }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-card>
+
+        <p-card header="Money collected" class="flex-1 summary-card">
+          <div class="flex flex-column gap-3">
+            @for (row of collectedRows(); track row.accountCode) {
+              <div class="flex flex-column gap-1">
+                <div class="flex justify-content-between">
+                  <span>{{ row.accountName }}</span>
+                  <span class="tabular-nums">{{ row.amount | currency }}</span>
+                </div>
+                <p-progressbar [value]="row.share" [showValue]="false" class="summary-progress" />
+              </div>
+            }
+            <div class="flex justify-content-between font-bold border-top-1 surface-border pt-2">
+              <span>Collected</span>
+              <span class="tabular-nums">{{ figures()?.collectedTotal ?? 0 | currency }}</span>
+            </div>
+            <div class="flex justify-content-between">
+              <span>Billed to customers</span>
+              <span class="tabular-nums">{{ figures()?.billedToCustomers ?? 0 | currency }}</span>
+            </div>
+            <span class="text-sm text-color-secondary">Collected can include payments for earlier sales</span>
+          </div>
+        </p-card>
+      </div>
+    } @else {
+      <span class="text-color-secondary">No sales or expenses recorded for this period</span>
+    }
+  </div>
+}

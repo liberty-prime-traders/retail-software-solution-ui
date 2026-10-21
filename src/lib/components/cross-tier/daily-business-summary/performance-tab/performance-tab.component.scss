@@ -1,0 +1,7 @@
+.summary-card {
+  min-width: 22rem;
+}
+
+:host ::ng-deep .summary-progress {
+  height: 0.4rem;
+}

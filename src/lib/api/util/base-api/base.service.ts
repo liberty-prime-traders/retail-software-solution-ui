@@ -26,8 +26,9 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
   }
 
   postRequest(apiRequest: ApiRequest<PAYLOAD, RESPONSE>): Subscription {
+    const url = this.getBasePath(apiRequest.id)
     this.startApiRequest()
-    return this.httpClient.post<RESPONSE>(this.getBasePath(apiRequest.id), apiRequest.body).pipe(
+    this.inFlight = this.httpClient.post<RESPONSE>(url, apiRequest.body).pipe(
       first(),
       tap((result: RESPONSE) => {
         this.finishSavingWithSuccess(result)
@@ -39,6 +40,7 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
       }),
       finalize(() => this.finalizeApiRequest())
     ).subscribe()
+    return this.inFlight
   }
 
   putRequest(apiRequest: ApiRequest<PAYLOAD, RESPONSE>): Subscription {

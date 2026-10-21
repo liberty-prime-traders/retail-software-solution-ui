@@ -37,6 +37,7 @@ export class LocationDashboardComponent implements OnInit {
 
   private readonly commonTasksMenuItems: MenuItem[] = [
     {label: 'Summary', icon: 'pi pi-home', routerLink: './', routerLinkActiveOptions: {exact: true}},
+    {label: 'Daily Summary', icon: 'pi pi-chart-bar', routerLink: 'daily-summary', visible: false},
     {label: 'Products', icon: 'pi pi-objects-column', routerLink: 'products'}
   ]
 

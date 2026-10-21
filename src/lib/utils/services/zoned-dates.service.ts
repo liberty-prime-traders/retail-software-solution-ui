@@ -24,6 +24,12 @@ export class ZonedDatesService {
     return `${date.getDate()} ${month} ${date.getFullYear()}, ${pad(date.getHours())}:${pad(date.getMinutes())}`
   }
 
+  todayAtOrgZone = (): string => {
+    const parts = this.getDateParts(new Date())
+    const part = (type: Intl.DateTimeFormatPartTypes) => parts.find(candidate => candidate.type === type)!.value
+    return `${part('year')}-${part('month')}-${part('day')}`
+  }
+
   getOffsetFromDate = (date: Date | string | number = new Date()): string => {
     const dateObj = date instanceof Date ? date : new Date(date)
     const parts = this.getDateParts(dateObj)

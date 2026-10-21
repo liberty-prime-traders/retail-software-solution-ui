@@ -1,0 +1,78 @@
+@if (failed()) {
+  <p-message severity="error" class="block">
+    <div class="flex align-items-center gap-3">
+      <span>Couldn't load balances</span>
+      <button pButton type="button" size="small" severity="secondary" (click)="retried.emit()">Retry</button>
+    </div>
+  </p-message>
+} @else {
+  <div class="flex flex-column gap-4">
+    <div class="flex flex-wrap gap-3">
+      @if (loading()) {
+        @for (placeholder of [1, 2, 3, 4, 5, 6]; track placeholder) {
+          <rts-summary-tile label="" [loading]="true" />
+        }
+      } @else {
+        @for (tile of tiles(); track tile.label) {
+          <rts-summary-tile [label]="tile.label"
+                            [amount]="tile.amount"
+                            [caption]="tile.caption"
+                            [change]="tile.change"
+                            [changeSuffix]="tile.emphasized ? changeSuffix() : ''"
+                            [changeSignal]="tile.balanceSignal"
+                            [emphasized]="tile.emphasized">
+          </rts-summary-tile>
+        }
+      }
+    </div>
+
+    @if (loading()) {
+      <p-skeleton height="18rem" />
+      <p-skeleton height="20rem" />
+    } @else {
+      <rts-net-worth-chart [days]="days()"
+                           [focusedDate]="focusedDate()"
+                           (dayFocused)="dayFocused.emit($event)">
+      </rts-net-worth-chart>
+
+      <p-card [header]="cardTitle()">
+        <p-table [value]="rows()">
+          <ng-template #header>
+            <tr>
+              <th>Account</th>
+              <th class="text-right">Balance</th>
+              <th class="text-right">{{ changeLabel() }}</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-row>
+            @switch (row.kind) {
+              @case (BalanceRowKind.SECTION_HEADER) {
+                <tr class="font-bold surface-ground">
+                  <td colspan="3">{{ row.label }}</td>
+                </tr>
+              }
+              @default {
+                <tr [ngClass]="{'font-bold border-top-1 surface-border': row.kind === BalanceRowKind.TOTAL}">
+                  <td>
+                    {{ row.label }}
+                    @if (row.caption) {
+                      <div class="text-sm text-color-secondary">{{ row.caption }}</div>
+                    }
+                  </td>
+                  <td class="text-right tabular-nums">{{ row.closingBalance | currency }}</td>
+                  <td class="text-right">
+                    <rts-amount-change [amount]="row.change" [nonZeroSignal]="row.balanceSignal" />
+                  </td>
+                </tr>
+              }
+            }
+          </ng-template>
+        </p-table>
+        <span class="block mt-3 text-sm text-color-secondary">
+          Balances cover the whole organization. Fixed assets are shown after depreciation and inventory at buying price.
+          Market value isn't reflected.
+        </span>
+      </p-card>
+    }
+  </div>
+}

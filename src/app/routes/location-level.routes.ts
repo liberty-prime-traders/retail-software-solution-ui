@@ -1,5 +1,8 @@
 import {Routes} from '@angular/router'
 import {
+  DailyBusinessSummaryComponent
+} from '../../lib/components/cross-tier/daily-business-summary/daily-business-summary.component'
+import {
   LocationProductComponent
 } from '../../lib/components/location-level/location-products/location-product.component'
 import {LocationSummaryComponent} from '../../lib/components/location-level/location-summary/location-summary.component'
@@ -15,6 +18,7 @@ import {TaxesComponent} from '../../lib/components/location-level/taxes/taxes.co
 
 export const locationRoutes: Routes = [
   {path: '', component: LocationSummaryComponent},
+  {path: 'daily-summary', component: DailyBusinessSummaryComponent},
   {path: 'products', component: LocationProductComponent},
   {path: 'purchases', component: PurchaseComponent},
   {path: 'sync', component: SyncComponent},
