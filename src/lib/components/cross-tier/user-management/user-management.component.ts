@@ -3,7 +3,6 @@ import {ButtonDirective} from 'primeng/button'
 import {AuthorityAssignmentRequest} from '../../../api/cross-tier/authorization/authority.model'
 import {UserAccessDetailService} from '../../../api/cross-tier/authorization/user-access-detail.service'
 import {SchemaLevel} from '../../../api/platform-level/table-registry/schema-level.enum'
-import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {AuthorityAssignmentComponent} from '../authority-assignment/authority-assignment.component'
 import {MembershipComponent} from '../membership/membership.component'
 
@@ -13,8 +12,7 @@ import {MembershipComponent} from '../membership/membership.component'
   imports: [
     AuthorityAssignmentComponent,
     MembershipComponent,
-    ButtonDirective,
-    AutoStretchDirective
+    ButtonDirective
   ]
 })
 export class UserManagementComponent {

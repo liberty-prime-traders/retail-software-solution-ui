@@ -1,4 +1,4 @@
-<p-card>
+<div class="px-4">
   <div class="flex flex-column gap-2">
 
     <button pButton (click)="cancel.emit()" class="w-fit">
@@ -88,7 +88,7 @@
       <button pButton [disabled]="!enableSubmitButton()" (click)="submit()">{{ assignButtonLabel() }}</button>
     </div>
   </div>
-</p-card>
+</div>
 
 <ng-template #assignableList
              let-items="items"

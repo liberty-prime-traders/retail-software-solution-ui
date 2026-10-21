@@ -1,86 +1,90 @@
-<form class="flex flex-column gap-2">
-  <rts-purchase-product-lookup (productSelected)="selectProduct($event)"/>
+<rts-loading-container [loading]="categoriesLoading()">
+  <div class="flex flex-column gap-2">
+    <rts-purchase-product-lookup (productSelected)="selectProduct($event)"/>
 
-  @if (stockAdjustmentFormValue().productLabel) {
-    <span class="font-bold">{{ stockAdjustmentFormValue().productLabel }}</span>
-  }
+    @if (stockAdjustmentFormValue().productLabel) {
+      <rts-form-field>
+        <span class="font-bold">{{ stockAdjustmentFormValue().productLabel }}</span>
+      </rts-form-field>
+    }
 
-  <rts-form-field [required]="true" label="Category" for="category">
-    <p-select id="category"
-              class="flex-grow-1"
-              [options]="categoryDescriptors()"
-              optionLabel="displayName"
-              optionValue="category"
-              [formField]="stockAdjustmentForm.category"
-              placeholder="Select a Category">
-    </p-select>
-  </rts-form-field>
-
-  @if (directionIsChosenByUser()) {
-    <rts-form-field [required]="true" label="Direction" for="direction">
-      <p-select id="direction"
+    <rts-form-field [required]="true" label="Category" for="category">
+      <p-select id="category"
                 class="flex-grow-1"
-                [options]="directionOptions()"
-                [formField]="stockAdjustmentForm.direction">
+                [options]="categoryDescriptors()"
+                optionLabel="displayName"
+                optionValue="category"
+                [formField]="stockAdjustmentForm.category"
+                placeholder="Select a Category">
       </p-select>
     </rts-form-field>
-  }
 
-  @if (stockAdjustmentFormValue().requiresReason) {
+    @if (directionIsChosenByUser()) {
+      <rts-form-field [required]="true" label="Direction" for="direction">
+        <p-select id="direction"
+                  class="flex-grow-1"
+                  [options]="directionOptions()"
+                  [formField]="stockAdjustmentForm.direction">
+        </p-select>
+      </rts-form-field>
+    }
 
-    <rts-form-field [required]="true" label="Reason" for="stockMovementReasonId">
-      <p-select id="stockMovementReasonId"
+    @if (stockAdjustmentFormValue().requiresReason) {
+
+      <rts-form-field [required]="true" label="Reason" for="stockMovementReasonId">
+        <p-select id="stockMovementReasonId"
+                  class="flex-grow-1"
+                  [options]="reasonOptions()"
+                  optionLabel="name"
+                  optionValue="id"
+                  [formField]="stockAdjustmentForm.stockMovementReasonId"
+                  placeholder="Select a Reason">
+        </p-select>
+      </rts-form-field>
+    }
+
+    <rts-form-field [required]="true" label="Unit" for="unitId">
+      <p-select id="unitId"
                 class="flex-grow-1"
-                [options]="reasonOptions()"
-                optionLabel="name"
-                optionValue="id"
-                [formField]="stockAdjustmentForm.stockMovementReasonId"
-                placeholder="Select a Reason">
+                appendTo="body"
+                [options]="stockAdjustmentFormValue().baseUnitId | alternativeUnitsFinder"
+                [formField]="stockAdjustmentForm.unitId">
       </p-select>
     </rts-form-field>
-  }
 
-  <rts-form-field [required]="true" label="Unit" for="unitId">
-    <p-select id="unitId"
-              class="flex-grow-1"
-              appendTo="body"
-              [options]="stockAdjustmentFormValue().baseUnitId | alternativeUnitsFinder"
-              [formField]="stockAdjustmentForm.unitId">
-    </p-select>
-  </rts-form-field>
-
-  <rts-form-field [required]="true" label="Quantity" for="quantity">
-    <p-input-number id="quantity"
-                    class="flex-grow-1"
-                    [min]="0"
-                    [maxFractionDigits]="4"
-                    [formField]="stockAdjustmentForm.quantity">
-    </p-input-number>
-  </rts-form-field>
-
-  @if (requiresUnitCost()) {
-    <rts-form-field [required]="true" label="Unit Cost" for="unitCost">
-      <p-input-number id="unitCost"
+    <rts-form-field [required]="true" label="Quantity" for="quantity">
+      <p-input-number id="quantity"
                       class="flex-grow-1"
                       [min]="0"
                       [maxFractionDigits]="4"
-                      [formField]="stockAdjustmentForm.unitCost">
+                      [formField]="stockAdjustmentForm.quantity">
       </p-input-number>
     </rts-form-field>
-  }
 
-  <rts-form-field [required]="stockAdjustmentFormValue().requiresNote" label="Note" for="note">
-    <input id="note" class="flex-grow-1" pInputText [formField]="stockAdjustmentForm.note" />
-  </rts-form-field>
+    @if (requiresUnitCost()) {
+      <rts-form-field [required]="true" label="Unit Cost" for="unitCost">
+        <p-input-number id="unitCost"
+                        class="flex-grow-1"
+                        [min]="0"
+                        [maxFractionDigits]="4"
+                        [formField]="stockAdjustmentForm.unitCost">
+        </p-input-number>
+      </rts-form-field>
+    }
 
-  <rts-forms-buttons [hideDelete]="true"
-                     [disableReset]="!stockAdjustmentForm().dirty()"
-                     [disableSave]="stockAdjustmentForm().invalid() || !stockAdjustmentForm().dirty()"
-                     [signalForm]="stockAdjustmentForm()"
-                     [fieldMap]="stockAdjustmentFormFields"
-                     [processingStatus]="processingStatus()"
-                     [failureMessages]="failureMessages()"
-                     (save)="saveStockAdjustment()"
-                     (resetAction)="resetForm()">
-  </rts-forms-buttons>
-</form>
+    <rts-form-field [required]="stockAdjustmentFormValue().requiresNote" label="Note" for="note">
+      <input id="note" class="flex-grow-1" pInputText [formField]="stockAdjustmentForm.note" />
+    </rts-form-field>
+
+    <rts-forms-buttons [hideDelete]="true"
+                       [disableReset]="!stockAdjustmentForm().dirty()"
+                       [disableSave]="stockAdjustmentForm().invalid() || !stockAdjustmentForm().dirty()"
+                       [signalForm]="stockAdjustmentForm()"
+                       [fieldMap]="stockAdjustmentFormFields"
+                       [processingStatus]="processingStatus()"
+                       [failureMessages]="failureMessages()"
+                       (save)="saveStockAdjustment()"
+                       (resetAction)="resetForm()">
+    </rts-forms-buttons>
+  </div>
+</rts-loading-container>

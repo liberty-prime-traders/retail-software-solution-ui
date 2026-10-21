@@ -1,4 +1,4 @@
-import {min, required, schema} from '@angular/forms/signals'
+import {disabled, min, required, schema} from '@angular/forms/signals'
 import {StockAdjustmentCategory} from '../../../../api/location-level/stock-adjustment/stock-adjustment-category.enum'
 import {StockAdjustmentDirection} from '../../../../api/location-level/stock-adjustment/stock-adjustment-direction.enum'
 import {StockAdjustment} from '../../../../api/location-level/stock-adjustment/stock-adjustment.model'
@@ -62,6 +62,7 @@ export namespace StockAdjustmentFormDefinition {
     required(path.unitCost, {when: ({valueOf}) => requiresUnitCost(valueOf(path.unitCostDirections), valueOf(path.direction))})
     required(path.note, {when: ({valueOf}) => valueOf(path.requiresNote)})
     required(path.stockMovementReasonId, {when: ({valueOf}) => valueOf(path.requiresReason)})
+    disabled(path.unitId, {when: ({valueOf}) => !valueOf(path.locationProductId)})
   })
 
   export const convertToBackendModel = (formValue: StockAdjustmentFormModel): Partial<StockAdjustment> => {

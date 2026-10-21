@@ -7,7 +7,6 @@ import {ExpenseTypeService} from '../../../api/organization-level/expense-type/e
 import {BooleanToTextPipe} from '../../../utils/pipes/boolean-to-text.pipe'
 import {JoinEnumPipe} from '../../../utils/pipes/join-enum.pipe'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
-import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
@@ -25,8 +24,7 @@ import {ExpenseTypeFormComponent} from './expense-type-form/expense-type-form.co
     ExpenseTypeFormComponent,
     GridFilterComponent,
     EmptyRowComponent,
-    NgClass,
-    AutoStretchDirective
+    NgClass
   ]
 })
 export class ExpenseTypeComponent extends GridWithAddButtonComponent<ExpenseTypeService> {

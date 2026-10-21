@@ -5,7 +5,6 @@ import {TableModule} from 'primeng/table'
 import {OrgTaxTypeService} from '../../../api/organization-level/org-tax-type/org-tax-type.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
-import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
@@ -25,7 +24,6 @@ import {OrgTaxTypeEditFormComponent} from './org-tax-type-edit-form/org-tax-type
     GridFilterComponent,
     EmptyRowComponent,
     NgClass,
-    AutoStretchDirective,
     NewFormCancelButtonComponent,
     PrettifyEnumPipe
   ]

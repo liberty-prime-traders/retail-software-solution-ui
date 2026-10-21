@@ -17,6 +17,7 @@ import {toSelectItems} from '../../../../utils/types/select-item.type'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {
   PurchaseProductLookupComponent
 } from '../../location-product-lookup/purchase-product-lookup/purchase-product-lookup.component'
@@ -33,7 +34,8 @@ import {StockAdjustmentFormDefinition} from './stock-adjustment-form.definition'
     InputText,
     Select,
     AlternativeUnitsFinderPipe,
-    PurchaseProductLookupComponent
+    PurchaseProductLookupComponent,
+    LoadingContainerComponent
   ]
 })
 export class StockAdjustmentFormComponent extends BaseFormComponent<StockAdjustmentService> implements OnInit {
@@ -55,6 +57,7 @@ export class StockAdjustmentFormComponent extends BaseFormComponent<StockAdjustm
   readonly stockAdjustmentFormFields = StockAdjustmentFormDefinition.fieldMap
 
   readonly categoryDescriptors = this.categoryDescriptorService.selectAll
+  readonly categoriesLoading = this.categoryDescriptorService.selectLoading
 
   private readonly selectedDescriptor = computed(() =>
     this.categoryDescriptors().find(descriptor => descriptor.category === this.stockAdjustmentFormValue().category)

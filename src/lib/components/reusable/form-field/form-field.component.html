@@ -4,7 +4,7 @@
       @if (layout() === FormFieldDirection.COMPACT) {
         <small class="info-message">{{ label() }}</small>
       } @else {
-        {{ label() }}:
+        {{ label() }} {{label() ? ':' : ''}}
       }
     </label>
 

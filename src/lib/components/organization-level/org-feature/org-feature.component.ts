@@ -9,7 +9,6 @@ import {OrgFeatureService} from '../../../api/organization-level/org-feature/org
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
-import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
@@ -27,7 +26,6 @@ import {OrgFeatureAddFormComponent} from './org-feature-add-form/org-feature-add
     OrgFeatureAddFormComponent,
     GridFilterComponent,
     EmptyRowComponent,
-    AutoStretchDirective,
     NewFormCancelButtonComponent,
     DatePipe
   ]

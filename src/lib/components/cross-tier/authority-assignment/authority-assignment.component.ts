@@ -3,7 +3,6 @@ import {Component, computed, inject, input, output, signal} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {MessageService} from 'primeng/api'
 import {ButtonDirective} from 'primeng/button'
-import {Card} from 'primeng/card'
 import {Chip} from 'primeng/chip'
 import {DataView} from 'primeng/dataview'
 import {Divider} from 'primeng/divider'
@@ -34,7 +33,6 @@ interface AssignableUser {
   imports: [
     ButtonDirective,
     Chip,
-    Card,
     DataView,
     Divider,
     IconField,

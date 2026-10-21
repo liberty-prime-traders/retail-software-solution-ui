@@ -13,7 +13,6 @@ import {FundMovementService} from '../../../../api/organization-level/fund-trans
 import {FundMovementType} from '../../../../api/organization-level/fund-transfer/fund-movement-type.enum'
 import {getToday} from '../../../../utils/dates'
 import {EnumToDropdownPipe} from '../../../../utils/pipes/enum-to-dropdown.pipe'
-import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
@@ -34,8 +33,7 @@ import {FundTransferFormDefinition} from './fund-transfer-form.definition'
     InputText,
     Select,
     TreeSelect,
-    EnumToDropdownPipe,
-    AutoStretchDirective
+    EnumToDropdownPipe
   ]
 })
 export class FundTransferFormComponent extends BaseFormComponent<FundMovementService> implements OnInit {

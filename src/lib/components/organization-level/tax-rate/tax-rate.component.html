@@ -1,4 +1,4 @@
-<div class="flex flex-column gap-4 flex-grow-1" id="taxRates" rtsAutoStretch="taxRates">
+<div class="flex flex-column gap-4 flex-grow-1">
   @if (addingIsActive()) {
     <rts-new-form-cancel-button (onCancel)="setAddingActiveFalse()"/>
     <rts-tax-rate-add-form (taxRateCreated)="closeAddRow()"/>

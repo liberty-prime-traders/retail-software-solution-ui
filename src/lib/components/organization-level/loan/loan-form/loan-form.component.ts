@@ -11,7 +11,6 @@ import {AccountTreesService} from '../../../../api/organization-level/account-tr
 import {Account} from '../../../../api/organization-level/chart-of-accounts/account.model'
 import {ContactService} from '../../../../api/organization-level/contact/contact.service'
 import {LoanService} from '../../../../api/organization-level/loan/loan.service'
-import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
@@ -31,8 +30,7 @@ import {LoanFormDefinition} from './loan-form.definition'
     InputNumber,
     InputText,
     Select,
-    TreeSelect,
-    AutoStretchDirective
+    TreeSelect
   ]
 })
 export class LoanFormComponent extends BaseFormComponent<LoanService> implements OnInit {

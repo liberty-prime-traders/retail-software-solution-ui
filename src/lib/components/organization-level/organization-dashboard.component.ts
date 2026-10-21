@@ -7,6 +7,7 @@ import {Menu} from 'primeng/menu'
 import {OrgMembershipUserService} from '../../api/organization-level/membership/org-membership-user.service'
 import {OrgFeatureService} from '../../api/organization-level/org-feature/org-feature.service'
 import {UserContextService} from '../../utils/services/auth/user-context.service'
+import {AutoStretchDirective} from '../reusable/auto-stretch.directive'
 import {OrganizationLaunchService} from '../welcome/top-navigation/organization-nav-content/organization-launch.service'
 
 @Component({
@@ -16,7 +17,8 @@ import {OrganizationLaunchService} from '../welcome/top-navigation/organization-
     RouterOutlet,
     Menu,
     Card,
-    ButtonDirective
+    ButtonDirective,
+    AutoStretchDirective
   ]
 })
 export class OrganizationDashboardComponent implements OnInit {

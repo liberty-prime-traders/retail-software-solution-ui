@@ -1,4 +1,4 @@
-<div id="contacts" [rtsAutoStretch]="'contacts'">
+<div id="contacts" rtsAutoStretch="contacts">
   @if (selectedContactId(); as contactId) {
     <rts-contact-detail [contactId]="contactId" (closed)="selectedContactId.set(undefined)"/>
 

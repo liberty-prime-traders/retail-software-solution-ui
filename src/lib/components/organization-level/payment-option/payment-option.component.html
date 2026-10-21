@@ -1,4 +1,4 @@
-<div class="flex flex-column gap-4" id="payment-options" rtsAutoStretch="payment-options">
+<div class="flex flex-column gap-4">
   @if (addingIsActive()) {
     <rts-new-form-cancel-button (onCancel)="setAddingActiveFalse()"/>
     <rts-payment-option-form (paymentOptionCreated)="closeAddRow()"/>
