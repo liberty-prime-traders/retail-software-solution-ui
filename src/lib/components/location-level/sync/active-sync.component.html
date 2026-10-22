@@ -20,7 +20,7 @@
     </div>
 
     @if (log.percentComplete !== undefined && log.percentComplete !== null) {
-      <p-progress-bar [value]="log.percentComplete" [showValue]="true"/>
+      <p-progress-bar [value]="log.percentComplete | round : 2" [showValue]="true"/>
     }
 
     <div class="flex gap-4 flex-wrap">

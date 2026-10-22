@@ -11,7 +11,6 @@ import {parseError} from '../../../../utils/errors'
 import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
 import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
-import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 
 @Component({
   selector: 'rts-bulk-unit-import',
@@ -21,8 +20,7 @@ import {LoadingContainerComponent} from '../../../reusable/loading-container/loa
     FormsModule,
     ButtonDirective,
     ErrorSummaryComponent,
-    Divider,
-    LoadingContainerComponent
+    Divider
   ],
   templateUrl: 'bulk-unit-import.component.html'
 })
@@ -34,7 +32,6 @@ export class BulkUnitImportComponent {
   readonly jsonPayload = model<string>('')
   readonly errorDetails = signal<string[]>([])
   readonly errorsFound = computed(() => this.errorDetails().length > 0)
-  readonly uploadInProgress = this.unitBulkUploadService.selectLoading
 
   readonly FormFieldLayout = FormFieldLayout
 

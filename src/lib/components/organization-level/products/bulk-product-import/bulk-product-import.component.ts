@@ -6,6 +6,7 @@ import {InputText} from 'primeng/inputtext'
 import {ProductBulkUploadRequest} from '../../../../api/organization-level/product/product-bulk-upload-request.dto'
 import {ProductBulkUploadService} from '../../../../api/organization-level/product/product-bulk-upload.service'
 import {parseError} from '../../../../utils/errors'
+import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
 import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
 import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
@@ -20,7 +21,8 @@ import {LoadingContainerComponent} from '../../../reusable/loading-container/loa
     ButtonDirective,
     ErrorSummaryComponent,
     Divider,
-    LoadingContainerComponent
+    LoadingContainerComponent,
+    AutoStretchDirective
   ],
   templateUrl: 'bulk-product-import.component.html'
 })

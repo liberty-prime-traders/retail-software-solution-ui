@@ -33,7 +33,7 @@
         <td>{{ log.skippedRecords }}</td>
         <td>{{ log.failedRecords }}</td>
         <td>{{ log.totalRecords | nullSafe }}</td>
-        <td>{{ log.percentComplete | nullSafe }}</td>
+        <td>{{ log.percentComplete | round : 2 | nullSafe }}</td>
         <td>{{ log.createdOn | date  | nullSafe }}</td>
         <td>{{ (log.completedAt ?? log.canceledAt) | date  | nullSafe }}</td>
       </tr>

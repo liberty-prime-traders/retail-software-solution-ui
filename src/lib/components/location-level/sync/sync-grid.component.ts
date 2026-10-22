@@ -5,6 +5,7 @@ import {Tag} from 'primeng/tag'
 import {SyncService} from '../../../api/location-level/sync/sync.service'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
+import {RoundNumbersPipe} from '../../../utils/pipes/round-numbers.pipe'
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
 
@@ -18,7 +19,8 @@ import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
     NullSafePipe,
     PrettifyEnumPipe,
     SyncStatusSeverityPipe,
-    AutoStretchDirective
+    AutoStretchDirective,
+    RoundNumbersPipe
   ]
 })
 export class SyncGridComponent {

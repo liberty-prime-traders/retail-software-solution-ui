@@ -24,14 +24,44 @@ const buildSale = (): SaleSession => {
     saleStatus: SaleStatus.CONFIRMED,
     saleLines: [
       {
-        identity: {id: 'l1'}, locationProductId: 'p1', productLabel: LONG_NAME, productPrintLabel: LONG_NAME, quantity: 2, baseQuantity: 2,
-        unitId: 'u1', baseUnitId: 'u1', conversionFactor: 1, unitPrice: 1234567.5, lineTotal: 2469135,
-        unitPriceOverride: 1234567.5, netUnitPrice: 1234567.5, quantityOnHand: 9, quantityReserved: 0, quantityAvailable: 9
+        identity: {id: 'l1'},
+        locationProductId: 'p1',
+        productLabel: LONG_NAME,
+        productPrintLabel: LONG_NAME,
+        quantity: 2,
+        baseQuantity: 2,
+        unitId: 'u1',
+        baseUnitId: 'u1',
+        conversionFactor: 1,
+        unitPrice: 1234567.5,
+        lineTotal: 2469135,
+        unitPriceOverride: 1234567.5,
+        netUnitPrice: 1234567.5,
+        quantityOnHand: 9,
+        quantityReserved: 0,
+        quantityAvailable: 9,
+        quantityAvailableBreakdown: '',
+        quantityOnHandBreakdown: ''
       },
       {
-        identity: {id: 'l2'}, locationProductId: 'p2', productLabel: 'Brush', productPrintLabel: 'Brush', quantity: 1, baseQuantity: 1,
-        unitId: 'u1', baseUnitId: 'u1', conversionFactor: 1, unitPrice: 10, lineTotal: 8,
-        unitPriceOverride: 8, netUnitPrice: 8, quantityOnHand: 9, quantityReserved: 0, quantityAvailable: 9
+        identity: {id: 'l2'},
+        locationProductId: 'p2',
+        productLabel: 'Brush',
+        productPrintLabel: 'Brush',
+        quantity: 1,
+        baseQuantity: 1,
+        unitId: 'u1',
+        baseUnitId: 'u1',
+        conversionFactor: 1,
+        unitPrice: 10,
+        lineTotal: 8,
+        unitPriceOverride: 8,
+        netUnitPrice: 8,
+        quantityOnHand: 9,
+        quantityReserved: 0,
+        quantityAvailable: 9,
+        quantityAvailableBreakdown: '',
+        quantityOnHandBreakdown: ''
       }
     ],
     salePayments: [

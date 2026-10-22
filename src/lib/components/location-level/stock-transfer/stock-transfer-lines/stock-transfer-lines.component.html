@@ -3,10 +3,7 @@
     <rts-available-product-lookup (productSelected)="sendLineRequest($event)"/>
   }
 
-  <p-table [value]="lines()"
-           dataKey="dispatchLineRef"
-           sortField="productLabel"
-           [rowTrackBy]="trackByLineRef">
+  <p-table [value]="lines()" dataKey="dispatchLineRef" sortField="productLabel" [rowTrackBy]="trackByLineRef">
     <ng-template #header>
       <tr>
         <th>Product</th>

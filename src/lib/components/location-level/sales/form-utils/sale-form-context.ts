@@ -27,6 +27,7 @@ export class SaleFormContext {
   readonly saleForm = form(this.saleFormValue, SaleFormDefinition.saleFormSchema)
 
   readonly loadSession = (session: SaleSession) => {
+    // session.saleRefunds = []
     this._saleSession.set(session)
     this.saleForm().reset(SaleFormDefinition.convertToFormModel(session))
   }

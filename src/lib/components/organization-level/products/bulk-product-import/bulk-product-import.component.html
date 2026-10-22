@@ -30,7 +30,7 @@
     @if (errorsFound()) {
       <p-divider layout="vertical"/>
 
-      <div class="flex flex-column">
+      <div class="flex flex-column" id="bulk-product-errors" rtsAutoStretch="bulk-product-errors">
         <rts-error-summary [regularErrorMessages]="errorDetails()"/>
       </div>
     }
