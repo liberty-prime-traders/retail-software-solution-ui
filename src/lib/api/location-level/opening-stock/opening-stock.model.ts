@@ -9,3 +9,11 @@ export interface OpeningStockLine extends BaseModel {
   declaredBy?: string
   declaredAt?: string
 }
+
+export interface OpeningStockBulkLine {
+  locationProductReferenceNumber: string
+  quantity: number
+  unitCode: string
+  unitCost: number
+  defaultSalePrice: number
+}

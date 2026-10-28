@@ -10,15 +10,19 @@
     <div class="flex flex-column gap-4">
     <textarea id="input-payload"
               pInputText
-              [(ngModel)]="jsonPayload"
+              [formField]="payloadForm.payload"
               class="w-full"
+              [placeholder]="examplePayload"
               rows="20">
     </textarea>
+    @if (payloadForm.payload().dirty()) {
+      <rts-error-summary [signalFormErrors]="payloadForm().errorSummary()" [fieldMap]="payloadFieldMap"/>
+    }
 
       <button pButton
               class="w-fit"
               (click)="uploadUnits()"
-              [disabled]="!jsonPayload() || jsonPayload().trim().length === 0"
+              [disabled]="payloadForm().invalid()"
               severity="success">
         <i class="pi pi-arrow-right"></i>
         Execute Upload

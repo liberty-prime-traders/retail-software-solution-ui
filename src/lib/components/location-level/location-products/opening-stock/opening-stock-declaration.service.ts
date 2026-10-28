@@ -3,7 +3,7 @@ import {computed, inject, Injectable, signal} from '@angular/core'
 import {MessageService} from 'primeng/api'
 import {LocationProductPaginatedSearchService} from '../../../../api/location-level/location-product/location-product-paginated-search.service'
 import {LocationProduct} from '../../../../api/location-level/location-product/location-product.model'
-import {OpeningStockLine} from '../../../../api/location-level/opening-stock/opening-stock.model'
+import {OpeningStockBulkLine, OpeningStockLine} from '../../../../api/location-level/opening-stock/opening-stock.model'
 import {OpeningStockService} from '../../../../api/location-level/opening-stock/opening-stock.service'
 import {parseError} from '../../../../utils/errors'
 import {OpeningStockDraftLine} from './opening-stock-draft-line.model'
@@ -52,6 +52,16 @@ export class OpeningStockDeclarationService {
 
     this.openingStockService.declareInitialStock(lines, {
       onSuccess: (result) => this.onDeclared(Array.isArray(result) ? result : [result], messageService),
+      onFail: (error) => this.onDeclareFailed(error, messageService)
+    })
+  }
+
+  declareBulk(lines: OpeningStockBulkLine[], messageService: MessageService, onSuccess: () => void) {
+    this.openingStockService.bulkDeclareInitialStock(lines, {
+      onSuccess: (result) => {
+        this.onDeclared(Array.isArray(result) ? result : [result], messageService)
+        onSuccess()
+      },
       onFail: (error) => this.onDeclareFailed(error, messageService)
     })
   }

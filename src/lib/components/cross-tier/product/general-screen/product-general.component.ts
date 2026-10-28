@@ -14,6 +14,9 @@ import {SessionContextService} from '../../../../utils/services/session-context.
 import {
   OpeningStockGridComponent
 } from '../../../location-level/location-products/opening-stock/opening-stock-grid.component'
+import {
+  OpeningStockBulkUploadComponent
+} from '../../../location-level/location-products/opening-stock/opening-stock-bulk-upload.component'
 import {BulkProductImportComponent} from '../../../organization-level/products/bulk-product-import/bulk-product-import.component'
 import {OrganizationProductFormComponent} from '../../../organization-level/products/product-form/organization-product-form.component'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
@@ -42,6 +45,7 @@ import {ProductGridComponent} from '../product-grid/product-grid.component'
     ProductFilterComponent,
     ProductGridComponent,
     OpeningStockGridComponent,
+    OpeningStockBulkUploadComponent,
     AutoStretchDirective
   ]
 })

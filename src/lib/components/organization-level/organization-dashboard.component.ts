@@ -29,12 +29,6 @@ export class OrganizationDashboardComponent implements OnInit {
 
   private readonly organizationHomeMenuItems: Signal<MenuItem[]> = computed(() => [
     {label: 'Summary', icon: 'pi pi-home', routerLink: 'summary'},
-    {
-      label: 'Snapshot',
-      icon: 'pi pi-chart-bar',
-      routerLink: 'daily-summary',
-      visible: this.orgFeatureService.isChartOfAccountsEnabled()
-    }
   ])
 
   private readonly orgAdminSettings: MenuItem[] = [
@@ -116,6 +110,10 @@ export class OrganizationDashboardComponent implements OnInit {
     ]
   })
 
+  private readonly reportingMenuItems: MenuItem[] = [
+    {label: 'Snapshot', icon: 'pi pi-chart-bar', routerLink: 'daily-summary'}
+  ]
+
   readonly menuItems: Signal<MenuItem[]> = computed(() => {
     if (!this.userContextService.isLibertyAdmin()) {
       return this.organizationHomeMenuItems()
@@ -135,6 +133,8 @@ export class OrganizationDashboardComponent implements OnInit {
       menuItems.push({label: 'Transactions', items: transactionItems, expanded: false, toggleable: true})
     }
 
+    menuItems.push({label: 'Reports', items: this.reportingMenuItems, expanded: false, toggleable: true})
+
     const financeItems = this.financialSettingsMenuItems()
     const showFinance = financeItems.some(item => item.visible !== false)
     if (showFinance) {
@@ -142,6 +142,7 @@ export class OrganizationDashboardComponent implements OnInit {
     }
 
     if (this.userContextService.isOrganizationAdmin()) {
+      menuItems.push({separator: true})
       menuItems.push({label: 'Admin Settings', toggleable: true, items: this.orgAdminSettings})
     }
 

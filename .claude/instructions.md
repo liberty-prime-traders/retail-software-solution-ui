@@ -8,6 +8,7 @@ The api and components are split into these sections. some util and cross tier f
 # Forms
 I use signal forms for all forms. A good example is found at the location below:
 @src/lib/components/organization-level/product-group/product-group-form
+Error message display can be generic via `<rts-error-summary/>` using the form or`regularErrorMessages`
 
 # API
 I have reusable setups for API calls. @src/lib/api/util has my reusable setup. Try not to override all the time. 
