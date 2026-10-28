@@ -3,6 +3,7 @@ import {EntityId} from '@ngrx/signals/entities'
 import {ButtonDirective} from 'primeng/button'
 import {TableModule} from 'primeng/table'
 import {ContactService} from '../../../api/organization-level/contact/contact.service'
+import {UserContextService} from '../../../utils/services/auth/user-context.service'
 import {JoinEnumPipe} from '../../../utils/pipes/join-enum.pipe'
 import {NullSafePipe} from '../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
@@ -11,6 +12,7 @@ import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {GridFilterComponent} from '../../reusable/grid-filter/grid-filter.component'
 import {GridWithAddButtonComponent} from '../../reusable/grid-with-add-button.component'
 import {MoneyComponent} from '../../reusable/money.component'
+import {BulkContactImportComponent} from './bulk-contact-import/bulk-contact-import.component'
 import {ContactDetailComponent} from './contact-detail/contact-detail.component'
 import {ContactFormComponent} from './contact-form/contact-form.component'
 import {ContactNamePipe} from './contact-name.pipe'
@@ -23,6 +25,7 @@ import {ContactNamePipe} from './contact-name.pipe'
     NullSafePipe,
     ButtonDirective,
     ContactFormComponent,
+    BulkContactImportComponent,
     ContactDetailComponent,
     GridFilterComponent,
     EmptyRowComponent,
@@ -39,4 +42,15 @@ export class ContactComponent extends GridWithAddButtonComponent<ContactService>
 
   readonly contacts = this.contactService.selectAll
   readonly selectedContactId = signal<EntityId | undefined>(undefined)
+
+  readonly showBulkImport = inject(UserContextService).isLibertyAdmin
+  readonly showBulkImportScreen = signal(false)
+
+  toggleBulkImport() {
+    this.showBulkImportScreen.set(!this.showBulkImportScreen())
+  }
+
+  finishBulkImport() {
+    this.showBulkImportScreen.set(false)
+  }
 }

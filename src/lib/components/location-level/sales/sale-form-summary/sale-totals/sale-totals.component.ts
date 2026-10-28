@@ -39,7 +39,7 @@ export class SaleTotalsComponent {
   }
 
   completeSale() {
-    this.saleSessionService.confirmSession({onSuccess: this.context.loadSession})
+    this.saleSessionService.confirmSession({onSuccess: this.context.loadConfirmedSession})
   }
 
 }

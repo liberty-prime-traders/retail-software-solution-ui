@@ -1,5 +1,5 @@
 import {CurrencyPipe} from '@angular/common'
-import {Component, computed, inject, OnInit, signal, Signal} from '@angular/core'
+import {Component, computed, inject, linkedSignal, OnInit, signal, Signal} from '@angular/core'
 import {apply, form, FormField} from '@angular/forms/signals'
 import {EntityId} from '@ngrx/signals/entities'
 import {MenuItem} from 'primeng/api'
@@ -48,7 +48,15 @@ export class SalePaymentFormComponent implements OnInit {
   readonly paymentOptions: Signal<Partial<PaymentOption>[]> = this.paymentOptionService.selectAll
   readonly paymentOptionsLoading = this.paymentOptionService.selectLoading
   private readonly preselectedOverride = signal<Partial<PaymentOption>[]>([])
-  private readonly paymentFormValue = signal(SalePaymentFormDefinition.createInitial)
+  private readonly receivableTotal = computed(() => this.context.saleSession().totals.receivableTotal)
+
+  private readonly paymentFormValue = linkedSignal<number, SalePaymentFormDefinition.SalePaymentFormModel>({
+    source: this.receivableTotal,
+    computation: (receivableTotal, previous) => ({
+      ...(previous?.value ?? SalePaymentFormDefinition.createInitial),
+      amount: receivableTotal
+    })
+  })
 
   readonly paymentForm = form(this.paymentFormValue, s => {
     apply(s, SalePaymentFormDefinition.salePaymentFormSchema)
@@ -108,12 +116,16 @@ export class SalePaymentFormComponent implements OnInit {
     this.saleSessionService.addPayment(salePayment, {
       onSuccess: (updatedSession) => {
         this.paymentFormValue.set({
-          ...SalePaymentFormDefinition.createInitial,
+          ...this.initialFormValue(),
           paymentMethodId: this.paymentFormValue().paymentMethodId
         })
         this.context.loadSession(updatedSession)
       }
     })
+  }
+
+  private initialFormValue(): SalePaymentFormDefinition.SalePaymentFormModel {
+    return {...SalePaymentFormDefinition.createInitial, amount: this.receivableTotal()}
   }
 
   private buildSalePaymentCreateRequest(): SaleSessionPaymentAddRequest {

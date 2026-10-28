@@ -6,6 +6,7 @@ import {
   inject,
   Injector,
   input,
+  output,
   signal,
   viewChild
 } from '@angular/core'
@@ -59,6 +60,7 @@ export class SalePrintActionsComponent {
   private readonly sessionContext = inject(SessionContextService)
 
   readonly sale = input.required<SaleSession>()
+  readonly printed = output()
 
   readonly layouts = [...PRINT_LAYOUT_PRESETS]
   readonly isPrinting = this.printService.isPrinting
@@ -97,6 +99,7 @@ export class SalePrintActionsComponent {
     const printDocument = this.printDocument()
     if (printDocument) {
       this.printService.print(printDocument.element, this.layout())
+        .then(() => this.printed.emit())
         .catch(error => this.reportFailure(error))
         .finally(() => this._renderedOffScreenForPrint.set(false))
     } else {

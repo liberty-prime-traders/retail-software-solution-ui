@@ -1,15 +1,37 @@
-<form [formGroup]="unitGroupForm()" class="flex flex-column gap-2 filled-background">
+<form class="flex flex-column gap-2 filled-background">
   <rts-form-field [required]="true" label="Name" for="name">
-    <input id="name" pInputText formControlName="name">
+    <input id="name" pInputText [formField]="unitGroupForm.name" />
   </rts-form-field>
 
   <rts-form-field label="Description" for="description">
-    <input id="description" pInputText formControlName="description">
+    <input id="description" pInputText [formField]="unitGroupForm.description" />
   </rts-form-field>
 
-  <rts-forms-buttons [disableReset]="!unitGroupForm().dirty"
-                     [disableSave]="!unitGroupForm().valid || !unitGroupForm().dirty"
-                     [hideDelete]="!unitGroup()?.id"
+  @if (!originalUnitGroup()?.id) {
+    <rts-form-field label="Override Base Unit Name" for="overrideBaseUnitName">
+      <p-checkbox inputId="overrideBaseUnitName" [binary]="true" [formField]="unitGroupForm.overrideBaseUnitName" />
+    </rts-form-field>
+
+    <rts-form-field [required]="unitGroupFormValue().overrideBaseUnitName" label="Base Unit Name" for="baseUnitName">
+      <input id="baseUnitName" pInputText [formField]="unitGroupForm.baseUnitName" />
+    </rts-form-field>
+
+    <rts-form-field label="Specify Base Unit Code" for="specifyBaseUnitCode">
+      <p-checkbox inputId="specifyBaseUnitCode" [binary]="true" [formField]="unitGroupForm.specifyBaseUnitCode" />
+    </rts-form-field>
+
+    @if (unitGroupFormValue().specifyBaseUnitCode) {
+      <rts-form-field [required]="true" label="Base Unit Code" for="baseUnitCode">
+        <input id="baseUnitCode" pInputText [formField]="unitGroupForm.baseUnitCode" />
+      </rts-form-field>
+    }
+  }
+
+  <rts-forms-buttons [disableReset]="!unitGroupForm().dirty()"
+                     [disableSave]="unitGroupForm().invalid() || !unitGroupForm().dirty()"
+                     [hideDelete]="!originalUnitGroup()?.id"
+                     [signalForm]="unitGroupForm()"
+                     [fieldMap]="unitGroupFormFields"
                      [processingStatus]="processingStatus()"
                      [failureMessages]="failureMessages()"
                      (delete)="deleteUnitGroup()"

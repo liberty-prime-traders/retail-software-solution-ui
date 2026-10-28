@@ -2,6 +2,15 @@
   @if (selectedContactId(); as contactId) {
     <rts-contact-detail [contactId]="contactId" (closed)="selectedContactId.set(undefined)"/>
 
+  } @else if (showBulkImportScreen()) {
+
+    <div class="flex flex-column gap-4 flex-grow-1">
+      <button pButton (click)="toggleBulkImport()" severity="info" class="w-fit">
+        <i class="pi pi-times"></i> Cancel
+      </button>
+      <rts-bulk-contact-import (successfulUpload)="finishBulkImport()"/>
+    </div>
+
   } @else if (addingIsActive()) {
 
     <div class="flex flex-column gap-4 flex-grow-1">
@@ -28,12 +37,24 @@
 
           <rts-grid-filter [dataTable]="contactsTable"/>
 
-          <button pButton (click)="setAddingActiveTrue()"
-                  [disabled]="loading() || addingIsActive()"
-                  rounded
-                  severity="secondary">
-            + Add Contact
-          </button>
+          <div class="flex gap-4">
+            @if (showBulkImport()) {
+              <button pButton (click)="toggleBulkImport()"
+                      [disabled]="loading()"
+                      rounded
+                      severity="secondary">
+                <i class="pi pi-upload"></i>
+                Bulk Import Contacts
+              </button>
+            }
+
+            <button pButton (click)="setAddingActiveTrue()"
+                    [disabled]="loading() || addingIsActive()"
+                    rounded
+                    severity="secondary">
+              + Add Contact
+            </button>
+          </div>
         </div>
       </ng-template>
 

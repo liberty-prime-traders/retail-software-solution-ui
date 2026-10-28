@@ -28,7 +28,7 @@
         </p-tag>
       </div>
 
-      <rts-sale-print-actions [sale]="originalSale"/>
+      <rts-sale-print-actions [sale]="originalSale" (printed)="startFreshFormAfterPrint()"/>
 
     } @else {
       <h2 class="m-0">New Sale</h2>

@@ -24,12 +24,27 @@ export class SaleFormContext {
   readonly saleLines = computed(() => this.saleFormValue().saleLines)
   readonly payments = computed(() => this.saleSession().salePayments)
 
+  // Set once a sale is confirmed so the printed receipt stays on screen; cleared by any other session load.
+  private readonly awaitingFreshFormAfterPrint = signal(false)
+
   readonly saleForm = form(this.saleFormValue, SaleFormDefinition.saleFormSchema)
 
   readonly loadSession = (session: SaleSession) => {
     // session.saleRefunds = []
+    this.awaitingFreshFormAfterPrint.set(false)
     this._saleSession.set(session)
     this.saleForm().reset(SaleFormDefinition.convertToFormModel(session))
+  }
+
+  readonly loadConfirmedSession = (session: SaleSession) => {
+    this.loadSession(session)
+    this.awaitingFreshFormAfterPrint.set(true)
+  }
+
+  readonly startFreshFormAfterPrint = () => {
+    if (this.awaitingFreshFormAfterPrint()) {
+      this.loadSession(defaultSaleSession())
+    }
   }
 
   sendLineRequest(newProduct?: ProductWithAvailability) {
@@ -57,7 +72,7 @@ export class SaleFormContext {
           identity: saleLine.identity,
           unitId: saleLine.unitId,
           quantity: saleLine.quantity,
-          unitPriceOverride: saleLine.unitPriceOverride
+          unitPriceOverride: saleLine.unitPriceOverride !== saleLine.snapshotUnitPriceOverride ? saleLine.unitPriceOverride : null
         }
       })
   }
