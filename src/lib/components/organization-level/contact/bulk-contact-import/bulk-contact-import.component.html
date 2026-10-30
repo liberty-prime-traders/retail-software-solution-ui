@@ -1,0 +1,41 @@
+<rts-loading-container [loading]="uploadInProgress()">
+  <div class="flex gap-4">
+    <rts-form-field
+      label="Provide the generated JSON payload"
+      for="bulk-contact-payload"
+      class="flex-grow-1"
+      contentClass="w-full"
+      [layout]="FormFieldLayout.VERTICAL"
+      [required]="true">
+
+      <div class="flex flex-column gap-4">
+      <textarea id="bulk-contact-payload"
+                pInputText
+                [formField]="payloadForm.payload"
+                class="w-full"
+                rows="20">
+      </textarea>
+      @if (payloadForm.payload().dirty()) {
+        <rts-error-summary [signalFormErrors]="payloadForm().errorSummary()" [fieldMap]="payloadFieldMap"/>
+      }
+
+        <button pButton
+                class="w-fit"
+                (click)="uploadContacts()"
+                [disabled]="payloadForm().invalid()"
+                severity="success">
+          <i class="pi pi-arrow-right"></i>
+          Execute Upload
+        </button>
+      </div>
+    </rts-form-field>
+
+    @if (errorsFound()) {
+      <p-divider layout="vertical"/>
+
+      <div class="flex flex-column" id="bulk-contact-errors" rtsAutoStretch="bulk-contact-errors">
+        <rts-error-summary [regularErrorMessages]="errorDetails()"/>
+      </div>
+    }
+  </div>
+</rts-loading-container>

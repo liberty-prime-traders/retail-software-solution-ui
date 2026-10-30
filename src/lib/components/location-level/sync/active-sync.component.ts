@@ -10,6 +10,7 @@ import {switchMap, tap} from 'rxjs/operators'
 import {SyncStatus} from '../../../api/location-level/sync/sync-status.enum'
 import {SyncService} from '../../../api/location-level/sync/sync.service'
 import {PrettifyEnumPipe} from '../../../utils/pipes/prettify-enum.pipe'
+import {RoundNumbersPipe} from '../../../utils/pipes/round-numbers.pipe'
 import {HasSubscriptionComponent} from '../../reusable/has-subscription.component'
 import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
 
@@ -23,7 +24,8 @@ import {SyncStatusSeverityPipe} from './sync-status-severity.pipe'
     Message,
     DatePipe,
     PrettifyEnumPipe,
-    SyncStatusSeverityPipe
+    SyncStatusSeverityPipe,
+    RoundNumbersPipe
   ]
 })
 export class ActiveSyncComponent extends HasSubscriptionComponent implements OnInit {

@@ -1,54 +1,62 @@
-import {Component, computed, inject, input, output} from '@angular/core'
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
-import {isNil} from 'lodash-es'
+import {Component, inject, Input, output, signal} from '@angular/core'
+import {form, FormField} from '@angular/forms/signals'
+import {Checkbox} from 'primeng/checkbox'
 import {InputText} from 'primeng/inputtext'
 import {UnitGroup} from '../../../../api/organization-level/unit-group/unitgroup.model'
 import {UnitGroupService} from '../../../../api/organization-level/unit-group/unitgroup.service'
 import {BaseFormComponent} from '../../../reusable/base-form.component'
 import {FormButtonsComponent} from '../../../reusable/form-buttons/form-buttons.component'
 import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
+import {UnitGroupFormDefinition} from './unit-group-form.definition'
 
 @Component({
   selector: 'rts-unit-group-form',
   templateUrl: 'unit-group-form.component.html',
   imports: [
-    ReactiveFormsModule,
     InputText,
+    Checkbox,
+    FormField,
     FormButtonsComponent,
     FormFieldComponent
   ]
 })
 export class UnitGroupFormComponent extends BaseFormComponent<UnitGroupService> {
-  readonly unitGroup = input<UnitGroup>()
-
   private readonly unitGroupService = inject(UnitGroupService)
-  private readonly formBuilder = inject(FormBuilder)
   protected readonly apiService = this.unitGroupService
 
   readonly unitGroupCreated = output<UnitGroup>()
 
-  readonly unitGroupForm = computed(() => this.formBuilder.nonNullable.group({
-    id: this.unitGroup()?.id,
-    name: [this.unitGroup()?.name, Validators.required],
-    description: this.unitGroup()?.description
-  }))
+  @Input()
+  set unitGroup(unitGroup: UnitGroup | undefined) {
+    this.originalUnitGroup.set(unitGroup)
+    this.unitGroupFormValue.set(UnitGroupFormDefinition.convertToFormModel(unitGroup))
+  }
+
+  readonly originalUnitGroup = signal<UnitGroup | undefined>(undefined)
+
+  readonly unitGroupFormValue = signal<UnitGroupFormDefinition.UnitGroupFormModel>(
+    UnitGroupFormDefinition.defaultUnitGroupFormModel
+  )
+
+  readonly unitGroupForm = form(this.unitGroupFormValue, UnitGroupFormDefinition.unitGroupFormSchema)
+  readonly unitGroupFormFields = UnitGroupFormDefinition.fieldMap
 
   resetForm() {
-    this.unitGroupForm().reset(this.unitGroup())
+    this.unitGroupFormValue.set(UnitGroupFormDefinition.convertToFormModel(this.originalUnitGroup()))
   }
 
   upsertUnitGroup() {
-    const updatedUnitGroup: Partial<UnitGroup> = this.unitGroupForm().getRawValue()
-    if (isNil(updatedUnitGroup.id)) {
-      this.unitGroupService.post(updatedUnitGroup, {
+    const formValue = this.unitGroupFormValue()
+    if (formValue.id) {
+      this.unitGroupService.put(UnitGroupFormDefinition.convertToUpdateRequest(formValue))
+    } else {
+      this.unitGroupService.post(UnitGroupFormDefinition.convertToCreateRequest(formValue), {
         onSuccess: (saved) => this.unitGroupCreated.emit(saved)
       })
-    } else {
-      this.unitGroupService.put(updatedUnitGroup)
     }
   }
 
   deleteUnitGroup() {
-    this.unitGroupService.delete(this.unitGroup()?.id)
+    this.unitGroupService.delete(this.originalUnitGroup()?.id)
   }
 }

@@ -23,7 +23,6 @@ import {
   UnitCurrencyPipe,
   UnitLabelPipe
 } from '../../../../../api/organization-level/unit-conversion/pipes/unit-convert.pipe'
-import {UnitCodePipe} from '../../../../../api/organization-level/unit-conversion/pipes/unit-description.pipe'
 import {AutoStretchDirective} from '../../../../reusable/auto-stretch.directive'
 import {SaleFormContext} from '../../form-utils/sale-form-context'
 import {SaleLineFormDefinition} from '../../form-utils/sale-line-form.definition'
@@ -46,7 +45,6 @@ import {SaleLineHasChangedPipe} from '../sale-line-has-changed.pipe'
     SaleLineHasChangedPipe,
     Select,
     Tooltip,
-    UnitCodePipe,
     UnitConversionDescriptorPipe,
     UnitConvertPipe,
     UnitCurrencyPipe,

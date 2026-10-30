@@ -11,15 +11,19 @@
       <div class="flex flex-column gap-4">
       <textarea id="bulk-product-payload"
                 pInputText
-                [(ngModel)]="jsonPayload"
+                [formField]="payloadForm.payload"
                 class="w-full"
+                [placeholder]="examplePayload"
                 rows="20">
       </textarea>
+      @if (payloadForm.payload().dirty()) {
+        <rts-error-summary [signalFormErrors]="payloadForm().errorSummary()" [fieldMap]="payloadFieldMap"/>
+      }
 
         <button pButton
                 class="w-fit"
                 (click)="uploadProducts()"
-                [disabled]="!jsonPayload() || jsonPayload().trim().length === 0"
+                [disabled]="payloadForm().invalid()"
                 severity="success">
           <i class="pi pi-arrow-right"></i>
           Execute Upload
@@ -30,7 +34,7 @@
     @if (errorsFound()) {
       <p-divider layout="vertical"/>
 
-      <div class="flex flex-column">
+      <div class="flex flex-column" id="bulk-product-errors" rtsAutoStretch="bulk-product-errors">
         <rts-error-summary [regularErrorMessages]="errorDetails()"/>
       </div>
     }

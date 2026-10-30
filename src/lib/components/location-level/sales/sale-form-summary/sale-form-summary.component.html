@@ -13,26 +13,21 @@
 
       <p-tabpanels>
         <p-tabpanel value="summary">
-          <div class="scrollable"
-               id="sale-form-summary"
-               [padding]="30"
-               rtsAutoStretch="sale-form-summary">
+          <div class="scrollable" id="sale-form-summary" [padding]="30" rtsAutoStretch="sale-form-summary">
 
             @if (canAddPayments) {
               <rts-sale-payment-form/>
             }
             <div class="flex flex-column gap-3 px-3">
               @if (canAddPaymentsToSale()) {
-                <rts-error-summary
-                  [signalFormErrors]="saleForm().errorSummary()"
-                  [regularErrorMessages]="failureMessages()"
-                  [fieldMap]="saleFormFieldMap">
-                </rts-error-summary>
                 <p-divider/>
-
-              } @else {
-                <rts-error-summary [regularErrorMessages]="failureMessages()"/>
               }
+
+              <rts-error-summary
+                [signalFormErrors]="saleForm().errorSummary()"
+                [regularErrorMessages]="failureMessages()"
+                [fieldMap]="saleFormFieldMap">
+              </rts-error-summary>
 
               <rts-sale-totals/>
             </div>

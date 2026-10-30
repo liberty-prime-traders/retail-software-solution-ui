@@ -1,0 +1,31 @@
+<button pButton
+        (click)="openDialog()"
+        rounded
+        severity="secondary">
+  <i class="pi pi-upload"></i> Bulk Opening Stock
+</button>
+
+<p-dialog header="Bulk opening stock"
+          [(visible)]="dialogVisible"
+          [modal]="true"
+          [draggable]="false"
+          [style]="{width: 'min(96vw, 800px)'}">
+  <div class="flex flex-column gap-3">
+    <span>
+      Paste a JSON array. Products are identified by reference number and units by code; the default sale price is
+      written to each product.
+    </span>
+    <textarea pTextarea
+              rows="14"
+              class="w-full font-mono"
+              [placeholder]="exampleJson"
+              [formField]="payloadForm.payload"></textarea>
+    @if (payloadForm.payload().dirty()) {
+      <rts-error-summary [signalFormErrors]="payloadForm().errorSummary()" [fieldMap]="payloadFieldMap"/>
+    }
+    <div class="flex justify-content-end gap-2">
+      <button pButton severity="secondary" rounded (click)="dialogVisible.set(false)">Cancel</button>
+      <button pButton rounded [disabled]="payloadForm().invalid() || saving()" [loading]="saving()" (click)="submit()">Upload</button>
+    </div>
+  </div>
+</p-dialog>

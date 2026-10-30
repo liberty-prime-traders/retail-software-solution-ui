@@ -54,6 +54,8 @@ export class SaleFormHeaderComponent {
     this.saleStatus() === SaleStatus.DRAFT ? 'Discard Draft' : 'Void Sale'
   )
 
+  readonly startFreshFormAfterPrint = this.context.startFreshFormAfterPrint
+
   hideSaleForm() {
     this.navigator.backFromForm()
   }

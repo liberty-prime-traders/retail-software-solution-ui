@@ -1,5 +1,4 @@
 import {EntityId} from '@ngrx/signals/entities'
-import {CalculationMethod} from '../../platform-level/tax-type/calculation-method.enum'
 import {AdjustmentDirection, SessionIdentity} from './sale-session.model'
 
 export interface SaleSessionStartRequest {
@@ -29,8 +28,8 @@ export interface SaleSessionAdjustmentAddRequest {
   relatedSaleLineIdentity?: SessionIdentity,
   adjustmentReasonId: string,
   direction: AdjustmentDirection,
-  calculationMethod: CalculationMethod,
-  value: number,
+  percentage?: number,
+  amount?: number,
   note?: string,
   approvedById?: string
 }

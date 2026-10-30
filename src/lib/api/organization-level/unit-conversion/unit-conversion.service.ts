@@ -1,5 +1,6 @@
 import {CurrencyPipe} from '@angular/common'
 import {inject, Injectable} from '@angular/core'
+import {RoundNumbersPipe} from '../../../utils/pipes/round-numbers.pipe'
 import {ConversionContext} from './conversion-context.model'
 import {UnitConversionGraphService} from './unit-conversion-graph.service'
 import {UnitPluralDerivation} from './unit-plural-derivation.enum'
@@ -12,7 +13,8 @@ export class UnitConversionService {
 
   convertToTargetUnitForDisplay(ctx: ConversionContext): string {
     if (ctx.value === 0) return '_'
-    const converted = this.convertToTargetUnitValue(ctx)
+    let converted = this.convertToTargetUnitValue(ctx)
+    converted = RoundNumbersPipe.prototype.transform(converted, 4)
     if (converted === null) return '_'
     return `${converted} ${this.getUnitLabelFromValue(ctx.targetUnitId, converted)}`
   }
@@ -64,12 +66,13 @@ export class UnitConversionService {
   describeConversion(ctx: ConversionContext): string {
     if (ctx.sourceUnitId === ctx.targetUnitId) return 'Base unit selected'
 
-    const resolvedFactor = this.resolveFactor(ctx)
+    let resolvedFactor = this.resolveFactor(ctx)
     if (!resolvedFactor) return '_'
 
     const sourceLabel = this.getUnitLabelSingular(ctx.sourceUnitId)
     const targetLabel = this.graphService.getUnitLabel(ctx.targetUnitId, UnitPluralDerivation.PLURAL)
 
+    resolvedFactor = RoundNumbersPipe.prototype.transform(resolvedFactor, 4)
     return `1 ${sourceLabel} = ${resolvedFactor} ${targetLabel}`
   }
 }
