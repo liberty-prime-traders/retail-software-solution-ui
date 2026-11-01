@@ -7,7 +7,7 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.rtss-ui-${ENV}.rule=Host(`rtss-ui${SUFFIX}.ezra-home.me`)"
+      - "traefik.http.routers.rtss-ui-${ENV}.rule=Host(`${HOST}`)"
       - "traefik.http.routers.rtss-ui-${ENV}.entrypoints=websecure"
       - "traefik.http.routers.rtss-ui-${ENV}.tls=true"
       - "traefik.http.services.rtss-ui-${ENV}.loadbalancer.server.port=80"

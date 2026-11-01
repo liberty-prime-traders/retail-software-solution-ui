@@ -13,12 +13,13 @@ import {
   parseJsonPayload
 } from '../../../../utils/json-payload'
 import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
+import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
 import {OpeningStockDeclarationService} from './opening-stock-declaration.service'
 
 @Component({
   selector: 'rts-opening-stock-bulk-upload',
   templateUrl: 'opening-stock-bulk-upload.component.html',
-  imports: [ButtonDirective, Dialog, FormField, Textarea, ErrorSummaryComponent]
+  imports: [ButtonDirective, Dialog, FormField, Textarea, ErrorSummaryComponent, LoadingContainerComponent]
 })
 export class OpeningStockBulkUploadComponent {
   private readonly declarationService = inject(OpeningStockDeclarationService)
