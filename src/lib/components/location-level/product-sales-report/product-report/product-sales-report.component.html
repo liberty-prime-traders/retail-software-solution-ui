@@ -1,0 +1,198 @@
+@let productsSelected = selectedProducts().length > 0;
+
+<div class="flex flex-column gap-2">
+  <div class="flex flex-wrap align-items-end justify-content-between gap-3">
+    <div class="flex flex-column">
+      <span class="font-bold">Product Health</span>
+      <span class="text-color-secondary text-sm">Confirmed sales only, for the dates you pick.</span>
+    </div>
+    @if (snapshotBuiltAt()) {
+      <span class="text-color-secondary text-sm">Refreshed at {{ snapshotBuiltAt() | date: 'medium' }}</span>
+    }
+  </div>
+
+  <div class="flex flex-wrap align-items-end gap-3">
+    <rts-form-field label="Date sold, from"
+                    for="date-from"
+                    class="col-2"
+                    contentClass="w-full"
+                    [layout]="FormFieldLayout.COMPACT">
+      <p-date-picker id="date-from"
+                     [formField]="rangeForm.from"
+                     [showIcon]="true"
+                     appendTo="body">
+      </p-date-picker>
+    </rts-form-field>
+
+    <rts-form-field label="Date sold, to"
+                    for="date-to"
+                    class="col-2"
+                    contentClass="w-full"
+                    [layout]="FormFieldLayout.COMPACT">
+      <p-date-picker id="date-to"
+                     [formField]="rangeForm.to"
+                     [showIcon]="true"
+                     appendTo="body">
+      </p-date-picker>
+    </rts-form-field>
+
+    <rts-form-field label="Search products"
+                    for="product-health-search"
+                    class="col-3"
+                    contentClass="w-full"
+                    [layout]="FormFieldLayout.COMPACT">
+      <input id="product-health-search"
+             pInputText type="search"
+             placeholder="Product name, etc."
+             [formField]="searchForm.searchText"/>
+    </rts-form-field>
+  </div>
+
+  @if (productsSelected) {
+    <p-panel [showHeader]="false" class="bg-primary-50">
+      <div class="flex flex-wrap align-items-center pt-2 gap-3">
+        <span class="font-bold">{{ selectedProducts().length }} of {{ maxCompareProducts }} selected</span>
+        <span>{{ selectedNames() }}</span>
+        <span class="flex-grow-1"></span>
+        <button pButton type="button" (click)="compareSelected()">Compare selected</button>
+      </div>
+    </p-panel>
+  }
+
+  <rts-error-summary [regularErrorMessages]="failureMessages()" />
+
+  <rts-loading-container [loading]="loading()">
+    <div id="product-health-table" rtsAutoStretch="product-health-table">
+      <ng-container *ngTemplateOutlet="productHealthTable"/>
+    </div>
+
+  </rts-loading-container>
+</div>
+
+<ng-template #sortableHeader let-sortField="sortField" let-label="label">
+  <button pButton type="button" text size="small" (click)="sortByColumn(sortField)">
+    {{ label }}
+    <i [class]="sortIcons()[sortField]"></i>
+  </button>
+</ng-template>
+
+<ng-template #productHealthTable>
+  <p-table [value]="visibleRows()"
+           (onLazyLoad)="onLazyLoad($event)"
+           [lazy]="true"
+           [scrollable]="true"
+           scrollHeight="flex"
+           [rows]="20"
+           [virtualScroll]="true"
+           [virtualScrollItemSize]="55"
+           [(selection)]="selectedProducts"
+           dataKey="locationProductId">
+    <ng-template #caption>
+      <div class="flex justify-content-end">
+        <span class="text-color-secondary text-sm">
+            {{ loadedRowCount() }} products {{ requireClientSideFilter() ? 'with sales' : 'loaded' }}.
+          </span>
+      </div>
+    </ng-template>
+
+    <ng-template #header>
+      <tr>
+        <th style="width: 3rem">
+          @if (productsSelected) {
+            <button pButton type="button" text size="small" (click)="clearSelection()">Deselect</button>
+          } @else {
+            Select
+          }
+        </th>
+        <th>
+          <ng-container *ngTemplateOutlet="sortableHeader;
+                        context: {sortField: ProductSalesSortField.PRODUCT_NAME, label: 'Product'}">
+          </ng-container>
+        </th>
+        <th>
+          <ng-container *ngTemplateOutlet="sortableHeader;
+                        context: {sortField: ProductSalesSortField.BASE_QUANTITY, label: 'Qty sold'}">
+          </ng-container>
+        </th>
+        <th>
+          <ng-container *ngTemplateOutlet="sortableHeader;
+                        context: {sortField: ProductSalesSortField.NET_SALES, label: 'Net sales'}">
+          </ng-container>
+        </th>
+        <th>
+          <ng-container *ngTemplateOutlet="sortableHeader;
+                        context: {sortField: ProductSalesSortField.COGS, label: 'COGs'}">
+          </ng-container>
+        </th>
+        <th>
+          <ng-container *ngTemplateOutlet="sortableHeader;
+                        context: {sortField: ProductSalesSortField.GROSS_PROFIT, label: 'Gross profit'}">
+          </ng-container>
+        </th>
+        <th>
+          <ng-container *ngTemplateOutlet="sortableHeader;
+                        context: {sortField: ProductSalesSortField.MARGIN_PERCENT, label: 'Profit Margin'}">
+          </ng-container>
+        </th>
+        <th>
+          <ng-container *ngTemplateOutlet="sortableHeader;
+                        context: {sortField: ProductSalesSortField.ADJUSTMENTS_PERCENT, label: 'Discount rate'}">
+          </ng-container>
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-product>
+      @if (product?.placeholder) {
+        <tr>
+          <td style="height: 55px" colspan="8">
+            <p-skeleton class="h-full"/>
+          </td>
+        </tr>
+      } @else {
+        <tr>
+          <td>
+            <div class="flex justify-content-center">
+              <p-table-checkbox [value]="product"
+                                [disabled]="product | productSelectionLocked: selectedProducts() : maxCompareProducts"
+                                [ariaLabel]="'Select ' + product.productName">
+              </p-table-checkbox>
+            </div>
+
+          </td>
+          <td>
+            <div class="flex align-items-center gap-2">
+              <a class="font-semibold hover:underline no-underline text-color"
+                 routerLink="detail"
+                 (click)="openProduct(product)">
+                  {{ product.productName }}
+              </a>
+              @if (product.grossProfit < 0) {
+                <p-tag severity="danger" value="Sold below cost" />
+              }
+              @if (product.marginPercent > highMarginPercent) {
+                <p-tag severity="success" value="High margin" />
+              }
+            </div>
+            <div class="text-color-secondary text-sm">{{ product.productGroupName }}</div>
+          </td>
+          <td>{{ product.baseQuantityText }}</td>
+          <td>{{ product.netSales | currency }}</td>
+          <td>{{ product.cogs | currency }}</td>
+          <td [class.error-message]="product.grossProfit < 0">{{ product.grossProfit | currency }}</td>
+          <td [class.error-message]="product.grossProfit < 0">
+            {{ product.marginPercent | percentFigure }}
+          </td>
+          <td>
+            {{ -(product.discountTotal + product.surchargeTotal) | currency }}
+            ({{product.adjustmentsPercent | nullishToZero | percentFigure}})
+          </td>
+        </tr>
+      }
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr rts-empty-row [colspan]="8" message="No products with sales in this date range."></tr>
+    </ng-template>
+  </p-table>
+</ng-template>

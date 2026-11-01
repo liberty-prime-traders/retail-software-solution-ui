@@ -1,4 +1,4 @@
-import {NgTemplateOutlet} from '@angular/common'
+import {NgTemplateOutlet, UpperCasePipe} from '@angular/common'
 import {
   afterNextRender,
   Component,
@@ -49,7 +49,8 @@ import {SalePrintContentComponent} from './sale-print-content.component'
     PrintPreviewComponent,
     PrintHeaderDirective,
     PrintFooterDirective,
-    SalePrintContentComponent
+    SalePrintContentComponent,
+    UpperCasePipe
   ]
 })
 export class SalePrintActionsComponent {
@@ -59,6 +60,7 @@ export class SalePrintActionsComponent {
   private readonly localStorageService = inject(LocalStorageService)
   private readonly sessionContext = inject(SessionContextService)
 
+  readonly phoneNumber = '0104326823'
   readonly sale = input.required<SaleSession>()
   readonly printed = output()
 

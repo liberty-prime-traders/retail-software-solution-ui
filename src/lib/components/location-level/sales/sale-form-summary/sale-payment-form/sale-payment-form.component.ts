@@ -48,13 +48,13 @@ export class SalePaymentFormComponent implements OnInit {
   readonly paymentOptions: Signal<Partial<PaymentOption>[]> = this.paymentOptionService.selectAll
   readonly paymentOptionsLoading = this.paymentOptionService.selectLoading
   private readonly preselectedOverride = signal<Partial<PaymentOption>[]>([])
-  private readonly receivableTotal = computed(() => this.context.saleSession().totals.receivableTotal)
+  private readonly amountDue = computed(() => this.context.saleSession().totals.balance)
 
   private readonly paymentFormValue = linkedSignal<number, SalePaymentFormDefinition.SalePaymentFormModel>({
-    source: this.receivableTotal,
-    computation: (receivableTotal, previous) => ({
+    source: this.amountDue,
+    computation: (amountDue, previous) => ({
       ...(previous?.value ?? SalePaymentFormDefinition.createInitial),
-      amount: receivableTotal
+      amount: amountDue
     })
   })
 
@@ -125,7 +125,7 @@ export class SalePaymentFormComponent implements OnInit {
   }
 
   private initialFormValue(): SalePaymentFormDefinition.SalePaymentFormModel {
-    return {...SalePaymentFormDefinition.createInitial, amount: this.receivableTotal()}
+    return {...SalePaymentFormDefinition.createInitial, amount: this.amountDue()}
   }
 
   private buildSalePaymentCreateRequest(): SaleSessionPaymentAddRequest {

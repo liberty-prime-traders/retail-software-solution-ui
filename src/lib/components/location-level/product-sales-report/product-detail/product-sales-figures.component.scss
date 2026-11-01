@@ -1,0 +1,60 @@
+.figures-column {
+  flex-basis: 35rem;
+  min-width: 0;
+}
+
+.split-column {
+  flex: 1 1 20rem;
+}
+
+.figures {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.figures th,
+.figures td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--p-surface-200);
+  font-weight: inherit;
+  white-space: nowrap;
+}
+
+.figures thead th {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--p-text-muted-color);
+}
+
+.figures th.indented {
+  padding-left: 1.75rem;
+}
+
+.figures .minor th,
+.figures .minor td {
+  color: var(--p-text-muted-color);
+}
+
+.figures .profit {
+  color: var(--p-primary-color);
+}
+
+.figure-hint {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--p-text-muted-color);
+}
+
+.rule-net > * {
+  border-top: 3px solid var(--p-text-color);
+}
+
+.rule-cogs > * {
+  border-top: 3px solid var(--p-surface-500);
+}
+
+.rule-profit > * {
+  border-top: 3px solid var(--p-primary-color);
+}

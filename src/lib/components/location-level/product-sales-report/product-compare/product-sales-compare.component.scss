@@ -1,0 +1,51 @@
+.compare {
+  width: 100%;
+  min-width: 60rem;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.compare th,
+.compare td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--p-surface-200);
+  font-weight: inherit;
+  white-space: nowrap;
+}
+
+.compare thead th {
+  font-weight: 600;
+  background: var(--p-surface-50);
+}
+
+.compare th.indented {
+  padding-left: 2rem;
+}
+
+.compare .minor th,
+.compare .minor td {
+  color: var(--p-text-muted-color);
+}
+
+.compare .profit {
+  color: var(--p-primary-color);
+}
+
+.unit {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--p-text-muted-color);
+}
+
+.rule-net > * {
+  border-top: 3px solid var(--p-text-color);
+}
+
+.rule-cogs > * {
+  border-top: 3px solid var(--p-surface-500);
+}
+
+.rule-profit > * {
+  border-top: 3px solid var(--p-primary-color);
+}

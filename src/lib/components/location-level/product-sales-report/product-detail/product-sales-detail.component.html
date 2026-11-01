@@ -1,0 +1,67 @@
+<div class="flex flex-column gap-2">
+  <div class="flex gap-3 align-items-center">
+    <button pButton routerLink=".." text class="h-fit">
+      <i class="pi pi-arrow-left"></i>
+    </button>
+    <div class="flex flex-column">
+      <h3 class="font-bold m-0">{{ openedProduct()?.productName }}</h3>
+      <span class="text-color-secondary text-sm">{{ openedProduct()?.productGroupName }}</span>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap align-items-end gap-3">
+    <rts-form-field label="Date sold, from"
+                    for="date-from"
+                    class="col-2"
+                    contentClass="w-full"
+                    [layout]="FormFieldLayout.COMPACT">
+      <p-date-picker id="date-from"
+                     [formField]="rangeForm.from"
+                     [showIcon]="true"
+                     appendTo="body">
+      </p-date-picker>
+    </rts-form-field>
+
+    <rts-form-field label="Date sold, to"
+                    for="date-to" class="col-2"
+                    contentClass="w-full"
+                    [layout]="FormFieldLayout.COMPACT">
+      <p-date-picker id="date-to"
+                     [formField]="rangeForm.to"
+                     [showIcon]="true"
+                     appendTo="body">
+      </p-date-picker>
+    </rts-form-field>
+  </div>
+
+  <rts-error-summary [regularErrorMessages]="errorMessages()" />
+
+  <rts-loading-container [loading]="loading()">
+    <p-tabs [value]="selectedTab()" (valueChange)="selectedTab.set($any($event))">
+      <p-tablist>
+        <p-tab value="summary">Summary</p-tab>
+        <p-tab value="lines">
+          Sale lines
+          <p-badge [value]="lineCount()" severity="info" class="ml-2" />
+        </p-tab>
+      </p-tablist>
+
+      <p-tabpanels>
+        <p-tabpanel value="summary">
+          @if (summary(); as summary) {
+            <rts-product-sales-figures [summary]="summary" />
+          }
+        </p-tabpanel>
+
+        <p-tabpanel value="lines">
+          @if (locationProductId(); as productId) {
+            <rts-product-sales-lines-grid [locationProductId]="productId"
+                                          [parameters]="linesParameters()"
+                                          [summary]="summary()">
+            </rts-product-sales-lines-grid>
+          }
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </rts-loading-container>
+</div>

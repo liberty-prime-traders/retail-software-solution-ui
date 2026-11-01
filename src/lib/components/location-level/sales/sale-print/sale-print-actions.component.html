@@ -26,8 +26,8 @@
   <rts-print-document [layout]="layout()">
     <ng-template rtsPrintHeader>
       <div class="sale-print-branding">
-        <strong>{{ organizationName() | nullSafe }}</strong>
-        <span>{{ locationName() | nullSafe }}</span>
+        <strong>{{ organizationName()  | uppercase | nullSafe }} - {{ locationName() | uppercase | nullSafe }}</strong>
+        <span>TEL: {{ phoneNumber }}</span>
       </div>
     </ng-template>
 

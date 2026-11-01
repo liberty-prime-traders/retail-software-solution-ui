@@ -1,0 +1,108 @@
+<div class="flex flex-column gap-4">
+  <div class="flex align-items-center gap-3">
+    <button pButton routerLink=".." text>
+      <i class="pi pi-arrow-left"></i>
+    </button>
+    <h3 class="font-bold m-0">Compare products</h3>
+  </div>
+
+  <div class="flex gap-3 align-items-center">
+    <div class="flex flex-column gap-2 flex-grow-1">
+      @if (canAddProduct()) {
+        <rts-available-product-lookup class="flex-grow-1"
+                                      [layout]="FormFieldLayout.COMPACT"
+                                      [selectedProductIds]="selectedIds()"
+                                      (productSelected)="addProduct($event)">
+        </rts-available-product-lookup>
+      }
+
+      <div class="flex flex-wrap gap-2">
+        @for (chip of chips(); track chip.id) {
+          <p-chip [label]="chip.name" [removable]="chips().length > 1" (onRemove)="removeProduct(chip.id)" />
+        }
+      </div>
+    </div>
+
+    <rts-form-field label="Date sold, from"
+                    for="date-from"
+                    class="col-2"
+                    contentClass="w-full"
+                    [layout]="FormFieldLayout.COMPACT">
+      <p-date-picker id="date-from"
+                     [formField]="rangeForm.from"
+                     [showIcon]="true"
+                     appendTo="body">
+      </p-date-picker>
+    </rts-form-field>
+
+    <rts-form-field label="Date sold, to"
+                    for="date-to"
+                    class="col-2"
+                    contentClass="w-full"
+                    [layout]="FormFieldLayout.COMPACT">
+      <p-date-picker id="date-to"
+                     [formField]="rangeForm.to"
+                     [showIcon]="true"
+                     appendTo="body">
+      </p-date-picker>
+    </rts-form-field>
+  </div>
+
+  <rts-error-summary [regularErrorMessages]="errorMessages()" />
+
+  <rts-loading-container [loading]="loading()">
+    @if (summaries().length > 0) {
+      <div class="border-1 surface-border border-round overflow-x-auto">
+        <table class="compare">
+          <thead>
+            <tr>
+              <th scope="col" class="text-left">Figure</th>
+              @for (summary of summaries(); track summary.locationProductId) {
+                <th scope="col" class="text-right">
+                  {{ summary.productName }}
+                  <span class="unit">{{ summary.baseUnitName }}</span>
+                </th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" class="text-left">Where gross sales went</th>
+              @for (summary of summaries(); track summary.locationProductId) {
+                <td><rts-gross-sales-split [summary]="summary" [showLegend]="false" /></td>
+              }
+            </tr>
+
+            @for (matrixRow of matrix(); track matrixRow.row.label) {
+              <tr [class]="matrixRow.row.rule" [class.minor]="matrixRow.row.indented">
+                <th scope="row"
+                    class="text-left"
+                    [class.font-bold]="matrixRow.row.emphasis"
+                    [class.indented]="matrixRow.row.indented">
+                  {{ matrixRow.row.label }}
+                </th>
+                @for (cell of matrixRow.cells; track $index) {
+                  <td class="text-right"
+                      [class.font-bold]="matrixRow.row.emphasis"
+                      [class.profit]="matrixRow.row.profit">
+                    @switch (matrixRow.row.format) {
+                      @case (CompareFormat.MONEY) {
+                        {{ cell | currency | nullSafe }}
+                      }
+                      @case (CompareFormat.PERCENT) {
+                        {{ cell | percentFigure }}
+                      }
+                      @case (CompareFormat.QUANTITY) {
+                        {{ cell | number: '1.0-4' }}
+                      }
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </rts-loading-container>
+</div>

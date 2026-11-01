@@ -7,6 +7,7 @@ import {PaginatedBaseService} from '../../../api/util/paginated-api/paginated-ba
 import {PaginatedModel} from '../../../api/util/paginated-api/paginated.model'
 import {ProductLabelPipe} from '../../../utils/pipes/product-label.pipe'
 import {toSelectItems} from '../../../utils/types/select-item.type'
+import {FormFieldLayout} from '../../reusable/form-field/form-field-layout'
 import {HasFilteredDataComponent} from '../../reusable/has-filtered-data.component'
 import {ProductLookupFilterService} from './product-lookup-filter.service'
 
@@ -14,6 +15,7 @@ import {ProductLookupFilterService} from './product-lookup-filter.service'
 export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore & PaginatedModel>
   extends HasFilteredDataComponent implements OnInit {
 
+  readonly layout = input(FormFieldLayout.HORIZONTAL)
   readonly templateRef = input<TemplateRef<unknown>>()
   readonly selectedProductIds = input<string[]>([])
   readonly productSelected = output<LOOKUP>()

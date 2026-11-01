@@ -9,7 +9,7 @@ import {PageResponse} from './page-response.model'
 import {PaginatedBaseStore} from './paginated-base.store'
 import {PaginatedModel} from './paginated.model'
 
-export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARAMETERS>
+export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARAMETERS, METADATA = unknown>
   extends BaseService<RESPONSE, PageRequest<PARAMETERS>> {
 
   protected abstract readonly defaultCursor: CURSOR
@@ -19,10 +19,13 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
   readonly requireClientSideFilter: Signal<boolean>
   private readonly paginatedEntities = signal<RESPONSE[]>(this.getPlaceholders(15))
   private readonly freshLoadCount = signal(0)
+  private readonly pageMetadata = signal<METADATA | undefined>(undefined)
   private isFreshLoad = false
 
   override readonly selectAll = this.paginatedEntities.asReadonly()
   readonly freshLoadCompleted = this.freshLoadCount.asReadonly()
+  /** The metadata of the most recently loaded page. */
+  readonly metadata = this.pageMetadata.asReadonly()
 
   protected constructor(protected override readonly store: PaginatedBaseStore<RESPONSE, PARAMETERS>) {
     super(store)
@@ -44,6 +47,7 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
   override resetStoreAndClearCache() {
     super.resetStoreAndClearCache()
     this.paginatedEntities.set([])
+    this.pageMetadata.set(undefined)
     this.store.resetPagination()
   }
 
@@ -89,16 +93,17 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
       parameters
     }
     this.patchApiRequestConfig({urlSuffix: this.urlSuffix})
-    return this.httpClient.post<PageResponse<RESPONSE>>(this.getBasePath(), pageRequest).pipe(
+    return this.httpClient.post<PageResponse<RESPONSE, METADATA>>(this.getBasePath(), pageRequest).pipe(
       first(),
-      tap((response: PageResponse<RESPONSE>) => this.finishSavingPageWithSuccess(response, parameters)),
+      tap((response: PageResponse<RESPONSE, METADATA>) => this.finishSavingPageWithSuccess(response, parameters)),
       catchError((error: HttpErrorResponse) => this.setStoreError(error)),
       finalize(() => this.finalizeApiRequest())
     ).subscribe()
   }
 
-  finishSavingPageWithSuccess(response: PageResponse<RESPONSE>, parameters: PARAMETERS): void {
+  finishSavingPageWithSuccess(response: PageResponse<RESPONSE, METADATA>, parameters: PARAMETERS): void {
     this.patchPaginatedEntities(response)
+    this.pageMetadata.set(response.metadata)
     this.store.setPaginationState({
       currentCursor: response.currentCursor,
       hasMore: response.hasMore,
@@ -112,7 +117,7 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
     }
   }
 
-  private patchPaginatedEntities(response: PageResponse<RESPONSE>) {
+  private patchPaginatedEntities(response: PageResponse<RESPONSE, METADATA>) {
     this.paginatedEntities.update(entities => {
       const loadedEntities = entities.filter(entity => !entity.placeholder)
       const updatedEntities = [...loadedEntities, ...response.contents]

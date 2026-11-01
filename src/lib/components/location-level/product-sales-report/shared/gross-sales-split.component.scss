@@ -1,0 +1,31 @@
+.split-bar {
+  display: flex;
+  height: 1rem;
+  min-width: 8rem;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--p-surface-200);
+}
+
+.split-bar > div {
+  flex-basis: 0;
+  flex-shrink: 0;
+}
+
+.split-swatch {
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+}
+
+.split-cogs {
+  background: var(--p-surface-500);
+}
+
+.split-profit {
+  background: var(--p-primary-color);
+}
+
+.split-adjustments {
+  background: var(--p-orange-500);
+}

@@ -20,4 +20,9 @@ export class OpeningStockService extends BaseService<OpeningStockLine> {
     this.patchApiRequestConfig({upsertOnSuccess: true})
     return this.postRequest({id: 'bulk', body: lines as Partial<OpeningStockLine>[], callbacks})
   }
+
+  getReport() {
+    this.patchApiRequestConfig({urlSuffix: 'cost-report'})
+    return this.fetchRequest({})
+  }
 }
