@@ -1,0 +1,43 @@
+<div class="flex flex-wrap gap-5 align-items-start">
+  <div class="flex-grow-1 overflow-x-auto figures-column">
+    <table class="figures">
+      <thead>
+        <tr>
+          <th scope="col" class="text-left">Figure</th>
+          <th scope="col" class="text-right">Total</th>
+          <th scope="col" class="text-right">Per {{ summary().baseUnitName }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (figure of figures(); track figure.label) {
+          <tr [class]="figure.rule" [class.minor]="figure.indented">
+            <th scope="row" class="text-left" [class.font-bold]="figure.emphasis" [class.indented]="figure.indented">
+              {{ figure.label }}
+              @if (figure.hint) {
+                <span class="figure-hint">{{ figure.hint }}</span>
+              }
+            </th>
+            <td class="text-right" [class.font-bold]="figure.emphasis" [class.profit]="figure.profit">
+              @if (figure.format === FigureFormat.MONEY) {
+                {{ figure.total | currency }}
+              } @else {
+                {{ figure.total | percentFigure }}
+              }
+            </td>
+            <td class="text-right" [class.font-bold]="figure.emphasis" [class.profit]="figure.profit">
+              @if (figure.format === FigureFormat.MONEY) {
+                {{ figure.perUnit | currency | nullSafe }}
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex flex-column gap-3 split-column">
+    <span class="font-bold">Where gross sales went</span>
+    <rts-gross-sales-split [summary]="summary()"/>
+    <span class="text-color-secondary text-sm">Adjustments are discounts net of surcharges.</span>
+  </div>
+</div>

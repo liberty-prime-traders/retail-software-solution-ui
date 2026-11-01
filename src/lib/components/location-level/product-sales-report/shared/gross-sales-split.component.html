@@ -1,0 +1,18 @@
+<div class="flex flex-column gap-2">
+  <div class="split-bar" role="img" [attr.aria-label]="ariaLabel()">
+    @for (segment of segments(); track segment.label) {
+      <div [class]="segment.cssClass" [style.flex-grow]="segment.weight"></div>
+    }
+  </div>
+
+  @if (showLegend()) {
+    <div class="flex flex-column gap-1 text-sm">
+      @for (segment of segments(); track segment.label) {
+        <div class="flex align-items-center gap-2">
+          <span class="split-swatch" [class]="segment.cssClass"></span>
+          {{ segment.label }} {{ segment.amount | currency }} ({{ segment.percent | nullishToZero | percentFigure }})
+        </div>
+      }
+    </div>
+  }
+</div>

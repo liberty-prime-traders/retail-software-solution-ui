@@ -8,6 +8,7 @@ import {Menu} from 'primeng/menu'
 import {LocationMembershipUserService} from '../../api/location-level/membership/location-membership-user.service'
 import {OrgMembershipUserService} from '../../api/organization-level/membership/org-membership-user.service'
 import {UserContextService} from '../../utils/services/auth/user-context.service'
+import {AutoStretchDirective} from '../reusable/auto-stretch.directive'
 import {SaleFormNavigator} from './sales/form-utils/sale-form-navigator'
 import {SaleFormVisibilityContext} from './sales/sale-form-visibility.context'
 import {SaleFormComponent} from './sales/sale-form/sale-form.component'
@@ -20,7 +21,8 @@ import {SaleFormComponent} from './sales/sale-form/sale-form.component'
     Menu,
     Card,
     SaleFormComponent,
-    CdkDrag
+    CdkDrag,
+    AutoStretchDirective
   ],
   templateUrl: 'location-dashboard.component.html',
   styleUrls: ['sale-button.component.scss']
@@ -51,6 +53,10 @@ export class LocationDashboardComponent implements OnInit {
     {label: 'Expenses', icon: 'pi pi-wallet', routerLink: 'expenses'}
   ]
 
+  private readonly reportsMenuItems: MenuItem[] = [
+    {label: 'Product Metrics', icon: 'pi pi-chart-line', routerLink: 'reports/product-sales'}
+  ]
+
   private readonly adminSectionMenuItems: MenuItem[] = [
     {label: 'Sync', icon: 'pi pi-sync', routerLink: 'sync'},
     {label: 'Users', icon: 'pi pi-users', routerLink: 'users'},
@@ -68,6 +74,8 @@ export class LocationDashboardComponent implements OnInit {
       {label: 'Menu', items: this.commonTasksMenuItems},
       {separator: true},
       {label: 'Transactions', items: this.transactionsMenuItems},
+      {separator: true},
+      {label: 'Reports', items: this.reportsMenuItems},
       {separator: true},
       {label: 'Admin Section', items: this.adminSectionMenuItems}
     ]

@@ -1,8 +1,10 @@
-export interface PageResponse<CONTENT> {
+export interface PageResponse<CONTENT, METADATA = unknown> {
   currentCursor: string|number
   hasMore: boolean
   contents: CONTENT[]
   requireClientSideFilter: boolean
+  /** Endpoint-specific data about the page; absent unless the endpoint sets it. */
+  metadata?: METADATA
 }
 
 export const isPaginated = <T>(response: any): response is PageResponse<T> => {

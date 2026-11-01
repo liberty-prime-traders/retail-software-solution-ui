@@ -8,6 +8,15 @@ import {
 import {LocationSummaryComponent} from '../../lib/components/location-level/location-summary/location-summary.component'
 import {LocationUserComponent} from '../../lib/components/location-level/location-user/location-user.component'
 import {ExpensesComponent} from '../../lib/components/location-level/expenses/expenses.component'
+import {
+  ProductSalesCompareComponent
+} from '../../lib/components/location-level/product-sales-report/product-compare/product-sales-compare.component'
+import {
+  ProductSalesDetailComponent
+} from '../../lib/components/location-level/product-sales-report/product-detail/product-sales-detail.component'
+import {
+  ProductSalesReportComponent
+} from '../../lib/components/location-level/product-sales-report/product-report/product-sales-report.component'
 import {PurchaseComponent} from '../../lib/components/location-level/purchases/purchase.component'
 import {SalePaymentsComponent} from '../../lib/components/location-level/sale-payments/sale-payments.component'
 import {SalesComponent} from '../../lib/components/location-level/sales/sales.component'
@@ -28,5 +37,13 @@ export const locationRoutes: Routes = [
   {path: 'sale-payments', component: SalePaymentsComponent},
   {path: 'taxes', component: TaxesComponent},
   {path: 'expenses', component: ExpensesComponent},
-  {path: 'users', component: LocationUserComponent}
+  {path: 'users', component: LocationUserComponent},
+  {
+    path: 'reports/product-sales',
+    children: [
+      {path: '', component: ProductSalesReportComponent},
+      {path: 'compare', component: ProductSalesCompareComponent},
+      {path: 'detail', component: ProductSalesDetailComponent}
+    ]
+  }
 ]
