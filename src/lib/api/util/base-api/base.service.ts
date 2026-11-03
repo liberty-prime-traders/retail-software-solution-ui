@@ -26,12 +26,12 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
   }
 
   postRequest(apiRequest: ApiRequest<PAYLOAD, RESPONSE>): Subscription {
-    const url = this.getBasePath(apiRequest.id)
+    const url = this.getBasePath(apiRequest.id, apiRequest.config)
     this.startApiRequest()
     const subscription = this.httpClient.post<RESPONSE>(url, apiRequest.body).pipe(
       first(),
       tap((result: RESPONSE) => {
-        this.finishSavingWithSuccess(result)
+        this.finishSavingWithSuccess(result, {config: apiRequest.config})
         apiRequest.callbacks?.onSuccess?.(result)
       }),
       catchError((error: HttpErrorResponse) => {
@@ -45,10 +45,10 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
 
   putRequest(apiRequest: ApiRequest<PAYLOAD, RESPONSE>): Subscription {
     this.startApiRequest()
-    const subscription = this.httpClient.put<RESPONSE>(this.getBasePath(apiRequest.id), apiRequest.body).pipe(
+    const subscription = this.httpClient.put<RESPONSE>(this.getBasePath(apiRequest.id, apiRequest.config), apiRequest.body).pipe(
       first(),
       tap((result: RESPONSE) => {
-        this.finishSavingWithSuccess(result)
+        this.finishSavingWithSuccess(result, {config: apiRequest.config})
         apiRequest.callbacks?.onSuccess?.(result)
       }),
       catchError((error: HttpErrorResponse) => {
@@ -69,7 +69,7 @@ export abstract class BaseService<RESPONSE extends BaseModel, PAYLOAD = Partial<
       return
     }
     this.startApiRequest()
-    const subscription = this.httpClient.delete<RESPONSE>(this.getBasePath(apiRequest.id), {body: apiRequest.body}).pipe(
+    const subscription = this.httpClient.delete<RESPONSE>(this.getBasePath(apiRequest.id, apiRequest.config), {body: apiRequest.body}).pipe(
       first(),
       tap((response) => {
         this.finishDeletingWithSuccess(apiRequest.id!)

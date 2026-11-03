@@ -18,22 +18,18 @@ export class FundMovementService extends BaseService<FundMovement, FundMovementR
   }
 
   createTransfer(request: FundMovementTransferRequest, callbacks?: ApiCallbacks<FundMovement>) {
-    this.patchApiRequestConfig({urlSuffix: 'transfer', upsertOnSuccess: true})
-    return this.post(request, callbacks)
+    return this.postRequest({body: request, callbacks, config: {urlSuffix: 'transfer', upsertOnSuccess: true}})
   }
 
   createCapital(request: FundMovementCapitalRequest, callbacks?: ApiCallbacks<FundMovement>) {
-    this.patchApiRequestConfig({urlSuffix: 'capital', upsertOnSuccess: true})
-    return this.post(request, callbacks)
+    return this.postRequest({body: request, callbacks, config: {urlSuffix: 'capital', upsertOnSuccess: true}})
   }
 
   createDraw(request: FundMovementDrawRequest, callbacks?: ApiCallbacks<FundMovement>) {
-    this.patchApiRequestConfig({urlSuffix: 'draw', upsertOnSuccess: true})
-    return this.post(request, callbacks)
+    return this.postRequest({body: request, callbacks, config: {urlSuffix: 'draw', upsertOnSuccess: true}})
   }
 
   voidFundMovement(request: FundMovementVoidRequest, callbacks?: ApiCallbacks<FundMovement>) {
-    this.patchApiRequestConfig({urlSuffix: 'void', upsertOnSuccess: true})
-    return this.post(request, callbacks)
+    return this.postRequest({body: request, callbacks, config: {urlSuffix: 'void', upsertOnSuccess: true}})
   }
 }

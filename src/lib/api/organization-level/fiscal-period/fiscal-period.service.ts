@@ -12,22 +12,18 @@ export class FiscalPeriodService extends BaseService<FiscalPeriod> {
   }
 
   rename(body: Pick<FiscalPeriod, 'id' | 'name'>, callbacks?: ApiCallbacks<FiscalPeriod>) {
-    this.patchApiRequestConfig({urlSuffix: 'rename'})
-    this.put(body as Partial<FiscalPeriod>, callbacks)
+    this.putRequest({body: body as Partial<FiscalPeriod>, callbacks, config: {urlSuffix: 'rename'}})
   }
 
   close(ids: EntityId[], callbacks?: ApiCallbacks<FiscalPeriod>) {
-    this.patchApiRequestConfig({urlSuffix: 'close', upsertOnSuccess: true})
-    this.post(ids as any, callbacks)
+    this.postRequest({body: ids as any, callbacks, config: {urlSuffix: 'close', upsertOnSuccess: true}})
   }
 
   yearEndClose(id: EntityId, callbacks?: ApiCallbacks<FiscalPeriod>) {
-    this.patchApiRequestConfig({urlSuffix: 'year-end-close'})
-    this.post(undefined, callbacks, id)
+    this.postRequest({callbacks, id, config: {urlSuffix: 'year-end-close'}})
   }
 
   nudge(callbacks?: ApiCallbacks<FiscalPeriod>) {
-    this.patchApiRequestConfig({urlSuffix: 'nudge'})
-    this.post(undefined, callbacks)
+    this.postRequest({callbacks, config: {urlSuffix: 'nudge'}})
   }
 }

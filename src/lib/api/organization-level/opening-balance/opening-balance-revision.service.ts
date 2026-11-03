@@ -15,8 +15,7 @@ export class OpeningBalanceRevisionService extends MultimapBaseService<OpeningBa
   }
 
   getHistory(accountCode: EntityId | undefined) {
-    this.patchApiRequestConfig({urlSuffix: `history`})
-    return this.refetch(accountCode)
+    return this.refetch(accountCode, undefined, {urlSuffix: 'history'})
   }
 
   updateOpeningBalance(accountCode: string, newAmount: number, callbacks: ApiCallbacks<OpeningBalanceRevision>) {

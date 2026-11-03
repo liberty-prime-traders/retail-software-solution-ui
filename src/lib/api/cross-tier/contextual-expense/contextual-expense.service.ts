@@ -22,23 +22,19 @@ export class ContextualExpenseService extends MultimapBaseService<Expense> imple
   }
 
   createForPurchase(dto: PurchaseExpenseBatchRequest, callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'purchase'})
-    return this.post(dto as any, callbacks)
+    return this.postRequest({body: dto as any, callbacks, config: {urlSuffix: 'purchase'}})
   }
 
   createPayments(dtos: ExpensePaymentCreateRequest[], callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'payments', upsertOnSuccess: true})
-    return this.post(dtos as any, callbacks)
+    return this.postRequest({body: dtos as any, callbacks, config: {urlSuffix: 'payments', upsertOnSuccess: true}})
   }
 
   voidPayment(dto: ExpensePaymentVoidRequest, callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'payments/void'})
-    return this.post(dto as any, callbacks)
+    return this.postRequest({body: dto as any, callbacks, config: {urlSuffix: 'payments/void'}})
   }
 
   voidExpense(dto: ExpenseVoidRequest, callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'void'})
-    return this.post(dto as any, callbacks)
+    return this.postRequest({body: dto as any, callbacks, config: {urlSuffix: 'void'}})
   }
 
   override appendHttpParams(httpParams: HttpParams, params: ExpenseBySourceRequest): HttpParams {
@@ -48,7 +44,6 @@ export class ContextualExpenseService extends MultimapBaseService<Expense> imple
   }
 
   fetchForSource(params: ExpenseBySourceRequest) {
-    this.patchApiRequestConfig({urlSuffix: 'by-source'})
-    return this.refetch(params)
+    return this.refetch(params, undefined, {urlSuffix: 'by-source'})
   }
 }

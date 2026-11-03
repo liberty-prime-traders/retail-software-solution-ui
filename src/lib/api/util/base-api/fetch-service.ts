@@ -4,6 +4,7 @@ import {finalize, Subscription} from 'rxjs'
 import {catchError, tap} from 'rxjs/operators'
 import {ApiCallbacks} from './api-callbacks'
 import {ApiGetRequestModel, FetchParams} from './api-get-request.model'
+import {ApiRequestConfig} from './api-request-config'
 import {BaseModel} from './base.model'
 import {BaseStore} from './base.store'
 import {ServiceFacade} from './service.facade'
@@ -22,9 +23,9 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
     return this.fetchRequest({params})
   }
 
-  refetch(params?: FetchParams, callbacks?: ApiCallbacks<RESPONSE>) {
+  refetch(params?: FetchParams, callbacks?: ApiCallbacks<RESPONSE>, config?: Partial<ApiRequestConfig>) {
     this.resetStoreAndClearCache()
-    return this.fetchRequest({params, callbacks})
+    return this.fetchRequest({params, callbacks, config})
   }
 
   refetchRequest(apiRequest: ApiGetRequestModel<RESPONSE, FetchParams>) {
@@ -36,20 +37,20 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
     if (!this.shouldMakeCall()) {
       return undefined
     }
-    const {id, params, callbacks} = apiRequest
+    const {id, params, callbacks, config} = apiRequest
     const httpParams = this.getHttpParams(params)
     const matrixParams = this.assembleMatrixParams(this.getMatrixParams(params))
     const pathParams = this.getPathParams(params)
     const pathSuffix = this.getPathSuffix(params)
     const suffix = pathSuffix ? `/${pathSuffix}` : ''
-    const url = `${this.getBasePath(id)}${suffix}${pathParams}${matrixParams}`
+    const url = `${this.getBasePath(id, config)}${suffix}${pathParams}${matrixParams}`
     if (this.allowMultipleCalls()) {
       this.releaseInFlight('GET')
     }
     this.startApiRequest()
     const subscription = this.fetcher.get<RESPONSE>(url, {params: httpParams}).pipe(
       tap((body) => {
-        this.finishSavingWithSuccess(body, id)
+        this.finishSavingWithSuccess(body, {id, config})
         callbacks?.onSuccess?.(body)
       }),
       catchError((error) => {

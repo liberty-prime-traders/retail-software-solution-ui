@@ -11,7 +11,6 @@ export class DbVersionService extends BaseService<DbVersion, DbVersionInsertMode
   }
 
   activateVersion(versionId: string) {
-    this.patchApiRequestConfig({urlSuffix: `activate`})
-    return this.putRequest({id: versionId})
+    return this.putRequest({id: versionId, config: {urlSuffix: `activate`}})
   }
 }

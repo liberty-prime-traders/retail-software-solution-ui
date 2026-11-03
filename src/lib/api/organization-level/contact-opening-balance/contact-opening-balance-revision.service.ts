@@ -17,8 +17,7 @@ export class ContactOpeningBalanceRevisionService
   }
 
   getHistory(contactReferenceNumber: EntityId | undefined) {
-    this.patchApiRequestConfig({urlSuffix: `history`})
-    return this.refetch(contactReferenceNumber)
+    return this.refetch(contactReferenceNumber, undefined, {urlSuffix: `history`})
   }
 
   setOpeningBalance(
@@ -26,7 +25,6 @@ export class ContactOpeningBalanceRevisionService
     openingBalance: ContactOpeningBalance,
     callbacks: ApiCallbacks<ContactOpeningBalanceRevision>
   ) {
-    this.patchApiRequestConfig({urlSuffix: ''})
-    return this.postRequest({id: contactId, body: openingBalance, callbacks})
+    return this.postRequest({id: contactId, body: openingBalance, callbacks, config: {urlSuffix: ''}})
   }
 }

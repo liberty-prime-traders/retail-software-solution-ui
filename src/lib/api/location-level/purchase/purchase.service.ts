@@ -21,32 +21,26 @@ export class PurchaseService extends BaseService<Purchase> {
   }
 
   createDraft(body: Partial<Purchase>, callbacks?: ApiCallbacks<Purchase>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'draft'})
-    return this.post(body, callbacks)
+    return this.postRequest({body, callbacks, config: {urlSuffix: 'draft'}})
   }
 
   updateDraft(body: Partial<Purchase>, callbacks?: ApiCallbacks<Purchase>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'draft'})
-    return this.put(body, callbacks)
+    return this.putRequest({body, callbacks, config: {urlSuffix: 'draft'}})
   }
 
   createOrder(body: Partial<Purchase>, callbacks?: ApiCallbacks<Purchase>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'order'})
-    return this.post(body, callbacks)
+    return this.postRequest({body, callbacks, config: {urlSuffix: 'order'}})
   }
 
   convertDraftToOrder(body: Partial<Purchase>, callbacks?: ApiCallbacks<Purchase>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'order'})
-    return this.put(body, callbacks)
+    return this.putRequest({body, callbacks, config: {urlSuffix: 'order'}})
   }
 
   cancelLines(id: EntityId, lines: PurchaseLineCancelDto[], callbacks?: ApiCallbacks<Purchase>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'line-cancel-quantities'})
-    return this.putRequest({body: lines as any, callbacks, id})
+    return this.putRequest({body: lines as any, callbacks, id, config: {urlSuffix: 'line-cancel-quantities'}})
   }
 
   updateNotes(id: EntityId, notes: string): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'notes'})
-    return this.putRequest({body: {notes} as any, id})
+    return this.putRequest({body: {notes} as any, id, config: {urlSuffix: 'notes'}})
   }
 }

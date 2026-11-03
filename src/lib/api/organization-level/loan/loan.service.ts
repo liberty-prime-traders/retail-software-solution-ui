@@ -18,22 +18,18 @@ export class LoanService extends BaseService<Loan, LoanRequest> {
   }
 
   createLoan(request: LoanCreateRequest, callbacks?: ApiCallbacks<Loan>) {
-    this.patchApiRequestConfig({urlSuffix: '', upsertOnSuccess: true})
-    return this.post(request, callbacks)
+    return this.postRequest({body: request, callbacks, config: {urlSuffix: '', upsertOnSuccess: true}})
   }
 
   recordRepayment(request: LoanRepaymentCreateRequest, callbacks?: ApiCallbacks<Loan>) {
-    this.patchApiRequestConfig({urlSuffix: 'repayments', upsertOnSuccess: true})
-    return this.post(request, callbacks)
+    return this.postRequest({body: request, callbacks, config: {urlSuffix: 'repayments', upsertOnSuccess: true}})
   }
 
   voidLoan(request: LoanVoidRequest, callbacks?: ApiCallbacks<Loan>) {
-    this.patchApiRequestConfig({urlSuffix: 'void', upsertOnSuccess: true})
-    return this.post(request, callbacks)
+    return this.postRequest({body: request, callbacks, config: {urlSuffix: 'void', upsertOnSuccess: true}})
   }
 
   voidRepayment(request: LoanRepaymentVoidRequest, callbacks?: ApiCallbacks<Loan>) {
-    this.patchApiRequestConfig({urlSuffix: 'repayments/void', upsertOnSuccess: true})
-    return this.post(request, callbacks)
+    return this.postRequest({body: request, callbacks, config: {urlSuffix: 'repayments/void', upsertOnSuccess: true}})
   }
 }

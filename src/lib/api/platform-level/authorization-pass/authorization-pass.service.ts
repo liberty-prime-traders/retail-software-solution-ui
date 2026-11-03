@@ -17,7 +17,6 @@ export class AuthorizationPassService extends BaseService<AuthorizationPass> {
   }
 
   revoke(id: EntityId, callbacks?: ApiCallbacks<AuthorizationPass>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'revoke'})
-    return this.putRequest({id, callbacks})
+    return this.putRequest({id, callbacks, config: {urlSuffix: 'revoke'}})
   }
 }

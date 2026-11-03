@@ -11,12 +11,10 @@ export class TableRegistryService extends BaseService<TableRegistry> {
   }
 
   validateRegistry(registryId: string) {
-    this.patchApiRequestConfig({urlSuffix: `validate`})
-    return this.putRequest({id: registryId})
+    return this.putRequest({id: registryId, config: {urlSuffix: `validate`}})
   }
 
   validateAllRegistries(callbacks: ApiCallbacks<TableRegistry>) {
-    this.patchApiRequestConfig({urlSuffix: `validate-all`})
-    return this.postRequest({callbacks})
+    return this.postRequest({callbacks, config: {urlSuffix: `validate-all`}})
   }
 }

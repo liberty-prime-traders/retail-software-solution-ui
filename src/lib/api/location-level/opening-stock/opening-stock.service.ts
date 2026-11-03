@@ -12,13 +12,16 @@ export class OpeningStockService extends BaseService<OpeningStockLine> {
   }
 
   declareInitialStock(lines: Partial<OpeningStockLine>[], callbacks?: ApiCallbacks<OpeningStockLine>) {
-    this.patchApiRequestConfig({upsertOnSuccess: true})
-    return this.postRequest({body: lines, callbacks})
+    return this.postRequest({body: lines, callbacks, config: {upsertOnSuccess: true}})
   }
 
   bulkDeclareInitialStock(lines: OpeningStockBulkLine[], callbacks?: ApiCallbacks<OpeningStockLine>) {
-    this.patchApiRequestConfig({upsertOnSuccess: true})
-    return this.postRequest({id: 'bulk', body: lines as Partial<OpeningStockLine>[], callbacks})
+    return this.postRequest({
+      id: 'bulk',
+      body: lines as Partial<OpeningStockLine>[],
+      callbacks,
+      config: {upsertOnSuccess: true}
+    })
   }
 
 }

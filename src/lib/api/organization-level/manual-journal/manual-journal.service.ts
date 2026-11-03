@@ -15,12 +15,15 @@ export class ManualJournalService extends BaseService<ManualJournal, ManualJourn
   }
 
   createManualJournal(request: ManualJournalCreateRequest, callbacks?: ApiCallbacks<ManualJournal>) {
-    this.patchApiRequestConfig({upsertOnSuccess: true})
-    return this.post(request, callbacks)
+    return this.postRequest({body: request, callbacks, config: {upsertOnSuccess: true}})
   }
 
   reverseManualJournal(referenceNumber: string, reason: string, callbacks?: ApiCallbacks<ManualJournal>) {
-    this.patchApiRequestConfig({urlSuffix: 'reversal', upsertOnSuccess: true})
-    return this.post({reason}, callbacks, referenceNumber)
+    return this.postRequest({
+      body: {reason},
+      callbacks,
+      id: referenceNumber,
+      config: {urlSuffix: 'reversal', upsertOnSuccess: true}
+    })
   }
 }

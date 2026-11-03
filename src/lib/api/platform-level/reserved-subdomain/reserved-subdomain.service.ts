@@ -15,7 +15,6 @@ export class ReservedSubdomainService extends BaseService<ReservedSubdomain> {
   }
 
   verifySubdomainAvailability(suggestedSubdomain: string) {
-    this.patchApiRequestConfig({urlSuffix: 'verify'})
-    return this.refetch({suggestedSubdomain})
+    return this.refetch({suggestedSubdomain}, undefined, {urlSuffix: 'verify'})
   }
 }

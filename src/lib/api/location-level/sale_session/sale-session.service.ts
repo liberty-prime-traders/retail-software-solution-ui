@@ -56,70 +56,70 @@ export class SaleSessionService extends BaseService<SaleSession> {
   }
 
   updateSaleLines(lineRequest: SaleSessionLineRequest, callbacks?: ApiCallbacks<SaleSession>) {
-    this.patchApiRequestConfig({urlSuffix: 'lines'})
     return this.putRequest({
       id: this.currentSessionId(),
+      config: {urlSuffix: 'lines'},
       body: lineRequest as any,
       callbacks: this.getSessionCallback({bumpSaleMutatedCount: true}, callbacks)
     })
   }
 
   removeSaleLine(identity: SessionIdentity, callbacks?: ApiCallbacks<SaleSession>) {
-    this.patchApiRequestConfig({urlSuffix: 'lines'})
     return this.deleteRequest({
       id: this.currentSessionId(),
+      config: {urlSuffix: 'lines'},
       body: {identity} as any,
       callbacks: this.getSessionCallback({bumpSaleMutatedCount: true}, callbacks)
     })
   }
 
   addPayment(paymentAddRequest: SaleSessionPaymentAddRequest, callbacks?: ApiCallbacks<SaleSession>) {
-    this.patchApiRequestConfig({urlSuffix: 'payments'})
     return this.postRequest({
       id: this.currentSessionId(),
+      config: {urlSuffix: 'payments'},
       body: paymentAddRequest as any,
       callbacks: this.getSessionCallback({bumpSaleMutatedCount: true}, callbacks)
     })
   }
 
   removePayment(request: SaleSessionPaymentRemoveRequest, callbacks?: ApiCallbacks<SaleSession>) {
-    this.patchApiRequestConfig({urlSuffix: 'payments'})
     return this.deleteRequest({
       id: this.currentSessionId(),
+      config: {urlSuffix: 'payments'},
       body: request as any,
       callbacks: this.getSessionCallback({bumpSaleMutatedCount: true}, callbacks)
     })
   }
 
   updateHeader(headerUpdateRequest: SaleSessionHeaderUpdateRequest, callbacks?: ApiCallbacks<SaleSession>) {
-    this.patchApiRequestConfig({urlSuffix: 'header'})
     return this.putRequest({
       id: this.currentSessionId(),
+      config: {urlSuffix: 'header'},
       body: headerUpdateRequest as any,
       callbacks: this.getSessionCallback({bumpSaleMutatedCount: true}, callbacks)
     })
   }
 
   saveAsDraft(callbacks?: ApiCallbacks<SaleSession>) {
-    this.patchApiRequestConfig({urlSuffix: 'draft'})
     return this.postRequest({
       id: this.currentSessionId(),
+      config: {urlSuffix: 'draft'},
       callbacks: this.getSessionCallback({removeFromUnsavedCarts: true}, callbacks)
     })
   }
 
   confirmSession(callbacks?: ApiCallbacks<SaleSession>) {
-    this.patchApiRequestConfig({urlSuffix: 'confirm'})
     return this.postRequest({
       id: this.currentSessionId(),
+      config: {urlSuffix: 'confirm'},
       callbacks: this.getSessionCallback({removeFromUnsavedCarts: true, bumpSaleMutatedCount: true}, callbacks)
     })
   }
 
   discardOrVoidSale(reason: string, callbacks?: ApiCallbacks<SaleSession>) {
-    this.patchApiRequestConfig({urlSuffix: 'void'})
     return this.postRequest({
       id: this.currentSessionId(),
+      config: {urlSuffix: 'void'},
       body: {reason} as any,
       callbacks: this.getSessionCallback({bumpSaleMutatedCount: true}, callbacks)
     })

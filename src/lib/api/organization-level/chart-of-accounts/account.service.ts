@@ -12,22 +12,18 @@ export class AccountService extends BaseService<Account> {
   }
 
   createRoot(body: Partial<Account>, callbacks?: ApiCallbacks<Account>) {
-    this.patchApiRequestConfig({urlSuffix: 'root'})
-    this.post(body, callbacks)
+    this.postRequest({body, callbacks, config: {urlSuffix: 'root'}})
   }
 
   createChild(body: Partial<Account>, callbacks?: ApiCallbacks<Account>) {
-    this.patchApiRequestConfig({urlSuffix: 'child'})
-    this.post(body, callbacks)
+    this.postRequest({body, callbacks, config: {urlSuffix: 'child'}})
   }
 
   deactivate(id: EntityId) {
-    this.patchApiRequestConfig({urlSuffix: 'deactivate'})
-    this.putRequest({id})
+    this.putRequest({id, config: {urlSuffix: 'deactivate'}})
   }
 
   activate(id: EntityId) {
-    this.patchApiRequestConfig({urlSuffix: 'activate'})
-    this.putRequest({id})
+    this.putRequest({id, config: {urlSuffix: 'activate'}})
   }
 }

@@ -13,7 +13,6 @@ export class SupplierPaymentService extends MultimapBaseService<SupplierPayment>
   }
 
   voidPayment(dto: SupplierPaymentVoidRequest, callbacks?: ApiCallbacks<SupplierPayment>) {
-    this.patchApiRequestConfig({urlSuffix: 'void'})
-    return this.post(dto as any, callbacks)
+    return this.postRequest({body: dto as any, callbacks, config: {urlSuffix: 'void'}})
   }
 }

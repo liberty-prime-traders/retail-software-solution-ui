@@ -16,7 +16,6 @@ export class DailyBalancesService extends BaseService<DailyBalances, DailyBusine
   }
 
   load(parameters: DailyBusinessSummaryParameters): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'balances'})
-    return this.post(parameters)
+    return this.postRequest({body: parameters, config: {urlSuffix: 'balances'}})
   }
 }
