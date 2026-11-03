@@ -1,0 +1,52 @@
+<div class="flex flex-column gap-3">
+  <div class="flex justify-content-between gap-4">
+    <span class="flex-grow-1">
+      @if (manualJournal().details; as details) {
+        <b>Details:</b> {{ details }}
+      }
+    </span>
+
+    @if (!reversingIsVisible() && isReversible()) {
+      <button class="w-fit" pButton
+              type="button" severity="danger"
+              (click)="reversingIsVisible.set(true)">
+        <i class="pi pi-ban"></i> Reverse Journal
+      </button>
+    }
+  </div>
+
+  @if (reversingIsVisible()) {
+    <rts-journal-correction-reversal-form [manualJournal]="manualJournal()"
+                                          (reversed)="changed.emit()"
+                                          (cancelled)="reversingIsVisible.set(false)">
+    </rts-journal-correction-reversal-form>
+  }
+
+  <p-table [value]="manualJournal().lines" dataKey="referenceNumber">
+    <ng-template #header>
+      <tr>
+        <th>Reference</th>
+        <th>Account</th>
+        <th>Type</th>
+        <th>Direction</th>
+        <th>Amount</th>
+        <th>Memo</th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-line>
+      <tr [ngClass]="{'strike-through': manualJournal().reversedByReferenceNumber}">
+        <td>{{ line.referenceNumber }}</td>
+        <td>{{ line.accountName }}</td>
+        <td>{{ line.accountType | prettifyEnum }}</td>
+        <td>{{ line.entryType | prettifyEnum }}</td>
+        <td class="money">{{ line.amount | currency }}</td>
+        <td>{{ line.lineMemo | nullSafe }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr rts-empty-row [colspan]="6" message="No lines were found"></tr>
+    </ng-template>
+  </p-table>
+</div>

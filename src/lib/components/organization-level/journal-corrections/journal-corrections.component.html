@@ -1,0 +1,86 @@
+@if (formIsVisible()) {
+  <div class="flex flex-column gap-4">
+    <div class="flex justify-content-between align-items-center">
+      <span class="font-bold">Add Journal Correction</span>
+      <button pButton (click)="formIsVisible.set(false)" severity="info" class="align-self-end">
+        <i class="pi pi-times"></i> Cancel
+      </button>
+    </div>
+    <rts-journal-correction-form (manualJournalCreated)="refreshAfterWrite()"/>
+  </div>
+
+} @else {
+  <div id="journal-corrections" rtsAutoStretch="journal-corrections">
+    <p-table [value]="manualJournals()"
+             [loading]="loading()"
+             dataKey="id"
+             scrollHeight="flex"
+             [scrollable]="true"
+             [virtualScroll]="true"
+             [virtualScrollItemSize]="55">
+
+      <ng-template #caption>
+        <div class="flex justify-content-between align-items-center">
+          <h3 class="font-bold">Journal Corrections</h3>
+
+          <button pButton rounded severity="secondary" (click)="formIsVisible.set(true)">
+            + Add Journal Correction
+          </button>
+        </div>
+      </ng-template>
+
+      <ng-template #header>
+        <tr>
+          <th style="width: 3rem"></th>
+          <th>Reference</th>
+          <th>Date</th>
+          <th>Summary</th>
+          <th>Status</th>
+          <th>Posted By</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-manualJournal let-expanded="expanded">
+        <tr [ngClass]="{'expanded-row': expanded, 'strike-through': manualJournal.reversedByReferenceNumber}">
+          <td>
+            <button pButton type="button" text rounded [pRowToggler]="manualJournal">
+              <i [class]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+            </button>
+          </td>
+          <td>{{ manualJournal.referenceNumber }}</td>
+          <td>{{ manualJournal.postingDate }}</td>
+          <td>
+            {{ manualJournal.summary }}
+            @if (manualJournal.reversedByReferenceNumber) {
+              <b> - Reversed by</b> {{ manualJournal.reversedByReferenceNumber }}
+            } @else if (manualJournal.reversalOfReferenceNumber) {
+              <b> - Reversal of</b> {{ manualJournal.reversalOfReferenceNumber }}
+            }
+          </td>
+          <td>
+            @if (manualJournal.reversedByReferenceNumber) {
+              <p-tag value="Reversed" severity="danger"/>
+            } @else if (manualJournal.reversalOfReferenceNumber) {
+              <p-tag value="Reversal" severity="warn"/>
+            } @else {
+              <p-tag value="Active" severity="success"/>
+            }
+          </td>
+          <td>{{ manualJournal.postedBy }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template #expandedrow let-manualJournal>
+        <tr>
+          <td colspan="6" class="filled-background px-4">
+            <rts-journal-correction-expanded-row [manualJournal]="manualJournal" (changed)="refreshAfterWrite()"/>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr rts-empty-row [colspan]="6" message="No journal corrections were found"></tr>
+      </ng-template>
+    </p-table>
+  </div>
+}

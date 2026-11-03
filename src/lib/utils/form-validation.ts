@@ -6,7 +6,7 @@ import {
   MinValidationError,
   ValidationError
 } from '@angular/forms/signals'
-import {getToday, toLocaleDateString} from './dates'
+import {toLocaleDateString} from './dates'
 
 export const toErrorMessages = <T> (
   fieldMap: Map<keyof T, string>,
@@ -15,13 +15,14 @@ export const toErrorMessages = <T> (
   if (!errors || errors.length === 0) {
     return []
   }
-  return errors.map((error) => {
+  const errorMessages = errors.map((error) => {
     if (error.message) {
       return error.message
     }
     const prefix = fieldMap.get(toFieldName(error) as keyof T) ?? ''
     return prefix + ' ' + toMessage(error)
   })
+  return Array.from(new Set(errorMessages))
 }
 
 export const toFieldName = (error: ValidationError.WithFieldTree): string => {

@@ -36,6 +36,7 @@ import {
   StockMovementReasonComponent
 } from '../../lib/components/organization-level/stock-movement-reason/stock-movement-reason.component'
 import {FundTransferComponent} from '../../lib/components/organization-level/fund-transfer/fund-transfer.component'
+import {JournalCorrectionsComponent} from '../../lib/components/organization-level/journal-corrections/journal-corrections.component'
 import {LoanComponent} from '../../lib/components/organization-level/loan/loan.component'
 import {
   DailyBusinessSummaryComponent
@@ -67,6 +68,7 @@ export const orgManagementRoutes: Routes = [
   {path: 'expense-types', component: ExpenseTypeComponent},
   {path: 'fiscal-periods', component: FiscalPeriodsComponent},
   {path: 'fund-transfers', component: FundTransferComponent},
+  {path: 'journal-corrections', component: JournalCorrectionsComponent},
   {path: 'loans', component: LoanComponent},
   {path: '', redirectTo: 'summary', pathMatch: 'full'}
 ]

@@ -1,0 +1,22 @@
+<div class="flex flex-column gap-3">
+  <rts-form-field label="Reversal Reason"
+                  [layout]="FormFieldDirection.VERTICAL"
+                  [required]="true"
+                  class="col-5"
+                  contentClass="col-12">
+    <textarea pInputText class="w-full" rows="3" [formField]="reversalForm.reason"></textarea>
+  </rts-form-field>
+
+  <rts-forms-buttons deleteLabel="Reverse Journal"
+                     deleteWarning="This posts an opposite journal to the ledger and cannot be undone."
+                     deleteInProgressMessage="Reversing journal..."
+                     deleteIcon="pi pi-ban"
+                     resetLabel="Cancel"
+                     [hideSave]="true"
+                     [disableDelete]="reversalForm().invalid()"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (resetAction)="cancelled.emit()"
+                     (delete)="confirmReversal()">
+  </rts-forms-buttons>
+</div>
