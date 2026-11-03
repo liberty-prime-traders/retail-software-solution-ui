@@ -55,6 +55,8 @@ export class SaleFormHeaderComponent {
   )
 
   readonly startFreshFormAfterPrint = this.context.startFreshFormAfterPrint
+  readonly autoPrintAfterConfirm = this.context.autoPrintAfterConfirm
+  readonly markAutoPrinted = this.context.markAutoPrinted
 
   hideSaleForm() {
     this.navigator.backFromForm()

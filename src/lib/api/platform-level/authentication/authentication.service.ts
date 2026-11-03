@@ -20,6 +20,19 @@ export class AuthenticationService extends BaseService<LoginResponse, LoginReque
     super(store)
   }
 
+  renewSessionToken(sessionToken: string): void {
+    const currentLoginResponse = this.loginResponse()
+    if (!currentLoginResponse) {
+      return
+    }
+    this.store.setAll([{...currentLoginResponse, sessionToken}])
+  }
+
+  // A login upserts, which keeps the previous session first in the store; this replaces it instead.
+  replaceLoginResponse(loginResponse: LoginResponse): void {
+    this.store.setAll([loginResponse])
+  }
+
   logInWithGoogle(credential: string, callbacks: ApiCallbacks<LoginResponse>): void {
     this.logIn(IdentityProvider.GOOGLE, credential, callbacks)
   }

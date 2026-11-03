@@ -3,11 +3,13 @@ import {
   afterNextRender,
   Component,
   computed,
+  effect,
   inject,
   Injector,
   input,
   output,
   signal,
+  untracked,
   viewChild
 } from '@angular/core'
 import {FormsModule} from '@angular/forms'
@@ -63,6 +65,8 @@ export class SalePrintActionsComponent {
   readonly phoneNumber = '0104326823'
   readonly sale = input.required<SaleSession>()
   readonly printed = output()
+  readonly autoPrint = input(false)
+  readonly autoPrinted = output()
 
   readonly layouts = [...PRINT_LAYOUT_PRESETS]
   readonly isPrinting = this.printService.isPrinting
@@ -78,6 +82,15 @@ export class SalePrintActionsComponent {
   readonly previewZoom = computed(() => this.layout().kind === PrintLayoutKind.RECEIPT ? 1.5 : 0.85)
 
   private readonly printDocument = viewChild(PrintDocumentComponent)
+
+  private readonly autoPrintEffect = effect(() => {
+    if (this.autoPrint()) {
+      untracked(() => {
+        this.autoPrinted.emit()
+        this.printNow()
+      })
+    }
+  })
 
   openPreview() {
     this.previewVisible.set(true)

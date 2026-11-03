@@ -27,11 +27,15 @@ export class SaleFormContext {
   // Set once a sale is confirmed so the printed receipt stays on screen; cleared by any other session load.
   private readonly awaitingFreshFormAfterPrint = signal(false)
 
+  private readonly _autoPrintAfterConfirm = signal(false)
+  readonly autoPrintAfterConfirm = this._autoPrintAfterConfirm.asReadonly()
+
   readonly saleForm = form(this.saleFormValue, SaleFormDefinition.saleFormSchema)
 
   readonly loadSession = (session: SaleSession) => {
     // session.saleRefunds = []
     this.awaitingFreshFormAfterPrint.set(false)
+    this._autoPrintAfterConfirm.set(false)
     this._saleSession.set(session)
     this.saleForm().reset(SaleFormDefinition.convertToFormModel(session))
   }
@@ -39,7 +43,10 @@ export class SaleFormContext {
   readonly loadConfirmedSession = (session: SaleSession) => {
     this.loadSession(session)
     this.awaitingFreshFormAfterPrint.set(true)
+    this._autoPrintAfterConfirm.set(true)
   }
+
+  readonly markAutoPrinted = () => this._autoPrintAfterConfirm.set(false)
 
   readonly startFreshFormAfterPrint = () => {
     if (this.awaitingFreshFormAfterPrint()) {

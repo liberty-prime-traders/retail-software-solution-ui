@@ -4,6 +4,7 @@ import {ToastModule} from 'primeng/toast'
 import {
   OrganizationLaunchService
 } from '../lib/components/welcome/top-navigation/organization-nav-content/organization-launch.service'
+import {SessionExpiredDialogComponent} from '../lib/components/auth/session-expired/session-expired-dialog.component'
 import {WelcomeComponent} from '../lib/components/welcome/welcome.component'
 
 @Component({
@@ -12,6 +13,7 @@ import {WelcomeComponent} from '../lib/components/welcome/welcome.component'
   styleUrl: 'app.component.scss',
   imports: [
     ToastModule,
+    SessionExpiredDialogComponent,
     WelcomeComponent
   ],
   providers: [
