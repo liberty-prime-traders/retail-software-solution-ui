@@ -1,0 +1,67 @@
+<div class="flex flex-column gap-2 p-3 filled-background">
+  <rts-form-field [required]="true" label="Summary" for="summary">
+    <input id="summary" class="flex-grow-1" pInputText [formField]="journalForm.summary"/>
+  </rts-form-field>
+
+  <rts-form-field [required]="true" label="Date" for="postingDate">
+    <p-date-picker inputId="postingDate"
+                   class="flex-grow-1"
+                   appendTo="body"
+                   [showIcon]="true"
+                   [maxDate]="today"
+                   [formField]="journalForm.postingDate">
+    </p-date-picker>
+  </rts-form-field>
+
+  <rts-form-field label="Details" for="details">
+    <textarea id="details" class="w-full" pInputTextarea [formField]="journalForm.details"></textarea>
+  </rts-form-field>
+
+  <rts-loading-container [loading]="accountTreesLoading()">
+    @for (line of journalForm.lines; track $index) {
+      <div class="flex gap-2 align-items-end mb-2">
+        <p-tree-select appendTo="body"
+                       placeholder="Account"
+                       [options]="manualJournalTrees()"
+                       [ngModel]="line.accountNode().value()"
+                       (ngModelChange)="setAccountNode(line, $event)">
+        </p-tree-select>
+
+        <p-select class="w-8rem"
+                  appendTo="body"
+                  [options]="ManualJournalEntryType | enumToDropdown"
+                  [formField]="line.entryType">
+        </p-select>
+
+        <p-input-number mode="currency"
+                        currency="KES"
+                        placeholder="KES 0.00"
+                        [min]="0"
+                        [formField]="line.amount">
+        </p-input-number>
+
+        <input class="flex-grow-1" placeholder="Line memo" pInputText [formField]="line.lineMemo"/>
+
+        <button pButton type="button" text rounded severity="danger" (click)="removeLine($index)">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+    }
+  </rts-loading-container>
+
+  <button pButton type="button" text severity="secondary" class="w-fit" (click)="addLine()">
+    <i class="pi pi-plus"></i> Add line
+  </button>
+
+  <rts-forms-buttons [disableReset]="!journalForm().dirty()"
+                     [disableSave]="journalForm().invalid() || !journalForm().dirty()"
+                     [hideDelete]="true"
+                     [signalForm]="journalForm()"
+                     [fieldMap]="fieldMap"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (save)="save()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</div>
+

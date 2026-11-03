@@ -69,6 +69,12 @@ export class OrganizationDashboardComponent implements OnInit {
         icon: 'pi pi-briefcase',
         routerLink: 'loans',
         visible: isChartOfAccountsEnabled
+      },
+      {
+        label: 'Journal Corrections',
+        icon: 'pi pi-file-edit',
+        routerLink: 'journal-corrections',
+        visible: isChartOfAccountsEnabled
       }
     ]
   })
