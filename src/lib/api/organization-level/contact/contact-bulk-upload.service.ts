@@ -13,7 +13,10 @@ export class ContactBulkUploadService extends BaseService<Contact, ContactBulkUp
   }
 
   uploadContacts(contactBulkUploadDtos: ContactBulkUploadDto[], callbacks?: ApiCallbacks<Contact>) {
-    this.patchApiRequestConfig({upsertOnSuccess: true, urlSuffix: 'bulk'})
-    return this.post(contactBulkUploadDtos, callbacks)
+    return this.postRequest({
+      body: contactBulkUploadDtos,
+      callbacks,
+      config: {upsertOnSuccess: true, urlSuffix: 'bulk'}
+    })
   }
 }

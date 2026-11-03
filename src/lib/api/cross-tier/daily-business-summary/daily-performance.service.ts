@@ -16,7 +16,6 @@ export class DailyPerformanceService extends BaseService<DailyPerformance, Daily
   }
 
   load(parameters: DailyBusinessSummaryParameters): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'performance'})
-    return this.post(parameters)
+    return this.postRequest({body: parameters, config: {urlSuffix: 'performance'}})
   }
 }

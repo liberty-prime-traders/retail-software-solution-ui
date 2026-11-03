@@ -18,7 +18,6 @@ export class OrgTaxTypeService extends BaseService<OrgTaxType> {
   }
 
   override post(body?: Partial<OrgTaxType>[], callbacks?: ApiCallbacks<OrgTaxType>): Subscription {
-    this.patchApiRequestConfig({upsertOnSuccess: true})
-    return super.post(body, callbacks)
+    return this.postRequest({body, callbacks, config: {upsertOnSuccess: true}})
   }
 }

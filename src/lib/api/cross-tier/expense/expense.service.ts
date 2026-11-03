@@ -23,28 +23,23 @@ export class ExpenseService extends BaseService<Expense> implements ExpenseActio
   readonly mutationCount = this.mutationCounter.asReadonly()
 
   createStandalone(dto: StandaloneExpenseBatchRequest, callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'standalone', upsertOnSuccess: true})
-    return this.post(dto as any, this.notifyOnSuccess(callbacks))
+    return this.postRequest({body: dto as any, callbacks: this.notifyOnSuccess(callbacks), config: {urlSuffix: 'standalone', upsertOnSuccess: true}})
   }
 
   createWages(dto: WageExpenseBatchRequest, callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'wages', upsertOnSuccess: true})
-    return this.post(dto as any, this.notifyOnSuccess(callbacks))
+    return this.postRequest({body: dto as any, callbacks: this.notifyOnSuccess(callbacks), config: {urlSuffix: 'wages', upsertOnSuccess: true}})
   }
 
   createPayments(dtos: ExpensePaymentCreateRequest[], callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'payments', upsertOnSuccess: true})
-    return this.post(dtos as any, this.notifyOnSuccess(callbacks))
+    return this.postRequest({body: dtos as any, callbacks: this.notifyOnSuccess(callbacks), config: {urlSuffix: 'payments', upsertOnSuccess: true}})
   }
 
   voidPayment(dto: ExpensePaymentVoidRequest, callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'payments/void'})
-    return this.post(dto as any, this.notifyOnSuccess(callbacks))
+    return this.postRequest({body: dto as any, callbacks: this.notifyOnSuccess(callbacks), config: {urlSuffix: 'payments/void'}})
   }
 
   voidExpense(dto: ExpenseVoidRequest, callbacks?: ApiCallbacks<Expense>) {
-    this.patchApiRequestConfig({urlSuffix: 'void'})
-    return this.post(dto as any, this.notifyOnSuccess(callbacks))
+    return this.postRequest({body: dto as any, callbacks: this.notifyOnSuccess(callbacks), config: {urlSuffix: 'void'}})
   }
 
   private notifyOnSuccess(callbacks?: ApiCallbacks<Expense>): ApiCallbacks<Expense> {

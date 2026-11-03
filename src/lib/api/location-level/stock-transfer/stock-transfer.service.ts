@@ -18,18 +18,19 @@ export class StockTransferService extends BaseService<StockTransferResponse> {
   }
 
   createTransfer(body: StockTransferCreateRequest, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'draft'})
-    return this.post(body as any, this.withSummarySync(callbacks))
+    return this.postRequest({
+      body: body as any,
+      callbacks: this.withSummarySync(callbacks),
+      config: {urlSuffix: 'draft'}
+    })
   }
 
   dispatch(orderRef: EntityId, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'dispatch'})
-    return this.postRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
+    return this.postRequest({callbacks: this.withSummarySync(callbacks), id: orderRef, config: {urlSuffix: 'dispatch'}})
   }
 
   cancelTransfer(orderRef: EntityId, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'cancel'})
-    return this.postRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
+    return this.postRequest({callbacks: this.withSummarySync(callbacks), id: orderRef, config: {urlSuffix: 'cancel'}})
   }
 
   loadTransfer(orderRef: EntityId, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription | undefined {
@@ -50,18 +51,28 @@ export class StockTransferService extends BaseService<StockTransferResponse> {
     body: StockTransferLineRequest,
     callbacks?: ApiCallbacks<StockTransferResponse>
   ): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'lines'})
-    return this.postRequest({body: body as any, callbacks: this.withSummarySync(callbacks), id: orderRef})
+    return this.postRequest({
+      body: body as any,
+      callbacks: this.withSummarySync(callbacks),
+      id: orderRef,
+      config: {urlSuffix: 'lines'}
+    })
   }
 
   removeLine(orderRef: EntityId, lineRef: string, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: `lines/remove/${lineRef}`})
-    return this.postRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
+    return this.postRequest({
+      callbacks: this.withSummarySync(callbacks),
+      id: orderRef,
+      config: {urlSuffix: `lines/remove/${lineRef}`}
+    })
   }
 
   confirmLine(orderRef: EntityId, lineRef: string, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: `lines/confirm/${lineRef}`})
-    return this.postRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
+    return this.postRequest({
+      callbacks: this.withSummarySync(callbacks),
+      id: orderRef,
+      config: {urlSuffix: `lines/confirm/${lineRef}`}
+    })
   }
 
   undoLineConfirmation(
@@ -69,13 +80,19 @@ export class StockTransferService extends BaseService<StockTransferResponse> {
     lineRef: string,
     callbacks?: ApiCallbacks<StockTransferResponse>
   ): Subscription | undefined {
-    this.patchApiRequestConfig({urlSuffix: `lines/unconfirm/${lineRef}`})
-    return this.deleteRequest({callbacks: this.withSummarySync(callbacks), id: orderRef})
+    return this.deleteRequest({
+      callbacks: this.withSummarySync(callbacks),
+      id: orderRef,
+      config: {urlSuffix: `lines/unconfirm/${lineRef}`}
+    })
   }
 
   completeTransfer(receiptRef: EntityId, callbacks?: ApiCallbacks<StockTransferResponse>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: `complete`})
-    return this.postRequest({callbacks: this.withSummarySync(callbacks), id: receiptRef})
+    return this.postRequest({
+      callbacks: this.withSummarySync(callbacks),
+      id: receiptRef,
+      config: {urlSuffix: `complete`}
+    })
   }
 
 }

@@ -5,6 +5,8 @@ import {get, groupBy} from 'lodash-es'
 import {Subscription} from 'rxjs'
 import {Multimap} from '../../../utils/types/multimap.type'
 import {FetchParams} from './api-get-request.model'
+import {ApiCallbacks} from './api-callbacks'
+import {ApiRequestConfig, ApiRequestContext} from './api-request-config'
 import {BaseModel} from './base.model'
 import {BaseService} from './base.service'
 import '../http-params.extension'
@@ -30,7 +32,11 @@ export abstract class MultimapBaseService<RESPONSE extends BaseModel, PAYLOAD = 
     return httpParams.setNonNull(String(this.keyPath), params)
   }
 
-  override refetch(params: EntityId | undefined | FetchParams) {
+  override refetch(
+    params: EntityId | undefined | FetchParams,
+    callbacks?: ApiCallbacks<RESPONSE>,
+    config?: Partial<ApiRequestConfig>
+  ) {
     let key = params
     if (typeof key === 'object') {
       key = get(params, this.keyPath)
@@ -38,12 +44,12 @@ export abstract class MultimapBaseService<RESPONSE extends BaseModel, PAYLOAD = 
     if (!key || this.cache.has(String(key))) {
       return undefined
     }
-    return super.refetch(params)
+    return super.refetch(params, callbacks, config)
   }
 
-  forceRefetch(key: EntityId): Subscription | undefined {
+  forceRefetch(key: EntityId, config?: Partial<ApiRequestConfig>): Subscription | undefined {
     this.cache.delete(String(key))
-    return super.refetch(key)
+    return super.refetch(key, undefined, config)
   }
 
   evict(key: EntityId): void {
@@ -55,7 +61,7 @@ export abstract class MultimapBaseService<RESPONSE extends BaseModel, PAYLOAD = 
     this.resetStoreAndClearCache()
   }
 
-  override finishSavingWithSuccess(result: RESPONSE | RESPONSE[]) {
+  override finishSavingWithSuccess(result: RESPONSE | RESPONSE[], request?: ApiRequestContext) {
     if (result) {
       if (Array.isArray(result)) {
         const map: Map<string, RESPONSE[]> = Multimap.createFromObject(groupBy(result, this.keyPath))
@@ -64,7 +70,7 @@ export abstract class MultimapBaseService<RESPONSE extends BaseModel, PAYLOAD = 
         this.cache.patch(String(get(result,this.keyPath)), [result])
       }
     }
-    super.finishSavingWithSuccess(result)
+    super.finishSavingWithSuccess(result, request)
   }
 
   override finishDeletingWithSuccess(id: EntityId) {

@@ -92,8 +92,7 @@ export abstract class PaginatedBaseService<RESPONSE extends PaginatedModel, PARA
       requestedSize: this.BATCH_SIZE,
       parameters
     }
-    this.patchApiRequestConfig({urlSuffix: this.urlSuffix})
-    return this.httpClient.post<PageResponse<RESPONSE, METADATA>>(this.getBasePath(), pageRequest).pipe(
+    return this.httpClient.post<PageResponse<RESPONSE, METADATA>>(this.getBasePath(undefined, {urlSuffix: this.urlSuffix}), pageRequest).pipe(
       first(),
       tap((response: PageResponse<RESPONSE, METADATA>) => this.finishSavingPageWithSuccess(response, parameters)),
       catchError((error: HttpErrorResponse) => this.setStoreError(error)),

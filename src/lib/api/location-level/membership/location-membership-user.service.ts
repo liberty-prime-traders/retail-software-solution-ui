@@ -12,7 +12,6 @@ export class LocationMembershipUserService extends MembershipUserService {
   }
 
   pullUsersFromOrg(userIds: Array<EntityId>, apiCallbacks: ApiCallbacks<MembershipUserSummary>) {
-    this.patchApiRequestConfig({upsertOnSuccess: true})
-    this.post(userIds, apiCallbacks)
+    this.postRequest({body: userIds, callbacks: apiCallbacks, config: {upsertOnSuccess: true}})
   }
 }

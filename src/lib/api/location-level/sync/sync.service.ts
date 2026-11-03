@@ -24,8 +24,7 @@ export class SyncService extends BaseService<SyncLog, SyncRequest> {
   }
 
   initiateSync(tableName: TableName, syncMode: SyncMode) {
-    this.patchApiRequestConfig({upsertOnSuccess: true})
-    return this.post({tableName, syncMode})
+    return this.postRequest({body: {tableName, syncMode}, config: {upsertOnSuccess: true}})
   }
 
   pollSyncProgress(syncLogId: EntityId) {
@@ -41,7 +40,6 @@ export class SyncService extends BaseService<SyncLog, SyncRequest> {
     if (currentLog) {
       this.store.upsert({...currentLog, status: SyncStatus.CANCELLATION_REQUESTED})
     }
-    this.patchApiRequestConfig({urlSuffix: 'cancel'})
-    return this.post(undefined, undefined, syncLogId)
+    return this.postRequest({id: syncLogId, config: {urlSuffix: 'cancel'}})
   }
 }

@@ -20,13 +20,11 @@ export class AuthorityService extends MultimapBaseService<Authority>{
 
   override refetch(schemaLevel: SchemaLevel) {
     const urlSuffix = schemaLevel.toLowerCase()
-    this.patchApiRequestConfig({urlSuffix})
-    return super.refetch(schemaLevel)
+    return super.refetch(schemaLevel, undefined, {urlSuffix})
   }
 
   override forceRefetch(schemaLevel: SchemaLevel) {
     const urlSuffix = schemaLevel.toLowerCase()
-    this.patchApiRequestConfig({urlSuffix})
-    return super.forceRefetch(schemaLevel)
+    return super.forceRefetch(schemaLevel, {urlSuffix})
   }
 }

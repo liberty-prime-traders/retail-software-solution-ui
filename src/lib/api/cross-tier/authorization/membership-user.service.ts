@@ -11,7 +11,10 @@ export abstract class MembershipUserService extends BaseService<MembershipUserSu
   }
 
   terminateUsers(userIds: Array<EntityId>, apiCallbacks: ApiCallbacks<MembershipUserSummary>) {
-    this.patchApiRequestConfig({upsertOnSuccess: true, urlSuffix: 'terminate'})
-    this.post(userIds, this.applyInternalCallBacks({onSuccess: () => this.removeEntities(userIds)}, apiCallbacks))
+    this.postRequest({
+      body: userIds,
+      callbacks: this.applyInternalCallBacks({onSuccess: () => this.removeEntities(userIds)}, apiCallbacks),
+      config: {upsertOnSuccess: true, urlSuffix: 'terminate'}
+    })
   }
 }

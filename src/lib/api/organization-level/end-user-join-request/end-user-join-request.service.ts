@@ -11,7 +11,6 @@ export class EndUserJoinRequestService extends BaseService<EndUserJoinRequest, A
   }
 
   respondToJoinRequests$(joinRequestIds: Array<EntityId>, response: 'admit' | 'deny') {
-    this.patchApiRequestConfig({upsertOnSuccess: true, urlSuffix: response})
-    this.post(joinRequestIds)
+    this.postRequest({body: joinRequestIds, config: {upsertOnSuccess: true, urlSuffix: response}})
   }
 }

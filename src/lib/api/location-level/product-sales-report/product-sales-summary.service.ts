@@ -20,7 +20,6 @@ export class ProductSalesSummaryService
   }
 
   load(parameters: ProductSalesSummaryParameters): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'summary'})
-    return this.post(parameters)
+    return this.postRequest({body: parameters, config: {urlSuffix: 'summary'}})
   }
 }

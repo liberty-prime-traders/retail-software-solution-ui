@@ -1,12 +1,12 @@
 import {HttpErrorResponse} from '@angular/common/http'
-import {computed, signal, Signal} from '@angular/core'
+import {computed, Signal} from '@angular/core'
 import {EntityId} from '@ngrx/signals/entities'
 import {isNil} from 'lodash-es'
 import {throwError} from 'rxjs'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {RtsDeclaredTypes} from '../../../utils/types/rts-declared-types'
 import {isPaginated} from '../paginated-api/page-response.model'
-import {ApiRequestConfig} from './api-request-config'
+import {ApiRequestConfig, ApiRequestContext} from './api-request-config'
 import {BaseModel} from './base.model'
 import {BaseStore} from './base.store'
 
@@ -23,8 +23,6 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     urlSuffix: '',
     urlPrefix: 'secured/'
   }
-
-  protected readonly apiRequestConfig = signal<ApiRequestConfig>(this.defaultApiRequestConfig)
 
   protected constructor(protected readonly store: BaseStore<RESPONSE>) {
     this.selectLoading = this.store.loading
@@ -49,11 +47,14 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     return body
   }
 
-  protected getBasePath(id?: EntityId): string {
+  protected resolveApiRequestConfig(config?: Partial<ApiRequestConfig>): ApiRequestConfig {
+    return {...this.defaultApiRequestConfig, ...config}
+  }
+
+  protected getBasePath(id?: EntityId, config?: Partial<ApiRequestConfig>): string {
+    const {urlSuffix, urlPrefix} = this.resolveApiRequestConfig(config)
     const idPath = id ? `/${id}` : ''
-    const urlSuffix = this.apiRequestConfig().urlSuffix
     const suffixPath = urlSuffix ? `/${urlSuffix}` : ''
-    const urlPrefix = this.apiRequestConfig().urlPrefix
     return `/${urlPrefix}${this.store.basePath}${idPath}${suffixPath}`
   }
 
@@ -69,11 +70,6 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
 
   protected finalizeApiRequest() {
     this.store.setLoading(false)
-    this.apiRequestConfig.set(this.defaultApiRequestConfig)
-  }
-
-  protected patchApiRequestConfig(config: Partial<ApiRequestConfig>) {
-    this.apiRequestConfig.update((currentConfig) => ({...currentConfig, ...config}))
   }
 
   resetProcessingStatus() {
@@ -85,10 +81,10 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     this.store.upsert(entity)
   }
 
-  protected finishSavingWithSuccess(response: RtsDeclaredTypes.OrPaginated<RESPONSE>, idParam?: EntityId) {
-    const result = this.prepareResponse(response, idParam)
+  protected finishSavingWithSuccess(response: RtsDeclaredTypes.OrPaginated<RESPONSE>, request?: ApiRequestContext) {
+    const result = this.prepareResponse(response, request?.id)
     if (Array.isArray(result)) {
-      if (this.apiRequestConfig().upsertOnSuccess) {
+      if (this.resolveApiRequestConfig(request?.config).upsertOnSuccess) {
         this.store.upsertMany(result)
       } else {
         this.store.setAll(result)

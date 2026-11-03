@@ -16,8 +16,7 @@ export class ExpenseTypeService extends BaseService<ExpenseType> {
   }
 
   rename(body: Pick<ExpenseType, 'id' | 'name'>, callbacks?: ApiCallbacks<ExpenseType>) {
-    this.patchApiRequestConfig({urlSuffix: 'name'})
-    this.putRequest({body, callbacks})
+    this.putRequest({body, callbacks, config: {urlSuffix: 'name'}})
   }
 
   private eligibleFor(sourceType: ExpenseSourceType) {

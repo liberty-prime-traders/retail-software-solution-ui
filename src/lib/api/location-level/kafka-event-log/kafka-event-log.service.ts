@@ -15,7 +15,6 @@ export class KafkaEventLogService extends MultimapBaseService<KafkaEventLog> {
   }
 
   retry(logId: EntityId, callbacks?: ApiCallbacks<KafkaEventLog>): void {
-    this.patchApiRequestConfig({urlSuffix: 'retry'})
-    this.post({}, callbacks, logId)
+    this.postRequest({body: {}, callbacks, id: logId, config: {urlSuffix: 'retry'}})
   }
 }

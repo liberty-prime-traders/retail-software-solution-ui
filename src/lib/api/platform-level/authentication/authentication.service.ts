@@ -25,15 +25,15 @@ export class AuthenticationService extends BaseService<LoginResponse, LoginReque
   }
 
   logIn(provider: IdentityProvider, credential: string, callbacks: ApiCallbacks<LoginResponse>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'login', urlPrefix: ''})
-    return this.post(
-      {
+    return this.postRequest({
+      body: {
         provider,
         credential,
         rolesToVerify: [UserRole.PLATFORM_ADMIN],
         permissionsToVerify: [UserPermission.CREATE_ORGANIZATION]
       },
-      callbacks
-    )
+      callbacks,
+      config: {urlSuffix: 'login', urlPrefix: ''}
+    })
   }
 }

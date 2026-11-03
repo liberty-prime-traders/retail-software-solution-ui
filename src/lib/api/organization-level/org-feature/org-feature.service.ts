@@ -38,19 +38,21 @@ export class OrgFeatureService extends BaseService<OrganizationFeature, Feature[
 
   activate(features: Feature[], callbacks?: ApiCallbacks<OrganizationFeature>): Subscription {
     this.activationFailures.set([])
-    this.patchApiRequestConfig({urlSuffix: 'activate'})
-    return this.post(features, {
-      onSuccess: callbacks?.onSuccess,
-      onFail: (error) => {
-        this.onActivationError(error)
-        callbacks?.onFail?.(error)
-      }
+    return this.postRequest({
+      body: features,
+      callbacks: {
+        onSuccess: callbacks?.onSuccess,
+        onFail: (error) => {
+          this.onActivationError(error)
+          callbacks?.onFail?.(error)
+        }
+      },
+      config: {urlSuffix: 'activate'}
     })
   }
 
   deactivate(features: Feature[], callbacks?: ApiCallbacks<OrganizationFeature>): Subscription {
-    this.patchApiRequestConfig({urlSuffix: 'deactivate'})
-    return this.post(features, callbacks)
+    return this.postRequest({body: features, callbacks, config: {urlSuffix: 'deactivate'}})
   }
 
 }

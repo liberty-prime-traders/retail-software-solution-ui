@@ -13,7 +13,6 @@ export class ProductBulkUploadService extends BaseService<OrganizationProduct, P
   }
 
   uploadProducts(request: ProductBulkUploadRequest, callbacks?: ApiCallbacks<OrganizationProduct>) {
-    this.patchApiRequestConfig({upsertOnSuccess: true, urlSuffix: 'bulk'})
-    return this.post(request, callbacks)
+    return this.postRequest({body: request, callbacks, config: {upsertOnSuccess: true, urlSuffix: 'bulk'}})
   }
 }

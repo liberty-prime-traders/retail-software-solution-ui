@@ -16,10 +16,13 @@ export class UnitBulkUploadService extends BaseService<UnitGroup, UnitGroupBulkU
   }
 
   uploadUnits(request: UnitGroupBulkUploadRequest, callbacks?: ApiCallbacks<UnitGroup>) {
-    this.patchApiRequestConfig({upsertOnSuccess: true, urlSuffix: 'bulk'})
-    return this.post(request, this.applyInternalCallBacks(
-      {onSuccess: () => this.unitValueService.invalidateAll()},
-      callbacks
-    ))
+    return this.postRequest({
+      body: request,
+      callbacks: this.applyInternalCallBacks(
+        {onSuccess: () => this.unitValueService.invalidateAll()},
+        callbacks
+      ),
+      config: {upsertOnSuccess: true, urlSuffix: 'bulk'}
+    })
   }
 }
