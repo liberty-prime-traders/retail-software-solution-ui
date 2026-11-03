@@ -1,4 +1,5 @@
 import {CdkDrag} from '@angular/cdk/drag-drop'
+import {NgTemplateOutlet} from '@angular/common'
 import {Component, computed, inject, OnInit, Signal, signal} from '@angular/core'
 import {RouterOutlet} from '@angular/router'
 import {MenuItem} from 'primeng/api'
@@ -22,7 +23,8 @@ import {SaleFormComponent} from './sales/sale-form/sale-form.component'
     Card,
     SaleFormComponent,
     CdkDrag,
-    AutoStretchDirective
+    AutoStretchDirective,
+    NgTemplateOutlet
   ],
   templateUrl: 'location-dashboard.component.html',
   styleUrls: ['sale-button.component.scss']
@@ -77,7 +79,8 @@ export class LocationDashboardComponent implements OnInit {
       {separator: true},
       {label: 'Reports', items: this.reportsMenuItems},
       {separator: true},
-      {label: 'Admin Section', items: this.adminSectionMenuItems}
+      {label: 'Admin Section', items: this.adminSectionMenuItems},
+      {separator: true}
     ]
   })
 

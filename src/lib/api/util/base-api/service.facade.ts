@@ -51,6 +51,10 @@ export abstract class ServiceFacade<RESPONSE extends BaseModel> {
     return {...this.defaultApiRequestConfig, ...config}
   }
 
+  protected isSecuredRequest(config?: Partial<ApiRequestConfig>): boolean {
+    return this.resolveApiRequestConfig(config).urlPrefix.startsWith('secured')
+  }
+
   protected getBasePath(id?: EntityId, config?: Partial<ApiRequestConfig>): string {
     const {urlSuffix, urlPrefix} = this.resolveApiRequestConfig(config)
     const idPath = id ? `/${id}` : ''

@@ -46,31 +46,4 @@
 
     <div style="height: 100px"></div>
   </form>
-
-  @if (isDraftOrNew()) {
-    <div class="floating bottom right flex gap-2">
-      <button pButton
-              type="button"
-              severity="secondary"
-              (click)="resetForm()"
-              [disabled]="!purchaseForm().dirty()">
-        <i class="pi pi-times"></i> Reset
-      </button>
-
-      <button pButton
-              type="button"
-              severity="secondary"
-              (click)="placeOrder()"
-              [disabled]="purchaseForm().invalid() || !canPlaceOrder() || isEditingLines()">
-        <i class="pi pi-send"></i> Place Order
-      </button>
-
-      <button pButton
-              type="button"
-              (click)="saveDraft()"
-              [disabled]="purchaseForm().invalid() || isEditingLines()">
-        <i class="pi pi-save"></i> Save Draft
-      </button>
-    </div>
-    }
 </rts-loading-container>

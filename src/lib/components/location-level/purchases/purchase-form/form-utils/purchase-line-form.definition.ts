@@ -25,9 +25,10 @@ export namespace PurchaseLineFormDefinition {
     cancelUnitId: string
     quantityCanceledBreakdown: string
     canceledWithoutSingleDelivery: boolean
+    gridPriority: number
   }
 
-  export const createFromProduct = (product: ProductForPurchase): PurchaseLineModel => {
+  export const createFromProduct = (product: ProductForPurchase, gridPriority: number): PurchaseLineModel => {
     return  {
       id: '',
       locationProductId: product.id as string,
@@ -49,7 +50,8 @@ export namespace PurchaseLineFormDefinition {
       quantityCanceled: 0,
       cancelUnitId: product.baseUnitId ?? '',
       quantityCanceledBreakdown: '',
-      canceledWithoutSingleDelivery: false
+      canceledWithoutSingleDelivery: false,
+      gridPriority: gridPriority
     }
   }
 
@@ -75,7 +77,8 @@ export namespace PurchaseLineFormDefinition {
       quantityYetToBeDelivered: line.quantityYetToBeDelivered ?? 0,
       quantityYetToBeDeliveredBreakdown: line.quantityYetToBeDeliveredBreakdown ?? '',
       quantityCanceledBreakdown: line.quantityCanceledBreakdown ?? '',
-      canceledWithoutSingleDelivery: (line.quantityYetToBeDelivered ?? 0) + (line.quantityDelivered ?? 0) === 0
+      canceledWithoutSingleDelivery: (line.quantityYetToBeDelivered ?? 0) + (line.quantityDelivered ?? 0) === 0,
+      gridPriority: 0
     }))
 
   export const convertLinesToBackendModel = (lines: PurchaseLineModel[]): Partial<PurchaseLine>[] =>

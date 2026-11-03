@@ -1,12 +1,15 @@
-<div class="flex align-items-center justify-content-between">
-  <span class="font-bold">Purchases</span>
+<div class="flex align-items-center justify-content-between pr-4">
+  <div class="flex gap-2">
+    @if (formIsVisible()) {
+      <button pButton (click)="hideForm()" severity="secondary">
+        <i class="pi pi-arrow-left"></i>
+      </button>
+    }
+    <span class="font-bold">Purchases</span>
+  </div>
 
   @if (formIsVisible()) {
-    <button pButton (click)="hideForm()" severity="secondary">
-      <i class="pi pi-arrow-left"></i>
-      Back to Purchases
-    </button>
-
+    <rts-purchase-form-actions/>
   } @else {
     <button pButton (click)="startNewPurchase()">
       <i class="pi pi-plus"></i>

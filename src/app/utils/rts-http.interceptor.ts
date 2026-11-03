@@ -9,7 +9,7 @@ import {
 import {inject, Injectable} from '@angular/core'
 import {environment} from '@environments/environment'
 import {Observable, throwError} from 'rxjs'
-import {catchError, switchMap, tap} from 'rxjs/operators'
+import {catchError, tap} from 'rxjs/operators'
 import {NavigationScope} from '../../lib/components/welcome/top-navigation/navigation-scope.model'
 import {AuthenticationService} from '../../lib/api/platform-level/authentication/authentication.service'
 import {UserContextService} from '../../lib/utils/services/auth/user-context.service'
@@ -57,10 +57,9 @@ export class RtsHttpInterceptor implements HttpInterceptor {
     if (currentToken && currentToken !== sentToken) {
       return this.send(next, request, currentToken)
     }
-    return this.sessionReauthenticationService.requestSignIn().pipe(
-      switchMap((signedIn) => signedIn
-        ? this.send(next, request, this.userContextService.token())
-        : throwError(() => unauthorizedError))
+    return this.sessionReauthenticationService.requestSignIn(
+      () => this.send(next, request, this.userContextService.token()),
+      unauthorizedError
     )
   }
 
