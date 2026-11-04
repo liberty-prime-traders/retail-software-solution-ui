@@ -1,7 +1,9 @@
 import {HttpClient, HttpParams} from '@angular/common/http'
+import {inject} from '@angular/core'
 import {isNil} from 'lodash-es'
-import {finalize, Subscription} from 'rxjs'
+import {defer, finalize, Observable, Subscription} from 'rxjs'
 import {catchError, tap} from 'rxjs/operators'
+import {SessionReauthenticationService} from '../../../utils/services/auth/session-reauthentication.service'
 import {ApiCallbacks} from './api-callbacks'
 import {ApiGetRequestModel, FetchParams} from './api-get-request.model'
 import {ApiRequestConfig} from './api-request-config'
@@ -14,6 +16,7 @@ export type HttpVerb = 'GET' | 'POST' | 'PUT' | 'DELETE'
 export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFacade<RESPONSE> {
 
   private readonly inFlight = new Map<HttpVerb, Subscription>()
+  protected readonly sessionReauthenticationService = inject(SessionReauthenticationService)
 
   protected constructor(protected override readonly store: BaseStore<RESPONSE>, private readonly fetcher: HttpClient) {
     super(store)
@@ -37,18 +40,19 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
     if (!this.shouldMakeCall()) {
       return undefined
     }
-    const {id, params, callbacks, config} = apiRequest
-    const httpParams = this.getHttpParams(params)
-    const matrixParams = this.assembleMatrixParams(this.getMatrixParams(params))
-    const pathParams = this.getPathParams(params)
-    const pathSuffix = this.getPathSuffix(params)
-    const suffix = pathSuffix ? `/${pathSuffix}` : ''
-    const url = `${this.getBasePath(id, config)}${suffix}${pathParams}${matrixParams}`
     if (this.allowMultipleCalls()) {
       this.releaseInFlight('GET')
     }
-    this.startApiRequest()
-    const subscription = this.fetcher.get<RESPONSE>(url, {params: httpParams}).pipe(
+    const subscription = this.whenSessionReady(apiRequest.config, () => this.sendFetch(apiRequest)).subscribe()
+    return this.captureInFlight('GET', subscription)
+  }
+
+  private sendFetch(apiRequest: ApiGetRequestModel<RESPONSE>): Observable<RESPONSE> {
+    const {id, params, callbacks, config} = apiRequest
+    return defer(() => {
+      this.startApiRequest()
+      return this.fetcher.get<RESPONSE>(this.fetchUrl(apiRequest), {params: this.getHttpParams(params)})
+    }).pipe(
       tap((body) => {
         this.finishSavingWithSuccess(body, {id, config})
         callbacks?.onSuccess?.(body)
@@ -58,8 +62,23 @@ export abstract class FetchService<RESPONSE extends BaseModel> extends ServiceFa
         return this.setStoreError(error)
       }),
       finalize(() => this.finalizeApiRequest())
-    ).subscribe()
-    return this.captureInFlight('GET', subscription)
+    )
+  }
+
+  private fetchUrl(apiRequest: ApiGetRequestModel<RESPONSE>): string {
+    const {id, params, config} = apiRequest
+    const matrixParams = this.assembleMatrixParams(this.getMatrixParams(params))
+    const pathSuffix = this.getPathSuffix(params)
+    const suffix = pathSuffix ? `/${pathSuffix}` : ''
+    return `${this.getBasePath(id, config)}${suffix}${this.getPathParams(params)}${matrixParams}`
+  }
+
+  // Only secured calls wait for sign-in; the sign-in request itself must go out while the prompt is open.
+  protected whenSessionReady<T>(config: Partial<ApiRequestConfig> | undefined, send: () => Observable<T>): Observable<T> {
+    if (this.isSecuredRequest(config)) {
+      return this.sessionReauthenticationService.whenSignedIn(send)
+    }
+    return send()
   }
 
   protected captureInFlight(verb: HttpVerb, subscription: Subscription): Subscription {

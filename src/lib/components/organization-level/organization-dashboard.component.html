@@ -8,7 +8,11 @@
               class="absolute position-right-5 position-top-3 z-1">
         <i class="pi pi-bars"></i>
       </button>
-      <p-menu [model]="menuItems()" class="block h-full filled-background"/>
+      <p-menu [model]="menuItems()" class="block h-full filled-background">
+        <ng-template #end>
+          <div class="h-2rem"></div>
+        </ng-template>
+      </p-menu>
     </div>
 
   } @else {

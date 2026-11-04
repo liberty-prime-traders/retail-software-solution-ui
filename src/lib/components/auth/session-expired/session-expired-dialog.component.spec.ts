@@ -1,6 +1,7 @@
 import {HttpErrorResponse} from '@angular/common/http'
 import {TestBed} from '@angular/core/testing'
 import {Router} from '@angular/router'
+import {of} from 'rxjs'
 import {AuthenticationService} from '../../../api/platform-level/authentication/authentication.service'
 import {RtsGoogleAuthService} from '../../../utils/services/auth/rts-google-auth.service'
 import {SessionReauthenticationService} from '../../../utils/services/auth/session-reauthentication.service'
@@ -38,7 +39,7 @@ describe('SessionExpiredDialogComponent', () => {
 
   it('replaces the stored login and completes the waiting requests on success', () => {
     const component = createComponent()
-    sessionReauthenticationService.requestSignIn().subscribe()
+    sessionReauthenticationService.requestSignIn(() => of(true)).subscribe()
     component.showGoogleButton()
     const onCredential = googleAuthService.initialize.calls.mostRecent().args[1] as (credential: string) => void
 
@@ -54,7 +55,7 @@ describe('SessionExpiredDialogComponent', () => {
 
   it('shows the failure and keeps the prompt open when sign-in fails', () => {
     const component = createComponent()
-    sessionReauthenticationService.requestSignIn().subscribe()
+    sessionReauthenticationService.requestSignIn(() => of(true)).subscribe()
     component.showGoogleButton()
     const onCredential = googleAuthService.initialize.calls.mostRecent().args[1] as (credential: string) => void
 
@@ -69,7 +70,7 @@ describe('SessionExpiredDialogComponent', () => {
   it('cancels the waiting requests, signs out and goes to the logged-out page on log out', () => {
     const component = createComponent()
     let cancelled = false
-    sessionReauthenticationService.requestSignIn().subscribe({error: () => cancelled = true, next: signedIn => cancelled = !signedIn})
+    sessionReauthenticationService.requestSignIn(() => of(true)).subscribe({error: () => cancelled = true})
 
     component.logOut()
 

@@ -13,6 +13,7 @@ import {AuthenticationService} from '../../../api/platform-level/authentication/
 import {RtsGoogleAuthService} from '../../../utils/services/auth/rts-google-auth.service'
 import {SessionReauthenticationService} from '../../../utils/services/auth/session-reauthentication.service'
 import {UserContextService} from '../../../utils/services/auth/user-context.service'
+import {RtsConstants} from '../../../utils/constants'
 
 @Component({
   selector: 'rts-session-expired-dialog',
@@ -20,6 +21,7 @@ import {UserContextService} from '../../../utils/services/auth/user-context.serv
   template: `
     <p-dialog header="Your session has ended"
               [visible]="awaitingSignIn()"
+              [baseZIndex]="ZIndexes.DIALOG_BASE"
               [modal]="true"
               [closable]="false"
               [draggable]="false"
@@ -41,6 +43,7 @@ import {UserContextService} from '../../../utils/services/auth/user-context.serv
 export class SessionExpiredDialogComponent {
 
   readonly GOOGLE_BUTTON_ID = 'sessionExpiredGoogleButton'
+  readonly ZIndexes = RtsConstants.ZIndexes
   readonly errorMessage = signal<string | null>(null)
 
   private readonly sessionReauthenticationService = inject(SessionReauthenticationService)

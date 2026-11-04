@@ -148,10 +148,10 @@ export class OrganizationDashboardComponent implements OnInit {
     }
 
     if (this.userContextService.isOrganizationAdmin()) {
-      menuItems.push({separator: true})
       menuItems.push({label: 'Admin Settings', toggleable: true, items: this.orgAdminSettings})
     }
 
+    menuItems.push({separator: true})
     return menuItems
   })
 

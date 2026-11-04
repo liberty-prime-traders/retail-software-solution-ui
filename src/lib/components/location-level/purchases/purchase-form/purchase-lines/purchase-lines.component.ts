@@ -29,6 +29,7 @@ import {
 } from '../../../../../api/organization-level/unit-conversion/unit-conversion-graph.service'
 import {ProductLabelPipe} from '../../../../../utils/pipes/product-label.pipe'
 import {RoundNumbersPipe} from '../../../../../utils/pipes/round-numbers.pipe'
+import {SequentialIdGenerator} from '../../../../../utils/services/sequential-id-generator'
 import {EmptyRowComponent} from '../../../../reusable/empty-row/empty-row.component'
 import {PurchaseProductLookupComponent} from '../../../location-product-lookup/purchase-product-lookup/purchase-product-lookup.component'
 import {PurchaseFormContext} from '../form-utils/purchase-form-context'
@@ -68,6 +69,7 @@ export class PurchaseLinesComponent {
   private readonly purchaseFormContext = inject(PurchaseFormContext)
   private readonly purchaseService = inject(PurchaseService)
   private readonly unitConversionGraphService = inject(UnitConversionGraphService)
+  private readonly sequentialIdGenerator = inject(SequentialIdGenerator)
 
   readonly unitConversionGraphIsLoading = this.unitConversionGraphService.isLoading
   readonly purchaseLinesFieldTree = this.purchaseFormContext.purchaseForm.purchaseLines
@@ -89,11 +91,11 @@ export class PurchaseLinesComponent {
   )
 
   readonly linesMultiSort: SortMeta[] = [
+    {field: 'gridPriority', order: -1},
     {field: 'productGroupName', order: 1},
-    {field: 'productName', order: 2},
-    {field: 'referenceNumber', order: 3}
+    {field: 'productName', order: 1},
+    {field: 'referenceNumber', order: 1}
   ]
-
 
   initializeEditingLine(line: PurchaseLineModel) {
     this.editingRowKeys.update(keys => ({...keys, [line.referenceNumber]: true}))
@@ -146,7 +148,8 @@ export class PurchaseLinesComponent {
       line => line.referenceNumber === product?.referenceNumber
     )
     if (product && !productAlreadyAdded) {
-      const newLine: PurchaseLineModel = PurchaseLineFormDefinition.createFromProduct(product)
+      const gridPriority = this.sequentialIdGenerator.next()
+      const newLine: PurchaseLineModel = PurchaseLineFormDefinition.createFromProduct(product, gridPriority)
       this.purchaseLinesFieldTree().value.update(lines => [...lines, newLine])
       this.purchaseLinesFieldTree().markAsDirty()
       this.editingRowKeys.update(keys => ({...keys, [newLine.referenceNumber]: true}))
