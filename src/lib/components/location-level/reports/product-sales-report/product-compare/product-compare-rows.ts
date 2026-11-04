@@ -1,4 +1,4 @@
-import {ProductSalesSummary} from '../../../../api/location-level/product-sales-report/product-sales-summary.model'
+import {ProductSalesSummary} from '../../../../../api/location-level/product-sales-report/product-sales-summary.model'
 
 export enum CompareFormat {
   MONEY = 'MONEY',

@@ -8,20 +8,20 @@ import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs'
 import {isEqual} from 'lodash-es'
 import {
   ProductSalesLinesParameters
-} from '../../../../api/location-level/product-sales-report/product-sales-lines-parameters.model'
+} from '../../../../../api/location-level/product-sales-report/product-sales-lines-parameters.model'
 import {
   ProductSalesSummaryParameters
-} from '../../../../api/location-level/product-sales-report/product-sales-summary-parameters.model'
-import {ProductSalesSummary} from '../../../../api/location-level/product-sales-report/product-sales-summary.model'
+} from '../../../../../api/location-level/product-sales-report/product-sales-summary-parameters.model'
+import {ProductSalesSummary} from '../../../../../api/location-level/product-sales-report/product-sales-summary.model'
 import {
   ProductSalesSummaryService
-} from '../../../../api/location-level/product-sales-report/product-sales-summary.service'
-import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
-import {debouncedSignal} from '../../../../utils/signals'
-import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
-import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
-import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
-import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
+} from '../../../../../api/location-level/product-sales-report/product-sales-summary.service'
+import {ZonedDatesService} from '../../../../../utils/services/zoned-dates.service'
+import {debouncedSignal} from '../../../../../utils/signals'
+import {ErrorSummaryComponent} from '../../../../reusable/error-summary/error-summary.component'
+import {FormFieldLayout} from '../../../../reusable/form-field/form-field-layout'
+import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
+import {LoadingContainerComponent} from '../../../../reusable/loading-container/loading-container.component'
 import {ProductSalesRangeFormDefinition} from '../shared/product-sales-range-form.definition'
 import {ProductSalesReportState} from '../shared/product-sales-report.state'
 import {ProductSalesFiguresComponent} from './product-sales-figures.component'

@@ -1,8 +1,8 @@
 import {CurrencyPipe} from '@angular/common'
 import {Component, computed, input} from '@angular/core'
-import {ProductSalesSummary} from '../../../../api/location-level/product-sales-report/product-sales-summary.model'
+import {ProductSalesSummary} from '../../../../../api/location-level/product-sales-report/product-sales-summary.model'
 import {GrossSalesSplitComponent} from '../shared/gross-sales-split.component'
-import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
+import {NullSafePipe} from '../../../../../utils/pipes/null-safe.pipe'
 import {PercentFigurePipe} from '../shared/percent-figure.pipe'
 
 enum FigureFormat {

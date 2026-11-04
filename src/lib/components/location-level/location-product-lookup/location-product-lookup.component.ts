@@ -16,6 +16,7 @@ export abstract class LocationProductLookupComponent<LOOKUP extends ProductCore 
   extends HasFilteredDataComponent implements OnInit {
 
   readonly layout = input(FormFieldLayout.HORIZONTAL)
+  readonly contentClass = computed(() => this.layout() === FormFieldLayout.COMPACT ? 'w-full' : 'col-5')
   readonly templateRef = input<TemplateRef<unknown>>()
   readonly selectedProductIds = input<string[]>([])
   readonly productSelected = output<LOOKUP>()

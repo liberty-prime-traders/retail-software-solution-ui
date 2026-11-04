@@ -1,10 +1,10 @@
 import {
   ProductSalesSortDirection
-} from '../../../../api/location-level/product-sales-report/product-sales-sort-direction.enum'
+} from '../../../../../api/location-level/product-sales-report/product-sales-sort-direction.enum'
 import {
   ProductSalesSortField
-} from '../../../../api/location-level/product-sales-report/product-sales-sort-field.enum'
-import {ProductSalesSummary} from '../../../../api/location-level/product-sales-report/product-sales-summary.model'
+} from '../../../../../api/location-level/product-sales-report/product-sales-sort-field.enum'
+import {ProductSalesSummary} from '../../../../../api/location-level/product-sales-report/product-sales-summary.model'
 
 export interface ProductReportSort {
   sortField: ProductSalesSortField

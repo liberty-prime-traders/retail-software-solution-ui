@@ -10,14 +10,17 @@ import {LocationUserComponent} from '../../lib/components/location-level/locatio
 import {ExpensesComponent} from '../../lib/components/location-level/expenses/expenses.component'
 import {
   ProductSalesCompareComponent
-} from '../../lib/components/location-level/product-sales-report/product-compare/product-sales-compare.component'
+} from '../../lib/components/location-level/reports/product-sales-report/product-compare/product-sales-compare.component'
 import {
   ProductSalesDetailComponent
-} from '../../lib/components/location-level/product-sales-report/product-detail/product-sales-detail.component'
+} from '../../lib/components/location-level/reports/product-sales-report/product-detail/product-sales-detail.component'
 import {
   ProductSalesReportComponent
-} from '../../lib/components/location-level/product-sales-report/product-report/product-sales-report.component'
+} from '../../lib/components/location-level/reports/product-sales-report/product-report/product-sales-report.component'
 import {PurchaseComponent} from '../../lib/components/location-level/purchases/purchase.component'
+import {
+  ProductPurchasesReportComponent
+} from '../../lib/components/location-level/reports/product-purchases-report/product-purchases-report.component'
 import {SalePaymentsComponent} from '../../lib/components/location-level/sale-payments/sale-payments.component'
 import {SalesComponent} from '../../lib/components/location-level/sales/sales.component'
 import {StockAdjustmentComponent} from '../../lib/components/location-level/stock-adjustment/stock-adjustment.component'
@@ -38,6 +41,7 @@ export const locationRoutes: Routes = [
   {path: 'taxes', component: TaxesComponent},
   {path: 'expenses', component: ExpensesComponent},
   {path: 'users', component: LocationUserComponent},
+  {path: 'reports/product-purchases', component: ProductPurchasesReportComponent},
   {
     path: 'reports/product-sales',
     children: [

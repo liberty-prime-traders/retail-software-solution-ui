@@ -56,7 +56,8 @@ export class LocationDashboardComponent implements OnInit {
   ]
 
   private readonly reportsMenuItems: MenuItem[] = [
-    {label: 'Product Metrics', icon: 'pi pi-chart-line', routerLink: 'reports/product-sales'}
+    {label: 'Product Sales', icon: 'pi pi-chart-line', routerLink: 'reports/product-sales'},
+    {label: 'Product Purchases', icon: 'pi pi-truck', routerLink: 'reports/product-purchases'}
   ]
 
   private readonly adminSectionMenuItems: MenuItem[] = [

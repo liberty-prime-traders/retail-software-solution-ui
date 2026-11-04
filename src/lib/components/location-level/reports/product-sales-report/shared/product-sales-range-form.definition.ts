@@ -1,6 +1,6 @@
 import {schema} from '@angular/forms/signals'
-import {getToday, toLocaleDateString} from '../../../../utils/dates'
-import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
+import {getToday, toLocaleDateString} from '../../../../../utils/dates'
+import {ZonedDatesService} from '../../../../../utils/services/zoned-dates.service'
 
 export namespace ProductSalesRangeFormDefinition {
   export interface ProductSalesRangeFormModel {
