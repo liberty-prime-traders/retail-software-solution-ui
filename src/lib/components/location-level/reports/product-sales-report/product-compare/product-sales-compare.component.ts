@@ -6,28 +6,28 @@ import {isEqual} from 'lodash-es'
 import {ButtonDirective} from 'primeng/button'
 import {Chip} from 'primeng/chip'
 import {DatePicker} from 'primeng/datepicker'
-import {ProductWithAvailability} from '../../../../api/location-level/product-lookup/product-with-availability.model'
+import {ProductWithAvailability} from '../../../../../api/location-level/product-lookup/product-with-availability.model'
 import {
   ProductSalesSummaryParameters
-} from '../../../../api/location-level/product-sales-report/product-sales-summary-parameters.model'
-import {ProductSalesSummary} from '../../../../api/location-level/product-sales-report/product-sales-summary.model'
+} from '../../../../../api/location-level/product-sales-report/product-sales-summary-parameters.model'
+import {ProductSalesSummary} from '../../../../../api/location-level/product-sales-report/product-sales-summary.model'
 import {
   ProductSalesSummaryService
-} from '../../../../api/location-level/product-sales-report/product-sales-summary.service'
-import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
-import {debouncedSignal} from '../../../../utils/signals'
-import {ErrorSummaryComponent} from '../../../reusable/error-summary/error-summary.component'
-import {FormFieldLayout} from '../../../reusable/form-field/form-field-layout'
-import {FormFieldComponent} from '../../../reusable/form-field/form-field.component'
-import {LoadingContainerComponent} from '../../../reusable/loading-container/loading-container.component'
+} from '../../../../../api/location-level/product-sales-report/product-sales-summary.service'
+import {ZonedDatesService} from '../../../../../utils/services/zoned-dates.service'
+import {debouncedSignal} from '../../../../../utils/signals'
+import {ErrorSummaryComponent} from '../../../../reusable/error-summary/error-summary.component'
+import {FormFieldLayout} from '../../../../reusable/form-field/form-field-layout'
+import {FormFieldComponent} from '../../../../reusable/form-field/form-field.component'
+import {LoadingContainerComponent} from '../../../../reusable/loading-container/loading-container.component'
 import {
   AvailableProductLookupComponent
-} from '../../location-product-lookup/available-product-lookup/available-product-lookup.component'
+} from '../../../location-product-lookup/available-product-lookup/available-product-lookup.component'
 import {GrossSalesSplitComponent} from '../shared/gross-sales-split.component'
 import {ProductSalesRangeFormDefinition} from '../shared/product-sales-range-form.definition'
 import {ProductSalesReportState} from '../shared/product-sales-report.state'
 import {COMPARE_ROWS, CompareFormat} from './product-compare-rows'
-import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
+import {NullSafePipe} from '../../../../../utils/pipes/null-safe.pipe'
 import {PercentFigurePipe} from '../shared/percent-figure.pipe'
 
 @Component({

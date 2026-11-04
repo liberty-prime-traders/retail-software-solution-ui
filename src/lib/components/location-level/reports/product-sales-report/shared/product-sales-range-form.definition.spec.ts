@@ -1,4 +1,4 @@
-import {ZonedDatesService} from '../../../../utils/services/zoned-dates.service'
+import {ZonedDatesService} from '../../../../../utils/services/zoned-dates.service'
 import {ProductSalesRangeFormDefinition} from './product-sales-range-form.definition'
 
 describe('ProductSalesRangeFormDefinition', () => {

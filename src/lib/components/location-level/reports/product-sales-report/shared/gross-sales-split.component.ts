@@ -1,7 +1,7 @@
 import {CurrencyPipe} from '@angular/common'
 import {Component, computed, input} from '@angular/core'
-import {ProductSalesSummary} from '../../../../api/location-level/product-sales-report/product-sales-summary.model'
-import {NullishToZeroPipe} from '../../../../utils/pipes/nullish-to-zero.pipe'
+import {ProductSalesSummary} from '../../../../../api/location-level/product-sales-report/product-sales-summary.model'
+import {NullishToZeroPipe} from '../../../../../utils/pipes/nullish-to-zero.pipe'
 import {PercentFigurePipe} from './percent-figure.pipe'
 
 @Component({

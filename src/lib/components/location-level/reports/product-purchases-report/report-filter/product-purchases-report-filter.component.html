@@ -1,0 +1,95 @@
+<div class="flex flex-column gap-3">
+
+  <p-fieldset [toggleable]="true">
+    <div class="flex flex-column gap-2">
+      <div class="flex align-items-center gap-2">
+        <span class="font-bold">&ge;</span>
+        <p-date-picker id="deliveredFrom"
+                       class="flex-grow-1"
+                       [formField]="filterState.filterForm.deliveredFrom"
+                       [showTime]="true"
+                       [showIcon]="true"
+                       appendTo="body">
+        </p-date-picker>
+      </div>
+
+      <div class="flex align-items-center gap-2">
+        <span class="font-bold">&lt;</span>
+        <p-date-picker id="deliveredBefore"
+                       class="flex-grow-1"
+                       [formField]="filterState.filterForm.deliveredBefore"
+                       [showTime]="true"
+                       [showIcon]="true"
+                       appendTo="body">
+        </p-date-picker>
+      </div>
+    </div>
+  </p-fieldset>
+
+  <p-fieldset [toggleable]="true">
+    <div class="flex flex-column gap-3">
+      <rts-purchase-product-lookup (productSelected)="filterState.addLocationProduct($event)"
+                                   [layout]="FormFieldLayout.COMPACT"
+                                   [selectedProductIds]="filterState.filterFormValue().locationProductIds">
+      </rts-purchase-product-lookup>
+
+      @if (filterState.selectedProducts().length) {
+        <div class="flex flex-wrap gap-1">
+          @for (product of filterState.selectedProducts(); track product.id) {
+            <p-chip [label]="product.name"
+                    [removable]="true"
+                    (onRemove)="filterState.removeLocationProduct(product.id)">
+            </p-chip>
+          }
+        </div>
+      }
+
+      <p-select #supplierSelect
+                placeholder="Select suppliers"
+                [options]="filterState.suppliers()"
+                optionLabel="fullName"
+                optionValue="id"
+                [filter]="true"
+                (onChange)="filterState.addSupplier($event.value); supplierSelect.clear()">
+      </p-select>
+
+      @if (filterState.selectedSuppliers().length) {
+        <div class="flex flex-wrap gap-1">
+          @for (supplier of filterState.selectedSuppliers(); track supplier.id) {
+            <p-chip [label]="supplier.name"
+                    [removable]="true"
+                    (onRemove)="filterState.removeSupplier(supplier.id)">
+            </p-chip>
+          }
+        </div>
+      }
+
+      <p-select #categorySelect
+                placeholder="Select categories"
+                [options]="filterState.categories()"
+                optionLabel="categoryName"
+                optionValue="id"
+                [filter]="true"
+                (onChange)="filterState.addCategory($event.value); categorySelect.clear()">
+      </p-select>
+
+      @if (filterState.selectedCategories().length) {
+        <div class="flex flex-wrap gap-1">
+          @for (category of filterState.selectedCategories(); track category.id) {
+            <p-chip [label]="category.name"
+                    [removable]="true"
+                    (onRemove)="filterState.removeCategory(category.id)">
+            </p-chip>
+          }
+        </div>
+      }
+    </div>
+  </p-fieldset>
+
+  <div class="flex justify-content-end">
+    <button pButton type="button" severity="secondary" (click)="filterState.resetFilters()">
+      <i class="pi pi-filter-slash"></i> Reset Filters
+    </button>
+  </div>
+
+</div>

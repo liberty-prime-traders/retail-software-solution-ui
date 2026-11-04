@@ -10,7 +10,7 @@ export class SeedDataApplierService {
   private readonly applyingInProgress = signal(false)
   readonly isLoading = this.applyingInProgress.asReadonly()
 
-  private readonly path = '/secured/organization-profile/seed-defaults'
+  private readonly path = '/secured/admin-data/seed-defaults'
 
   applySeedData(callbacks: ApiCallbacks<void>): Subscription {
     this.applyingInProgress.set(true)

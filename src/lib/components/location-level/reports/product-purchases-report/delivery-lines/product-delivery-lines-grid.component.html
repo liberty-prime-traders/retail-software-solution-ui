@@ -1,0 +1,55 @@
+<p-table [value]="deliveryLines()"
+         [loading]="loading()"
+         (onLazyLoad)="onLazyLoad($event)"
+         [lazy]="true"
+         dataKey="id"
+         scrollHeight="300px"
+         [scrollable]="true"
+         [rows]="20"
+         [virtualScroll]="deliveryLines().length > 10"
+         [virtualScrollItemSize]="55">
+
+  <ng-template #header>
+    <tr>
+      <th class="text-sm expanded-sub-row">Purchase</th>
+      <th class="text-sm expanded-sub-row">Delivery</th>
+      <th class="text-sm expanded-sub-row">Delivered At</th>
+      <th class="text-sm expanded-sub-row">Supplier</th>
+      <th class="text-sm expanded-sub-row">Qty</th>
+      <th class="text-sm expanded-sub-row">Unit cost</th>
+      <th class="text-sm expanded-sub-row">Total</th>
+      <th class="text-sm expanded-sub-row">Status</th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-deliveryLine>
+    @if (deliveryLine?.placeholder) {
+      <tr>
+        <td style="height: 55px" colspan="8">
+          <p-skeleton class="h-full"/>
+        </td>
+      </tr>
+    } @else {
+      <tr [class.revised-line]="deliveryLine.status === PurchaseDeliveryLineStatus.REVISED">
+        <td>{{ deliveryLine.purchaseReferenceNumber }}</td>
+        <td>{{ deliveryLine.deliveryReferenceNumber }}</td>
+        <td>{{ deliveryLine.deliveredAt | date }}</td>
+        <td>{{ deliveryLine.supplierName }}</td>
+        <td>{{ deliveryLine.quantityDeliveredText }}</td>
+        <td>{{ deliveryLine.unitCost | currency }}</td>
+        <td>{{ deliveryLine.lineTotal | currency }}</td>
+        <td>
+          <p-tag [severity]="deliveryLine.status === PurchaseDeliveryLineStatus.REVISED ? 'warn' : 'success'"
+                 [value]="deliveryLine.status | prettifyEnum">
+          </p-tag>
+        </td>
+      </tr>
+    }
+  </ng-template>
+
+  <ng-template #emptymessage>
+    <tr rts-empty-row [colspan]="8" message="No deliveries in this range."></tr>
+  </ng-template>
+</p-table>
+
+<div class="h-2rem"></div>

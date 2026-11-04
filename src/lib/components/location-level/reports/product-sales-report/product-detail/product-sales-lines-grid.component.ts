@@ -6,13 +6,13 @@ import {Tag} from 'primeng/tag'
 import {TableLazyLoadEvent} from 'primeng/types/table'
 import {
   ProductSalesLinesParameters
-} from '../../../../api/location-level/product-sales-report/product-sales-lines-parameters.model'
-import {ProductSalesLinesService} from '../../../../api/location-level/product-sales-report/product-sales-lines.service'
-import {ProductSalesSummary} from '../../../../api/location-level/product-sales-report/product-sales-summary.model'
-import {AdjustmentDirection} from '../../../../api/location-level/sale_session/sale-session.model'
-import {loadNextForKeyOnLazyLoad} from '../../../../api/util/keyed-paginated-api/keyed-paginated-lazy-load.util'
-import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
-import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
+} from '../../../../../api/location-level/product-sales-report/product-sales-lines-parameters.model'
+import {ProductSalesLinesService} from '../../../../../api/location-level/product-sales-report/product-sales-lines.service'
+import {ProductSalesSummary} from '../../../../../api/location-level/product-sales-report/product-sales-summary.model'
+import {AdjustmentDirection} from '../../../../../api/location-level/sale_session/sale-session.model'
+import {loadNextForKeyOnLazyLoad} from '../../../../../api/util/keyed-paginated-api/keyed-paginated-lazy-load.util'
+import {AutoStretchDirective} from '../../../../reusable/auto-stretch.directive'
+import {EmptyRowComponent} from '../../../../reusable/empty-row/empty-row.component'
 import {PercentFigurePipe} from '../shared/percent-figure.pipe'
 
 @Component({

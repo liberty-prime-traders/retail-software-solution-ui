@@ -1,4 +1,6 @@
-<rts-form-field label="Search Products">
+<rts-form-field label="Search Products"
+                [layout]="layout()"
+                [contentClass]="contentClass()">
   <p-select [options]="productOptions()"
             [loading]="dependenciesLoading()"
             [filter]="true"
