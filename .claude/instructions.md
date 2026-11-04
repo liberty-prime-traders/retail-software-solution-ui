@@ -33,6 +33,10 @@ Multiline attributes should have a full closing tag. For example, choose between
 
 If its below 120 characters, you can use the self-closing tag. If its above 120 characters, use the full closing tag.
 
+# Loading state
+Show an in-flight request with `<rts-loading-container [loading]="...">` wrapped around the content it blocks.
+Do not put `[loading]` on buttons.
+
 # Grids
 I prefer expanding a grid row for quick edits instead of navigating to a new page. 
 This allows for a more seamless user experience and keeps the user in context.

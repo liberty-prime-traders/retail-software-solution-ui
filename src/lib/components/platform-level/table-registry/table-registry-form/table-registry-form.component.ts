@@ -17,8 +17,7 @@ import {FormFieldComponent} from '../../../reusable/form-field/form-field.compon
     FormFieldComponent,
     FormButtonsComponent,
     ToggleSwitch
-  ],
-  standalone: true
+  ]
 })
 export class TableRegistryFormComponent extends BaseFormComponent<TableRegistryService>{
   readonly registry = input.required<TableRegistry>()

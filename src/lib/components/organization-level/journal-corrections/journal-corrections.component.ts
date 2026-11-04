@@ -7,7 +7,7 @@ import {ManualJournalService} from '../../../api/organization-level/manual-journ
 import {AutoStretchDirective} from '../../reusable/auto-stretch.directive'
 import {EmptyRowComponent} from '../../reusable/empty-row/empty-row.component'
 import {JournalCorrectionFormComponent} from './journal-correction-form/journal-correction-form.component'
-import {JournalCorrectionExpandedRowComponent} from './journal-correction-expanded-row/journal-correction-expanded-row.component'
+import {JournalCorrectionDetailsComponent} from './journal-correction-details/journal-correction-details.component'
 
 @Component({
   selector: 'rts-journal-corrections',
@@ -19,7 +19,7 @@ import {JournalCorrectionExpandedRowComponent} from './journal-correction-expand
     AutoStretchDirective,
     EmptyRowComponent,
     JournalCorrectionFormComponent,
-    JournalCorrectionExpandedRowComponent,
+    JournalCorrectionDetailsComponent,
     NgClass
   ]
 })

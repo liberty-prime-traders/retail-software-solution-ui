@@ -1,42 +1,32 @@
 
 import {Component, effect, inject, OnInit} from '@angular/core'
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms'
-import {MessageService} from 'primeng/api'
-import {ButtonDirective} from 'primeng/button'
-import {CardModule} from 'primeng/card'
 import {Divider} from 'primeng/divider'
 import {InputTextModule} from 'primeng/inputtext'
-import {SeedDataApplierService} from '../../../api/organization-level/org-profile/seed-data-applier.service'
 import {OrganizationService} from '../../../api/platform-level/organization/organization.service'
 import {SessionContextService} from '../../../utils/services/session-context.service'
 import {ProcessingStatus} from '../../../utils/types/processing-status.enum'
 import {FormButtonsComponent} from '../../reusable/form-buttons/form-buttons.component'
+import {AdminDataFixesComponent} from '../admin-data-fixes/admin-data-fixes.component'
 import {FormFieldComponent} from '../../reusable/form-field/form-field.component'
-import {LoadingContainerComponent} from '../../reusable/loading-container/loading-container.component'
 
 @Component({
   selector: 'rts-update-organization',
   templateUrl: 'organization-profile.component.html',
   imports: [
     ReactiveFormsModule,
-    ButtonDirective,
     InputTextModule,
-    CardModule,
     FormButtonsComponent,
     FormFieldComponent,
     Divider,
-    LoadingContainerComponent
-  ],
-  standalone: true
+    AdminDataFixesComponent
+  ]
 })
 export class OrganizationProfileComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder)
   private readonly organizationService = inject(OrganizationService)
   private readonly sessionContextService = inject(SessionContextService)
-  private readonly seedDataApplierService = inject(SeedDataApplierService)
-  private readonly messageService = inject(MessageService)
 
-  readonly reloadInitialDataInProgress = this.seedDataApplierService.isLoading
   readonly ProcessingStatus = ProcessingStatus
 
   readonly organizationForm = this.formBuilder.nonNullable.group({
@@ -74,20 +64,5 @@ export class OrganizationProfileComponent implements OnInit {
 
   updateOrganization() {
     this.organizationService.put(this.organizationForm.getRawValue())
-  }
-
-  applySeedData() {
-    this.seedDataApplierService.applySeedData({
-      onSuccess: () => this.messageService.add({
-        summary: 'Success',
-        detail: 'Request completed with success',
-        severity: 'success'
-      }),
-      onFail: (_) => this.messageService.add({
-        summary: 'Error',
-        detail: 'Request failed',
-        severity: 'error'
-      })
-    })
   }
 }
