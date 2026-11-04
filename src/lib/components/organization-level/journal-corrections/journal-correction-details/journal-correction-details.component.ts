@@ -12,7 +12,7 @@ import {
 
 @Component({
   selector: 'rts-journal-correction-expanded-row',
-  templateUrl: 'journal-correction-expanded-row.component.html',
+  templateUrl: 'journal-correction-details.component.html',
   imports: [
     ButtonDirective,
     CurrencyPipe,
@@ -24,7 +24,7 @@ import {
     JournalCorrectionReversalFormComponent
   ]
 })
-export class JournalCorrectionExpandedRowComponent {
+export class JournalCorrectionDetailsComponent {
   readonly manualJournal = input.required<ManualJournal>()
 
   readonly changed = output()

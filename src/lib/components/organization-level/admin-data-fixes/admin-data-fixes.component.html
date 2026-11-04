@@ -1,0 +1,22 @@
+<p-card>
+  <h3>Note to Admin</h3>
+
+  @for (adminDataFixItem of adminDataFixItems; track adminDataFixItem.fix; let isLast = $last) {
+    <rts-loading-container [loading]="adminDataFixItem.isLoading()" loadingText="Running">
+      <div class="grid align-items-center">
+        <div class="col-9">
+          <h4 class="mt-0">{{ adminDataFixItem.title }}</h4>
+          <p class="m-0">{{ adminDataFixItem.description }}</p>
+        </div>
+        <div class="col-3 flex justify-content-end">
+          <button pButton type="button" (click)="runAdminDataFix(adminDataFixItem)">
+            {{ adminDataFixItem.buttonLabel }}
+          </button>
+        </div>
+      </div>
+    </rts-loading-container>
+    @if (!isLast) {
+      <p-divider/>
+    }
+  }
+</p-card>

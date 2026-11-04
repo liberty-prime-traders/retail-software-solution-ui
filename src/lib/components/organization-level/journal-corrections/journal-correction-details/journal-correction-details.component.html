@@ -1,16 +1,16 @@
 <div class="flex flex-column gap-3">
   <div class="flex justify-content-between gap-4">
-    <span class="flex-grow-1">
+    <span class="w-fit">
       @if (manualJournal().details; as details) {
         <b>Details:</b> {{ details }}
       }
     </span>
 
     @if (!reversingIsVisible() && isReversible()) {
-      <button class="w-fit" pButton
+      <button class="h-fit" pButton
               type="button" severity="danger"
               (click)="reversingIsVisible.set(true)">
-        <i class="pi pi-ban"></i> Reverse Journal
+        <i class="pi pi-ban"></i>Reverse Entry
       </button>
     }
   </div>
