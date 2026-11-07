@@ -21,7 +21,7 @@ import {PurchaseComponent} from '../../lib/components/location-level/purchases/p
 import {
   ProductPurchasesReportComponent
 } from '../../lib/components/location-level/reports/product-purchases-report/product-purchases-report.component'
-import {SalePaymentsComponent} from '../../lib/components/location-level/sale-payments/sale-payments.component'
+import {PaymentsComponent} from '../../lib/components/location-level/reports/payments/payments.component'
 import {SalesComponent} from '../../lib/components/location-level/sales/sales.component'
 import {StockAdjustmentComponent} from '../../lib/components/location-level/stock-adjustment/stock-adjustment.component'
 import {StockTransferComponent} from '../../lib/components/location-level/stock-transfer/stock-transfer.component'
@@ -37,11 +37,11 @@ export const locationRoutes: Routes = [
   {path: 'sales', component: SalesComponent},
   {path: 'stock-transfer', component: StockTransferComponent},
   {path: 'stock-adjustments', component: StockAdjustmentComponent},
-  {path: 'sale-payments', component: SalePaymentsComponent},
   {path: 'taxes', component: TaxesComponent},
   {path: 'expenses', component: ExpensesComponent},
   {path: 'users', component: LocationUserComponent},
   {path: 'reports/product-purchases', component: ProductPurchasesReportComponent},
+  {path: 'reports/payments', component: PaymentsComponent},
   {
     path: 'reports/product-sales',
     children: [

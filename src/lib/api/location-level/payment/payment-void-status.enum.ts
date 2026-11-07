@@ -1,4 +1,4 @@
-export enum SalePaymentStatus {
+export enum PaymentVoidStatus {
   ACTIVE = 'ACTIVE',
   VOIDED = 'VOIDED'
 }

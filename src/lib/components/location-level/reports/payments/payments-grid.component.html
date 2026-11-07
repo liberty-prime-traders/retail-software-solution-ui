@@ -1,4 +1,4 @@
-<div id="sale-payments-grid" rtsAutoStretch="sale-payments-grid">
+<div id="payments-grid" rtsAutoStretch="payments-grid">
   <p-table [value]="payments()"
            [loading]="loading()"
            (onLazyLoad)="onLazyLoad($event)"
@@ -12,12 +12,11 @@
 
     <ng-template #header>
       <tr>
-        <th>Sale</th>
-        <th>Customer</th>
+        <th>Ref#</th>
+        <th>Contact</th>
         <th>Payment Method</th>
         <th>Amount</th>
-        <th>Payment Date</th>
-        <th>Recorded On</th>
+        <th>Recorded At</th>
         <th>Status</th>
         <th>Void Reason</th>
       </tr>
@@ -31,19 +30,24 @@
           </td>
         </tr>
       } @else {
-        <tr style="height: 55px">
-          <td>{{ payment.saleReferenceNumber | nullSafe }}</td>
-          <td>{{ payment.customerName | nullSafe }}</td>
+        <tr style="height: 55px" [class.strike-through]="payment.voided">
+          <td>{{ payment.referenceNumber | nullSafe }}</td>
+          <td>{{ payment.contactName | nullSafe }}</td>
           <td>{{ payment.paymentMethodName | nullSafe }}</td>
-          <td>{{ payment.amount | currency }}</td>
-          <td>{{ payment.paymentDate | date | nullSafe }}</td>
-          <td>{{ payment.createdOn | date | nullSafe }}</td>
           <td>
-            <p-tag [value]="payment.status | prettifyEnum"
-                   [severity]="payment.status | salePaymentStatusSeverity">
+            @if (payment.voided) {
+              <span class="money">{{ payment.amount | currency }}</span>
+            } @else {
+              <rts-money [amount]="payment.amount" [balanceEffect]="payment.balanceEffect"/>
+            }
+          </td>
+          <td>{{ payment.recordedOn | date | nullSafe }}</td>
+          <td>
+            <p-tag [value]="payment.voided | voidedToVoidStatus | prettifyEnum"
+                   [severity]="payment.voided | voidedToVoidStatus | paymentVoidStatusSeverity">
             </p-tag>
           </td>
-          <td>{{ payment.voidReason | nullSafe }}</td>
+          <td>{{ payment.voidedReason | nullSafe }}</td>
         </tr>
       }
     </ng-template>

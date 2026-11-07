@@ -1,0 +1,49 @@
+<div class="flex flex-column gap-5">
+  @if (noTypeSelected()) {
+    <span class="text-color-secondary">{{ emptyStateMessage }}</span>
+  } @else {
+    <div class="flex gap-4 flex-wrap">
+      @for (summary of summaries(); track summary.type) {
+        <p-panel [header]="'Active ' + (summary.type | prettifyEnum) + 's (' + summary.activeCount + ')'" class="flex-grow-1">
+          <rts-money [amount]="summary.activeTotal" [balanceEffect]="summary.balanceEffect"/>
+        </p-panel>
+
+        <p-panel [header]="'Voided ' + (summary.type | prettifyEnum) + 's (' + summary.voidedCount + ')'" class="flex-grow-1">
+          <span class="summary-money irregular-balance">{{ summary.voidedTotal | currency }}</span>
+        </p-panel>
+      }
+    </div>
+
+    <div class="summary-table-container">
+      <p-table [value]="gridRows()">
+        <ng-template #header>
+          <tr>
+            <th>Type</th>
+            <th>Payment Method</th>
+            <th>Active</th>
+            <th>Voided</th>
+          </tr>
+        </ng-template>
+
+        <ng-template #body let-row>
+          <tr [class.font-bold]="row.kind === 'total'">
+            @if (row.typeCell; as typeCell) {
+              <td class="type-cell" [attr.rowspan]="typeCell.rowSpan">{{ typeCell.label }}</td>
+            }
+            <td [class.method-label]="row.kind === 'method'">{{ row.label }}</td>
+            <td class="summary-money">
+              @if (row.kind === 'total') {
+                <rts-money [amount]="row.activeTotal" [balanceEffect]="row.balanceEffect"/>
+              } @else {
+                {{ row.activeTotal | currency }}
+              }
+            </td>
+            <td class="summary-money irregular-balance">
+              {{ row.voidedTotal | currency }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  }
+</div>

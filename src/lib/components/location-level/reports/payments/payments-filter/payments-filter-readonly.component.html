@@ -1,5 +1,11 @@
 <div class="flex flex-column gap-2">
 
+  @if (state.typeLabels().length > 0) {
+    <p-fieldset legend="Type">
+      <rts-truncated-list [items]="state.typeLabels()"/>
+    </p-fieldset>
+  }
+
   @if (state.filterFormValue().recordedFrom || state.filterFormValue().recordedBefore) {
     <p-fieldset legend="Recorded">
       <div class="flex flex-column gap-1">
@@ -38,9 +44,9 @@
     </p-fieldset>
   }
 
-  @if (state.customerNames().length > 0) {
-    <p-fieldset legend="Customers">
-      <rts-truncated-list [items]="state.customerNames()"/>
+  @if (state.contactNames().length > 0) {
+    <p-fieldset legend="Contacts">
+      <rts-truncated-list [items]="state.contactNames()"/>
     </p-fieldset>
   }
 
@@ -66,10 +72,12 @@
     </p-fieldset>
   }
 
-  @if (state.filterFormValue().saleReferenceNumbers.length > 0) {
-    <p-fieldset legend="Sale references">
-      <rts-truncated-list [items]="state.filterFormValue().saleReferenceNumbers"/>
-    </p-fieldset>
+  @for (type of state.types; track type) {
+    @if (state.filterFormValue().referenceNumbersByType[type].length > 0) {
+      <p-fieldset [legend]="(type | prettifyEnum) + ' references'">
+        <rts-truncated-list [items]="state.filterFormValue().referenceNumbersByType[type]"/>
+      </p-fieldset>
+    }
   }
 
   <button pButton type="button"

@@ -1,4 +1,4 @@
-<div class="flex flex-column gap-3">
+<div class="flex flex-column gap-3" id="payments-filter" rtsAutoStretch="payments-filter">
   <rts-form-field label="Recorded Date"
                   for="recordedFrom" [layout]="
                   FormFieldDirection.COMPACT"
@@ -58,20 +58,20 @@
     </div>
   </rts-form-field>
 
-  <rts-form-field label="Customers"
+  <rts-form-field label="Contacts"
                   for="contactIds"
                   contentClass="col-11"
                   [layout]="FormFieldDirection.COMPACT">
     <p-select id="contactIds"
               class="flex-grow-1"
-              [options]="state.customers()"
+              [options]="state.contacts()"
               optionLabel="fullName"
               optionValue="id"
               [multiple]="true"
               [filter]="true"
               [checkmark]="true"
               [formField]="state.filterForm.contactIds"
-              placeholder="Select customers">
+              placeholder="Select contacts">
 
       <ng-template #selectedItem let-selectedOption>
         @let remainingCount = state.filterForm.contactIds().value().length - 1;
@@ -102,69 +102,95 @@
     </div>
   </rts-form-field>
 
-  <rts-form-field label="Status"
-                  for="statusActive"
-                  contentClass="col-11"
-                  [layout]="FormFieldDirection.COMPACT">
-    <div class="flex flex-column gap-1">
-      <div class="flex align-items-center gap-2">
-        <p-checkbox [value]="SalePaymentStatus.ACTIVE"
-                    [formField]="state.filterForm.statuses"
-                    inputId="statusActive"
-                    size="small"
-                    name="status">
-        </p-checkbox>
-        <label for="statusActive">Active</label>
-      </div>
-
-      <div class="flex align-items-center gap-2">
-        <p-checkbox [value]="SalePaymentStatus.VOIDED"
-                    [formField]="state.filterForm.statuses"
-                    inputId="statusVoided"
-                    size="small"
-                    name="status">
-        </p-checkbox>
-        <label for="statusVoided">Voided</label>
-      </div>
-    </div>
-  </rts-form-field>
-
-  <rts-form-field label="Amount (KES)"
-                  for="minAmount"
-                  contentClass="col-11"
-                  [layout]="FormFieldDirection.COMPACT">
-    <div class="flex gap-1 flex-column">
-      <p-input-number size="small"  [formField]="state.filterForm.minAmount" placeholder="Min"/>
-      <p-input-number size="small" [formField]="state.filterForm.maxAmount" placeholder="Max"/>
-    </div>
-  </rts-form-field>
-
-  <rts-form-field
-    label="Sale reference numbers"
-    for="saleReferenceNumberInput"
-    contentClass="col-11"
-    [layout]="FormFieldDirection.COMPACT">
-
-    @if (state.filterForm.saleReferenceNumbers().value().length > 0) {
-      <div class="flex flex-wrap gap-1">
-        @for (referenceNumber of state.filterForm.saleReferenceNumbers().value(); track referenceNumber) {
-          <p-chip label="{{ referenceNumber }}"
-                  [removable]="true"
-                  (onRemove)="state.removeSaleReferenceNumber(referenceNumber)">
-          </p-chip>
+  <p-fieldset legend="Others" [toggleable]="true">
+    <rts-form-field label="Type"
+                    for="type0"
+                    contentClass="col-11"
+                    [layout]="FormFieldDirection.COMPACT">
+      <div class="flex flex-column gap-1">
+        @for (type of state.types; track type) {
+          <div class="flex align-items-center gap-2">
+            <p-checkbox [value]="type"
+                        [formField]="state.filterForm.selectedTypes"
+                        [inputId]="'type' + $index"
+                        size="small"
+                        name="type">
+            </p-checkbox>
+            <label [for]="'type' + $index">{{ type | prettifyEnum }}</label>
+          </div>
         }
       </div>
-    }
+    </rts-form-field>
 
-    <input id="saleReferenceNumberInput"
-           #saleReferenceNumberInput
-           class="flex-grow-1"
-           pInputText
-           placeholder="Type ref, press Enter"
-           [disabled]="state.filterForm.saleReferenceNumbers().value().length >= state.maxSaleReferenceNumbers"
-           (keydown.enter)="state.addSaleReferenceNumbers(saleReferenceNumberInput.value); saleReferenceNumberInput.value = ''"
-           (paste)="state.addSaleReferenceNumbers($event.clipboardData?.getData('text') ?? ''); $event.preventDefault()" />
-  </rts-form-field>
+    <rts-form-field label="Status"
+                    for="statusActive"
+                    contentClass="col-11"
+                    [layout]="FormFieldDirection.COMPACT">
+      <div class="flex flex-column gap-1">
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [value]="PaymentVoidStatus.ACTIVE"
+                      [formField]="state.filterForm.statuses"
+                      inputId="statusActive"
+                      size="small"
+                      name="status">
+          </p-checkbox>
+          <label for="statusActive">Active</label>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <p-checkbox [value]="PaymentVoidStatus.VOIDED"
+                      [formField]="state.filterForm.statuses"
+                      inputId="statusVoided"
+                      size="small"
+                      name="status">
+          </p-checkbox>
+          <label for="statusVoided">Voided</label>
+        </div>
+      </div>
+    </rts-form-field>
+
+  </p-fieldset>
+
+  <p-fieldset [toggleable]="true" [collapsed]="true">
+    <rts-form-field label="Amount (KES)"
+                    for="minAmount"
+                    contentClass="col-11"
+                    [layout]="FormFieldDirection.COMPACT">
+      <div class="flex gap-1 flex-column">
+        <p-input-number size="small"  [formField]="state.filterForm.minAmount" placeholder="Min"/>
+        <p-input-number size="small" [formField]="state.filterForm.maxAmount" placeholder="Max"/>
+      </div>
+    </rts-form-field>
+
+    @for (type of state.types; track type) {
+      <rts-form-field
+        [label]="(type | prettifyEnum) + ' reference numbers'"
+        [for]="'referenceNumberInput' + $index"
+        contentClass="col-11"
+        [layout]="FormFieldDirection.COMPACT">
+
+        @if (state.filterFormValue().referenceNumbersByType[type].length > 0) {
+          <div class="flex flex-wrap gap-1">
+            @for (referenceNumber of state.filterFormValue().referenceNumbersByType[type]; track referenceNumber) {
+              <p-chip label="{{ referenceNumber }}"
+                      [removable]="true"
+                      (onRemove)="state.removeReferenceNumber(type, referenceNumber)">
+              </p-chip>
+            }
+          </div>
+        }
+
+        <input [id]="'referenceNumberInput' + $index"
+               #referenceNumberInput
+               class="flex-grow-1"
+               pInputText
+               placeholder="Type ref, press Enter"
+               [disabled]="state.filterFormValue().referenceNumbersByType[type].length >= state.maxReferenceNumbers"
+               (keydown.enter)="state.addReferenceNumbers(type, referenceNumberInput.value); referenceNumberInput.value = ''"
+               (paste)="state.addReferenceNumbers(type, $event.clipboardData?.getData('text') ?? ''); $event.preventDefault()" />
+      </rts-form-field>
+    }
+  </p-fieldset>
 
   <div class="flex justify-content-end pt-4">
     <button pButton type="button" (click)="state.resetFilters()" severity="secondary">

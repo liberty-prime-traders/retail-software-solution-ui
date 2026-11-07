@@ -23,6 +23,9 @@
           @if (history.detailReference) {
             <span> : {{ history.detailReference | nullSafe }}</span>
           }
+          @if (history.context) {
+            <small class="block info-message">{{ history.context }}</small>
+          }
         </td>
         <td>{{ history.movementType | prettifyEnum }}</td>
         <td>

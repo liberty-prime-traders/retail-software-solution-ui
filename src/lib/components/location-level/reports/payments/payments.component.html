@@ -1,15 +1,15 @@
 <rts-loading-container [loading]="loading()">
-  <div class="flex" id="sale-payments-report" rtsAutoStretch="sale-payments-report">
+  <div class="flex" id="payments-report" rtsAutoStretch="payments-report">
     @if (selectedTab() === 'payments') {
-      <rts-sale-payments-filter-readonly class="col-2" (editFilters)="selectedTab.set('summary')"/>
+      <rts-payments-filter-readonly class="col-2" (editFilters)="selectedTab.set('summary')"/>
     } @else {
-      <rts-sale-payments-filter class="col-3" />
+      <rts-payments-filter class="col-3" />
     }
 
     <p-divider layout="vertical"/>
 
     <div class="flex flex-column flex-grow-1">
-      <span class="font-bold">Sale Payments</span>
+      <span class="font-bold">Payments</span>
 
       <p-tabs [value]="selectedTab()" (valueChange)="onSelectedTabChange($event)">
         <p-tablist>
@@ -22,11 +22,11 @@
 
         <p-tabpanels>
           <p-tabpanel value="summary">
-            <rts-sale-payments-summary/>
+            <rts-payments-summary/>
           </p-tabpanel>
 
           <p-tabpanel value="payments">
-            <rts-sale-payments-summary-grid/>
+            <rts-payments-grid/>
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>
