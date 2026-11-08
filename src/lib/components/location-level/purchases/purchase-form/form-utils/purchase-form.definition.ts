@@ -15,8 +15,10 @@ export namespace PurchaseFormDefinition {
     purchaseLines: []
   })
 
-  export const convertToFormModel = (purchase: Purchase | null): PurchaseFormModel => ({
-    generalFields: PurchaseGeneralFieldsFormDefinition.convertToFormModel(purchase),
+  export const convertToFormModel = (
+    purchase: Purchase | null, zonedDatesService: ZonedDatesService
+  ): PurchaseFormModel => ({
+    generalFields: PurchaseGeneralFieldsFormDefinition.convertToFormModel(purchase, zonedDatesService),
     purchaseLines: PurchaseLineFormDefinition.convertLinesToFormModel(purchase?.lines ?? [])
   })
 

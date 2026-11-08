@@ -7,7 +7,12 @@ export class ZonedDatesService {
   private readonly timeZone = inject(TIMEZONE_TOKEN)
   private static readonly shortMonthFormatter = new Intl.DateTimeFormat('en-US', {month: 'short'})
 
-  atOrgZone = (date?: Date | null): string => {
+  serverInstantToPickerDate = (value: string): Date => {
+    const p = Object.fromEntries(this.getDateParts(new Date(value)).map(x => [x.type, x.value]))
+    return new Date(+p['year'], +p['month'] - 1, +p['day'])
+  }
+
+  pickedDateAtOrgZone = (date?: Date | null): string => {
     if (!date) return ''
     const pad = (n: number) => String(n).padStart(2, '0')
     const localYmd = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`

@@ -43,8 +43,8 @@ export namespace SalesFilterFormDefinition {
   export const convertToFilterParams = (
     formValue: SalesFilterFormModel, zonedDatesService: ZonedDatesService
   ): SaleSearchParameters => ({
-    createdFrom: zonedDatesService.atOrgZone(formValue.createdFrom) || undefined,
-    createdBefore: zonedDatesService.atOrgZone(formValue.createdBefore) || undefined,
+    createdFrom: zonedDatesService.pickedDateAtOrgZone(formValue.createdFrom) || undefined,
+    createdBefore: zonedDatesService.pickedDateAtOrgZone(formValue.createdBefore) || undefined,
     contactIds: formValue.contactIds.length ? formValue.contactIds : undefined,
     soldByUserIds: formValue.soldByUserIds.length ? formValue.soldByUserIds : undefined,
     saleStatuses: formValue.saleStatuses.length ? formValue.saleStatuses : undefined,

@@ -52,6 +52,6 @@ export namespace AuthorizationPassFormDefinition {
     passType: formValue.passType as PassType,
     maxUseCount: formValue.maxUseCount,
     assignedToId: formValue.assignedToId,
-    expiresOn: zonedDatesService.atOrgZone(formValue.expiresOn)
+    expiresOn: zonedDatesService.pickedDateAtOrgZone(formValue.expiresOn)
   })
 }

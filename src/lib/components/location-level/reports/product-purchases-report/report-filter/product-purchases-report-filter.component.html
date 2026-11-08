@@ -1,6 +1,6 @@
 <div class="flex flex-column gap-3">
 
-  <p-fieldset [toggleable]="true">
+  <p-fieldset [toggleable]="true" legend="Delivered On">
     <div class="flex flex-column gap-2">
       <div class="flex align-items-center gap-2">
         <span class="font-bold">&ge;</span>
@@ -26,7 +26,7 @@
     </div>
   </p-fieldset>
 
-  <p-fieldset [toggleable]="true">
+  <p-fieldset [toggleable]="true" legend="Other Filters">
     <div class="flex flex-column gap-3">
       <rts-purchase-product-lookup (productSelected)="filterState.addLocationProduct($event)"
                                    [layout]="FormFieldLayout.COMPACT"

@@ -53,7 +53,7 @@ export class PurchaseFormContext {
     if (purchase) {
       this.formIsVisible.set(true)
       this.originalPurchase.set(purchase)
-      this.purchaseForm().reset(PurchaseFormDefinition.convertToFormModel(purchase))
+      this.purchaseForm().reset(PurchaseFormDefinition.convertToFormModel(purchase, this.zonedDatesService))
     }
   }
 
@@ -68,7 +68,7 @@ export class PurchaseFormContext {
   }
 
   resetForm() {
-    this.purchaseForm().reset(PurchaseFormDefinition.convertToFormModel(this.originalPurchase()))
+    this.purchaseForm().reset(PurchaseFormDefinition.convertToFormModel(this.originalPurchase(), this.zonedDatesService))
   }
 
   getSavableFormValue(): Partial<Purchase> {

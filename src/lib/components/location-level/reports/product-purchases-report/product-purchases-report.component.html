@@ -1,24 +1,31 @@
 <div class="flex gap-3">
-  <rts-product-purchases-report-filter class="col-2"/>
+  <rts-product-purchases-report-filter class="w-15rem"/>
 
   <p-divider layout="vertical" />
 
-  <div class="flex flex-column gap-3 flex-grow-1" style="min-width: 0">
-    <span class="text-xl font-bold m-0">Product purchases report</span>
+  <div class="flex flex-column gap-3 flex-grow-1">
+    <div class="flex justify-content-between gap-3 pr-4">
+      <span class="text-lg font-semibold">Product purchases report</span>
 
-    <div class="flex flex-wrap gap-3">
-      <p-panel header="Total cost" class="flex-grow-1">
-        <span class="money">{{ totalCost() | currency }}</span>
-      </p-panel>
+      <div class="flex gap-3 text-sm">
+        <div class="flex gap-1">
+          <span class="info-message">Total Cost</span>
+          <rts-money [amount]="totalCost()" [balanceEffect]="BalanceEffect.ADDS" />
+        </div>
 
-      <p-panel header="Delivery lines" class="flex-grow-1">
-        <span class="money">{{ deliveryLineCount() | number }}</span>
-      </p-panel>
+        <div class="flex gap-1">
+          <span class="info-message">Delivery Lines</span>
+          <span class="font-semibold">{{ deliveryLineCount() | number }}</span>
+        </div>
 
-      <p-panel header="Products" class="flex-grow-1">
-        <span class="money">{{ productCount() | number }}</span>
-      </p-panel>
+        <div class="flex gap-1">
+          <span class="info-message">Products</span>
+          <span class="font-semibold">{{ productCount() | number }}</span>
+        </div>
+      </div>
     </div>
+
+    <p-divider class="mt-0"/>
 
     <div id="product-purchases-report" rtsAutoStretch="product-purchases-report">
       <p-table [value]="rows()"

@@ -50,10 +50,10 @@ export namespace PaymentsFilterFormDefinition {
   ): PaymentSummaryParams => ({
     // An empty array must be sent: an omitted `types` makes the backend include every type.
     types: formValue.selectedTypes,
-    recordedFrom: zonedDatesService.atOrgZone(formValue.recordedFrom) || undefined,
-    recordedBefore: zonedDatesService.atOrgZone(formValue.recordedBefore) || undefined,
-    paymentDateFrom: zonedDatesService.atOrgZone(formValue.paymentDateFrom) || undefined,
-    paymentDateBefore: zonedDatesService.atOrgZone(formValue.paymentDateBefore) || undefined,
+    recordedFrom: zonedDatesService.pickedDateAtOrgZone(formValue.recordedFrom) || undefined,
+    recordedBefore: zonedDatesService.pickedDateAtOrgZone(formValue.recordedBefore) || undefined,
+    paymentDateFrom: zonedDatesService.pickedDateAtOrgZone(formValue.paymentDateFrom) || undefined,
+    paymentDateBefore: zonedDatesService.pickedDateAtOrgZone(formValue.paymentDateBefore) || undefined,
     contactIds: formValue.contactIds.length ? formValue.contactIds : undefined,
     paymentMethodIds: formValue.paymentMethodIds.length ? formValue.paymentMethodIds : undefined,
     statuses: formValue.statuses.length ? formValue.statuses : undefined,

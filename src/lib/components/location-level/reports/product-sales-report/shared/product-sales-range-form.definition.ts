@@ -70,8 +70,8 @@ export namespace ProductSalesRangeFormDefinition {
       return null
     }
     return {
-      from: zonedDatesService.atOrgZone(formValue.from),
-      before: zonedDatesService.atOrgZone(dayAfter(formValue.to!))
+      from: zonedDatesService.pickedDateAtOrgZone(formValue.from),
+      before: zonedDatesService.pickedDateAtOrgZone(dayAfter(formValue.to!))
     }
   }
 }

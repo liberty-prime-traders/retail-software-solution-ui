@@ -44,10 +44,10 @@ export namespace PurchasesFilterFormDefinition {
   export const convertToFilterParams = (
     formValue: PurchasesFilterFormModel, zonedDatesService: ZonedDatesService
   ): PurchaseSearchParameters => ({
-    recordedFrom: zonedDatesService.atOrgZone(formValue.recordedFrom) || undefined,
-    recordedBefore: zonedDatesService.atOrgZone(formValue.recordedBefore) || undefined,
-    purchaseDateFrom: zonedDatesService.atOrgZone(formValue.purchaseDateFrom) || undefined,
-    purchaseDateBefore: zonedDatesService.atOrgZone(formValue.purchaseDateBefore) || undefined,
+    recordedFrom: zonedDatesService.pickedDateAtOrgZone(formValue.recordedFrom) || undefined,
+    recordedBefore: zonedDatesService.pickedDateAtOrgZone(formValue.recordedBefore) || undefined,
+    purchaseDateFrom: zonedDatesService.pickedDateAtOrgZone(formValue.purchaseDateFrom) || undefined,
+    purchaseDateBefore: zonedDatesService.pickedDateAtOrgZone(formValue.purchaseDateBefore) || undefined,
     supplierIds: formValue.supplierIds.length ? formValue.supplierIds : undefined,
     purchaseStatuses: formValue.purchaseStatuses.length ? formValue.purchaseStatuses : undefined,
     paymentStatuses: formValue.paymentStatuses.length ? formValue.paymentStatuses : undefined,

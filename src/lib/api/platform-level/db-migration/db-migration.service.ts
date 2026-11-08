@@ -50,8 +50,8 @@ export class DbMigrationService
 
   private getStartAndEnd(dateRange: Date[]): [string, string] {
     const [start, end] = dateRange
-    const startString = this.zonedDatesService.atOrgZone(start)
-    const endString = this.zonedDatesService.atOrgZone(end)
+    const startString = this.zonedDatesService.pickedDateAtOrgZone(start)
+    const endString = this.zonedDatesService.pickedDateAtOrgZone(end)
     return [startString, endString]
   }
 
