@@ -2,7 +2,7 @@ import {ZonedDatesService} from '../../../../../utils/services/zoned-dates.servi
 import {ProductSalesRangeFormDefinition} from './product-sales-range-form.definition'
 
 describe('ProductSalesRangeFormDefinition', () => {
-  const zonedDatesService = {atOrgZone: (date?: Date | null) => date ? date.toISOString() : ''} as ZonedDatesService
+  const zonedDatesService = {pickedDateAtOrgZone: (date?: Date | null) => date ? date.toISOString() : ''} as ZonedDatesService
   const day = (month: number, dayOfMonth: number, year = 2026) => new Date(year, month - 1, dayOfMonth)
 
   it('opens on the last 7 days ending today', () => {

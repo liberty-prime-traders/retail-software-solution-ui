@@ -56,8 +56,8 @@ export namespace ExpensesFilterFormDefinition {
   export const convertToFilterParams = (
     formValue: ExpensesFilterFormModel, zonedDatesService: ZonedDatesService
   ): ExpenseSearchParameters => ({
-    createdFrom: zonedDatesService.atOrgZone(formValue.createdFrom) || undefined,
-    createdBefore: zonedDatesService.atOrgZone(formValue.createdBefore) || undefined,
+    createdFrom: zonedDatesService.pickedDateAtOrgZone(formValue.createdFrom) || undefined,
+    createdBefore: zonedDatesService.pickedDateAtOrgZone(formValue.createdBefore) || undefined,
     expenseDateFrom: toLocaleDateString(formValue.expenseDateFrom) || undefined,
     expenseDateBefore: toLocaleDateString(formValue.expenseDateBefore) || undefined,
     payeeContactIds: formValue.payeeContactIds.length ? formValue.payeeContactIds : undefined,

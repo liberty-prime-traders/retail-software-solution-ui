@@ -65,7 +65,6 @@
     <div id="product-health-table" rtsAutoStretch="product-health-table">
       <ng-container *ngTemplateOutlet="productHealthTable"/>
     </div>
-
   </rts-loading-container>
 </div>
 
@@ -88,11 +87,11 @@
            [(selection)]="selectedProducts"
            dataKey="locationProductId">
     <ng-template #caption>
-      <div class="flex justify-content-end">
-        <span class="text-color-secondary text-sm">
-            {{ loadedRowCount() }} products {{ requireClientSideFilter() ? 'with sales' : 'loaded' }}.
-          </span>
-      </div>
+      @if (requireClientSideFilter()) {
+        <div class="flex justify-content-end">
+          <span class="text-color-secondary text-sm">{{ loadedRowCount() }} products with sales.</span>
+        </div>
+      }
     </ng-template>
 
     <ng-template #header>

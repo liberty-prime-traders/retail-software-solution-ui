@@ -55,12 +55,14 @@ export namespace PurchaseGeneralFieldsFormDefinition {
     disabled(path.orderedById, {when: isReadOnly})
   })
 
-  export const convertToFormModel = (purchase: Purchase | null): PurchaseGeneralFieldsModel => ({
+  export const convertToFormModel = (
+    purchase: Purchase | null, zonedDatesService: ZonedDatesService
+  ): PurchaseGeneralFieldsModel => ({
     id: purchase?.id as string ?? '',
     referenceNumber: purchase?.referenceNumber ?? '',
     supplierId: purchase?.supplierId ?? '',
     supplierName: purchase?.supplierName ?? '',
-    dateOrdered: purchase?.dateOrdered ? new Date(purchase.dateOrdered) : null,
+    dateOrdered: purchase?.dateOrdered ? zonedDatesService.serverInstantToPickerDate(purchase.dateOrdered) : null,
     orderedBy: purchase?.orderedBy ?? '',
     orderedById: purchase?.orderedById ?? '',
     notes: purchase?.notes ?? '',
@@ -76,7 +78,7 @@ export namespace PurchaseGeneralFieldsFormDefinition {
 
     id: formValue.id,
     supplierId: formValue.supplierId,
-    dateOrdered: zonedDatesService.atOrgZone(formValue.dateOrdered),
+    dateOrdered: zonedDatesService.pickedDateAtOrgZone(formValue.dateOrdered),
     orderedById: formValue.orderedById,
     notes: formValue.notes
   })

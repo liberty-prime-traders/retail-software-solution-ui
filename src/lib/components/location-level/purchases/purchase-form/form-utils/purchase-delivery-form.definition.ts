@@ -60,7 +60,7 @@ export namespace PurchaseDeliveryFormDefinition {
   ): Partial<PurchaseDelivery> => ({
 
       purchaseId,
-      deliveredAt: zonedDatesService.atOrgZone(formValue.deliveredAt),
+      deliveredAt: zonedDatesService.pickedDateAtOrgZone(formValue.deliveredAt),
       notes: formValue.notes || undefined,
       lines: formValue.lines
         .filter(line => line.quantityDelivered > 0)

@@ -1,0 +1,17 @@
+.summary-table-container {
+  overflow-x: auto;
+}
+
+.summary-money {
+  font-family: monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.method-label {
+  padding-left: 1.5rem;
+}
+
+.type-cell {
+  vertical-align: top;
+  font-weight: bold;
+}

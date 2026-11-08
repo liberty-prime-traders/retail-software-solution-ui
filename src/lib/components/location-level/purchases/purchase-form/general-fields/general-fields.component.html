@@ -15,6 +15,7 @@
     <rts-form-field label="Date Ordered" for="dateOrdered" [labelColumnSize]="labelColumnSize">
       <p-date-picker id="dateOrdered"
                      class="flex-1"
+                     [showTime]="false"
                      [formField]="generalFieldsForm.dateOrdered"
                      [showIcon]="true"
                      placeholder="When was the order placed?">

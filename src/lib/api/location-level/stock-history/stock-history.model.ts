@@ -10,4 +10,5 @@ export interface StockHistory extends BaseModel{
   newQuantity: string
   recordedOn: string
   conversionDriftNote?: string
+  context?: string
 }

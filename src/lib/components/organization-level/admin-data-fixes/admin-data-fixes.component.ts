@@ -3,6 +3,9 @@ import {MessageService} from 'primeng/api'
 import {ButtonDirective} from 'primeng/button'
 import {CardModule} from 'primeng/card'
 import {Divider} from 'primeng/divider'
+import {
+  PurchaseMovementContextBackfillService
+} from '../../../api/organization-level/admin-data-fixes/purchase-movement-context-backfill.service'
 import {SaleLineCogsBackfillService} from '../../../api/organization-level/admin-data-fixes/sale-line-cogs-backfill.service'
 import {SeedDataApplierService} from '../../../api/organization-level/admin-data-fixes/seed-data-applier.service'
 import {LoadingContainerComponent} from '../../reusable/loading-container/loading-container.component'
@@ -16,6 +19,7 @@ import {AdminDataFix, AdminDataFixItem} from './admin-data-fix-item.model'
 export class AdminDataFixesComponent {
   private readonly seedDataApplierService = inject(SeedDataApplierService)
   private readonly saleLineCogsBackfillService = inject(SaleLineCogsBackfillService)
+  private readonly purchaseMovementContextBackfillService = inject(PurchaseMovementContextBackfillService)
   private readonly messageService = inject(MessageService)
 
   readonly adminDataFixItems: AdminDataFixItem[] = [
@@ -41,6 +45,18 @@ export class AdminDataFixesComponent {
       successDetail: 'Backfill started. Check the server log for completion',
       requestService: this.saleLineCogsBackfillService,
       isLoading: this.saleLineCogsBackfillService.isLoading
+    },
+    {
+      fix: AdminDataFix.PURCHASE_MOVEMENT_CONTEXT_BACKFILL,
+      title: 'Purchase Stock Movement Links',
+      description: 'Stock received from deliveries before movements recorded their purchase need that link filled ' +
+        'in every location. This adds the purchase reference to those received-stock movements and leaves movements ' +
+        'that already have one untouched, so it is safe to run again. It runs in the background; completion is ' +
+        'written to the server log.',
+      buttonLabel: 'Backfill Purchase Links',
+      successDetail: 'Backfill started. Check the server log for completion',
+      requestService: this.purchaseMovementContextBackfillService,
+      isLoading: this.purchaseMovementContextBackfillService.isLoading
     }
   ]
 

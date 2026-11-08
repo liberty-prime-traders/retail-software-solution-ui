@@ -3,7 +3,8 @@ import {AdminDataFixRequestService} from '../../../api/organization-level/admin-
 
 export enum AdminDataFix {
   SEED_DEFAULTS = 'SEED_DEFAULTS',
-  SALE_LINE_COGS_BACKFILL = 'SALE_LINE_COGS_BACKFILL'
+  SALE_LINE_COGS_BACKFILL = 'SALE_LINE_COGS_BACKFILL',
+  PURCHASE_MOVEMENT_CONTEXT_BACKFILL = 'PURCHASE_MOVEMENT_CONTEXT_BACKFILL'
 }
 
 export interface AdminDataFixItem {

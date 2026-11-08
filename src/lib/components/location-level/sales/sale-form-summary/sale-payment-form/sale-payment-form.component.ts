@@ -135,7 +135,7 @@ export class SalePaymentFormComponent implements OnInit {
       paymentMethodId: paymentFormValue.paymentMethodId,
       amount: paymentFormValue.amount!,
       reference: paymentFormValue.reference,
-      paymentDate: this.zonedDatesService.atOrgZone(paymentDate)
+      paymentDate: this.zonedDatesService.pickedDateAtOrgZone(paymentDate)
     }
   }
 }

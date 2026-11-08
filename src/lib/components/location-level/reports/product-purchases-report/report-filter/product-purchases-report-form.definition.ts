@@ -14,11 +14,8 @@ export namespace ProductPurchasesReportFormDefinition {
   }
 
   export const createDefaultFormModel = (): ProductPurchasesReportFormModel => {
-    const sevenDaysAgo = getToday()
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
-
     return {
-      deliveredFrom: sevenDaysAgo,
+      deliveredFrom: getToday(),
       deliveredBefore: getTomorrow(),
       locationProductIds: [],
       categoryIds: [],
@@ -33,8 +30,8 @@ export namespace ProductPurchasesReportFormDefinition {
     formValue: ProductPurchasesReportFormModel,
     zonedDatesService: ZonedDatesService
   ): ProductPurchasesReportParameters | null => {
-    const deliveredFrom = zonedDatesService.atOrgZone(formValue.deliveredFrom)
-    const deliveredBefore = zonedDatesService.atOrgZone(formValue.deliveredBefore)
+    const deliveredFrom = zonedDatesService.pickedDateAtOrgZone(formValue.deliveredFrom)
+    const deliveredBefore = zonedDatesService.pickedDateAtOrgZone(formValue.deliveredBefore)
     if (!deliveredFrom || !deliveredBefore) {
       return null
     }
@@ -51,8 +48,8 @@ export namespace ProductPurchasesReportFormDefinition {
     formValue: ProductPurchasesReportFormModel,
     zonedDatesService: ZonedDatesService
   ): ProductPurchasesDeliveryLinesParameters | null => {
-    const deliveredFrom = zonedDatesService.atOrgZone(formValue.deliveredFrom)
-    const deliveredBefore = zonedDatesService.atOrgZone(formValue.deliveredBefore)
+    const deliveredFrom = zonedDatesService.pickedDateAtOrgZone(formValue.deliveredFrom)
+    const deliveredBefore = zonedDatesService.pickedDateAtOrgZone(formValue.deliveredBefore)
     if (!deliveredFrom || !deliveredBefore) {
       return null
     }

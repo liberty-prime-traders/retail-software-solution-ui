@@ -2,14 +2,17 @@ import {CurrencyPipe, DecimalPipe, NgClass} from '@angular/common'
 import {Component, computed, inject} from '@angular/core'
 import {ButtonDirective} from 'primeng/button'
 import {Divider} from 'primeng/divider'
-import {Panel} from 'primeng/panel'
-import {Table, RowToggler} from 'primeng/table'
-import {ProductPurchasesReportService} from '../../../../api/location-level/product-purchases-report/product-purchases-report.service'
+import {RowToggler, Table} from 'primeng/table'
+import {
+  ProductPurchasesReportService
+} from '../../../../api/location-level/product-purchases-report/product-purchases-report.service'
+import {BalanceEffect} from '../../../../api/organization-level/chart-of-accounts/balance-effect.enum'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
-import {ProductPurchasesReportFilterState} from './report-filter/product-purchases-report-filter.state'
-import {ProductPurchasesReportFilterComponent} from './report-filter/product-purchases-report-filter.component'
-import {ProductDeliveryLinesGridComponent} from './delivery-lines/product-delivery-lines-grid.component'
 import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component'
+import {MoneyComponent} from '../../../reusable/money.component'
+import {ProductDeliveryLinesGridComponent} from './delivery-lines/product-delivery-lines-grid.component'
+import {ProductPurchasesReportFilterComponent} from './report-filter/product-purchases-report-filter.component'
+import {ProductPurchasesReportFilterState} from './report-filter/product-purchases-report-filter.state'
 
 @Component({
   selector: 'rts-product-purchases-report',
@@ -18,7 +21,6 @@ import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component
   imports: [
     Table,
     RowToggler,
-    Panel,
     CurrencyPipe,
     DecimalPipe,
     EmptyRowComponent,
@@ -27,7 +29,8 @@ import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component
     Divider,
     ButtonDirective,
     AutoStretchDirective,
-    NgClass
+    NgClass,
+    MoneyComponent
   ]
 })
 export class ProductPurchasesReportComponent {
@@ -35,6 +38,7 @@ export class ProductPurchasesReportComponent {
 
   readonly filterState = inject(ProductPurchasesReportFilterState)
 
+  readonly BalanceEffect = BalanceEffect
   readonly rows = this.productPurchasesReportService.selectAll
   readonly loading = this.productPurchasesReportService.selectLoading
   readonly productCount = this.productPurchasesReportService.selectCount
