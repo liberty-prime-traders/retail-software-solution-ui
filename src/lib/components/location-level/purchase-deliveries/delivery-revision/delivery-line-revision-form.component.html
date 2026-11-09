@@ -1,0 +1,105 @@
+<rts-loading-container [loading]="isLoading()" loadingText="Building preview...">
+  <div class="flex flex-column gap-3">
+
+    <div class="flex flex-column">
+      <span class="text-lg font-semibold">Revise line</span>
+      @if (deliveryLine().locationProduct; as locationProduct) {
+        <small class="info-message">{{ locationProduct | productLabel }}</small>
+      }
+    </div>
+
+    <rts-form-field label="Delivered as" [layout]="FormFieldDirection.VERTICAL">
+      {{ deliveryLine().quantityDelivered }} {{ deliveryLine().unitId | fullUnitDescription }}
+      at {{ deliveryLine().unitCost | currency }}
+    </rts-form-field>
+
+    <div class="flex gap-4">
+      <rts-form-field [required]="true"
+                      label="Unit"
+                      contentClass="w-full"
+                      for="unitId"
+                      [layout]="FormFieldDirection.VERTICAL">
+        <p-select inputId="unitId"
+                  appendTo="body"
+                  [options]="deliveryLine().unitId | alternativeUnitsFinder"
+                  [formField]="deliveryLineRevisionForm.unitId"
+                  (onChange)="clearQuantityAndCost()">
+        </p-select>
+      </rts-form-field>
+
+      <rts-form-field [required]="true"
+                      label="New Quantity ({{ deliveryLineRevisionFormValue().unitId | fullUnitDescription }})"
+                      for="userProvidedQuantityDelivered"
+                      [layout]="FormFieldDirection.VERTICAL">
+        <p-input-number inputId="userProvidedQuantityDelivered"
+                        [formField]="deliveryLineRevisionForm.userProvidedQuantityDelivered"
+                        [min]="0"
+                        [maxFractionDigits]="2">
+        </p-input-number>
+      </rts-form-field>
+
+      <rts-form-field [required]="true"
+                      label="New Unit Cost (per {{ deliveryLineRevisionFormValue().unitId | fullUnitDescription }})"
+                      for="unitCost"
+                      [layout]="FormFieldDirection.VERTICAL">
+        <p-input-number inputId="unitCost"
+                        [formField]="deliveryLineRevisionForm.unitCost"
+                        [min]="0"
+                        [minFractionDigits]="2"
+                        [maxFractionDigits]="2"
+                        mode="currency"
+                        currency="KES">
+        </p-input-number>
+      </rts-form-field>
+    </div>
+
+    <rts-form-field [required]="true"
+                    label="Reason"
+                    for="reason"
+                    contentClass="col-8"
+                    [layout]="FormFieldDirection.VERTICAL">
+      <textarea id="reason"
+                pInputText
+                rows="3"
+                class="flex-grow-1"
+                [formField]="deliveryLineRevisionForm.reason">
+      </textarea>
+    </rts-form-field>
+
+    @if (deliveryLineRevisionForm().dirty()) {
+      <rts-error-summary [signalFormErrors]="deliveryLineRevisionForm().errorSummary()"
+                         [fieldMap]="DeliveryLineRevisionFormDefinition.fieldMap">
+      </rts-error-summary>
+    }
+    <rts-error-summary [regularErrorMessages]="failureMessages()"/>
+    @if (saveFailureMessages().length > 0) {
+      <rts-error-summary [regularErrorMessages]="saveFailureMessages()"/>
+      <small class="info-message">Preview the revision to see what needs fixing.</small>
+    }
+
+    <div class="flex justify-content-end gap-2">
+      <button pButton
+              type="button"
+              severity="secondary"
+              (click)="cancel()">
+        <i class="pi pi-times"></i> Cancel
+      </button>
+      <button pButton
+              type="button"
+              [disabled]="!canPreview()"
+              (click)="previewRevision()">
+        <i class="pi pi-search"></i> Preview revision
+      </button>
+    </div>
+
+  </div>
+</rts-loading-container>
+
+@if (preview(); as preview) {
+  <rts-revision-preview-dialog [preview]="preview"
+                               [(visible)]="previewVisible"
+                               [deliveryLine]="deliveryLine()"
+                               [saving]="isSaving()"
+                               (saveRequested)="saveRevision()">
+  </rts-revision-preview-dialog>
+}

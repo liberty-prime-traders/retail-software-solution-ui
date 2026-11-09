@@ -1,0 +1,137 @@
+<p-dialog [header]="headerText()"
+          [(visible)]="visible"
+          [style]="{width: '50vw'}"
+          [modal]="true">
+  <div class="flex flex-column gap-3">
+
+    <span class="font-semibold font-italic">{{ preview().changeSummary }}</span>
+
+    <p-tabs value="transactions">
+      <p-tablist>
+        <p-tab value="transactions">Transactions</p-tab>
+        @if (preview().guidance.length > 0) {
+          <p-tab value="guidance">What can I do</p-tab>
+        }
+        <p-tab value="ledger">Ledger entries</p-tab>
+      </p-tablist>
+
+      <p-tabpanels>
+        <p-tabpanel value="transactions">
+          <p-table [value]="preview().transactions">
+            <ng-template #header>
+              <tr>
+                <th style="width: 8rem">Severity</th>
+                <th>Reference</th>
+                <th>What it is</th>
+                <th>Effect</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-item>
+              @let display = severityDisplay[item.severity];
+              <tr>
+                <td>
+                  <p-tag [severity]="display.tagSeverity" [value]="display.label"/>
+                </td>
+                <td class="font-semibold">{{ item.documentReference }}</td>
+                <td>{{ item.description }}</td>
+                <td>
+                  <div>{{ item.effect }}</div>
+                  @if (item.netProfitChange) {
+                    <div class="font-semibold" [ngClass]="item.netProfitChange < 0 ? 'irregular-balance' : ' text-green-600'" >
+                      Net profit change: {{ item.netProfitChange | currency }}
+                    </div>
+                  }
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+              <tr [colspan]="4" rts-empty-row message="Nothing is affected by this revision"></tr>
+            </ng-template>
+          </p-table>
+        </p-tabpanel>
+
+        <p-tabpanel value="guidance">
+          <div class="flex flex-column gap-3">
+            @for (paragraph of preview().guidance; track $index) {
+              <p class="m-0">
+                @for (segment of paragraph.segments; track $index) {
+                  <span [class.font-semibold]="segment.emphasis"
+                        [class.font-italic]="segment.emphasis">
+                    {{ segment.text }}
+                  </span>
+                }
+              </p>
+            }
+          </div>
+        </p-tabpanel>
+
+        <p-tabpanel value="ledger">
+          @if (preview().blocksSave) {
+            <p-tag severity="danger" value="Ledger will not be posted while save is blocked"/>
+          }
+          <p-table [value]="preview().ledgerEntries">
+            <ng-template #header>
+              <tr>
+                <th>Account</th>
+                <th class="text-right">Debit</th>
+                <th class="text-right">Credit</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-entry let-rowIndex="rowIndex">
+              <tr>
+                <td colspan="3">
+                  <div class="font-semibold">{{ entry.source }}</div>
+                  <small class="info-message">{{ entry.description }}</small>
+                </td>
+              </tr>
+              @for (line of entry.lines; track $index) {
+                <tr>
+                  <td class="pl-4">
+                    {{ line.accountText }}
+                  </td>
+                  <td class="text-right">
+                    @if (line.debit) {
+                      <rts-money [amount]="line.debit" [balanceEffect]="line.balanceEffect"/>
+                    }
+                  </td>
+                  <td class="text-right">
+                    @if (line.credit) {
+                      <rts-money [amount]="line.credit" [balanceEffect]="line.balanceEffect"/>
+                    }
+                  </td>
+                </tr>
+              }
+              @if (rowIndex === preview().ledgerEntries.length - 1) {
+                <tr class="font-semibold">
+                  <td>Total</td>
+                  <td class="text-right">{{ totalDebit() | currency }}</td>
+                  <td class="text-right">{{ totalCredit() | currency }}</td>
+                </tr>
+              }
+            </ng-template>
+            <ng-template #emptymessage>
+              <tr [colspan]="3" rts-empty-row message="No ledger entries to show"></tr>
+            </ng-template>
+          </p-table>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </div>
+
+  <ng-template #footer>
+    <div class="flex justify-content-end gap-2 pt-4">
+      <button pButton
+              type="button"
+              severity="secondary"
+              (click)="close()">
+        <i class="pi pi-times"></i> Close
+      </button>
+      <button pButton
+              type="button"
+              [disabled]="preview().blocksSave || saving()"
+              (click)="saveRequested.emit()">
+        <i class="pi pi-check"></i> Save revision
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>
