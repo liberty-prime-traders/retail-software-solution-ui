@@ -54,6 +54,18 @@ export class SaleFormContext {
     }
   }
 
+  updateLineQuantity(line: SaleLineFormDefinition.SaleLineFormModel, newQuantity: number) {
+    this.saleFormValue.update(saleForm => {
+      const saleLines = saleForm.saleLines.map(saleLine => {
+        if (saleLine.identity === line.identity) {
+          return {...saleLine, quantity: newQuantity}
+        }
+        return saleLine
+      })
+      return {...saleForm, saleLines}
+    })
+  }
+
   sendLineRequest(newProduct?: ProductWithAvailability) {
     this.saleSessionService.updateSaleLines(
       {

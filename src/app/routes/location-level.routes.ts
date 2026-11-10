@@ -17,6 +17,7 @@ import {
 import {
   ProductSalesReportComponent
 } from '../../lib/components/location-level/reports/product-sales-report/product-report/product-sales-report.component'
+import {BulkPaymentComponent} from '../../lib/components/location-level/purchase-bulk-payments/bulk-payment.component'
 import {PurchaseComponent} from '../../lib/components/location-level/purchases/purchase.component'
 import {
   ProductPurchasesReportComponent
@@ -33,6 +34,7 @@ export const locationRoutes: Routes = [
   {path: 'daily-summary', component: DailyBusinessSummaryComponent},
   {path: 'products', component: LocationProductComponent},
   {path: 'purchases', component: PurchaseComponent},
+  {path: 'purchases-bulk-payment', component: BulkPaymentComponent},
   {path: 'sync', component: SyncComponent},
   {path: 'sales', component: SalesComponent},
   {path: 'stock-transfer', component: StockTransferComponent},

@@ -60,7 +60,13 @@
           <div>
             <p-input-group>
               <p-inputgroup-addon>
-                <span> {{line.unitId | unitLabelSingular}}</span>
+                <button pButton type="button"
+                        [disabled]="line.quantity <= 0"
+                        (click)="decrementQuantity(line)"
+                        severity="secondary"
+                        class="h-full">
+                  <i class="pi pi-minus"></i>
+                </button>
               </p-inputgroup-addon>
 
               <p-ifta-label>
@@ -69,8 +75,18 @@
                   [maxFractionDigits]="2"
                   [formField]="formFieldRow.quantity">
                 </p-input-number>
-                <label>Quantity</label>
+                <label>Quantity ({{line.unitId | unitLabelSingular}})</label>
               </p-ifta-label>
+
+              <p-inputgroup-addon>
+                <button pButton type="button"
+                        (click)="incrementQuantity(line)"
+                        severity="secondary"
+                        class="h-full">
+                  <i class="pi pi-plus"></i>
+                </button>
+              </p-inputgroup-addon>
+
             </p-input-group>
             <small class="block info-message">
               {{ line.unitId | buildConversionContext : line : line.quantity | convertToTargetUnitForDisplay }}
