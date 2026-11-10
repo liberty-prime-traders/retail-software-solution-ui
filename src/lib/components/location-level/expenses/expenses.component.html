@@ -18,7 +18,7 @@
       @if (selectedTab() === 'expenses') {
         <rts-expenses-filter-readonly class="col-2" (editFilters)="selectedTab.set('summary')"/>
       } @else {
-        <rts-expenses-filter class="col-3"/>
+        <rts-expenses-filter class="w-15rem"/>
       }
 
       <p-divider layout="vertical"/>

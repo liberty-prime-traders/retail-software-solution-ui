@@ -1,0 +1,132 @@
+<rts-loading-container [loading]="loading()">
+
+  <div class="flex flex-column gap-4">
+    <span class="font-bold">Bulk Supplier Payment</span>
+
+    <p-divider class="m-0"/>
+
+    <rts-bulk-payment-filter/>
+
+    <div class="flex gap-4 p-2">
+      <ng-container *ngTemplateOutlet="bulkPaymentGrid"/>
+
+      <p-card class="w-20rem pb-2">
+        <rts-bulk-payment-payment-form/>
+      </p-card>
+    </div>
+
+  </div>
+
+</rts-loading-container>
+
+<ng-template #bulkPaymentGrid>
+  <div id="bulk-payment-grid" rtsAutoStretch="bulk-payment-grid" class="flex-grow-1">
+    <p-table [value]="rows()" scrollHeight="flex" dataKey="line.id" [scrollable]="true">
+      <ng-template #header>
+        <tr>
+          @if (!paymentRecorded()) {
+            <th style="width: 3rem">
+              <p-checkbox [binary]="true"
+                          [ngModel]="allSelected()"
+                          [disabled]="selectableRowCount() === 0"
+                          (onChange)="toggleAllSelection()"
+                          ariaLabel="Select all purchases">
+              </p-checkbox>
+            </th>
+          }
+          <th>Reference</th>
+          <th>Delivery Status</th>
+          <th>Date Ordered</th>
+          <th>Ordered Total</th>
+          <th>Payment Status</th>
+          <th>Payable</th>
+          @if (paymentRecorded()) {
+            <th style="width: 8rem">Applied</th>
+            <th style="width: 8rem">Payment Reference</th>
+          } @else {
+            <th>Will Apply</th>
+          }
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-row>
+        <tr>
+          @if (!paymentRecorded()) {
+            <td>
+              <p-checkbox [binary]="true"
+                          [ngModel]="row.selected"
+                          [disabled]="!row.selectable"
+                          (onChange)="toggleSelection(row.line.id)"
+                          [ariaLabel]="'Select ' + row.line.referenceNumber">
+              </p-checkbox>
+            </td>
+          }
+          <td>{{ row.line.referenceNumber }}</td>
+          <td>
+            <p-tag [value]="row.line.purchaseStatus | prettifyEnum"
+                   [severity]="row.line.purchaseStatus | purchaseStatusSeverity">
+            </p-tag>
+          </td>
+          <td>{{ row.line.dateOrdered | date : 'shortDate' | nullSafe }}</td>
+          <td>{{ row.line.orderedTotal | currency }}</td>
+          <td>
+            <p-tag [value]="row.line.paymentStatus | prettifyEnum"
+                   [severity]="row.line.paymentStatus | paymentStatusSeverity">
+            </p-tag>
+          </td>
+          <td>{{ row.line.payable | currency }}</td>
+          @if (paymentRecorded()) {
+            <td>
+              @if (row.skipped) {
+                <p-tag severity="secondary" value="Skipped"/>
+              } @else {
+                {{ row.line.appliedAmount | currency }}
+              }
+            </td>
+            <td>{{ row.line.paymentReferenceNumber | nullSafe }}</td>
+          } @else {
+            <td>{{ row.willApply | currency }}</td>
+          }
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr rts-empty-row [colspan]="8" message="No payable purchases found."></tr>
+      </ng-template>
+
+      @if (rows().length) {
+        <ng-template #footer>
+          <tr>
+            <td colspan="8">
+              <div class="flex justify-content-end gap-4 p-3 text-right">
+                @if (!paymentRecorded()) {
+                  <div class="flex gap-1">
+                    <span class="info-message">Selected:</span>
+                    <span class="money font-semibold">{{ selectedCount() }}</span>
+                  </div>
+
+                  <div class="flex gap-1">
+                    <span class="info-message">Selected payable:</span>
+                    <span class="money font-semibold"> {{ selectedPayable() | currency }}</span>
+                  </div>
+                }
+
+                <div class="flex gap-1">
+                  <span class="info-message">Total payable:</span>
+                  <span class="money font-semibold">{{ totalPayable() | currency }}</span>
+                </div>
+
+                @if (paymentRecorded()) {
+                  <div class="flex gap-1">
+                    <span class="info-message">You just paid:</span>
+                    <span class="money font-semibold">{{ totalApplied() | currency }}</span>
+                  </div>
+                }
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      }
+    </p-table>
+  </div>
+</ng-template>

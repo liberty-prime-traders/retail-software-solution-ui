@@ -11,7 +11,6 @@ import {InputGroupAddon} from 'primeng/inputgroupaddon'
 import {InputNumber} from 'primeng/inputnumber'
 import {Select} from 'primeng/select'
 import {Tooltip} from 'primeng/tooltip'
-import {SaleLine} from '../../../../../api/location-level/sale_session/sale-session.model'
 import {SaleSessionService} from '../../../../../api/location-level/sale_session/sale-session.service'
 import {
   AlternativeUnitsFinderPipe
@@ -62,11 +61,21 @@ export class EditableSaleLinesComponent {
 
   readonly saleLines = input.required<SaleLineFormDefinition.SaleLineFormModel[]>()
 
-  removeSaleLine(line: SaleLine) {
+  removeSaleLine(line: SaleLineFormDefinition.SaleLineFormModel) {
     this.saleSessionService.removeSaleLine(
       line.identity,
       {onSuccess: this.context.loadSession}
     )
+  }
+
+  incrementQuantity(line: SaleLineFormDefinition.SaleLineFormModel) {
+    this.context.updateLineQuantity(line, line.quantity + 1)
+  }
+
+  decrementQuantity(line: SaleLineFormDefinition.SaleLineFormModel) {
+    if (line.quantity > 0) {
+      this.context.updateLineQuantity(line, line.quantity - 1)
+    }
   }
 
   sendLineRequest() {

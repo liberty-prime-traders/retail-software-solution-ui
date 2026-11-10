@@ -8,6 +8,7 @@ export interface StockAdjustment extends BaseModel {
   category: StockAdjustmentCategory
   direction: StockAdjustmentDirection
   quantity: number
+  quantityText: string
   unitId: string
   unitCost?: number
   totalCost?: number

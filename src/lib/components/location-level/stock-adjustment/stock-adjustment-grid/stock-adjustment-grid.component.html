@@ -3,6 +3,8 @@
            [loading]="loading()"
            sortField="referenceNumber"
            [sortOrder]="-1"
+           [scrollable]="true"
+
            scrollHeight="flex"
            dataKey="referenceNumber">
 
@@ -10,12 +12,12 @@
       <tr>
         <th>Reference</th>
         <th>Product</th>
-        <th>Category</th>
+        <th style="width: 8rem">Category</th>
         <th>Direction</th>
         <th>Quantity</th>
-        <th>Total Cost</th>
+        <th style="width: 8rem">Total Cost</th>
         <th>Note</th>
-        <th>Adjusted By</th>
+        <th style="width: 12rem">Adjusted By</th>
         <th>Adjusted At</th>
       </tr>
     </ng-template>
@@ -23,10 +25,10 @@
     <ng-template #body let-stockAdjustment>
       <tr>
         <td>{{ stockAdjustment.referenceNumber | nullSafe }}</td>
-        <td>{{ stockAdjustment.productLabel | nullSafe }}</td>
+        <td class="font-semibold">{{ stockAdjustment.productLabel | nullSafe }}</td>
         <td>{{ stockAdjustment.category | prettifyEnum }}</td>
         <td>{{ stockAdjustment.direction | prettifyEnum }}</td>
-        <td>{{ stockAdjustment.quantity }} {{ stockAdjustment.unitId | fullUnitDescription : stockAdjustment.quantity }}</td>
+        <td>{{ stockAdjustment.quantityText }}</td>
         <td>{{ stockAdjustment.totalCost | currency | nullSafe }}</td>
         <td>{{ stockAdjustment.note | nullSafe }}</td>
         <td>{{ stockAdjustment.adjustedBy | nullSafe }}</td>

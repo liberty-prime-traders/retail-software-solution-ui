@@ -21,11 +21,11 @@
       <tr>
         <th style="width: 3rem"></th>
         <th>Expense Type</th>
-        <th>Expense Date</th>
+        <th style="width: 8rem">Date</th>
         <th>Payee</th>
-        <th>Status</th>
+        <th style="width: 8rem">Status</th>
         <th>Amount</th>
-        <th>Balance</th>
+        <th style="width: 8rem">Balance</th>
         <th>Description</th>
       </tr>
     </ng-template>
@@ -57,7 +57,7 @@
           <td>
             @let sourceReference = expense.sourceReference || '';
             @let description = expense.description || '';
-            {{(sourceReference + description) | nullSafe }}
+            {{(sourceReference + ' ' + description) | nullSafe }}
           </td>
         </tr>
       }

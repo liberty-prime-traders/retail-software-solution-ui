@@ -7,6 +7,7 @@ import {
   PurchaseMovementContextBackfillService
 } from '../../../api/organization-level/admin-data-fixes/purchase-movement-context-backfill.service'
 import {SaleLineCogsBackfillService} from '../../../api/organization-level/admin-data-fixes/sale-line-cogs-backfill.service'
+import {StockAdjustmentBackfillService} from '../../../api/organization-level/admin-data-fixes/stock-adjustment-backfill.service'
 import {SeedDataApplierService} from '../../../api/organization-level/admin-data-fixes/seed-data-applier.service'
 import {LoadingContainerComponent} from '../../reusable/loading-container/loading-container.component'
 import {AdminDataFix, AdminDataFixItem} from './admin-data-fix-item.model'
@@ -19,6 +20,7 @@ import {AdminDataFix, AdminDataFixItem} from './admin-data-fix-item.model'
 export class AdminDataFixesComponent {
   private readonly seedDataApplierService = inject(SeedDataApplierService)
   private readonly saleLineCogsBackfillService = inject(SaleLineCogsBackfillService)
+  private readonly stockAdjustmentBackfillService = inject(StockAdjustmentBackfillService)
   private readonly purchaseMovementContextBackfillService = inject(PurchaseMovementContextBackfillService)
   private readonly messageService = inject(MessageService)
 
@@ -45,6 +47,17 @@ export class AdminDataFixesComponent {
       successDetail: 'Backfill started. Check the server log for completion',
       requestService: this.saleLineCogsBackfillService,
       isLoading: this.saleLineCogsBackfillService.isLoading
+    },
+    {
+      fix: AdminDataFix.STOCK_ADJUSTMENT_BACKFILL,
+      title: 'Stock Adjustment Cost Records',
+      description: 'Stock adjustments recorded before cost records were introduced need one cost record each in ' +
+        'every location. This copies the cost already stored on those adjustments and skips adjustments that are ' +
+        'done, so it is safe to run again. It runs in the background; completion is written to the server log.',
+      buttonLabel: 'Backfill Adjustment Costs',
+      successDetail: 'Backfill started. Check the server log for completion',
+      requestService: this.stockAdjustmentBackfillService,
+      isLoading: this.stockAdjustmentBackfillService.isLoading
     },
     {
       fix: AdminDataFix.PURCHASE_MOVEMENT_CONTEXT_BACKFILL,

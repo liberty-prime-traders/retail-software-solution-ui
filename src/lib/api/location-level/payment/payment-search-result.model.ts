@@ -4,7 +4,7 @@ import {PaymentType} from './payment-type.enum'
 
 export interface PaymentRow extends PaginatedModel {
   type: PaymentType
-  referenceNumber: string
+  parentReferenceNumber: string
   contactName: string | null
   paymentMethodName: string
   amount: number

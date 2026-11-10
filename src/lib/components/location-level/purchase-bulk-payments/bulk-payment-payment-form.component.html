@@ -1,0 +1,84 @@
+@if (paymentRecorded()) {
+  <div class="p-3">
+    <button pButton type="button" (click)="startNewPayment()">Start New Payment</button>
+  </div>
+} @else {
+
+    <div class="flex flex-column justify-content-between h-full">
+      <div class="flex flex-column gap-3">
+        <ng-container *ngTemplateOutlet="paymentForm"/>
+      </div>
+
+      <button type="button" pButton
+              (click)="save()"
+              [disabled]="bulkPaymentForm().invalid()">
+        Pay {{ bulkPaymentForm.amount().value() | nullishToZero | currency }}
+      </button>
+    </div>
+}
+
+<ng-template #paymentForm>
+  @if (amountExceedsSelectedPayable()) {
+    <p-message severity="warn">
+      Payment amount exceeds the total payable, based on the selected purchases.
+    </p-message>
+  }
+
+  <rts-error-summary [fieldMap]="bulkPaymentFormFields"
+                     [regularErrorMessages]="failureMessages()"
+                     [signalFormErrors]="bulkPaymentForm().errorSummary()">
+  </rts-error-summary>
+
+  <rts-form-field label="Amount"
+                  for="amount"
+                  contentClass="w-full"
+                  [required]="true"
+                  [layout]="FormFieldDirection.VERTICAL">
+    <p-input-number inputId="amount"
+                    mode="currency"
+                    currency="KES"
+                    [min]="0"
+                    [formField]="bulkPaymentForm.amount">
+    </p-input-number>
+  </rts-form-field>
+
+  <rts-form-field label="Payment Method"
+                  for="paymentMethodId"
+                  contentClass="w-full"
+                  [required]="true"
+                  [layout]="FormFieldDirection.VERTICAL">
+    <p-select id="paymentMethodId"
+              [options]="paymentOptions()"
+              [formField]="bulkPaymentForm.paymentMethodId"
+              optionLabel="name"
+              optionValue="id"
+              appendTo="body"
+              placeholder="Select method...">
+    </p-select>
+  </rts-form-field>
+
+  <rts-form-field label="Payment Date"
+                  for="paymentDate"
+                  contentClass="w-full"
+                  [required]="true"
+                  [layout]="FormFieldDirection.VERTICAL">
+    <p-date-picker id="paymentDate"
+                   [showIcon]="true"
+                   [formField]="bulkPaymentForm.paymentDate"
+                   appendTo="body">
+    </p-date-picker>
+  </rts-form-field>
+
+  <rts-form-field label="Notes"
+                  for="notes"
+                  contentClass="w-full"
+                  [layout]="FormFieldDirection.VERTICAL">
+    <textarea id="notes"
+              pInputTextarea
+              rows="2"
+              class="w-full"
+              [formField]="bulkPaymentForm.notes"
+              placeholder="Optional notes">
+    </textarea>
+  </rts-form-field>
+</ng-template>

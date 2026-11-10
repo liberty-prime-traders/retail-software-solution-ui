@@ -2,7 +2,6 @@ import {CurrencyPipe, DatePipe} from '@angular/common'
 import {Component, inject, OnInit} from '@angular/core'
 import {TableModule} from 'primeng/table'
 import {StockAdjustmentService} from '../../../../api/location-level/stock-adjustment/stock-adjustment.service'
-import {UnitDescriptionPipe} from '../../../../api/organization-level/unit-conversion/pipes/unit-description.pipe'
 import {NullSafePipe} from '../../../../utils/pipes/null-safe.pipe'
 import {PrettifyEnumPipe} from '../../../../utils/pipes/prettify-enum.pipe'
 import {AutoStretchDirective} from '../../../reusable/auto-stretch.directive'
@@ -18,8 +17,7 @@ import {EmptyRowComponent} from '../../../reusable/empty-row/empty-row.component
     CurrencyPipe,
     DatePipe,
     NullSafePipe,
-    PrettifyEnumPipe,
-    UnitDescriptionPipe
+    PrettifyEnumPipe
   ]
 })
 export class StockAdjustmentGridComponent implements OnInit {

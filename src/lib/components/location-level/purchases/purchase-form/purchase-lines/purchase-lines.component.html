@@ -134,7 +134,7 @@
                             [(ngModel)]="purchaseLine.cancelUnitId">
                   </p-select>
                   <p-input-number [min]="0"
-                                  [max]="purchaseLine.quantityYetToBeDelivered * effectiveFactor | round : 2"
+                                  [max]="purchaseLine.quantityThatCanBeCanceled * effectiveFactor | round : 2"
                                   [maxFractionDigits]="2"
                                   [(ngModel)]="purchaseLine.quantityCanceled">
                   </p-input-number>

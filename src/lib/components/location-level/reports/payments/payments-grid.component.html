@@ -31,7 +31,7 @@
         </tr>
       } @else {
         <tr style="height: 55px" [class.strike-through]="payment.voided">
-          <td>{{ payment.referenceNumber | nullSafe }}</td>
+          <td>{{ payment.parentReferenceNumber | nullSafe }}</td>
           <td>{{ payment.contactName | nullSafe }}</td>
           <td>{{ payment.paymentMethodName | nullSafe }}</td>
           <td>

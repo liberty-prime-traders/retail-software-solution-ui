@@ -1,4 +1,4 @@
-import {CurrencyPipe} from '@angular/common'
+import {CurrencyPipe, NgClass} from '@angular/common'
 import {Component, computed, inject} from '@angular/core'
 import {Panel} from 'primeng/panel'
 import {TableModule} from 'primeng/table'
@@ -15,7 +15,8 @@ import {buildSummaryGridRows} from './summary-grid-row'
     Panel,
     CurrencyPipe,
     MoneyComponent,
-    PrettifyEnumPipe
+    PrettifyEnumPipe,
+    NgClass
   ],
   templateUrl: 'payments-summary.component.html',
   styleUrl: 'payments-summary.component.scss'

@@ -9,7 +9,8 @@
         </p-panel>
 
         <p-panel [header]="'Voided ' + (summary.type | prettifyEnum) + 's (' + summary.voidedCount + ')'" class="flex-grow-1">
-          <span class="summary-money irregular-balance">{{ summary.voidedTotal | currency }}</span>
+          @let voidedTotal = summary.voidedTotal;
+          <span class="summary-money" [ngClass]="{'irregular-balance': voidedTotal > 0}">{{ voidedTotal | currency }}</span>
         </p-panel>
       }
     </div>
@@ -38,8 +39,9 @@
                 {{ row.activeTotal | currency }}
               }
             </td>
-            <td class="summary-money irregular-balance">
-              {{ row.voidedTotal | currency }}
+            @let voidedTotal = row.voidedTotal;
+            <td class="summary-money" [ngClass]="{'irregular-balance': voidedTotal > 0}">
+              {{ voidedTotal | currency }}
             </td>
           </tr>
         </ng-template>

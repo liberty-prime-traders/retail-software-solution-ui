@@ -1,0 +1,46 @@
+<div class="flex flex-wrap gap-3 pr-3">
+  <rts-form-field label="Supplier"
+                  for="supplierId"
+                  contentClass="w-full"
+                  [required]="true"
+                  [layout]="FormFieldDirection.VERTICAL">
+    <p-select id="supplierId"
+              class="w-full"
+              [filter]="true"
+              [options]="suppliers()"
+              optionLabel="fullName"
+              optionValue="id"
+              [formField]="bulkPaymentForm.supplierId"
+              placeholder="Select a supplier">
+    </p-select>
+  </rts-form-field>
+
+  <rts-form-field label="Ordered From"
+                  for="orderedFrom"
+                  contentClass="w-full"
+                  [layout]="FormFieldDirection.VERTICAL">
+    <p-date-picker id="orderedFrom"
+                   [showIcon]="true"
+                   [formField]="bulkPaymentForm.orderedFrom"
+                   appendTo="body">
+    </p-date-picker>
+  </rts-form-field>
+
+  <rts-form-field label="Ordered To"
+                  for="orderedTo"
+                  contentClass="w-full"
+                  [layout]="FormFieldDirection.VERTICAL">
+    <p-date-picker id="orderedTo"
+                   [showIcon]="true"
+                   [formField]="bulkPaymentForm.orderedTo"
+                   appendTo="body">
+    </p-date-picker>
+  </rts-form-field>
+</div>
+
+
+@if (rangeTooWide()) {
+  <p-message severity="warn" class="block mx-3 mb-3">
+    Choose a range of at most one year.
+  </p-message>
+}

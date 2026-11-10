@@ -48,6 +48,7 @@ export class LocationDashboardComponent implements OnInit {
   private readonly transactionsMenuItems: MenuItem[] = [
     {label: 'Sales', icon: 'pi pi-receipt', routerLink: 'sales'},
     {label: 'Purchases', icon: 'pi pi-truck', routerLink: 'purchases'},
+    {label: 'Bulk Payment', icon: 'pi pi-wallet', routerLink: 'purchases-bulk-payment'},
     {label: 'Taxes', icon: 'pi pi-money-bill', routerLink: 'taxes'},
     {label: 'Stock Transfers', icon: 'pi pi-send', routerLink: 'stock-transfer'},
     {label: 'Stock Adjustments', icon: 'pi pi-sliders-h', routerLink: 'stock-adjustments'},
