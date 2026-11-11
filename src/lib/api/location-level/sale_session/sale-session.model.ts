@@ -1,3 +1,4 @@
+import {EntityId} from '@ngrx/signals/entities'
 import {CalculationMethod} from '../../platform-level/tax-type/calculation-method.enum'
 import {BaseModel} from '../../util/base-api/base.model'
 import {ProductQuantities} from '../product-lookup/product-with-availability.model'
@@ -5,6 +6,7 @@ import {PaymentStatus} from '../purchase/payment-status.enum'
 import {SaleStatus} from '../sale-summary/sale-status.enum'
 
 export interface SaleSession extends BaseModel {
+  saleId: EntityId | null
   createdBy: string
   lastUpdatedAt: string
   lastAccessedBy: string
@@ -66,6 +68,7 @@ export interface SaleLine extends ProductQuantities {
   lineTotal: number
   unitPriceOverride: number
   netUnitPrice: number
+  productActive: boolean
 }
 
 export enum AdjustmentDirection {

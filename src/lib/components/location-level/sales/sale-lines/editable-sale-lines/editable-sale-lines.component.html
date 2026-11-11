@@ -20,6 +20,10 @@
 
             <span class="font-medium">{{ line.productLabel }}</span>
 
+            @if (!line.productActive) {
+              <p-badge severity="danger" value="Inactive product - remove this line"/>
+            }
+
             @if (line.quantityAvailable != null) {
               <small class="info-message">
                 Available: {{ line.quantityAvailableBreakdown }}

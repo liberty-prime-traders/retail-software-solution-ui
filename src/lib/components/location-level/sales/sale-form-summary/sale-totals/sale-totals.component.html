@@ -57,14 +57,14 @@
       <button pButton
               text
               severity="secondary"
-              [disabled]="saleForm().invalid()"
+              [disabled]="saleForm().invalid() || hasInactiveProducts()"
               (click)="saveDraft()">
         Save Draft
       </button>
 
       <button pButton
               severity="success"
-              [disabled]="saleForm().invalid()"
+              [disabled]="saleForm().invalid() || hasInactiveProducts()"
               (click)="completeSale()">
         <i class="pi pi-check"></i> Confirm Sale
       </button>

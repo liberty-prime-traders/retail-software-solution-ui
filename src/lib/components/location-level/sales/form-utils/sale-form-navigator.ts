@@ -47,6 +47,15 @@ export class SaleFormNavigator {
     })
   }
 
+  openForCopyOfSale(sourceSaleId: EntityId) {
+    this.saleSessionService.startNewSession({copyFromSaleId: sourceSaleId}, {
+      onSuccess: (session) => {
+        this._formOpenedFromPicker.set(false)
+        this.enterFormWithSession(session)
+      }
+    })
+  }
+
   resumeOpenSession(sessionId: string) {
     this.saleSessionService.acquireSession(sessionId, {
       onSuccess: (session) => {
