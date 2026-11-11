@@ -4,6 +4,7 @@ import {AdjustmentDirection, SessionIdentity} from './sale-session.model'
 export interface SaleSessionStartRequest {
   contactId?: string,
   saleId?: EntityId
+  copyFromSaleId?: EntityId
 }
 
 export interface SaleSessionLineRequest {

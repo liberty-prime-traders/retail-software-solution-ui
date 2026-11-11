@@ -38,6 +38,13 @@
       <h2 class="m-0">New Sale</h2>
     }
 
+    @if (canCopySale()) {
+      <button pButton severity="secondary" (click)="copySale()">
+        <i class="pi pi-copy"></i>
+        Copy Sale
+      </button>
+    }
+
     @if (canDiscardSale()) {
       <button pButton (click)="startSaleVoid()" severity="danger">
         <i class="pi pi-trash"></i>

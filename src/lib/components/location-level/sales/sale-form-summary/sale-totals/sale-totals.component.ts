@@ -34,6 +34,10 @@ export class SaleTotalsComponent {
   readonly canMakeChangesToTheSale = computed(() => this.saleSession()?.uiOptions.canMakeChangesToTheSale)
   readonly isVoided = computed(() => this.saleSession()?.saleStatus === SaleStatus.VOIDED)
 
+  readonly hasInactiveProducts = computed(() =>
+    this.saleSession()?.saleLines.some(saleLine => !saleLine.productActive) ?? false
+  )
+
   saveDraft() {
     this.saleSessionService.saveAsDraft({onSuccess: this.context.loadSession})
   }

@@ -7,6 +7,7 @@ export const defaultSaleSession = (): SaleSession => {
     ids: [],
     entityMap: {},
     id: '',
+    saleId: null,
     createdBy: '',
     lastUpdatedAt: '',
     lastAccessedBy: '',

@@ -41,7 +41,8 @@ const buildSale = (): SaleSession => {
         quantityReserved: 0,
         quantityAvailable: 9,
         quantityAvailableBreakdown: '',
-        quantityOnHandBreakdown: ''
+        quantityOnHandBreakdown: '',
+        productActive: true
       },
       {
         identity: {id: 'l2'},
@@ -61,7 +62,8 @@ const buildSale = (): SaleSession => {
         quantityReserved: 0,
         quantityAvailable: 9,
         quantityAvailableBreakdown: '',
-        quantityOnHandBreakdown: ''
+        quantityOnHandBreakdown: '',
+        productActive: true
       }
     ],
     salePayments: [
