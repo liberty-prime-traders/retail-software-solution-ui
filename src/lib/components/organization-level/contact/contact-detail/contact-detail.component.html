@@ -13,6 +13,7 @@
       <p-tablist>
         <p-tab value="details">Details</p-tab>
         <p-tab value="ledger">Transactions</p-tab>
+        <p-tab value="openingBalance">Opening Balance</p-tab>
       </p-tablist>
 
       <p-tabpanels>
@@ -23,6 +24,12 @@
         <p-tabpanel value="ledger">
           @if (selectedTab() === 'ledger') {
             <rts-contact-ledger [contactId]="contact.id"/>
+          }
+        </p-tabpanel>
+
+        <p-tabpanel value="openingBalance">
+          @if (selectedTab() === 'openingBalance') {
+            <rts-contact-opening-balance [contact]="contact"/>
           }
         </p-tabpanel>
       </p-tabpanels>

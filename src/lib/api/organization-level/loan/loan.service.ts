@@ -18,7 +18,7 @@ export class LoanService extends BaseService<Loan, LoanRequest> {
   }
 
   createLoan(request: LoanCreateRequest, callbacks?: ApiCallbacks<Loan>) {
-    return this.postRequest({body: request, callbacks, config: {urlSuffix: '', upsertOnSuccess: true}})
+    return this.postRequest({body: request, callbacks, config: {upsertOnSuccess: true}})
   }
 
   recordRepayment(request: LoanRepaymentCreateRequest, callbacks?: ApiCallbacks<Loan>) {

@@ -1,0 +1,42 @@
+<div class="flex flex-column gap-3">
+  <div class="flex gap-5">
+    <rts-form-field label="Opening Balance" [noRightPadding]="true" [labelColumnSize]="6" contentClass="p-0">
+      <div class="flex gap-2 align-items-center">
+        <rts-money [amount]="contact().netOpeningBalance"
+                   [balanceEffect]="contact().netOpeningBalanceEffect">
+        </rts-money>
+
+        <button pButton rounded size="small" severity="secondary" (click)="showEditDialog.set(true)">
+          <i class="pi pi-pencil"></i>
+        </button>
+      </div>
+    </rts-form-field>
+
+    <div class="flex gap-1 font-semibold">
+      @if (netOutstanding() > 0) {
+        <span>They still owe us:</span>
+        <span class="money-in"> {{ netOutstanding() | currency }}</span>
+      } @else if (netOutstanding() < 0) {
+        <span>We still owe them:</span>
+        <span class="money-out"> {{ -netOutstanding() | currency }}</span>
+      } @else {
+        <span>Nothing outstanding</span>
+      }
+    </div>
+  </div>
+
+
+  <p-panel header="Revision History">
+    <rts-contact-opening-balance-history [contactReferenceNumber]="contact().referenceNumber"/>
+  </p-panel>
+
+  <p-panel header="Payment History">
+    <rts-contact-opening-settlement-grid [contact]="contact()" [figures]="figures"/>
+  </p-panel>
+</div>
+
+@if (showEditDialog()) {
+  <p-dialog header="Update Opening Balance" [(visible)]="showEditDialog" [modal]="true">
+    <rts-contact-opening-balance-edit [contact]="contact()" [(showDialog)]="showEditDialog"/>
+  </p-dialog>
+}

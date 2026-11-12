@@ -72,6 +72,7 @@
         <div class="flex gap-3">
           <p-select [options]="payees()"
                     [formField]="row.payeeContactId"
+                    [filter]="true"
                     optionLabel="fullName"
                     optionValue="id"
                     [placeholder]="isWages() ? 'Employee' : 'Payee'"
@@ -82,6 +83,7 @@
           @if (isAdhoc()) {
             <p-select [options]="expenseTypes()"
                       [formField]="row.expenseTypeId"
+                      [filter]="true"
                       optionLabel="name"
                       optionValue="id"
                       placeholder="Expense type"

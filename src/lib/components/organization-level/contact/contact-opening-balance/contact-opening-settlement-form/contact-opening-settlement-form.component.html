@@ -1,0 +1,60 @@
+<div class="flex flex-column gap-2">
+  <rts-form-field [required]="true" label="Direction">
+    <p-select-button optionLabel="label"
+                     optionValue="value"
+                     [allowEmpty]="false"
+                     [options]="directionOptions"
+                     [formField]="settlementForm.subledgerDirection">
+    </p-select-button>
+  </rts-form-field>
+
+  <rts-form-field [required]="true" label="Payment Method" for="settlementPaymentMethod">
+    <p-select inputId="settlementPaymentMethod"
+              class="flex-grow-1"
+              appendTo="body"
+              placeholder="Select a payment method"
+              optionLabel="name"
+              optionValue="id"
+              [loading]="paymentOptionsLoading()"
+              [options]="paymentOptions()"
+              [formField]="settlementForm.paymentMethodId">
+    </p-select>
+  </rts-form-field>
+
+  <rts-form-field [required]="true" label="Amount" for="settlementAmount">
+    <p-input-number inputId="settlementAmount"
+                    mode="currency"
+                    class="flex-grow-1"
+                    [min]="0"
+                    [max]="selectedOutstanding()"
+                    [maxFractionDigits]="2"
+                    [currency]="currencyCodeProviderService.currencyCode"
+                    [formField]="settlementForm.amount">
+    </p-input-number>
+  </rts-form-field>
+
+  <rts-form-field [required]="true" label="Date" for="settlementDate">
+    <p-date-picker inputId="settlementDate"
+                   class="flex-grow-1"
+                   appendTo="body"
+                   [showIcon]="true"
+                   [maxDate]="today"
+                   [formField]="settlementForm.settlementDate">
+    </p-date-picker>
+  </rts-form-field>
+
+  <rts-form-field label="Note" for="settlementNote">
+    <input id="settlementNote" class="flex-grow-1" pInputText [formField]="settlementForm.note"/>
+  </rts-form-field>
+
+  <rts-forms-buttons [disableReset]="!settlementForm().dirty()"
+                     [disableSave]="settlementForm().invalid() || !settlementForm().dirty()"
+                     [hideDelete]="true"
+                     [signalForm]="settlementForm()"
+                     [fieldMap]="fieldMap"
+                     [processingStatus]="processingStatus()"
+                     [failureMessages]="failureMessages()"
+                     (save)="save()"
+                     (resetAction)="resetForm()">
+  </rts-forms-buttons>
+</div>

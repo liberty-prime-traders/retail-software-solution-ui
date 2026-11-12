@@ -20,10 +20,11 @@ export class FormFieldComponent {
   readonly contentClass = input('col-5')
   readonly containerClass = input('')
   readonly labelClass = input('')
+  readonly noRightPadding = input(false)
 
   readonly effectiveContentClass = computed(() => {
     const compactClass = this.layout() === FormFieldLayout.COMPACT ? 'compact-form-field' : ''
-    return `${this.contentClass()} ${compactClass}`
+    return `${this.contentClass()} ${compactClass} align-items-center`
   })
 
   readonly effectiveLabelClass = computed(() => {
@@ -35,7 +36,7 @@ export class FormFieldComponent {
   })
 
   readonly rightPadding = computed(() => {
-    if (this.layout() !== FormFieldLayout.HORIZONTAL) {
+    if (this.layout() !== FormFieldLayout.HORIZONTAL || this.noRightPadding()) {
       return 0
     }
     const matches = this.contentClass().match(/col-(\d+)/)

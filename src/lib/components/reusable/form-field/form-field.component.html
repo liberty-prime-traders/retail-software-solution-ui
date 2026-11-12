@@ -1,4 +1,4 @@
-<div [class]="containerClass() + effectiveLayoutClass() + ' flex form-field justify-content-end'">
+<div [class]="containerClass() + ' ' + effectiveLayoutClass() + ' flex form-field justify-content-end'">
 
     <label [for]="for()" [ngClass]="effectiveLabelClass()">
       @if (layout() === FormFieldDirection.COMPACT) {

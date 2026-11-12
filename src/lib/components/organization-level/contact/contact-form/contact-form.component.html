@@ -26,25 +26,6 @@
           </rts-form-field>
         }
 
-        <rts-form-field label="Opening Balance">
-          <div class="flex gap-2 align-items-center">
-            <rts-money [amount]="originalContact()?.netOpeningBalance"
-                       [balanceEffect]="originalContact()?.netOpeningBalanceEffect">
-            </rts-money>
-
-            @if (originalContact()) {
-              <button pButton rounded size="small" severity="secondary" (click)="showEditDialog.set(true)">
-                <i class="pi pi-pencil"></i>
-              </button>
-              <button pButton rounded size="small" severity="secondary" (click)="showHistoryDialog.set(true)">
-                <i class="pi pi-history"></i>
-              </button>
-            }
-          </div>
-        </rts-form-field>
-      </div>
-
-      <div class="flex flex-column gap-2 col-5">
         <rts-form-field [required]="true" label="Status" for="status">
           <p-select id="status"
                     class="flex-grow-1"
@@ -52,7 +33,9 @@
                     [formField]="contactForm.status">
           </p-select>
         </rts-form-field>
+      </div>
 
+      <div class="flex flex-column gap-2 col-5">
         <rts-form-field [required]="true" label="Contact Type" labelClass="align-self-start">
           <div class="flex flex-column gap-2">
             @for (type of (ContactType | enumToDropdown); track type) {
@@ -112,15 +95,3 @@
                      (resetAction)="resetForm()">
   </rts-forms-buttons>
 </div>
-
-@if (showEditDialog()) {
-  <p-dialog header="Update Opening Balance" [(visible)]="showEditDialog" [modal]="true">
-    <rts-contact-opening-balance-edit [contact]="originalContact()" [(showDialog)]="showEditDialog"/>
-  </p-dialog>
-}
-
-@if (showHistoryDialog()) {
-  <p-dialog header="Opening Balance Update History" [(visible)]="showHistoryDialog" [modal]="true">
-    <rts-contact-opening-balance-history [contactReferenceNumber]="originalContact()?.referenceNumber"/>
-  </p-dialog>
-}

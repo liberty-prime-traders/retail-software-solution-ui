@@ -54,7 +54,9 @@ export class PaymentFormComponent extends BaseFormComponent<SupplierPaymentServi
   readonly isLoading = this.supplierPaymentService.selectLoading
   private readonly payments = this.supplierPaymentService.selectForGroup(this.purchaseId)
   private readonly purchase = computed(() => this.purchaseService.selectForId(this.purchaseId()))
-  readonly remainingAmount = computed(() => (this.purchase()?.paymentCeiling ?? 0) - this.totalPaid())
+  readonly remainingAmount = computed(() =>
+    (this.purchase()?.paymentCeiling ?? 0) - this.totalPaid()
+  )
 
   readonly deliveryOptions: Signal<SelectItem<EntityId>[]> = computed(() => {
     const deliveries = this.purchase()?.deliveries ?? []
@@ -76,7 +78,7 @@ export class PaymentFormComponent extends BaseFormComponent<SupplierPaymentServi
   )
 
   private readonly patchPurchaseArrers = effect(() => {
-    const purchaseArrears = this.remainingAmount()
+    const purchaseArrears = Math.round(this.remainingAmount() * 100) / 100
     untracked(() =>
       this.formValue.update(current => ({...current, purchaseArrears}))
     )

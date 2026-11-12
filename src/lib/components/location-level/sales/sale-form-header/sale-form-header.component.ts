@@ -54,7 +54,7 @@ export class SaleFormHeaderComponent {
     this.saleStatus() === SaleStatus.DRAFT ? 'Discard Draft' : 'Void Sale'
   )
 
-  readonly canCopySale = computed(() => !!this.saleSession().saleId)
+  readonly canCopySale = computed(() => !!this.saleSession().saleId && this.saleStatus() !== SaleStatus.CONFIRMED)
 
   readonly startFreshFormAfterPrint = this.context.startFreshFormAfterPrint
   readonly autoPrintAfterConfirm = this.context.autoPrintAfterConfirm

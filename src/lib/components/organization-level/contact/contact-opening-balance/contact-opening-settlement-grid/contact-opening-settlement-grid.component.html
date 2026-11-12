@@ -1,0 +1,72 @@
+<div class="flex flex-column gap-3">
+  @if (figures().hasOutstanding()) {
+    <p-panel header="Record Settlement" [toggleable]="true" [(collapsed)]="recordPanelCollapsed">
+      @if (!recordPanelCollapsed()) {
+        <rts-contact-opening-settlement-form [contact]="contact()"
+                                             [receivableOutstanding]="figures().receivableOutstanding()"
+                                             [payableOutstanding]="figures().payableOutstanding()"
+                                             (settlementRecorded)="onChanged()">
+        </rts-contact-opening-settlement-form>
+      }
+    </p-panel>
+  }
+
+  <p-table #settlementsTable
+           [value]="figures().settlements()"
+           [loading]="loading()"
+           dataKey="id"
+           rowExpandMode="single">
+
+    <ng-template #header>
+      <tr>
+        <th style="width: 3rem"></th>
+        <th>Reference #</th>
+        <th>Date</th>
+        <th>Settled</th>
+        <th>Account</th>
+        <th>Amount</th>
+        <th>Note</th>
+        <th>Recorded By</th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-settlement let-expanded="expanded">
+      <tr [ngClass]="{'expanded-row': expanded, 'strike-through': settlement.void}">
+        <td>
+          <button pButton type="button" text rounded [pRowToggler]="settlement">
+            <i [class]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+          </button>
+        </td>
+        <td>{{ settlement.referenceNumber }}</td>
+        <td>{{ settlement.settlementDate }}</td>
+        <td>{{ settlement.subledgerDirection | contactSubledgerDirectionLabel }}</td>
+        <td>{{ settlement.paymentAccountLabel }}</td>
+        <td class="money">{{ settlement.amount | currency }}</td>
+        <td>{{ settlement.note | nullSafe }}</td>
+        <td>{{ settlement.recordedBy }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template #expandedrow let-settlement>
+      <tr>
+        <td colspan="8" class="filled-background">
+          @if (settlement.void) {
+            <div>
+              <b>Voided on</b> {{ settlement.void.voidDate }} by {{ settlement.void.voidedBy }}.
+              <b>Reason:</b> {{ settlement.void.reason | nullSafe }}
+            </div>
+          } @else {
+            <rts-contact-opening-settlement-void-form [settlement]="settlement"
+                                                      (voided)="onChanged()"
+                                                      (cancelled)="settlementsTable.toggleRow(settlement)">
+            </rts-contact-opening-settlement-void-form>
+          }
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr rts-empty-row [colspan]="8" message="No settlements recorded"></tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -7,6 +7,7 @@ import {LoadingContainerComponent} from '../../../reusable/loading-container/loa
 import {ContactFormComponent} from '../contact-form/contact-form.component'
 import {ContactLedgerComponent} from '../contact-ledger/contact-ledger.component'
 import {ContactNamePipe} from '../contact-name.pipe'
+import {ContactOpeningBalanceComponent} from '../contact-opening-balance/contact-opening-balance.component'
 
 @Component({
   selector: 'rts-contact-detail',
@@ -21,7 +22,8 @@ import {ContactNamePipe} from '../contact-name.pipe'
     LoadingContainerComponent,
     ContactFormComponent,
     ContactLedgerComponent,
-    ContactNamePipe
+    ContactNamePipe,
+    ContactOpeningBalanceComponent
   ]
 })
 export class ContactDetailComponent {

@@ -25,6 +25,6 @@ export class ContactOpeningBalanceRevisionService
     openingBalance: ContactOpeningBalance,
     callbacks: ApiCallbacks<ContactOpeningBalanceRevision>
   ) {
-    return this.postRequest({id: contactId, body: openingBalance, callbacks, config: {urlSuffix: ''}})
+    return this.postRequest({id: contactId, body: openingBalance, callbacks})
   }
 }
