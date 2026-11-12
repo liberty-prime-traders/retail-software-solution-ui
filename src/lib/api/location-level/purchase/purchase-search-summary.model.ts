@@ -5,6 +5,7 @@ export interface PurchasePaymentStatusSummary {
   paymentStatus: PaymentStatus
   purchaseCount: number
   totalOrdered: number
+  totalDelivered: number
   totalPaid: number
   totalOutstanding: number
 }
@@ -14,6 +15,7 @@ export interface PurchaseSupplierSummary {
   supplierName: string
   purchaseCount: number
   totalOrdered: number
+  totalDelivered: number
   totalPaid: number
   totalOutstanding: number
 }
@@ -21,6 +23,7 @@ export interface PurchaseSupplierSummary {
 export interface PurchaseSearchSummary extends BaseModel {
   purchaseCount: number
   totalOrdered: number
+  totalDelivered: number
   totalPaid: number
   totalOutstanding: number
   byPaymentStatus: PurchasePaymentStatusSummary[]

@@ -4,6 +4,10 @@
       <span class="money">{{ totalOrdered() | currency }}</span>
     </p-panel>
 
+    <p-panel header="Total Delivered" class="flex-grow-1">
+      <span class="money">{{ totalDelivered() | currency }}</span>
+    </p-panel>
+
     <p-panel header="Total Paid" class="flex-grow-1">
       <span class="money money-in">{{ totalPaid() | currency }}</span>
     </p-panel>
@@ -19,6 +23,7 @@
         <th>Payment Status</th>
         <th>Purchase Count</th>
         <th>Ordered</th>
+        <th>Delivered</th>
         <th>Paid</th>
         <th>Outstanding</th>
       </tr>
@@ -28,13 +33,14 @@
         <td>{{ statusSummary.paymentStatus | prettifyEnum }}</td>
         <td>{{ statusSummary.purchaseCount }}</td>
         <td>{{ statusSummary.totalOrdered | currency }}</td>
+        <td>{{ statusSummary.totalDelivered | currency }}</td>
         <td>{{ statusSummary.totalPaid | currency }}</td>
         <td>{{ statusSummary.totalOutstanding | currency }}</td>
       </tr>
     </ng-template>
 
     <ng-template #emptymessage>
-      <tr rts-empty-row [colspan]="5" message="No purchases found"></tr>
+      <tr rts-empty-row [colspan]="6" message="No purchases found"></tr>
     </ng-template>
   </p-table>
 
@@ -45,6 +51,7 @@
           <th>Supplier</th>
           <th>Purchases</th>
           <th>Ordered</th>
+        <th>Delivered</th>
           <th>Paid</th>
           <th>Outstanding</th>
         </tr>
@@ -54,6 +61,7 @@
           <td>{{ supplierSummary.supplierName }}</td>
           <td>{{ supplierSummary.purchaseCount }}</td>
           <td>{{ supplierSummary.totalOrdered | currency }}</td>
+          <td>{{ supplierSummary.totalDelivered | currency }}</td>
           <td>{{ supplierSummary.totalPaid | currency }}</td>
           <td>{{ supplierSummary.totalOutstanding | currency }}</td>
         </tr>

@@ -46,6 +46,7 @@
         <div class="flex gap-3">
           <p-select [options]="contacts()"
                     [formField]="row.payeeContactId"
+                    [filter]="true"
                     optionLabel="fullName"
                     optionValue="id"
                     placeholder="Payee"

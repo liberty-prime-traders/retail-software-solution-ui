@@ -4,6 +4,9 @@ import {ButtonDirective} from 'primeng/button'
 import {CardModule} from 'primeng/card'
 import {Divider} from 'primeng/divider'
 import {
+  LastPurchaseCostBackfillService
+} from '../../../api/organization-level/admin-data-fixes/last-purchase-cost-backfill.service'
+import {
   PurchaseMovementContextBackfillService
 } from '../../../api/organization-level/admin-data-fixes/purchase-movement-context-backfill.service'
 import {SaleLineCogsBackfillService} from '../../../api/organization-level/admin-data-fixes/sale-line-cogs-backfill.service'
@@ -22,6 +25,7 @@ export class AdminDataFixesComponent {
   private readonly saleLineCogsBackfillService = inject(SaleLineCogsBackfillService)
   private readonly stockAdjustmentBackfillService = inject(StockAdjustmentBackfillService)
   private readonly purchaseMovementContextBackfillService = inject(PurchaseMovementContextBackfillService)
+  private readonly lastPurchaseCostBackfillService = inject(LastPurchaseCostBackfillService)
   private readonly messageService = inject(MessageService)
 
   readonly adminDataFixItems: AdminDataFixItem[] = [
@@ -70,6 +74,19 @@ export class AdminDataFixesComponent {
       successDetail: 'Backfill started. Check the server log for completion',
       requestService: this.purchaseMovementContextBackfillService,
       isLoading: this.purchaseMovementContextBackfillService.isLoading
+    },
+    {
+      fix: AdminDataFix.LAST_PURCHASE_COST_BACKFILL,
+      title: 'Last Purchase Costs',
+      description: 'The last purchase cost of a product used to be stored in whichever unit the delivery was typed ' +
+        'in. It is now stored per base unit, so costs of deliveries in different units compare. This recomputes ' +
+        'it in every location from the latest received delivery of each product and leaves products with no ' +
+        'delivery untouched, so it is safe to run again. It runs in the background; completion is written to ' +
+        'the server log.',
+      buttonLabel: 'Backfill Last Purchase Costs',
+      successDetail: 'Backfill started. Check the server log for completion',
+      requestService: this.lastPurchaseCostBackfillService,
+      isLoading: this.lastPurchaseCostBackfillService.isLoading
     }
   ]
 

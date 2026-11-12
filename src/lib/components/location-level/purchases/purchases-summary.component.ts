@@ -24,6 +24,7 @@ export class PurchasesSummaryComponent {
   readonly purchaseCount = this.purchaseSearchSummaryService.purchaseCount
 
   readonly totalOrdered = computed(() => this.purchaseSearchSummary()?.totalOrdered ?? 0)
+  readonly totalDelivered = computed(() => this.purchaseSearchSummary()?.totalDelivered ?? 0)
   readonly totalPaid = computed(() => this.purchaseSearchSummary()?.totalPaid ?? 0)
   readonly totalOutstanding = computed(() => this.purchaseSearchSummary()?.totalOutstanding ?? 0)
 
